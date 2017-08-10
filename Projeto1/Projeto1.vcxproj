@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{40D5AA74-CC6A-4F73-8B0D-A1A22827AF5C}</ProjectGuid>
-    <RootNamespace>Projeto1</RootNamespace>
+    <RootNamespace>Cinetico</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
     <ProjectName>Cinetico</ProjectName>
   </PropertyGroup>
