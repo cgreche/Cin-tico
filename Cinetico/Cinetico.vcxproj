@@ -32,10 +32,10 @@
     <ClInclude Include="src\render\vertex3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\demo1.cpp" />
     <ClCompile Include="src\render\d3d10engine.cpp" />
     <ClCompile Include="src\render\d3d12engine.cpp" />
     <ClCompile Include="src\render\d3d9engine.cpp" />
-    <ClCompile Include="src\render\demo1.cpp" />
     <ClCompile Include="src\render\renderengine.cpp" />
     <ClCompile Include="src\render\renderenginehelper.cpp" />
     <ClCompile Include="src\render\resourcedata.cpp" />
