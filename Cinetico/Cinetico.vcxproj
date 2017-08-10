@@ -18,6 +18,30 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\render\camera.h" />
+    <ClInclude Include="src\render\color.h" />
+    <ClInclude Include="src\render\d3d9engine.h" />
+    <ClInclude Include="src\render\d3dx12.h" />
+    <ClInclude Include="src\render\renderengine.h" />
+    <ClInclude Include="src\render\renderenginehelper.h" />
+    <ClInclude Include="src\render\renderobject.h" />
+    <ClInclude Include="src\render\resourcedata.h" />
+    <ClInclude Include="src\render\resourceinstance.h" />
+    <ClInclude Include="src\render\vector3.h" />
+    <ClInclude Include="src\render\vertex3.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\render\d3d10engine.cpp" />
+    <ClCompile Include="src\render\d3d12engine.cpp" />
+    <ClCompile Include="src\render\d3d9engine.cpp" />
+    <ClCompile Include="src\render\demo1.cpp" />
+    <ClCompile Include="src\render\renderengine.cpp" />
+    <ClCompile Include="src\render\renderenginehelper.cpp" />
+    <ClCompile Include="src\render\resourcedata.cpp" />
+    <ClCompile Include="src\render\resourceinstance.cpp" />
+    <ClCompile Include="src\render\viewport.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{40D5AA74-CC6A-4F73-8B0D-A1A22827AF5C}</ProjectGuid>
@@ -118,28 +142,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="d3d9engine.cpp" />
-    <ClCompile Include="demo1.cpp" />
-    <ClCompile Include="renderengine.cpp" />
-    <ClCompile Include="renderenginehelper.cpp" />
-    <ClCompile Include="resourcedata.cpp" />
-    <ClCompile Include="resourceinstance.cpp" />
-    <ClCompile Include="viewport.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="color.h" />
-    <ClInclude Include="d3d9engine.h" />
-    <ClInclude Include="d3dx12.h" />
-    <ClInclude Include="renderengine.h" />
-    <ClInclude Include="renderenginehelper.h" />
-    <ClInclude Include="renderobject.h" />
-    <ClInclude Include="resourcedata.h" />
-    <ClInclude Include="resourceinstance.h" />
-    <ClInclude Include="vector3.h" />
-    <ClInclude Include="vertex3.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

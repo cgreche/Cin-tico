@@ -13,63 +13,75 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Arquivos de Origem\render">
+      <UniqueIdentifier>{77c95dfa-4399-416a-934b-bb7de5b5bf85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Cabeçalho\render">
+      <UniqueIdentifier>{0ee73e96-c9df-4ce3-aae8-51cab83c51ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="d3d9engine.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="renderengine.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="viewport.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="resourcedata.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="resourceinstance.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="renderenginehelper.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="demo1.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
+    <ClInclude Include="src\render\camera.h">
+      <Filter>Arquivos de Cabeçalho\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\color.h">
+      <Filter>Arquivos de Cabeçalho\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\d3dx12.h">
+      <Filter>Arquivos de Cabeçalho\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\renderengine.h">
+      <Filter>Arquivos de Cabeçalho\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\renderenginehelper.h">
+      <Filter>Arquivos de Cabeçalho\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\renderobject.h">
+      <Filter>Arquivos de Cabeçalho\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\resourcedata.h">
+      <Filter>Arquivos de Cabeçalho\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\resourceinstance.h">
+      <Filter>Arquivos de Cabeçalho\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\vector3.h">
+      <Filter>Arquivos de Cabeçalho\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\vertex3.h">
+      <Filter>Arquivos de Cabeçalho\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\d3d9engine.h">
+      <Filter>Arquivos de Cabeçalho\render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resourcedata.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="vertex3.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="color.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="vector3.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="camera.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="renderengine.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="d3dx12.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="d3d9engine.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="resourceinstance.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="renderobject.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="renderenginehelper.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
+    <ClCompile Include="src\render\d3d9engine.cpp">
+      <Filter>Arquivos de Origem\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\d3d10engine.cpp">
+      <Filter>Arquivos de Origem\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\d3d12engine.cpp">
+      <Filter>Arquivos de Origem\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\demo1.cpp">
+      <Filter>Arquivos de Origem\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\renderengine.cpp">
+      <Filter>Arquivos de Origem\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\renderenginehelper.cpp">
+      <Filter>Arquivos de Origem\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\resourcedata.cpp">
+      <Filter>Arquivos de Origem\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\resourceinstance.cpp">
+      <Filter>Arquivos de Origem\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\viewport.cpp">
+      <Filter>Arquivos de Origem\render</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
