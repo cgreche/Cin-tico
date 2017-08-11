@@ -62,9 +62,6 @@
     <ClCompile Include="src\render\d3d10engine.cpp">
       <Filter>Arquivos de Origem\render</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\d3d12engine.cpp">
-      <Filter>Arquivos de Origem\render</Filter>
-    </ClCompile>
     <ClCompile Include="src\render\renderengine.cpp">
       <Filter>Arquivos de Origem\render</Filter>
     </ClCompile>

@@ -1,8 +1,8 @@
 #include <windows.h>
 #include <math.h>
 #include <time.h>
-#include "d3d9engine.h"
-#include "renderenginehelper.h"
+#include "render/d3d9engine.h"
+#include "render/renderenginehelper.h"
 
 float aspectRatio43 = 1.33334f; //4:3
 float aspectRatio51 = 1.25; //5:4
@@ -324,7 +324,11 @@ void update()
 		Vector3 camRot = camera->rot();
 
 		if(dx != 0) {
-			camRot.setY(camRot.y() - 0.01f*dx);
+			static  float ang = 0.f;
+			const float PI = 3.14159f;
+			ang += 0.001* PI / 180;
+			camRot.setY(camRot.y() - 0.001*sinf(ang));
+			camRot.setZ(camRot.z() + 0.001*cosf(ang));
 		}
 
 		if(dy != 0) {

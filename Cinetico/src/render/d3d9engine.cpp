@@ -146,7 +146,7 @@ void D3D9Engine::updateResourceInstanceData(ResourceInstance *resData) {
 
 	resData->setDirtyFlags(0);
 }
-
+const float PI = 3.14159f;
 void D3D9Engine::updateCamera(Camera *camera) {
 	D3DXMATRIX temp;
 	if(camera && camera->dirtyFlags() != 0) {
@@ -157,11 +157,14 @@ void D3D9Engine::updateCamera(Camera *camera) {
 		if(flags & Camera::DIRTY_POS)
 			D3DXMatrixTranslation(&data->transMatrix, -pos.x(), -pos.y(), -pos.z());
 		if(flags & Camera::DIRTY_ROT)
-			D3DXMatrixRotationYawPitchRoll(&data->rotMatrix, rot.y(), rot.x(), rot.z());
+			D3DXMatrixRotationYawPitchRoll(&data->rotMatrix, rot.y() , rot.x(), rot.z());
 		if(flags & Camera::DIRTY_ZOOM)
 			D3DXMatrixScaling(&data->scaleMatrix, 1.f, 1.f, camera->zoom());
+
+		D3DXMatrixIdentity(&temp);
 		D3DXMatrixMultiply(&temp, &data->rotMatrix, &data->scaleMatrix);
-		D3DXMatrixMultiply(&temp, &data->transMatrix, &temp);
+		D3DXMatrixMultiply(&temp, &data->transMatrix, &temp);		
+		
 		data->viewMatrix = temp;
 		camera->setDirtyFlags(0);
 	}
