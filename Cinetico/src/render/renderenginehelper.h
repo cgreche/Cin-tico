@@ -16,12 +16,14 @@ public:
 	int createQuad(float width, float length);
 	int createTriangle(float baseLength, float height);
 	int createCircle(float radius, unsigned int numPoints, Color *colors);
-	int createSquare(float sideLength);
+	int createSquare(float sideLength) { return createQuad(sideLength,sideLength); }
+	
 	int createRectangularPrism(float width, float height, float length);
 	int createTriangularPrism();
 	int createSphere();
 	int createCube(float edgeLength);
 	void generateTerrain(float squareSize, int terrainGridWidth, int terrainGridHeight, Vertex3 **ppVertices, int **ppIndices, int *pVertexCount, int *pIndexCount);
+	
 	int loadSprite();
 	int createText(const char *text);
 };

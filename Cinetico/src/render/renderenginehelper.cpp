@@ -4,6 +4,27 @@
 #include "renderengine.h"
 #include "renderenginehelper.h"
 
+int RenderEngineHelper::createQuad(float width, float length) {
+	float midW = width*0.5f;
+	float midH = height*0.5f;
+	
+	Vertex3 quad[] = {
+		{-midW, midH, 0}, {midW, midH, 0},
+		{-midW,-midH, 0}, {midW,-midH, 0}
+	};
+	
+	int quadIndices[] = { 0,1,2,3 };
+
+	Color colors[] = {
+		Color(255,0,0),
+		Color(255,0,0),
+		Color(255,0,0),
+		Color(255,0,0)
+	};
+		
+	return m_renderEngine.newResource(4, quad, 4, quadIndices, colors);
+}
+
 int RenderEngineHelper::createCircle(float radius, unsigned int numPoints, Color *colors) {
 	const float PI = 3.14159f;
 
