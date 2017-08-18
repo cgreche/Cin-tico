@@ -199,8 +199,6 @@ void setupDrawables() {
 		circleColors[i] = Color(rand()%255, rand()%255, rand()%255, 122);
 	}
 
-
-
 	resTriangle = renderEngine->newResource(sizeof(triangle1) / sizeof(triangle1[0]), triangle1, 3, indices1,&Color(255,0,0));
 	resCube = renderEngineHelper->createCube(2);
 	resTriangleType2 = renderEngine->newResource(sizeof(triangle3)/sizeof(triangle3[0]),triangle3,3,indices3);

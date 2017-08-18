@@ -67,8 +67,8 @@ int RenderEngineHelper::createCircle(float radius, unsigned int numPoints, Color
 	indices[j+2] = 0;
 
 	int retId =  m_renderEngine.newResource(numPoints, circle, numPoints * 3, indices, colors);
-//	delete[] circle;
-//	delete[] indices;
+	delete[] circle;
+	delete[] indices;
 	return retId;
 }
 
@@ -215,5 +215,9 @@ int RenderEngineHelper::generateTerrain(float squareSize, int terrainGridWidth, 
 		terrainColors[i*4+3] = color;
 	}
 
-	return m_renderEngine.newResource(vertexCount,vertices,indexCount,indices,terrainColors);
+	int resId = m_renderEngine.newResource(vertexCount,vertices,indexCount,indices,terrainColors);
+	delete [] vertices;
+	delete [] indices;
+	delete [] terrainColors;
+	return resId;
 }

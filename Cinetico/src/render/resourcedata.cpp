@@ -15,6 +15,16 @@ ResourceData::ResourceData(RenderEngine *engine, int resId)
 	m_colors = NULL;
 }
 
+ResourceData::~ResourceData()
+{
+	if(m_vertices)
+		delete [] vertices;
+	if(m_indices)
+		delete [] m_indices;
+	if(m_colors)
+		delete [] m_colors;
+}
+
 void ResourceData::setVertices(unsigned int vertexCount, Vertex3 vertices[]) {
 	if(m_vertices)
 		delete [] m_vertices;
