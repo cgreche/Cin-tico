@@ -63,7 +63,7 @@ int RenderEngineHelper::createCircle(float radius, unsigned int numPoints, Color
 		indices[j+2] = i + 1;
 	}
 	indices[j] = numPoints - 1;
-	indices[j+1] = i ;
+	indices[j+1] = i;
 	indices[j+2] = 0;
 
 	int retId =  m_renderEngine.newResource(numPoints, circle, numPoints * 3, indices, colors);
@@ -159,7 +159,7 @@ int RenderEngineHelper::createCube(float edgeLength)
 
 
 
-void RenderEngineHelper::generateTerrain(float squareSize, int terrainGridWidth, int terrainGridHeight, Vertex3 **ppVertices, int **ppIndices, int *pVertexCount, int *pIndexCount)
+int RenderEngineHelper::generateTerrain(float squareSize, int terrainGridWidth, int terrainGridHeight, Vertex3 **ppVertices, int **ppIndices, int *pVertexCount, int *pIndexCount)
 {
 	int squareCount = terrainGridWidth * terrainGridHeight;
 	int vertexCount = squareCount * 4;
@@ -202,9 +202,18 @@ void RenderEngineHelper::generateTerrain(float squareSize, int terrainGridWidth,
 			indices[p++] = bottomLeft;
 		}
 	}
+	
+	Color * terrainColors = new Color[vertexCount];
+	int squareCount = vertexCount / 4;
+	Color color1;
+	Color color2;
+	for(int i = 0; i < squareCount; ++i) {
+		Color color = i%2 == 0 ? color1 : color2;
+		terrainColors[i*4+0] = color;
+		terrainColors[i*4+1] = color;
+		terrainColors[i*4+2] = color;
+		terrainColors[i*4+3] = color;
+	}
 
-	*ppVertices = vertices;
-	*ppIndices = indices;
-	*pVertexCount = vertexCount;
-	*pIndexCount = indexCount;
+	return m_renderEngine.newResource(vertexCount,vertices,indexCount,indices,terrainColors);
 }

@@ -22,7 +22,7 @@ public:
 	int createTriangularPrism();
 	int createSphere();
 	int createCube(float edgeLength);
-	void generateTerrain(float squareSize, int terrainGridWidth, int terrainGridHeight, Vertex3 **ppVertices, int **ppIndices, int *pVertexCount, int *pIndexCount);
+	int generateTerrain(float squareSize, int terrainGridWidth, int terrainGridHeight);
 	
 	int loadSprite();
 	int createText(const char *text);

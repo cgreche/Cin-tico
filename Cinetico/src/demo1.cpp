@@ -244,17 +244,7 @@ void setupDrawables() {
 	float quadSize = 3.2f;
 	float quadCountH = 128;
 	float quadCountV = 32;
-	renderEngineHelper->generateTerrain(quadSize, quadCountH, quadCountV, &terrainVertices, &terrainIndices, &terrainVertexCount, &terrainIndexCount);
-	Color * terrainColors = new Color[terrainVertexCount];
-	int squareCount = terrainVertexCount / 4;
-	for(int i = 0; i < squareCount; ++i) {
-		Color color = Color(rand() % 255, rand() % 255, rand() % 255);
-		terrainColors[i*4+0] = color;
-		terrainColors[i*4+1] = color;
-		terrainColors[i*4+2] = color;
-		terrainColors[i*4+3] = color;
-	}
-	resTerrain = renderEngine->newResource(terrainVertexCount, terrainVertices, terrainIndexCount, terrainIndices,terrainColors);
+	resTerrain = renderEngineHelper->generateTerrain(quadSize, quadCountH, quadCountV);
 	instanceTerrain = renderEngine->newResourceInstance(resTerrain);
 	instanceWall = renderEngine->newResourceInstance(resTerrain);
 
@@ -440,8 +430,6 @@ void render()
 	for(int i = 0; i < NUM_CUBES; ++i) {
 //		d3d9.drawResource(instancedCubes[i]);
 	}
-	
-	
 
 	renderEngine->setCurrentCamera(cam2);
 	renderEngine->setCurrentViewport(viewport2);
