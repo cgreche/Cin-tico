@@ -26,6 +26,9 @@ class ResourceData : public RenderObject
 
 public:
 	friend class RenderEngine;
+	
+	~ResourceData();
+	
 	void setVertices(unsigned int vertexCount, Vertex3 vertices[]);
 	void setIndices(unsigned int indexCount, int indices[]);
 	void setColors(Color *colors);
