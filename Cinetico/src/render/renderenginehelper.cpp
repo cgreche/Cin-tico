@@ -6,11 +6,11 @@
 
 int RenderEngineHelper::createQuad(float width, float length) {
 	float midW = width*0.5f;
-	float midH = height*0.5f;
+	float midL = length*0.5f;
 	
 	Vertex3 quad[] = {
-		{-midW, midH, 0}, {midW, midH, 0},
-		{-midW,-midH, 0}, {midW,-midH, 0}
+		{-midW, midL, 0}, {midW, midL, 0},
+		{-midW,-midL, 0}, {midW,-midL, 0}
 	};
 	
 	int quadIndices[] = { 0,1,2,3 };
@@ -159,7 +159,7 @@ int RenderEngineHelper::createCube(float edgeLength)
 
 
 
-int RenderEngineHelper::generateTerrain(float squareSize, int terrainGridWidth, int terrainGridHeight, Vertex3 **ppVertices, int **ppIndices, int *pVertexCount, int *pIndexCount)
+int RenderEngineHelper::generateTerrain(float squareSize, int terrainGridWidth, int terrainGridHeight)
 {
 	int squareCount = terrainGridWidth * terrainGridHeight;
 	int vertexCount = squareCount * 4;
@@ -204,11 +204,10 @@ int RenderEngineHelper::generateTerrain(float squareSize, int terrainGridWidth, 
 	}
 	
 	Color * terrainColors = new Color[vertexCount];
-	int squareCount = vertexCount / 4;
-	Color color1;
-	Color color2;
+	Color color1 = Color(255,255,255);
+	Color color2 = Color(0,0,0);
 	for(int i = 0; i < squareCount; ++i) {
-		Color color = i%2 == 0 ? color1 : color2;
+		Color color = i%3 == 0 ? color1 : color2;
 		terrainColors[i*4+0] = color;
 		terrainColors[i*4+1] = color;
 		terrainColors[i*4+2] = color;

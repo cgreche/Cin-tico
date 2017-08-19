@@ -18,7 +18,7 @@ ResourceData::ResourceData(RenderEngine *engine, int resId)
 ResourceData::~ResourceData()
 {
 	if(m_vertices)
-		delete [] vertices;
+		delete [] m_vertices;
 	if(m_indices)
 		delete [] m_indices;
 	if(m_colors)

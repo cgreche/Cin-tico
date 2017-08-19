@@ -183,25 +183,36 @@ void setupDrawables() {
 		{ -1, -1, 0 }
 	};
 
+	int indicesTriangle1[] = {
+		0,1,2
+	};
+
+	Color triangle1Colors[3] = {
+		Color(255,0,0),
+		Color(255,0,0),
+		Color(255,0,0)
+	};
+
+	int indicesTriangle3[] = {
+		0,1,2
+	};
+	
+	Color triangle3Colors[3] = {
+		Color(255,0,0),
+		Color(255,0,0),
+		Color(255,0,0)
+	};
+
+
 	const int numPoints = 30;
 	Color circleColors[numPoints + 1];
-	
-
-	int indices1[] = {
-		0,1,2
-	};
-
-	int indices3[] = {
-		0,1,2
-	};
-
-	for(int i = 0; i < numPoints + 1; ++i) {
+		for(int i = 0; i < numPoints + 1; ++i) {
 		circleColors[i] = Color(rand()%255, rand()%255, rand()%255, 122);
 	}
 
-	resTriangle = renderEngine->newResource(sizeof(triangle1) / sizeof(triangle1[0]), triangle1, 3, indices1,&Color(255,0,0));
+	resTriangle = renderEngine->newResource(sizeof(triangle1) / sizeof(triangle1[0]), triangle1, 3, indicesTriangle1,triangle1Colors);
 	resCube = renderEngineHelper->createCube(2);
-	resTriangleType2 = renderEngine->newResource(sizeof(triangle3)/sizeof(triangle3[0]),triangle3,3,indices3);
+ 	resTriangleType2 = renderEngine->newResource(sizeof(triangle3)/sizeof(triangle3[0]),triangle3,3,indicesTriangle3,triangle3Colors);
 	resCircle = renderEngineHelper->createCircle(0.3f, numPoints + 1,circleColors);
 
 	instanceTriangle = renderEngine->newResourceInstance(resTriangle);
@@ -232,12 +243,6 @@ void setupDrawables() {
 		inst->setRot(Vector3(rx, ry, rz));
 		inst->setScale(s);
 	}
-
-	//setup terrain
-	Vertex3 *terrainVertices;
-	int *terrainIndices;
-	int terrainVertexCount;
-	int terrainIndexCount;
 
 	float quadSize = 3.2f;
 	float quadCountH = 128;
@@ -312,15 +317,10 @@ void update()
 		Vector3 camRot = camera->rot();
 
 		if(dx != 0) {
-			static  float ang = 0.f;
-			const float PI = 3.14159f;
-			ang += 0.001* PI / 180;
-			camRot.setY(camRot.y() - 0.001*sinf(ang));
-			camRot.setZ(camRot.z() + 0.001*cosf(ang));
+			camRot.setY(camRot.y() - 0.01f*dx);
 		}
 
 		if(dy != 0) {
-			float camRotX = camRot.x();
 			camRot.setX(camRot.x() - 0.01f*dy);
 		}
 

@@ -156,8 +156,17 @@ void D3D9Engine::updateCamera(Camera *camera) {
 		Vector3 rot = camera->rot();
 		if(flags & Camera::DIRTY_POS)
 			D3DXMatrixTranslation(&data->transMatrix, -pos.x(), -pos.y(), -pos.z());
-		if(flags & Camera::DIRTY_ROT)
-			D3DXMatrixRotationYawPitchRoll(&data->rotMatrix, rot.y() , rot.x(), rot.z());
+		if(flags & Camera::DIRTY_ROT) {
+			D3DXMATRIX rotZ, rotX, rotY;
+			D3DXMATRIX revRot;
+			D3DXMatrixRotationZ(&rotZ,rot.z());
+			D3DXMatrixRotationX(&rotX,rot.x());
+			D3DXMatrixRotationY(&rotY,rot.y());
+			revRot = rotZ;
+			D3DXMatrixMultiply(&revRot, &rotX, &revRot);
+			D3DXMatrixMultiply(&revRot, &rotY, &revRot);
+			data->rotMatrix = revRot;
+		}
 		if(flags & Camera::DIRTY_ZOOM)
 			D3DXMatrixScaling(&data->scaleMatrix, 1.f, 1.f, camera->zoom());
 
@@ -381,7 +390,7 @@ void D3D9Engine::drawInternalResource(ResourceInstance *instance) {
 	m_device->SetRenderState(D3DRS_DESTBLEND,D3DBLEND_INVSRCALPHA);
 	m_device->SetRenderState(D3DRS_BLENDOP,D3DBLENDOP_ADD);
 	//m_device->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE);
-	m_device->SetRenderState(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
+	//m_device->SetRenderState(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
 
 	m_device->SetTransform(D3DTS_WORLD,&d3d9InstanceData->worldMatrix);
 	hr = m_device->SetVertexDeclaration(d3d9ResData->vertexDeclaration);
