@@ -21,7 +21,7 @@ public:
 	int createRectangularPrism(float width, float height, float length);
 	int createTriangularPrism();
 	int createSphere();
-	int createCube(float edgeLength);
+	int createCube(float edgeLength) { return createRectangularPrism(edgeLength,edgeLength,edgeLength); }
 	int generateTerrain(float squareSize, int terrainGridWidth, int terrainGridHeight);
 	
 	int loadSprite();

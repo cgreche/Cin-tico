@@ -54,6 +54,21 @@
     <ClInclude Include="src\render\d3d9engine.h">
       <Filter>Arquivos de Cabeçalho\render</Filter>
     </ClInclude>
+    <ClInclude Include="src\UserProfile.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3ext.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\database.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sqlstatement.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\render\d3d9engine.cpp">
@@ -77,7 +92,19 @@
     <ClCompile Include="src\render\viewport.cpp">
       <Filter>Arquivos de Origem\render</Filter>
     </ClCompile>
-    <ClCompile Include="src\demo1.cpp">
+    <ClCompile Include="src\UserProfile.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lib\sqlite-amalgamation-3200100\sqlite3.c">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\demodb.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\database.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sqlstatement.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>

@@ -72,36 +72,39 @@ int RenderEngineHelper::createCircle(float radius, unsigned int numPoints, Color
 	return retId;
 }
 
-int RenderEngineHelper::createCube(float edgeLength)
+int RenderEngineHelper::createRectangularPrism(float width, float height, float length)
 {
-	float l = edgeLength / 2.f;
-	Vertex3 cube[] = {
+	float hw = width / 2.f;
+	float hh = height / 2.f;
+	float hl = length / 2.f;
+
+	Vertex3 prism[] = {
 		//Front-Face
-		{ -l, l, -l }, { l, l, -l },
-		{ l, -l, -l }, { -l, -l, -l },
+		{ -hw, hh, -hl }, { hw, hh, -hl },
+		{ hw, -hh, -hl }, { -hw, -hh, -hl },
 
 		//Back-Face
-		{ -l, l, l }, { l, l, l },
-		{ l, -l, l }, { -l, -l, l },
+		{ -hw, hh, hl }, { hw, hh, hl },
+		{ hw, -hh, hl }, { -hw, -hh, hl },
 
 		//Up-Face
-		{ -l, l, -l }, { -l, l, l },
-		{ l, l, l }, { l, l, -l },
+		{ -hw, hh, -hl }, { -hw, hh, hl },
+		{ hw, hh, hl }, { hw, hh, -hl },
 
 		//Down-Face
-		{ -l, -l, l }, { -l, -l, -l },
-		{ l, -l, -l }, { l, -l, l },
+		{ -hw, -hh, hl }, { -hw, -hh, -hl },
+		{ hw, -hh, -hl }, { hw, -hh, hl },
 
 		//Left-Face
-		{ -l, -l, l }, { -l, l, l },
-		{ -l, l, -l}, { -l, -l, -l },
+		{ -hw, -hh, hl }, { -hw, hh, hl },
+		{ -hw, hh, -hl}, { -hw, -hh, -hl },
 
 		//Right-Face
-		{ l, -l, -l }, { l, l, -l },
-		{ l, l, l}, { l, -l, l }
+		{ hw, -hh, -hl }, { hw, hh, -hl },
+		{ hw, hh, hl}, { hw, -hh, hl }
 	};
 
-	int cubeIndices[] = {
+	int prismIndices[] = {
 		//Front-face
 		0,1,2,2,3,0,
 		//Back-face
@@ -116,7 +119,7 @@ int RenderEngineHelper::createCube(float edgeLength)
 		20,21,22,22,23,20
 	};
 
-	Color cubeColors[] =
+	Color prismColors[] =
 	{
 		Color(255,0,0),
 		Color(255,0,0),
@@ -154,10 +157,9 @@ int RenderEngineHelper::createCube(float edgeLength)
 		Color(0,0,255),
 	};
 
-	return m_renderEngine.newResource(sizeof(cube)/sizeof(cube[0]),cube,sizeof(cubeIndices)/sizeof(cubeIndices[0]),cubeIndices,cubeColors);
+	return m_renderEngine.newResource(24,prism,36,prismIndices,prismColors);
+
 }
-
-
 
 int RenderEngineHelper::generateTerrain(float squareSize, int terrainGridWidth, int terrainGridHeight)
 {

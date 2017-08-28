@@ -23,6 +23,7 @@ int resCube;
 int resTriangleType2;
 int resCircle;
 int resTerrain;
+int resPrism;
 
 int instanceTriangle;
 int instanceCube;
@@ -31,6 +32,7 @@ int instanceCircle;
 int instanceCircle2;
 int instanceTerrain;
 int instanceWall;
+int instancePrism;
 
 int cam1;
 int cam2;
@@ -130,6 +132,7 @@ LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
 	return ::DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
+
 void setupWindow() {
 
 	HINSTANCE hInstance = ::GetModuleHandle(NULL);
@@ -214,6 +217,7 @@ void setupDrawables() {
 	resCube = renderEngineHelper->createCube(2);
  	resTriangleType2 = renderEngine->newResource(sizeof(triangle3)/sizeof(triangle3[0]),triangle3,3,indicesTriangle3,triangle3Colors);
 	resCircle = renderEngineHelper->createCircle(0.3f, numPoints + 1,circleColors);
+	resPrism = renderEngineHelper->createRectangularPrism(0.3f, 2.f, 0.5f);
 
 	instanceTriangle = renderEngine->newResourceInstance(resTriangle);
 	instanceCube = renderEngine->newResourceInstance(resCube);
@@ -221,6 +225,7 @@ void setupDrawables() {
 	instanceTriangleType2 = renderEngine->newResourceInstance(resTriangleType2);
 	instanceCircle = renderEngine->newResourceInstance(resCircle);
 	instanceCircle2 = renderEngine->newResourceInstance(resCircle);
+	instancePrism = renderEngine->newResourceInstance(resPrism);
 
 	ResourceInstance *circle2 = renderEngine->resourceInstance(instanceCircle2);
 	circle2->setPos(Vector3(2.0f, 0.0f, 0.0f));
@@ -423,6 +428,7 @@ void render()
 	renderEngine->drawResource(instanceTriangleType2);
 	renderEngine->drawResource(instanceCircle);
 	renderEngine->drawResource(instanceCircle2);
+	renderEngine->drawResource(instancePrism);
 	
 	
 	for(int i = 0; i < NUM_CUBES; ++i) {
