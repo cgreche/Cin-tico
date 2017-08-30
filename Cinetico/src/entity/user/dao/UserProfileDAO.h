@@ -6,6 +6,8 @@
 
 #include "entity/user/UserProfile.h"
 
+class Database;
+
 class UserProfileDAO
 {
 	Database &m_db;
@@ -13,12 +15,12 @@ class UserProfileDAO
 public:
 	UserProfileDAO(Database &db);
 
-	UserProfile *create(const char *loginName, const char *password);
+	void save(UserProfile &profile);
 	void update(UserProfile &user);
 	std::vector<UserProfile *> getAll();
-	UserProfile *getByLoginName(const char *loginName);
+	UserProfile *getByLoginName(const char *username);
 	void exclude(UserProfile &user);
-	void exclude(const char *loginName);
+	void exclude(const char *username);
 };
 
 

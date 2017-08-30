@@ -9,24 +9,19 @@ UserProfileDAO::UserProfileDAO(Database &db)
 
 }
 
-UserProfile *UserProfileDAO::create(const char *loginName, const char *password) {
+void UserProfileDAO::save(UserProfile &user) {
 	const char *sql = "INSERT INTO USER_PROFILE(login_name,password,creation_date) VALUES(?,?,?);";
 
-	UserProfile *user = new UserProfile(loginName, password);
-	if(user) {
-		SQLStatement *stmt;
-		stmt = m_db.prepare(sql);
-		stmt->bind(1, user->loginName()); //safer to use the created user properties
-		stmt->bind(2, user->password());
-		stmt->bind(3, user->creationDate());
-		int rc = stmt->execute();
-		if(rc != 0) {
-			//todo
-		}
-		stmt->close();
+	SQLStatement *stmt;
+	stmt = m_db.prepare(sql);
+	stmt->bind(1, user.username()); //safer to use the created user properties
+	stmt->bind(2, user.password());
+	stmt->bind(3, user.creationDate());
+	int rc = stmt->execute();
+	if(rc != 0) {
+		//todo
 	}
-
-	return user;
+	stmt->close();
 }
 
 
@@ -34,7 +29,7 @@ void UserProfileDAO::update(UserProfile &user) {
 	const char *sql = "UPDATE USER_PROFILE SET login_name = ?, password = ?, creation_date = ?;";
 	SQLStatement *stmt;
 	stmt = m_db.prepare(sql);
-	stmt->bind(1, user.loginName());
+	stmt->bind(1, user.username());
 	stmt->bind(2, user.password());
 	stmt->bind(3, user.creationDate());
 	int rc = stmt->execute();
@@ -65,7 +60,7 @@ UserProfile *UserProfileDAO::getByLoginName(const char *loginName) {
 	const char *sql = "SELECT * FROM USER_PROFILE WHERE login_name = ?;";
 	UserProfile *user = NULL;
 	SQLStatement *stmt = m_db.prepare(sql);
-	stmt->bind(0, loginName);
+	stmt->bind(1, loginName);
 	ResultSet *rs = stmt->query();
 	if(rs) {
 		if(rs->next())
@@ -79,7 +74,7 @@ void UserProfileDAO::exclude(UserProfile &user) {
 	const char *sql = "DELETE FROM USER_PROFILE WHERE login_name = ?;";
 	SQLStatement *stmt;
 	stmt = m_db.prepare(sql);
-	stmt->bind(1, user.loginName());
+	stmt->bind(1, user.username());
 	int rc = stmt->execute();
 	if(rc != 0) {
 		//todo

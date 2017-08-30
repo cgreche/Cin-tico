@@ -9,14 +9,14 @@ bool UserProfile::validatePassword(const std::string &password) {
 }
 
 UserProfile::UserProfile(const std::string &loginName, const std::string &password) {
-	m_loginName = loginName;
+	m_username = loginName;
 	m_password = Crypter::SimpleHash(password);
 	m_creationDate = time_t(NULL);
 	m_logged = false;
 }
 
 UserProfile::UserProfile(const std::string &loginName, const std::string &password, unsigned int creationDate) {
-	m_loginName = loginName;
+	m_username = loginName;
 	m_password = Crypter::SimpleHash(password);
 	m_creationDate = creationDate;
 	m_logged = false;

@@ -37,6 +37,39 @@
     <Filter Include="Arquivos de Origem\entity\user\dao">
       <UniqueIdentifier>{9167bb4b-baf3-42d6-a5dc-99a729437871}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Arquivos de Origem\user-interface">
+      <UniqueIdentifier>{8c14587e-4eb9-476b-a87e-8d591bd6b65a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\uilib">
+      <UniqueIdentifier>{89bab52d-9c52-4a55-8bbd-c9bd0fca17f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\uilib\ui">
+      <UniqueIdentifier>{88d0f52d-de47-4b34-b2cd-e87675e56102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\uilib\ui\controls">
+      <UniqueIdentifier>{961706a7-aa89-42b1-82fc-30667426030a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\uilib\ui\dialogs">
+      <UniqueIdentifier>{7080cd0b-f297-48da-875c-ba4b5d2c05b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\uilib\ui\layout">
+      <UniqueIdentifier>{94ea8b1e-e183-4e64-af6b-2fd134244f17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\uilib\ui\painting">
+      <UniqueIdentifier>{f159ea82-40f3-4c2e-ae0a-539a2b8dfdce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\uilib\ui\osd">
+      <UniqueIdentifier>{090d9120-092c-4cc1-ae23-d0b9ee6ecd5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\uilib\ui\osd\windows">
+      <UniqueIdentifier>{0d2403f5-816f-4137-8ad9-cbeb850bb08c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\uilib\lib">
+      <UniqueIdentifier>{da64722c-ecd9-44ac-ae02-eb15b6b80f60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\uilib\lib\osd">
+      <UniqueIdentifier>{cb294640-3d40-4682-afe2-c99ae49dce88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\render\camera.h">
@@ -159,6 +192,153 @@
     <ClInclude Include="src\database\resultset.h">
       <Filter>Arquivos de Origem\database</Filter>
     </ClInclude>
+    <ClInclude Include="src\user-interface\LoginController.h">
+      <Filter>Arquivos de Origem\user-interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\types.h">
+      <Filter>Arquivos de Origem\uilib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\control.h">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\event.h">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\font.h">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\menu.h">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\uibase.h">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\uiobj.h">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\uitools.h">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\window.h">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\button.h">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\checkbox.h">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\combobox.h">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\edit.h">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\editbox.h">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\gridview.h">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\groupbox.h">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\label.h">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\listview.h">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\radiobutton.h">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\scrollbar.h">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\separator.h">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\statusbar.h">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\textlink.h">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\dialogs\filedialog.h">
+      <Filter>Arquivos de Origem\uilib\ui\dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\layout\horizontallayout.h">
+      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\layout\layout.h">
+      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\layout\linearlayout.h">
+      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\layout\verticallayout.h">
+      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\painting\bitmap.h">
+      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\painting\color.h">
+      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\painting\painter.h">
+      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\painting\paintingdevice.h">
+      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\painting\palette.h">
+      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\painting\rgb.h">
+      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\painting\transform.h">
+      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\osd\windows\osdbase.h">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\osd\windows\windowscontrols.h">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\lib\dir.h">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\lib\file.h">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\lib\matrix.h">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\lib\pmfile.h">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\lib\point.h">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\lib\rect.h">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\lib\size.h">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\lib\string.h">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\lib\time.h">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\lib\timer.h">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\lib\osd\osdfile.h">
+      <Filter>Arquivos de Origem\uilib\lib\osd</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\demodb.cpp">
@@ -214,6 +394,189 @@
     </ClCompile>
     <ClCompile Include="src\database\resultset.cpp">
       <Filter>Arquivos de Origem\database</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\LoginController.cpp">
+      <Filter>Arquivos de Origem\user-interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\control.cpp">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\font.cpp">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\menu.cpp">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\uibase.cpp">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\uiobj.cpp">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\uitools.cpp">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\window.cpp">
+      <Filter>Arquivos de Origem\uilib\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\controls\button.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\controls\checkbox.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\controls\combobox.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\controls\editbox.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\controls\gridview.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\controls\groupbox.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\controls\label.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\controls\listview.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\controls\radiobutton.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\controls\scrollbar.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\controls\separator.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\controls\statusbar.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\controls\textlink.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\dialogs\filedialog.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\layout\horizontallayout.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\layout\layout.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\layout\linearlayout.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\layout\verticallayout.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\painting\bitmap.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\painting\painter.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\painting\paintingdevice.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\painting\palette.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\painting\transform.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdbase.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdbutton.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdcheckbox.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdcombobox.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdcontrol.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdeditbox.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdfiledialog.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdfont.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdgridview.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdgroupbox.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdlabel.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdlistview.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdmenu.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdpaintingdevice.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdradiobutton.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdscrollbar.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdstatusbar.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osduitools.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdwindow.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\uiobject.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\windowscontrols.cpp">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\lib\dir.cpp">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\lib\file.cpp">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\lib\matrix.cpp">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\lib\pmfile.cpp">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\lib\string.cpp">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\lib\timer.cpp">
+      <Filter>Arquivos de Origem\uilib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\lib\osd\osdfile.cpp">
+      <Filter>Arquivos de Origem\uilib\lib\osd</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\lib\osd\strfuncs.cpp">
+      <Filter>Arquivos de Origem\uilib\lib\osd</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\lib\osd\time.cpp">
+      <Filter>Arquivos de Origem\uilib\lib\osd</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
