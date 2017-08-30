@@ -74,7 +74,6 @@
     <ClInclude Include="src\uilib\ui\controls\button.h" />
     <ClInclude Include="src\uilib\ui\controls\checkbox.h" />
     <ClInclude Include="src\uilib\ui\controls\combobox.h" />
-    <ClInclude Include="src\uilib\ui\controls\edit.h" />
     <ClInclude Include="src\uilib\ui\controls\editbox.h" />
     <ClInclude Include="src\uilib\ui\controls\gridview.h" />
     <ClInclude Include="src\uilib\ui\controls\groupbox.h" />
@@ -118,8 +117,6 @@
     <ClCompile Include="src\entity\user\dao\UserProfileDAO.cpp" />
     <ClCompile Include="src\entity\user\UserProfile.cpp" />
     <ClCompile Include="src\lib\sqlite-amalgamation-3200100\sqlite3.c" />
-    <ClCompile Include="src\render3d\d3d10engine.cpp" />
-    <ClCompile Include="src\render3d\d3d12engine.cpp" />
     <ClCompile Include="src\render3d\d3d9engine.cpp" />
     <ClCompile Include="src\render3d\renderengine.cpp" />
     <ClCompile Include="src\render3d\renderenginehelper.cpp" />
@@ -193,6 +190,9 @@
   <ItemGroup>
     <None Include="src\lib\d3dx9math.inl" />
   </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="src\uilib\ui\osd\windows\rfuia.Manifest" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{40D5AA74-CC6A-4F73-8B0D-A1A22827AF5C}</ProjectGuid>
@@ -246,12 +246,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)\src;$(ProjectDir)\src\lib\sqlite-amalgamation-3200100;$(IncludePath)</IncludePath>
-    <LibraryPath>$(MSBuildProgramFiles32)\Microsoft DirectX SDK (February 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)src;$(ProjectDir)src\lib\sqlite-amalgamation-3200100;$(IncludePath)</IncludePath>
+    <LibraryPath>$(MSBuildProgramFiles32)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)\src;$(ProjectDir)\src\lib\sqlite-amalgamation-3200100;$(IncludePath)</IncludePath>
-    <LibraryPath>$(MSBuildProgramFiles32)\Microsoft DirectX SDK (February 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)src;$(ProjectDir)src\lib\sqlite-amalgamation-3200100;$(IncludePath)</IncludePath>
+    <LibraryPath>$(MSBuildProgramFiles32)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

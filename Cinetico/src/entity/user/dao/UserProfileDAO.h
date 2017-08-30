@@ -17,12 +17,10 @@ public:
 
 	void save(UserProfile &profile);
 	void update(UserProfile &user);
-	std::vector<UserProfile *> getAll();
+	std::vector<UserProfile *> getAllUsers();
 	UserProfile *getByLoginName(const char *username);
 	void exclude(UserProfile &user);
 	void exclude(const char *username);
 };
-
-
 
 #endif

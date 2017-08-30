@@ -21,8 +21,8 @@ void OSDLabel::create()
 
 void OSDLabel::update()
 {
-	setText(ref().text());
 	OSDControl::update();
+	setText(ref().text());
 }
 
 

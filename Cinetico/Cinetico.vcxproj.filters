@@ -231,9 +231,6 @@
     <ClInclude Include="src\uilib\ui\controls\combobox.h">
       <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
     </ClInclude>
-    <ClInclude Include="src\uilib\ui\controls\edit.h">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
-    </ClInclude>
     <ClInclude Include="src\uilib\ui\controls\editbox.h">
       <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
     </ClInclude>
@@ -357,12 +354,6 @@
       <Filter>Arquivos de Origem\lib</Filter>
     </ClCompile>
     <ClCompile Include="src\render3d\d3d9engine.cpp">
-      <Filter>Arquivos de Origem\render3d</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render3d\d3d10engine.cpp">
-      <Filter>Arquivos de Origem\render3d</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render3d\d3d12engine.cpp">
       <Filter>Arquivos de Origem\render3d</Filter>
     </ClCompile>
     <ClCompile Include="src\render3d\renderengine.cpp">
@@ -583,5 +574,10 @@
     <None Include="src\lib\d3dx9math.inl">
       <Filter>Arquivos de Origem\lib</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="src\uilib\ui\osd\windows\rfuia.Manifest">
+      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+    </Manifest>
   </ItemGroup>
 </Project>

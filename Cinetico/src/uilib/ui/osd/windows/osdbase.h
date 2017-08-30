@@ -364,6 +364,7 @@ public:
 	void setPlaceholderText(const string &text);
 	void setPlaceholderTextColor(const Color &color);
 	void setPlaceholderTextBehavior(PlaceholderTextBehavior behavior);
+	void setPasswordMode(bool passwordMode);
 };
 
 

@@ -44,6 +44,7 @@ void OSDEditBox::update()
 	setPlaceholderText(ref().placeholderText());
 	setPlaceholderTextColor(ref().placeholderTextColor());
 	setPlaceholderTextBehavior(ref().placeholderTextBehavior());
+	setPasswordMode(ref().passwordMode());
 }
 
 void OSDEditBox::setText(const string &text)
@@ -84,6 +85,11 @@ void OSDEditBox::setPlaceholderTextBehavior(PlaceholderTextBehavior behavior)
 {
 }
 
+void OSDEditBox::setPasswordMode(bool passwordMode)
+{
+	::SendMessage(m_hwnd, EM_SETPASSWORDCHAR, passwordMode ? '*' : 0, 0);
+}
+
 void OSDEditBox::setParent(Control *parent)
 {
 	//  It seems that Edit controls only send notifications when
@@ -122,6 +128,7 @@ LRESULT OSDEditBox::OnKeyDown(WPARAM wParam, LPARAM lParam)
 			return 0;
 	}
 
+	/*
 	char myMask[] = "999...9AS";
 	int myMaskLen = ::strlen(myMask);
 	int textLength = ref().text().length();
@@ -149,7 +156,7 @@ LRESULT OSDEditBox::OnKeyDown(WPARAM wParam, LPARAM lParam)
 		}
 	}
 
-
+	*/
 	return ::CallWindowProc(m_originalWndProc,m_hwnd,WM_KEYDOWN,wParam,lParam);
 }
 
@@ -160,6 +167,8 @@ LRESULT OSDEditBox::OnChar(WPARAM wParam, LPARAM lParam)
 			return 0;
 	}
 	else {
+
+		/*
 		char myMask[] = "999...9AS";
 		int myMaskLen = ::strlen(myMask);
 
@@ -201,6 +210,7 @@ LRESULT OSDEditBox::OnChar(WPARAM wParam, LPARAM lParam)
 			::SendMessage(m_hwnd, EM_REPLACESEL, FALSE, (LPARAM)_c);
 			m_systemCommand = false;
 		}
+		*/
 	}
 
 	//remove placeholder

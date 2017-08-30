@@ -6,6 +6,7 @@
 
 class LoginController
 {
+public:
 	VerticalLayout layout;
 		VerticalLayout header;
 			Label labelTitle;
@@ -17,7 +18,7 @@ class LoginController
 				VerticalLayout layoutLogin;
 					Label labelLoginTitle;
 					Label labelUsername;
-					ComboBox comboUsername;
+					EditBox editUsername;
 					Label labelPassword;
 					EditBox editPassword;
 					Button buttonLogin;
@@ -32,8 +33,10 @@ class LoginController
 			Label labelAuthor;
 public:
 	Layout *viewDefinition();
-	bool login(const char *username, const char *password);
-	void createAccount(const char *username, const char *password);
+	void onViewEnter();
+	void onViewQuit();
+	void login();
+	void createAccount();
 };
 
 #endif

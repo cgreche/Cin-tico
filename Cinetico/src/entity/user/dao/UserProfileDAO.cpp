@@ -39,7 +39,7 @@ void UserProfileDAO::update(UserProfile &user) {
 	stmt->close();
 }
 
-std::vector<UserProfile *> UserProfileDAO::getAll() {
+std::vector<UserProfile *> UserProfileDAO::getAllUsers() {
 	const char *sql = "SELECT * FROM USER_PROFILE;";
 	SQLStatement *stmt;
 	std::vector<UserProfile *> userList;
@@ -47,7 +47,7 @@ std::vector<UserProfile *> UserProfileDAO::getAll() {
 	ResultSet *rs = stmt->query();
 	if(rs) {
 		while(rs->next()) {
-			UserProfile *user = new UserProfile(rs->getString(0), rs->getString(1), rs->getInt(2));
+			UserProfile *user = new UserProfile(rs->getString(1), rs->getString(2), rs->getInt(3));
 			userList.push_back(user);
 		}
 		rs->close();
@@ -64,7 +64,7 @@ UserProfile *UserProfileDAO::getByLoginName(const char *loginName) {
 	ResultSet *rs = stmt->query();
 	if(rs) {
 		if(rs->next())
-			user = new UserProfile(rs->getString(0), rs->getString(1), rs->getInt(2));
+			user = new UserProfile(rs->getString(1), rs->getString(2), rs->getInt(3));
 	}
 	stmt->close();
 	return user;

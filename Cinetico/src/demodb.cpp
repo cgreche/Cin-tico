@@ -7,24 +7,31 @@
 
 LoginController *g_loginController;
 
+MainWindow *g_mainWindow;
+
+bool g_onWorld3D = false;
+
 class MainWindow : public Window
 {
 	VerticalLayout vLayout;
-	Label test;
+	ComboBox test;
 	Button b;
 public:
 	MainWindow() {
 		setTitle("Cinético");
-		setFrameSize(Size(800, 600));
+		setFrameSize(Size(1024, 768));
 		setVisible(true);
 	}
-	void onCloseEvent() { this->setVisible(false); }
+	void onCloseEvent() {
+		this->setVisible(false);
+		if (!g_onWorld3D) {
+			uibase::UIQuit();
+		}
+	}
 };
 
 
-MainWindow *g_mainWindow;
 
-bool g_onWorld3D = false;
 
 LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch(msg) {
@@ -51,15 +58,8 @@ void setup()
 	setupDB();
 	setupWindow();
 	g_loginController = new LoginController();
+	g_loginController->onViewEnter();
 	g_mainWindow->setLayout(g_loginController->viewDefinition());
-
-	/*
-	//test
-	if(g_loginController->login("admin", "admin")) {
-		extern void setupWorld3D();
-		setupWorld3D();
-		g_onWorld3D = true;
-	}*/
 }
 
 

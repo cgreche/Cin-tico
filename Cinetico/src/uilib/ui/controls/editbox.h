@@ -53,6 +53,8 @@ protected:
 
 	EditBoxFunc m_onChange;
 
+	bool m_passwordMode;
+
 public:
 	EditBox();
 	EditBox(OSDEditBox& ref);
@@ -75,6 +77,7 @@ public:
 	void setPlaceholderText(const string &text);
 	void setPlaceholderTextColor(const Color &color);
 	void setPlaceholderTextBehavior(PlaceholderTextBehavior behavior);
+	void setPasswordMode(bool passwordMode);
 
 	//Getters
 	string& text() { return *m_receivebuffer; }
@@ -84,6 +87,7 @@ public:
 	const string& placeholderText() const { return m_placeholderText; }
 	Color placeholderTextColor() const { return m_placeholderTextColor; }
 	PlaceholderTextBehavior placeholderTextBehavior() const { return m_placeholderTextBehavior; }
+	bool passwordMode() const { return m_passwordMode; }
 
 	friend class OSDEditBox;
 	OSDEditBox& osdRef() const { return reinterpret_cast<OSDEditBox&>(Control::osdRef()); }

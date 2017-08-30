@@ -18,6 +18,7 @@ EditBox::EditBox():Control(*new OSDEditBox(*this))
 	m_placeholderTextColor = Color(66, 66, 66);
 	m_placeholderTextBehavior = HIDE_ON_FIRST_CHAR;
 	m_onChange = NULL;
+	m_passwordMode = false;
 	m_style = 1;
 
 	osdRef().create();
@@ -33,6 +34,7 @@ EditBox::EditBox(OSDEditBox& ref) : Control(ref)
 	m_placeholderTextColor = Color(66, 66, 66);
 	m_placeholderTextBehavior = HIDE_ON_FIRST_CHAR;
 	m_onChange = NULL;
+	m_passwordMode = false;
 	m_style = 1;
 }
 
@@ -91,6 +93,12 @@ void EditBox::setPlaceholderTextBehavior(PlaceholderTextBehavior behavior)
 {
 	m_placeholderTextBehavior = behavior;
 	osdRef().setPlaceholderTextBehavior(behavior);
+}
+
+void EditBox::setPasswordMode(bool passwordMode)
+{
+	m_passwordMode = passwordMode;
+	osdRef().setPasswordMode(passwordMode);
 }
 
 void EditBox::update()
