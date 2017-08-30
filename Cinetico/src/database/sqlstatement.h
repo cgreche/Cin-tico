@@ -4,6 +4,7 @@
 #define __SQLSTATEMENT_H__
 
 class Database;
+class ResultSet;
 
 #include <vector>
 
@@ -18,10 +19,11 @@ class SQLStatement
 	SQLStatement(const Database &db);
 
 public:
-	int execute();
 	int bind(int paramIndex, int value);
 	int bind(int paramIndex, const char *value);
 	int bind(int paramIndex, const std::string &value);
+	int execute();
+	ResultSet *query();
 	int close();
 };
 

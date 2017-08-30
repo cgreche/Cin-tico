@@ -1,6 +1,7 @@
 
 #include "database.h"
-#include "SQLStatement.h"
+#include "sqlstatement.h"
+#include "resultset.h"
 
 SQLStatement::SQLStatement(const Database &db)
 	: m_db(db) {
@@ -30,24 +31,13 @@ int SQLStatement::close() {
 }
 
 int SQLStatement::execute() {
-	int rc;
-	const char *errMessage;
-	do {
-		rc = sqlite3_step(m_internalStmt);
-		if(rc == 100) {
-			const char *col1 = (const char *)sqlite3_column_text(m_internalStmt, 0);
-			const char *col2 = (const char *)sqlite3_column_text(m_internalStmt, 1);
-			const char *col3 = (const char *)sqlite3_column_text(m_internalStmt, 2);
-			const char *col4 = (const char *)sqlite3_column_text(m_internalStmt, 3);
-		}
-
-		if(rc == 21) {
-			errMessage = sqlite3_errmsg(m_db.internalDB());
-			return rc;
-		}
-	} while(rc != SQLITE_DONE);
-
+	int rc = sqlite3_step(m_internalStmt);
 	sqlite3_reset(m_internalStmt);
+	return rc == SQLITE_DONE;
+}
 
-	return SQLITE_OK;
+ResultSet *SQLStatement::query() {
+	ResultSet * ret = new ResultSet(m_db,*this);
+	ret->m_internalStmt = m_internalStmt;
+	return ret;
 }

@@ -13,11 +13,29 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Arquivos de Origem\render">
-      <UniqueIdentifier>{77c95dfa-4399-416a-934b-bb7de5b5bf85}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Arquivos de Cabeçalho\render">
       <UniqueIdentifier>{0ee73e96-c9df-4ce3-aae8-51cab83c51ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\database">
+      <UniqueIdentifier>{600c2e31-78ee-47ee-bc78-ca0eb4b69b02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\utils">
+      <UniqueIdentifier>{37287e9b-febc-4ed0-8070-b5ec40391b09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\lib">
+      <UniqueIdentifier>{c78801d0-8638-4aca-8395-d536b0cc10f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\render3d">
+      <UniqueIdentifier>{77c95dfa-4399-416a-934b-bb7de5b5bf85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\entity">
+      <UniqueIdentifier>{5ef661f1-0efd-41c5-91b9-89e5b6f49862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\entity\user">
+      <UniqueIdentifier>{904d23ec-c192-4918-a82e-cfd303c06bfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\entity\user\dao">
+      <UniqueIdentifier>{9167bb4b-baf3-42d6-a5dc-99a729437871}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,58 +72,153 @@
     <ClInclude Include="src\render\d3d9engine.h">
       <Filter>Arquivos de Cabeçalho\render</Filter>
     </ClInclude>
-    <ClInclude Include="src\UserProfile.h">
-      <Filter>Arquivos de Origem</Filter>
+    <ClInclude Include="src\utils\crypter.h">
+      <Filter>Arquivos de Origem\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\database\database.h">
+      <Filter>Arquivos de Origem\database</Filter>
+    </ClInclude>
+    <ClInclude Include="src\database\sqlstatement.h">
+      <Filter>Arquivos de Origem\database</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>Arquivos de Origem\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3ext.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>Arquivos de Origem\lib</Filter>
     </ClInclude>
-    <ClInclude Include="src\database.h">
-      <Filter>Arquivos de Origem</Filter>
+    <ClInclude Include="src\render3d\camera.h">
+      <Filter>Arquivos de Origem\render3d</Filter>
     </ClInclude>
-    <ClInclude Include="src\sqlstatement.h">
-      <Filter>Arquivos de Origem</Filter>
+    <ClInclude Include="src\render3d\color.h">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render3d\d3d9engine.h">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render3d\d3dx12.h">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render3d\renderengine.h">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render3d\renderenginehelper.h">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render3d\renderobject.h">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render3d\resourcedata.h">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render3d\resourceinstance.h">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render3d\vector3.h">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render3d\vertex3.h">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\user\UserProfile.h">
+      <Filter>Arquivos de Origem\entity\user</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\user\dao\UserProfileDAO.h">
+      <Filter>Arquivos de Origem\entity\user\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9anim.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9core.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9effect.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9math.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9mesh.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9shader.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9shape.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9tex.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9xof.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\database\resultset.h">
+      <Filter>Arquivos de Origem\database</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\render\d3d9engine.cpp">
-      <Filter>Arquivos de Origem\render</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\d3d10engine.cpp">
-      <Filter>Arquivos de Origem\render</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\renderengine.cpp">
-      <Filter>Arquivos de Origem\render</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\renderenginehelper.cpp">
-      <Filter>Arquivos de Origem\render</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\resourcedata.cpp">
-      <Filter>Arquivos de Origem\render</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\resourceinstance.cpp">
-      <Filter>Arquivos de Origem\render</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\viewport.cpp">
-      <Filter>Arquivos de Origem\render</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UserProfile.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\sqlite-amalgamation-3200100\sqlite3.c">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
     <ClCompile Include="src\demodb.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="src\database.cpp">
+    <ClCompile Include="src\utils\crypter.cpp">
+      <Filter>Arquivos de Origem\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\database\database.cpp">
+      <Filter>Arquivos de Origem\database</Filter>
+    </ClCompile>
+    <ClCompile Include="src\database\sqlstatement.cpp">
+      <Filter>Arquivos de Origem\database</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lib\sqlite-amalgamation-3200100\sqlite3.c">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render3d\d3d9engine.cpp">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render3d\d3d10engine.cpp">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render3d\d3d12engine.cpp">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render3d\renderengine.cpp">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render3d\renderenginehelper.cpp">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render3d\resourcedata.cpp">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render3d\resourceinstance.cpp">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render3d\viewport.cpp">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\user\UserProfile.cpp">
+      <Filter>Arquivos de Origem\entity\user</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\user\dao\UserProfileDAO.cpp">
+      <Filter>Arquivos de Origem\entity\user\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world3d.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="src\sqlstatement.cpp">
+    <ClCompile Include="src\crudworld.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="src\database\resultset.cpp">
+      <Filter>Arquivos de Origem\database</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\lib\d3dx9math.inl">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </None>
   </ItemGroup>
 </Project>

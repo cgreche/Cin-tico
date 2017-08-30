@@ -5,9 +5,10 @@
 
 #include <string>
 
-#include "lib/sqlite-amalgamation-3200100/sqlite3.h"
+#include <sqlite3.h>
 
 #include "sqlstatement.h"
+#include "resultset.h"
 
 class Database
 {
@@ -17,11 +18,11 @@ class Database
 
 	bool m_isOpen;
 public:
-	Database(std::string dbName);
+	Database(const char *dbName);
 	~Database();
 	int open();
 	int close();
-	SQLStatement *prepare(const std::string &stmt);
+	SQLStatement *prepare(const char *stmt);
 
 	bool isOpen() const { return m_isOpen; }
 

@@ -1,6 +1,6 @@
 
 #include "d3d9engine.h"
-#include <d3dx9.h>
+#include <lib/d3dx9.h>
 
 #pragma comment(lib,"d3d9.lib")
 #pragma comment(lib,"d3dx9.lib")
