@@ -95,44 +95,44 @@ LRESULT OSDLabel::OnEnable(WPARAM wParam, LPARAM lParam)
 void OSDLabel::onPaintEvent(PaintEvent &event)
 {
 	PAINTSTRUCT ps;
-	RECT rc;
+	RECT rc = { 0,0,0,0 };
 	HDC hdc;
 	HWND hwnd;
 
 	hwnd = m_hwnd;
 	hdc = ::BeginPaint(hwnd, &ps);
 	::GetClientRect(hwnd, &rc);
-	::FillRect(hdc, &rc, GetSysColorBrush(COLOR_3DFACE));
 
-	Color facecolor;
-	Color bgcolor;
+	Color *facecolor = new Color(0,0,0);
+	Color *bgcolor = new Color(0,0,0);
+	
 	Size textSize;
-	Label &label = ref();
+	Label &label = this->ref();
 	uint alignment = label.alignment();
 
 	if(label.enabled())
-		facecolor = label.textColor();
+		*facecolor = label.textColor();
 	else {
 		DWORD sysc = ::GetSysColor(COLOR_GRAYTEXT);
-		facecolor = Color(GetRValue(sysc),GetGValue(sysc),GetBValue(sysc));
+		*facecolor = Color(GetRValue(sysc),GetGValue(sysc),GetBValue(sysc));
 	}
 	
 	//Set background color
 	if(label.transparent() && label.parent()) {
-		bgcolor = label.parent()->backgroundColor();
+		*bgcolor = label.parent()->backgroundColor();
 	}
 	else {
-		bgcolor = label.backgroundColor();
+		*bgcolor = label.backgroundColor();
 	}
 
 	//manually draw the background
-	HBRUSH hBrush = ::CreateSolidBrush(RGB(bgcolor.red(),bgcolor.green(),bgcolor.blue()));
+	HBRUSH hBrush = ::CreateSolidBrush(RGB(bgcolor->red(),bgcolor->green(),bgcolor->blue()));
 	::FillRect(hdc,&rc,hBrush);
 	::DeleteObject(hBrush);
 
 	//Set text color/font/extras
 	::SetBkMode(hdc,TRANSPARENT);
-	::SetTextColor(hdc, RGB(facecolor.red(),facecolor.green(),facecolor.blue()));
+	::SetTextColor(hdc, RGB(facecolor->red(),facecolor->green(),facecolor->blue()));
 	::SelectObject(hdc, label.font().osdRef().object());
 	::SetTextCharacterExtra(hdc,label.spacing());
 	//Draw text
@@ -147,6 +147,9 @@ void OSDLabel::onPaintEvent(PaintEvent &event)
 		rc.top = ((rc.bottom - rc.top) - (textRect.bottom - textRect.top)) / 2;
 	::DrawText(hdc, label.text().data(), -1, &rc, format);
 	::EndPaint(hwnd, &ps);
+
+	delete facecolor;
+	delete bgcolor;
 }
 
 LRESULT OSDLabel::OnNCPaint(WPARAM wParam, LPARAM lParam)
