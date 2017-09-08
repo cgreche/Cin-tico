@@ -10,8 +10,32 @@ UserProfileDAO *userProfileDAO;
 
 //todo: add attribute/column last_login_date to UserProfile
 
+
+#include "database/sqlite/sqlitedatabase.h"
+
+
+#define SGBD_ALIAS "SQLite"
+
+
+class DatabaseFactory
+{
+public:
+	static Database *createDB(const char* sgbd, const char *dbName);
+};
+
+
+Database* DatabaseFactory::createDB(const char *sgbd, const char *dbName) {
+	if (strcmp("SQLite", sgbd) == 0) {
+		return new SQLiteDatabase(dbName);
+	}
+	
+	throw "Unsupported SGBD";
+}
+
+
+
 void setupDB() {
-	g_db = new Database("demodb.db");
+	g_db = DatabaseFactory::createDB(SGBD_ALIAS,"demodb.db");
 	Database &db = *g_db;
 	db.open();
 	if(db.isOpen()) {
@@ -35,5 +59,4 @@ void destroyDB() {
 	if(userProfileDAO)
 		delete userProfileDAO;
 	g_db->close();
-	delete g_db;
 }

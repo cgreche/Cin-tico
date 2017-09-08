@@ -12,21 +12,25 @@
 
 class Database
 {
-	sqlite3 *m_internalDB;
-
+protected:
 	std::string m_dbName;
-
 	bool m_isOpen;
+
 public:
-	Database(const char *dbName);
-	~Database();
-	int open();
-	int close();
-	SQLStatement *prepare(const char *stmt);
+	Database(const char *dbName) {
+		m_isOpen = false;
+		m_dbName = dbName;
+	}
+
+	virtual ~Database() {
+
+	}
+
+	virtual int open() = 0;
+	virtual int close() = 0;
+	virtual SQLStatement *prepare(const char *stmt) = 0;
 
 	bool isOpen() const { return m_isOpen; }
-
-	sqlite3* internalDB() const { return m_internalDB; }
 };
 
 #endif

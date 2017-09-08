@@ -70,6 +70,9 @@
     <Filter Include="Arquivos de Origem\uilib\lib\osd">
       <UniqueIdentifier>{cb294640-3d40-4682-afe2-c99ae49dce88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Arquivos de Origem\database\sqlite">
+      <UniqueIdentifier>{93edbc9f-525c-4952-a39d-d739a585f208}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\render\camera.h">
@@ -336,6 +339,15 @@
     <ClInclude Include="src\uilib\lib\osd\osdfile.h">
       <Filter>Arquivos de Origem\uilib\lib\osd</Filter>
     </ClInclude>
+    <ClInclude Include="src\database\sqlite\sqlitestatement.h">
+      <Filter>Arquivos de Origem\database\sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="src\database\sqlite\sqliteresultset.h">
+      <Filter>Arquivos de Origem\database\sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="src\database\sqlite\sqlitedatabase.h">
+      <Filter>Arquivos de Origem\database\sqlite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\demodb.cpp">
@@ -343,12 +355,6 @@
     </ClCompile>
     <ClCompile Include="src\utils\crypter.cpp">
       <Filter>Arquivos de Origem\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\database\database.cpp">
-      <Filter>Arquivos de Origem\database</Filter>
-    </ClCompile>
-    <ClCompile Include="src\database\sqlstatement.cpp">
-      <Filter>Arquivos de Origem\database</Filter>
     </ClCompile>
     <ClCompile Include="src\lib\sqlite-amalgamation-3200100\sqlite3.c">
       <Filter>Arquivos de Origem\lib</Filter>
@@ -382,9 +388,6 @@
     </ClCompile>
     <ClCompile Include="src\crudworld.cpp">
       <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="src\database\resultset.cpp">
-      <Filter>Arquivos de Origem\database</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\LoginController.cpp">
       <Filter>Arquivos de Origem\user-interface</Filter>
@@ -568,6 +571,15 @@
     </ClCompile>
     <ClCompile Include="src\uilib\lib\osd\time.cpp">
       <Filter>Arquivos de Origem\uilib\lib\osd</Filter>
+    </ClCompile>
+    <ClCompile Include="src\database\sqlite\sqlitestatement.cpp">
+      <Filter>Arquivos de Origem\database\sqlite</Filter>
+    </ClCompile>
+    <ClCompile Include="src\database\sqlite\sqliteresultset.cpp">
+      <Filter>Arquivos de Origem\database\sqlite</Filter>
+    </ClCompile>
+    <ClCompile Include="src\database\sqlite\sqlitedatabase.cpp">
+      <Filter>Arquivos de Origem\database\sqlite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

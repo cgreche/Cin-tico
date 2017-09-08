@@ -1,35 +1,36 @@
 
-#include "database.h"
-#include "sqlstatement.h"
+#include "sqlitedatabase.h"
+#include "sqlitestatement.h"
 
-Database::Database(const char *dbName) {
-	m_dbName = dbName;
+SQLiteDatabase::SQLiteDatabase(const char *dbName)
+	: Database(dbName)
+{
 	m_isOpen = false;
 }
 
-int Database::open() {
+int SQLiteDatabase::open() {
 	int rc = sqlite3_open(m_dbName.c_str(), &m_internalDB);
 	m_isOpen = rc == SQLITE_OK;
 	return rc;
 }
 
-int Database::close() {
+int SQLiteDatabase::close() {
 	int rc = sqlite3_close(m_internalDB);
 	m_isOpen = false;
+	delete this;
 	return rc;
 }
 
-Database::~Database() {
+SQLiteDatabase::~SQLiteDatabase() {
 	if(m_isOpen)
 		close();
 }
 
-SQLStatement* Database::prepare(const char *sqlStmt) {
+SQLStatement* SQLiteDatabase::prepare(const char *sqlStmt) {
 	int rc;
 	sqlite3_stmt *internalStmt;
 	rc = sqlite3_prepare_v2(m_internalDB, sqlStmt, ::strlen(sqlStmt), &internalStmt, NULL);
-	SQLStatement *stmt = new SQLStatement(*this);
-	stmt->m_stmtStr = sqlStmt;
+	SQLiteStatement *stmt = new SQLiteStatement(*this,sqlStmt);
 	stmt->m_internalStmt = internalStmt;
 	return stmt;
 }

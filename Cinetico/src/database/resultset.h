@@ -10,18 +10,21 @@ class Database;
 class ResultSet
 {
 	friend class SQLStatement;
+
+protected:
 	const Database &m_db;
 	const SQLStatement &m_stmt;
-	sqlite3_stmt *m_internalStmt;
 	
-	ResultSet(const Database &db, const SQLStatement &stmt);
+	ResultSet(const Database &db, const SQLStatement &stmt)
+		: m_db(db), m_stmt(stmt) {
+	}
 
 public:
-	void reset();
-	bool next();
-	int getInt(int colIndex);
-	std::string getString(int colIndex);
-	int close();
+	virtual void reset() = 0;
+	virtual bool next() = 0;
+	virtual int getInt(int colIndex) = 0;
+	virtual std::string getString(int colIndex) = 0;
+	virtual int close() = 0;
 };
 
 #endif

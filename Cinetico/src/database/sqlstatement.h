@@ -12,19 +12,22 @@ class SQLStatement
 {
 	friend class Database;
 
+protected:
 	const Database &m_db;
 	std::string m_stmtStr;
-	sqlite3_stmt *m_internalStmt;
 	
-	SQLStatement(const Database &db);
+	SQLStatement(const Database &db, const char *stmt)
+		: m_db(db) {
+		m_stmtStr = stmt;
+	}
 
 public:
-	int bind(int paramIndex, int value);
-	int bind(int paramIndex, const char *value);
-	int bind(int paramIndex, const std::string &value);
-	int execute();
-	ResultSet *query();
-	int close();
+	virtual int bind(int paramIndex, int value) = 0;
+	virtual int bind(int paramIndex, const char *value) = 0;
+	virtual int bind(int paramIndex, const std::string &value) = 0;
+	virtual int execute() = 0;
+	virtual ResultSet *query() = 0;
+	virtual int close() = 0;
 };
 
 #endif

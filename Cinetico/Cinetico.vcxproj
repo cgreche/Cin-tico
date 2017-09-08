@@ -21,6 +21,9 @@
   <ItemGroup>
     <ClInclude Include="src\database\database.h" />
     <ClInclude Include="src\database\resultset.h" />
+    <ClInclude Include="src\database\sqlite\sqlitedatabase.h" />
+    <ClInclude Include="src\database\sqlite\sqliteresultset.h" />
+    <ClInclude Include="src\database\sqlite\sqlitestatement.h" />
     <ClInclude Include="src\database\sqlstatement.h" />
     <ClInclude Include="src\entity\user\dao\UserProfileDAO.h" />
     <ClInclude Include="src\entity\user\UserProfile.h" />
@@ -110,9 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\crudworld.cpp" />
-    <ClCompile Include="src\database\database.cpp" />
-    <ClCompile Include="src\database\resultset.cpp" />
-    <ClCompile Include="src\database\sqlstatement.cpp" />
+    <ClCompile Include="src\database\sqlite\sqlitedatabase.cpp" />
+    <ClCompile Include="src\database\sqlite\sqliteresultset.cpp" />
+    <ClCompile Include="src\database\sqlite\sqlitestatement.cpp" />
     <ClCompile Include="src\demodb.cpp" />
     <ClCompile Include="src\entity\user\dao\UserProfileDAO.cpp" />
     <ClCompile Include="src\entity\user\UserProfile.cpp" />
