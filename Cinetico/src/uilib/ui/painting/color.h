@@ -12,7 +12,9 @@ class Color
 	u8 m_red, m_green, m_blue, m_alpha;
 
 public:
-	Color() { setRGBA(0,0,0,255); }
+	Color() {
+		setRGBA(0,0,0,255);
+	}
 	Color(int r, int g, int b, int a = 255) { setRGBA(r,g,b,a); }
 
 	void setRGB(int r, int g, int b) { setRGBA(r,g,b,255); }

@@ -3,6 +3,8 @@
 #include "render3d/d3d9engine.h"
 #include "render3d/renderenginehelper.h"
 
+using namespace render3d;
+
 
 HWND g_world3DWindow = NULL;
 
@@ -15,6 +17,8 @@ float currentAspectRatio = aspectRatio169;
 
 int winWidth = 1280;
 int winHeight = (int)ceil(winWidth / currentAspectRatio);
+
+int g_frameCount = 0;
 
 RenderEngine *renderEngine;
 RenderEngineHelper *renderEngineHelper;
@@ -463,6 +467,8 @@ void updateWorld3D() {
 
 
 void renderWorld3D() {
+	g_frameCount++;
+
 	renderEngine->beginScene();
 
 	ResourceInstance *instance = renderEngine->resourceInstance(instanceCube);
@@ -470,7 +476,12 @@ void renderWorld3D() {
 	renderEngine->setCurrentCamera(currentCameraId);
 	renderEngine->setCurrentViewport(viewport1);
 	renderEngine->clear(Color(30, 30, 30));
-	renderEngine->drawResource(instanceQuad1);
+
+	static int state = 1;
+	if (g_frameCount % 30 == 0)
+		state ^= 1;
+	if(state == 1)
+		renderEngine->drawResource(instanceQuad1);
 	renderEngine->drawResource(instanceQuad2);
 	renderEngine->drawResource(instanceTerrain);
 	renderEngine->drawResource(instanceWall);

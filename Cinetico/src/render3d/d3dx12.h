@@ -9,8 +9,8 @@
 //
 //*********************************************************
 
-#ifndef __D3DX12_H__
-#define __D3DX12_H__
+#ifndef __RENDER3D_D3D12ENGINE_H__
+#define __RENDER3D_D3D12ENGINE_H__
 
 #include "d3d12.h"
 

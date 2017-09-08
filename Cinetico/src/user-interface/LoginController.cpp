@@ -127,7 +127,7 @@ void LoginController::createAccount() {
 		return;
 
 	bool blank = true;
-	for (int i = 0; i < username.length(); ++i) {
+	for (unsigned int i = 0; i < username.length(); ++i) {
 		if (!isspace(username.data()[i])) {
 			blank = false;
 			break;
