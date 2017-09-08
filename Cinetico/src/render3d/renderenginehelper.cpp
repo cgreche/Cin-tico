@@ -13,16 +13,16 @@ int RenderEngineHelper::createQuad(float width, float length) {
 		{-midW,-midL, 0}, {midW,-midL, 0}
 	};
 	
-	int quadIndices[] = { 0,1,2,3 };
+	int quadIndices[] = { 0,1,2,2,1,3 };
 
 	Color colors[] = {
-		Color(255,0,0),
-		Color(255,0,0),
-		Color(255,0,0),
-		Color(255,0,0)
+		Color(255,255,255),
+		Color(255,255,255),
+		Color(255,255,255),
+		Color(255,255,255)
 	};
 		
-	return m_renderEngine.newResource(4, quad, 4, quadIndices, colors);
+	return m_renderEngine.newResource(4, quad, 8, quadIndices, colors);
 }
 
 int RenderEngineHelper::createCircle(float radius, unsigned int numPoints, Color *colors) {
@@ -166,7 +166,7 @@ int RenderEngineHelper::generateTerrain(float squareSize, int terrainGridWidth, 
 	int squareCount = terrainGridWidth * terrainGridHeight;
 	int vertexCount = squareCount * 4;
 	int indexCount = squareCount * 6;
-	int vertexPerRow = terrainGridWidth + 1;
+	int vertexPerRow = terrainGridWidth*4;
 	Vertex3 *vertices = new Vertex3[vertexCount];
 	int *indices = new int[indexCount];
 	int i, j;
@@ -180,22 +180,27 @@ int RenderEngineHelper::generateTerrain(float squareSize, int terrainGridWidth, 
 	float height = squareSize*terrainGridHeight;
 	float xOrigin = -width / 2;
 	float zOrigin = height / 2;
-	for(i = 0; i < terrainGridHeight+1; ++i) {
+	for(i = 0; i < terrainGridHeight; ++i) {
 		x = xOrigin;
-		z = zOrigin - i * squareSize;
-		for(j = 0; j < terrainGridWidth+1; ++j) {
-			vertices[p++] = Vertex3(x,y,z);
+		z = zOrigin - i * squareSize-1;
+		for(j = 0; j < terrainGridWidth; ++j) {
+			vertices[p++] = Vertex3(x, y, z);
+			vertices[p++] = Vertex3(x+squareSize, y, z);
+			vertices[p++] = Vertex3(x+squareSize, y, z-(squareSize));
+			vertices[p++] = Vertex3(x, y, z-(squareSize));
 			x += squareSize;
 		}
 	}
 
 	p = 0;
-	for(i = 0; i < terrainGridHeight; ++i) {
-		for(j = 0; j < terrainGridWidth; ++j) {
-			int topLeft = i*vertexPerRow + j;
+	for (i = 0; i < terrainGridHeight; ++i) {
+		for (j = 0; j < terrainGridWidth; ++j) {
+			int topLeft = i*vertexPerRow + j*4;
 			int topRight = topLeft + 1;
-			int bottomLeft = topLeft + vertexPerRow;
-			int bottomRight = bottomLeft + 1;
+			int bottomRight = topRight + 1;
+			int bottomLeft = bottomRight + 1;
+			//int bottomLeft = topLeft + vertexPerRow;
+			//int bottomRight = bottomLeft + 1;
 			indices[p++] = bottomLeft;
 			indices[p++] = topLeft;
 			indices[p++] = topRight;
@@ -204,17 +209,48 @@ int RenderEngineHelper::generateTerrain(float squareSize, int terrainGridWidth, 
 			indices[p++] = bottomLeft;
 		}
 	}
+
 	
 	Color * terrainColors = new Color[vertexCount];
-	Color color1 = Color(255,255,255);
-	Color color2 = Color(0,0,0);
-	for(int i = 0; i < squareCount; ++i) {
-		Color color = i%3 == 0 ? color1 : color2;
+
+	int s = 0;
+	for (i = 0; i < terrainGridHeight; ++i) {
+
+		Color color1;
+		Color color2;
+
+		if (i % 2 == 0) {
+			color1 = Color(255, 255, 255);
+		}
+		else {
+			color2 = Color(255, 255, 255);
+		}
+
+		for (j = 0; j < terrainGridWidth; ++j) {
+			int topLeft = i*vertexPerRow + j * 4;
+			int topRight = topLeft + 1;
+			int bottomRight = topRight + 1;
+			int bottomLeft = bottomRight + 1;
+
+			Color color = j % 2 == 0 ? color1 : color2;
+			terrainColors[topLeft] = color;
+			terrainColors[topRight] = color;
+			terrainColors[bottomRight] = color;
+			terrainColors[bottomLeft] = color;
+
+			++s;
+		}
+	}
+	
+	/*
+	for(i = 0; i < squareCount; ++i) {
+		Color color = i%4 == 0 ? color1 : color2;
 		terrainColors[i*4+0] = color;
 		terrainColors[i*4+1] = color;
 		terrainColors[i*4+2] = color;
 		terrainColors[i*4+3] = color;
 	}
+	*/
 
 	int resId = m_renderEngine.newResource(vertexCount,vertices,indexCount,indices,terrainColors);
 	delete [] vertices;

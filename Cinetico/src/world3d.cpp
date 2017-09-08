@@ -19,6 +19,11 @@ int winHeight = (int)ceil(winWidth / currentAspectRatio);
 RenderEngine *renderEngine;
 RenderEngineHelper *renderEngineHelper;
 
+int resQuad1;
+int resQuad2;
+int line1;
+int line2;
+
 int resTriangle;
 int resCube;
 int resTriangleType2;
@@ -26,6 +31,8 @@ int resCircle;
 int resTerrain;
 int resPrism;
 
+int instanceQuad1;
+int instanceQuad2;
 int instanceTriangle;
 int instanceCube;
 int instanceTriangleType2;
@@ -224,12 +231,18 @@ void setupDrawables() {
 		circleColors[i] = Color(rand()%255, rand()%255, rand()%255, 122);
 	}
 
+	resQuad1 = renderEngineHelper->createQuad(10, 0.25);
+	resQuad2 = renderEngineHelper->createQuad(100, 200);
 	resTriangle = renderEngine->newResource(sizeof(triangle1) / sizeof(triangle1[0]), triangle1, 3, indicesTriangle1,triangle1Colors);
 	resCube = renderEngineHelper->createCube(2);
  	resTriangleType2 = renderEngine->newResource(sizeof(triangle3)/sizeof(triangle3[0]),triangle3,3,indicesTriangle3,triangle3Colors);
 	resCircle = renderEngineHelper->createCircle(0.3f, numPoints + 1,circleColors);
 	resPrism = renderEngineHelper->createRectangularPrism(0.3f, 2.f, 0.5f);
 
+	instanceQuad1 = renderEngine->newResourceInstance(resQuad1);
+	renderEngine->resourceInstance(instanceQuad1)->setPos(Vector3(10, 10, 0));
+	instanceQuad2 = renderEngine->newResourceInstance(resQuad2);
+	renderEngine->resourceInstance(instanceQuad2)->setPos(Vector3(120, 10, 0));
 	instanceTriangle = renderEngine->newResourceInstance(resTriangle);
 	instanceCube = renderEngine->newResourceInstance(resCube);
 	renderEngine->resourceInstance(resCube)->setPos(Vector3(0.f, 1.f, 0.f));
@@ -296,8 +309,86 @@ void destroyWorld3D() {
 
 }
 
+
+void processCamera() {
+
+	bool leftDown = keyStates['A'];
+	bool rightDown = keyStates['D'];
+	bool downDown = keyStates['S'];
+	bool upDown = keyStates['W'];
+	bool shiftDown = keyStates[VK_SHIFT];
+	bool ctrlDown = keyStates[VK_CONTROL];
+	bool tabDown = keyStates[VK_TAB];
+	bool spaceDown = keyStates[VK_SPACE];
+	bool mouse2Down = mouse[1];
+
+	int dx = mouseX - lastMouseX;
+	int dy = mouseY - lastMouseY;
+	int dz = mouseZ - lastMouseZ;
+	lastMouseX = mouseX;
+	lastMouseY = mouseY;
+	lastMouseZ = 0;
+	mouseZ = 0;
+
+	float d = 0.5f;
+	Camera *camera = renderEngine->camera(currentCameraId);
+	Vector3 camPos = camera->pos();
+	if (rightDown) {
+		camPos.setX(camPos.x() + d);
+	}
+
+	if (leftDown) {
+		camPos.setX(camPos.x() - d);
+	}
+
+	if (upDown) {
+		if (ctrlDown)
+			camPos.setZ(camPos.z() + d);
+		else
+			camPos.setY(camPos.y() + d);
+	}
+
+	if (downDown) {
+		if (ctrlDown)
+			camPos.setZ(camPos.z() - d);
+		else
+			camPos.setY(camPos.y() - d);
+	}
+
+	camera->setPos(camPos);
+
+	if (spaceDown) {
+		currentCameraId = cam2;
+	}
+	else {
+		currentCameraId = cam1;
+	}
+
+	if (mouse2Down) {
+		Camera *camera = renderEngine->camera(currentCameraId);
+		Vector3 camRot = camera->rot();
+
+		if (dx != 0) {
+			camRot.setY(camRot.y() - 0.01f*dx);
+		}
+
+		if (dy != 0) {
+			camRot.setX(camRot.x() - 0.01f*dy);
+		}
+
+		if (dz != 0)
+			camera->setZoom(camera->zoom() - dz*0.1f);
+
+		camera->setRot(camRot);
+	}
+	return;
+}
+
+
 void updateWorld3D() {
+
 	float d = 0.1f;
+
 	ResourceInstance *instance = renderEngine->resourceInstance(instanceCube);
 	Vector3 newPos = instance->pos();
 	Vector3 newRot = instance->rot();
@@ -311,72 +402,18 @@ void updateWorld3D() {
 	bool tabDown = keyStates[VK_TAB];
 	bool spaceDown = keyStates[VK_SPACE];
 
-	bool mouse2Down = mouse[1];
+	//Update quads (billboarding)
+	processCamera();
+	Camera *cam = renderEngine->camera(cam1);
+	Vector3 faceCam = Vector3(-cam->rot().x(), -cam->rot().y(), -cam->rot().z());
+	renderEngine->resourceInstance(instanceQuad1)->setRot(faceCam);
+	renderEngine->resourceInstance(instanceQuad2)->setRot(faceCam);
 
-	int dx = mouseX - lastMouseX;
-	int dy = mouseY - lastMouseY;
-	int dz = mouseZ - lastMouseZ;
-	lastMouseX = mouseX;
-	lastMouseY = mouseY;
-	lastMouseZ = 0;
-	mouseZ = 0;
+	return;
 
-	static Vector3 camPos(0.f, 0.f, -8.0f);
 
-	if(spaceDown) {
-		currentCameraId = cam2;
-	}
-	else {
-		currentCameraId = cam1;
-	}
 
-	if(mouse2Down) {
-		Camera *camera = renderEngine->camera(currentCameraId);
-		Vector3 camRot = camera->rot();
 
-		if(dx != 0) {
-			camRot.setY(camRot.y() - 0.01f*dx);
-		}
-
-		if(dy != 0) {
-			camRot.setX(camRot.x() - 0.01f*dy);
-		}
-
-		if(dz != 0)
-			camera->setZoom(camera->zoom()-dz*0.1f);
-
-		camera->setRot(camRot);
-	}
-
-	if(tabDown) {
-		float d = 0.5f;
-		Camera *camera = renderEngine->camera(currentCameraId);
-		Vector3 camPos = camera->pos();
-		if(rightDown) {
-			camPos.setX(camPos.x() + d);
-		}
-		
-		if(leftDown) {
-			camPos.setX(camPos.x() - d);
-		}
-
-		if(upDown) {
-			if(ctrlDown)
-				camPos.setZ(camPos.z() + d);
-			else
-				camPos.setY(camPos.y() + d);
-		}
-
-		if(downDown) {
-			if(ctrlDown)
-				camPos.setZ(camPos.z() - d);
-			else
-				camPos.setY(camPos.y() - d);
-		}
-
-		camera->setPos(camPos);
-		return;
-	}
 
 	if(leftDown) {
 		if(shiftDown) {
@@ -433,6 +470,8 @@ void renderWorld3D() {
 	renderEngine->setCurrentCamera(currentCameraId);
 	renderEngine->setCurrentViewport(viewport1);
 	renderEngine->clear(Color(30, 30, 30));
+	renderEngine->drawResource(instanceQuad1);
+	renderEngine->drawResource(instanceQuad2);
 	renderEngine->drawResource(instanceTerrain);
 	renderEngine->drawResource(instanceWall);
 	renderEngine->drawResource(instanceTriangle);

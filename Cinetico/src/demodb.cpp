@@ -57,9 +57,16 @@ void setup()
 	extern void setupDB();
 	setupDB();
 	setupWindow();
+/*
+	extern void setupWorld3D();
+	setupWorld3D();
+	g_onWorld3D = true;
+	*/
+	
 	g_loginController = new LoginController();
 	g_loginController->onViewEnter();
 	g_mainWindow->setLayout(g_loginController->viewDefinition());
+	
 }
 
 
