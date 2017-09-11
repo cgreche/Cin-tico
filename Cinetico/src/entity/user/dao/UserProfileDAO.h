@@ -1,5 +1,5 @@
-#ifndef __USERPROFILEDAO_H__
-#define __USERPROFILEDAO_H__
+#ifndef __CINETICO_USERPROFILEDAO_H__
+#define __CINETICO_USERPROFILEDAO_H__
 
 #include <vector>
 #include <string>
@@ -8,19 +8,23 @@
 
 class Database;
 
-class UserProfileDAO
-{
-	Database &m_db;
+namespace cinetico {
 
-public:
-	UserProfileDAO(Database &db);
+	class UserProfileDAO
+	{
+		Database &m_db;
 
-	void save(UserProfile &profile);
-	void update(UserProfile &user);
-	std::vector<UserProfile *> getAllUsers();
-	UserProfile *getByLoginName(const char *username);
-	void exclude(UserProfile &user);
-	void exclude(const char *username);
-};
+	public:
+		UserProfileDAO(Database &db);
+
+		void save(UserProfile &profile);
+		void update(UserProfile &user);
+		std::vector<UserProfile *> getAllUsers();
+		UserProfile *getByLoginName(const char *username);
+		void exclude(UserProfile &user);
+		void exclude(const char *username);
+	};
+
+}
 
 #endif

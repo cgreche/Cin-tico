@@ -4,6 +4,8 @@
 #include "utils/crypter.h"
 #include "uilib/ui/uibase.h"
 
+using namespace cinetico;
+
 extern UserProfileDAO *userProfileDAO;
 
 void onClick_login(Button &button) {
