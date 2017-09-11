@@ -34,9 +34,6 @@
     <Filter Include="Arquivos de Origem\entity\user">
       <UniqueIdentifier>{904d23ec-c192-4918-a82e-cfd303c06bfd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Arquivos de Origem\entity\user\dao">
-      <UniqueIdentifier>{9167bb4b-baf3-42d6-a5dc-99a729437871}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Arquivos de Origem\user-interface">
       <UniqueIdentifier>{8c14587e-4eb9-476b-a87e-8d591bd6b65a}</UniqueIdentifier>
     </Filter>
@@ -72,6 +69,12 @@
     </Filter>
     <Filter Include="Arquivos de Origem\database\sqlite">
       <UniqueIdentifier>{93edbc9f-525c-4952-a39d-d739a585f208}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\entity\user\dao">
+      <UniqueIdentifier>{9167bb4b-baf3-42d6-a5dc-99a729437871}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\entity\core">
+      <UniqueIdentifier>{59e42ef3-6ef6-4f78-af82-341eb11646a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -155,9 +158,6 @@
     </ClInclude>
     <ClInclude Include="src\render3d\vertex3.h">
       <Filter>Arquivos de Origem\render3d</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity\user\UserProfile.h">
-      <Filter>Arquivos de Origem\entity\user</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\user\dao\UserProfileDAO.h">
       <Filter>Arquivos de Origem\entity\user\dao</Filter>
@@ -354,6 +354,42 @@
     <ClInclude Include="src\render3d\textresource.h">
       <Filter>Arquivos de Origem\render3d</Filter>
     </ClInclude>
+    <ClInclude Include="src\entity\user\UserProfile.h">
+      <Filter>Arquivos de Origem\entity\user</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\core\Exercise.h">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sensor.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bodytracker.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\core\Action.h">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\core\Body.h">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\core\BodyPoint.h">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\core\Hand.h">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\core\MovementAction.h">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\core\PositionAction.h">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\core\SpaceAction.h">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\kinectsensor.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\demodb.cpp">
@@ -382,12 +418,6 @@
     </ClCompile>
     <ClCompile Include="src\render3d\viewport.cpp">
       <Filter>Arquivos de Origem\render3d</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entity\user\UserProfile.cpp">
-      <Filter>Arquivos de Origem\entity\user</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entity\user\dao\UserProfileDAO.cpp">
-      <Filter>Arquivos de Origem\entity\user\dao</Filter>
     </ClCompile>
     <ClCompile Include="src\world3d.cpp">
       <Filter>Arquivos de Origem</Filter>
@@ -589,6 +619,45 @@
     </ClCompile>
     <ClCompile Include="src\render3d\textresource.cpp">
       <Filter>Arquivos de Origem\render3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\user\UserProfile.cpp">
+      <Filter>Arquivos de Origem\entity\user</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\user\dao\UserProfileDAO.cpp">
+      <Filter>Arquivos de Origem\entity\user\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\core\Exercise.cpp">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sensor.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bodytracker.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\core\Action.cpp">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\core\Body.cpp">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\core\BodyPoint.cpp">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\core\Hand.cpp">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\core\MovementAction.cpp">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\core\PositionAction.cpp">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\core\SpaceAction.cpp">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\kinectsensor.cpp">
+      <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

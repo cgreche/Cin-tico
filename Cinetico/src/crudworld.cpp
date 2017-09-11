@@ -4,12 +4,13 @@
 #include "entity/user/dao/UserProfileDAO.h"
 #include "utils/crypter.h"
 
+using namespace cinetico;
+
 Database *g_db;
 
 UserProfileDAO *userProfileDAO;
 
 //todo: add attribute/column last_login_date to UserProfile
-
 
 #include "database/sqlite/sqlitedatabase.h"
 

@@ -6,7 +6,13 @@
 using namespace render3d;
 
 
+
+
 HWND g_world3DWindow = NULL;
+
+#include "kinectsensor.h"
+using namespace cinetico_core;
+KinectSensor kinectSensor;
 
 
 float aspectRatio43 = 1.33334f; //4:3
@@ -302,6 +308,7 @@ void setupViewports() {
 
 
 void setupWorld3D() {
+	kinectSensor.initialize();
 	setupWorld3DWindow();
 	setupRenderEngine(g_world3DWindow);
 	setupDrawables();
@@ -390,6 +397,8 @@ void processCamera() {
 
 
 void updateWorld3D() {
+
+	kinectSensor.update();
 
 	float d = 0.1f;
 

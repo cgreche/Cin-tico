@@ -5,11 +5,14 @@
 #include "uilib/ui/uibase.h"
 #include "user-interface/LoginController.h"
 
+using namespace cinetico;
+
 LoginController *g_loginController;
 
 MainWindow *g_mainWindow;
 
 bool g_onWorld3D = false;
+
 
 class MainWindow : public Window
 {
