@@ -39,19 +39,12 @@ do { \
 		if (!m_body)
 			m_body = new Body(sensor);
 
-		int identifiedBody = -1;
+		int identifiedBody;
 		for(int i = 0; i < BODY_COUNT; ++i) {
 			if (sensor.bodyIsidentified(i)) {
 				identifiedBody = i;
 				break;
 			}
-		}
-		
-
-		if (identifiedBody == -1) {
-			int a = BODY_COUNT;
-			int b = 1;
-			return false;
 		}
 
 		KinectJoint2CineticoBodyPoint(BodyPoint::Head, JointType_Head);
