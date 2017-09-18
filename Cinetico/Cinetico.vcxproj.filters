@@ -375,9 +375,6 @@
     <ClInclude Include="src\entity\core\BodyPoint.h">
       <Filter>Arquivos de Origem\entity\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity\core\Hand.h">
-      <Filter>Arquivos de Origem\entity\core</Filter>
-    </ClInclude>
     <ClInclude Include="src\entity\core\MovementAction.h">
       <Filter>Arquivos de Origem\entity\core</Filter>
     </ClInclude>
@@ -389,6 +386,12 @@
     </ClInclude>
     <ClInclude Include="src\kinectsensor.h">
       <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\core\vector3.h">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\core\HandHandler.h">
+      <Filter>Arquivos de Origem\entity\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -644,9 +647,6 @@
     <ClCompile Include="src\entity\core\BodyPoint.cpp">
       <Filter>Arquivos de Origem\entity\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity\core\Hand.cpp">
-      <Filter>Arquivos de Origem\entity\core</Filter>
-    </ClCompile>
     <ClCompile Include="src\entity\core\MovementAction.cpp">
       <Filter>Arquivos de Origem\entity\core</Filter>
     </ClCompile>
@@ -658,6 +658,9 @@
     </ClCompile>
     <ClCompile Include="src\kinectsensor.cpp">
       <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\core\HandHandler.cpp">
+      <Filter>Arquivos de Origem\entity\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

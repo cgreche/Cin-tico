@@ -10,9 +10,13 @@ using namespace render3d;
 
 HWND g_world3DWindow = NULL;
 
+#include "bodytracker.h"
 #include "kinectsensor.h"
+
 using namespace cinetico_core;
+using namespace render3d;
 KinectSensor kinectSensor;
+BodyTracker *m_bodyTracker;
 
 
 float aspectRatio43 = 1.33334f; //4:3
@@ -250,19 +254,19 @@ void setupDrawables() {
 	resPrism = renderEngineHelper->createRectangularPrism(0.3f, 2.f, 0.5f);
 
 	instanceQuad1 = renderEngine->newResourceInstance(resQuad1);
-	renderEngine->resourceInstance(instanceQuad1)->setPos(Vector3(10, 10, 0));
+	renderEngine->resourceInstance(instanceQuad1)->setPos(render3d::Vector3(10, 10, 0));
 	instanceQuad2 = renderEngine->newResourceInstance(resQuad2);
-	renderEngine->resourceInstance(instanceQuad2)->setPos(Vector3(120, 10, 0));
+	renderEngine->resourceInstance(instanceQuad2)->setPos(render3d::Vector3(120, 10, 0));
 	instanceTriangle = renderEngine->newResourceInstance(resTriangle);
 	instanceCube = renderEngine->newResourceInstance(resCube);
-	renderEngine->resourceInstance(resCube)->setPos(Vector3(0.f, 1.f, 0.f));
+	renderEngine->resourceInstance(resCube)->setPos(render3d::Vector3(0.f, 1.f, 0.f));
 	instanceTriangleType2 = renderEngine->newResourceInstance(resTriangleType2);
 	instanceCircle = renderEngine->newResourceInstance(resCircle);
 	instanceCircle2 = renderEngine->newResourceInstance(resCircle);
 	instancePrism = renderEngine->newResourceInstance(resPrism);
 
 	ResourceInstance *circle2 = renderEngine->resourceInstance(instanceCircle2);
-	circle2->setPos(Vector3(2.0f, 0.0f, 0.0f));
+	circle2->setPos(render3d::Vector3(2.0f, 0.0f, 0.0f));
 
 
 	for(int i = 0; i < NUM_CUBES; ++i) {
@@ -278,8 +282,8 @@ void setupDrawables() {
 		ry = ((rand() % 100 + 1) / 100.f) * 6.28f;
 		rz = ((rand() % 100 + 1) / 100.f) * 6.28f;
 		s = 0.1f + ((rand() % 101) / 100.f)* 0.9f;
-		inst->setPos(Vector3(x, y, z));
-		inst->setRot(Vector3(rx, ry, rz));
+		inst->setPos(render3d::Vector3(x, y, z));
+		inst->setRot(render3d::Vector3(rx, ry, rz));
 		inst->setScale(s);
 	}
 
@@ -291,13 +295,13 @@ void setupDrawables() {
 	instanceWall = renderEngine->newResourceInstance(resTerrain);
 
 	ResourceInstance *instance = (ResourceInstance*)renderEngine->resourceInstance(instanceWall);
-	instance->setPos(Vector3(0.f, quadCountV/2*quadSize, quadCountV/2*quadSize));
-	instance->setRot(Vector3(-3.14159f * 0.5f, 0.f,  0.f));
+	instance->setPos(render3d::Vector3(0.f, quadCountV/2*quadSize, quadCountV/2*quadSize));
+	instance->setRot(render3d::Vector3(-3.14159f * 0.5f, 0.f,  0.f));
 }
 
 void setupCameras() {
-	cam1 = renderEngine->newCamera(Vector3(0.f, 3.f, -6.4f), Vector3(-0.3f, 0.f, 0.f));
-	cam2 = renderEngine->newCamera(Vector3(8.f, 8.f, -8.f), Vector3(0.f, 0.f, 0.f));
+	cam1 = renderEngine->newCamera(render3d::Vector3(0.f, 3.f, -6.4f), render3d::Vector3(-0.3f, 0.f, 0.f));
+	cam2 = renderEngine->newCamera(render3d::Vector3(8.f, 8.f, -8.f), render3d::Vector3(0.f, 0.f, 0.f));
 }
 
 void setupViewports() {
@@ -309,6 +313,7 @@ void setupViewports() {
 
 void setupWorld3D() {
 	kinectSensor.initialize();
+	m_bodyTracker = new BodyTracker(kinectSensor);
 	setupWorld3DWindow();
 	setupRenderEngine(g_world3DWindow);
 	setupDrawables();
@@ -317,9 +322,14 @@ void setupWorld3D() {
 }
 
 void destroyWorld3D() {
-
+	if (m_bodyTracker)
+		delete m_bodyTracker;
+	kinectSensor.finalize();
 }
 
+void processUser() {
+	m_bodyTracker->track();
+}
 
 void processCamera() {
 
@@ -343,7 +353,7 @@ void processCamera() {
 
 	float d = 0.5f;
 	Camera *camera = renderEngine->camera(currentCameraId);
-	Vector3 camPos = camera->pos();
+	render3d::Vector3 camPos = camera->pos();
 	if (rightDown) {
 		camPos.setX(camPos.x() + d);
 	}
@@ -377,7 +387,7 @@ void processCamera() {
 
 	if (mouse2Down) {
 		Camera *camera = renderEngine->camera(currentCameraId);
-		Vector3 camRot = camera->rot();
+		render3d::Vector3 camRot = camera->rot();
 
 		if (dx != 0) {
 			camRot.setY(camRot.y() - 0.01f*dx);
@@ -398,13 +408,13 @@ void processCamera() {
 
 void updateWorld3D() {
 
-	kinectSensor.update();
+	processUser();
 
 	float d = 0.1f;
 
 	ResourceInstance *instance = renderEngine->resourceInstance(instanceCube);
-	Vector3 newPos = instance->pos();
-	Vector3 newRot = instance->rot();
+	render3d::Vector3 newPos = instance->pos();
+	render3d::Vector3 newRot = instance->rot();
 
 	bool leftDown = keyStates['A'];
 	bool rightDown = keyStates['D'];
@@ -418,7 +428,7 @@ void updateWorld3D() {
 	//Update quads (billboarding)
 	processCamera();
 	Camera *cam = renderEngine->camera(cam1);
-	Vector3 faceCam = Vector3(-cam->rot().x(), -cam->rot().y(), -cam->rot().z());
+	render3d::Vector3 faceCam = render3d::Vector3(-cam->rot().x(), -cam->rot().y(), -cam->rot().z());
 	renderEngine->resourceInstance(instanceQuad1)->setRot(faceCam);
 	renderEngine->resourceInstance(instanceQuad2)->setRot(faceCam);
 

@@ -7,7 +7,10 @@
 namespace cinetico_core {
 
 	KinectSensor::KinectSensor() {
-
+		m_pKinectSensor = NULL;
+		m_pCoordinateMapper = NULL;
+		m_pBodyFrameReader = NULL;
+		m_identifiedBodyCount = 0;
 	}
 
 	bool KinectSensor::initialize() {
@@ -27,19 +30,13 @@ namespace cinetico_core {
 			hr = m_pKinectSensor->Open();
 
 			if (SUCCEEDED(hr))
-			{
 				hr = m_pKinectSensor->get_CoordinateMapper(&m_pCoordinateMapper);
-			}
 
 			if (SUCCEEDED(hr))
-			{
 				hr = m_pKinectSensor->get_BodyFrameSource(&pBodyFrameSource);
-			}
 
 			if (SUCCEEDED(hr))
-			{
 				hr = pBodyFrameSource->OpenReader(&m_pBodyFrameReader);
-			}
 
 			SAFE_RELEASE(pBodyFrameSource);
 		}
@@ -59,21 +56,38 @@ namespace cinetico_core {
 
 			hr = pBodyFrame->get_RelativeTime(&nTime);
 			IBody* ppBodies[BODY_COUNT] = { 0 };
+			m_identifiedBodyCount = 0;
 
 			if (SUCCEEDED(hr))
 				hr = pBodyFrame->GetAndRefreshBodyData(_countof(ppBodies), ppBodies);
 
-			for (int i = 0; i < _countof(ppBodies); ++i)
-			{
-				SAFE_RELEASE(ppBodies[i]);
+			for (int i = 0; i < _countof(ppBodies); ++i) {
+				BOOLEAN bTracked = false;
+				hr = ppBodies[i]->get_IsTracked(&bTracked);
+				m_identifiedBodies[i] = SUCCEEDED(hr) && bTracked;
+				if(m_identifiedBodies[i]) {
+					m_identifiedBodyCount++;
+					ppBodies[i]->GetJointOrientations(JointType_Count, m_orientations[i]);
+					ppBodies[i]->GetJoints(JointType_Count, m_joints[i]);
+				}
 			}
+
+			for (int i = 0; i < _countof(ppBodies); ++i)
+				SAFE_RELEASE(ppBodies[i]);
 		}
 
 		SAFE_RELEASE(pBodyFrame);
 	}
 
 	void KinectSensor::finalize() {
+		if(m_pBodyFrameReader)
+			m_pBodyFrameReader->Release();
 
+		if(m_pCoordinateMapper)
+			m_pCoordinateMapper->Release();
+
+		if(m_pKinectSensor)
+			m_pKinectSensor->Release();
 	}
 
 	long KinectSensor::checkCapabilities(long capabilities) {

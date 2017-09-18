@@ -18,6 +18,12 @@ namespace cinetico_core {
 		// Body reader
 		IBodyFrameReader* m_pBodyFrameReader;
 
+		// Kinect data
+		bool m_identifiedBodies[BODY_COUNT];
+		int m_identifiedBodyCount;
+		Joint m_joints[BODY_COUNT][JointType_Count];
+		JointOrientation m_orientations[BODY_COUNT][JointType_Count];
+
 	public:
 		KinectSensor();
 
@@ -26,6 +32,11 @@ namespace cinetico_core {
 		void finalize();
 		long checkCapabilities(long capabilities);
 		u8 *getDepthImageData();
+
+		int identifiedBodyCount() const { return m_identifiedBodyCount; }
+		bool bodyIsidentified(int body) const { return m_identifiedBodies[body]; }
+		Joint joint(int body, JointType joint) const { return m_joints[body][joint]; }
+		JointOrientation jointOrientation(int body, JointType joint) const { return m_orientations[body][joint]; }
 	};
 
 }

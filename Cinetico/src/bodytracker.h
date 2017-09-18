@@ -10,14 +10,12 @@ namespace cinetico_core {
 		Sensor &m_sensor;
 		Body *m_body;
 
+		int m_identifiedBodyCount;
+
 		public:
-			BodyTracker(Sensor &sensor)
-			: m_sensor(sensor) {
-
-			}
-
+			BodyTracker(Sensor& sensor);
 			bool track();
-			Body &body();
+			Body *body() const { return m_body; }
 	};
 
 }
