@@ -393,11 +393,29 @@
     <ClInclude Include="src\entity\core\HandHandler.h">
       <Filter>Arquivos de Origem\entity\core</Filter>
     </ClInclude>
+    <ClInclude Include="src\defs.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\Controller.h">
+      <Filter>Arquivos de Origem\user-interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\ExerciseRealizationController.h">
+      <Filter>Arquivos de Origem\user-interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\ExercisesController.h">
+      <Filter>Arquivos de Origem\user-interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cinetico.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mainwindow.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\ExerciseManagementController.h">
+      <Filter>Arquivos de Origem\user-interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\demodb.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
     <ClCompile Include="src\utils\crypter.cpp">
       <Filter>Arquivos de Origem\utils</Filter>
     </ClCompile>
@@ -661,6 +679,21 @@
     </ClCompile>
     <ClCompile Include="src\entity\core\HandHandler.cpp">
       <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\ExerciseRealizationController.cpp">
+      <Filter>Arquivos de Origem\user-interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\ExercisesController.cpp">
+      <Filter>Arquivos de Origem\user-interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cinetico.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mainwindow.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\ExerciseManagementController.cpp">
+      <Filter>Arquivos de Origem\user-interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

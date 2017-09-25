@@ -1,7 +1,7 @@
 
 //Layout
 // File: layout.cpp
-// Last edit: 02/07/2017 22:10 (UTC-3)
+// Last edit: 25/09/2017 03:22 (UTC-3)
 // Author: CGR
 
 #include "../uibase.h"
@@ -315,6 +315,21 @@ void Layout::append(Layout& layout, const Size &size, int spacing)
 	m_childList.push_back(new LayoutItemLayout(layout,size,spacing));
 	layout.setParent(parentControl());
 	layout.m_parentLayout = this;
+}
+
+void Layout::remove(Layout &layout)
+{
+	LayoutItemList::iterator it;
+	for (it = m_childList.begin(); it != m_childList.end(); ++it) {
+		LayoutItem &child = **it;
+		if (child.layout() && child.layout() == &layout) {
+			child.layout()->m_parentLayout = NULL; //must be set before setParent()
+			child.layout()->setParent(NULL);
+			delete &child;
+			m_childList.erase(it);
+			return;
+		}
+	}
 }
 
 Size Layout::getAutoSize()

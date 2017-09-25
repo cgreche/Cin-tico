@@ -20,12 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\bodytracker.h" />
+    <ClInclude Include="src\cinetico.h" />
     <ClInclude Include="src\database\database.h" />
     <ClInclude Include="src\database\resultset.h" />
     <ClInclude Include="src\database\sqlite\sqlitedatabase.h" />
     <ClInclude Include="src\database\sqlite\sqliteresultset.h" />
     <ClInclude Include="src\database\sqlite\sqlitestatement.h" />
     <ClInclude Include="src\database\sqlstatement.h" />
+    <ClInclude Include="src\defs.h" />
     <ClInclude Include="src\entity\core\Action.h" />
     <ClInclude Include="src\entity\core\Body.h" />
     <ClInclude Include="src\entity\core\BodyPoint.h" />
@@ -50,6 +52,7 @@
     <ClInclude Include="src\lib\d3dx9xof.h" />
     <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3.h" />
     <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3ext.h" />
+    <ClInclude Include="src\mainwindow.h" />
     <ClInclude Include="src\render3d\camera.h" />
     <ClInclude Include="src\render3d\color.h" />
     <ClInclude Include="src\render3d\d3d9engine.h" />
@@ -122,6 +125,10 @@
     <ClInclude Include="src\uilib\ui\uiobj.h" />
     <ClInclude Include="src\uilib\ui\uitools.h" />
     <ClInclude Include="src\uilib\ui\window.h" />
+    <ClInclude Include="src\user-interface\Controller.h" />
+    <ClInclude Include="src\user-interface\ExerciseManagementController.h" />
+    <ClInclude Include="src\user-interface\ExerciseRealizationController.h" />
+    <ClInclude Include="src\user-interface\ExercisesController.h" />
     <ClInclude Include="src\user-interface\LoginController.h" />
     <ClInclude Include="src\utils\crypter.h" />
   </ItemGroup>
@@ -131,7 +138,7 @@
     <ClCompile Include="src\database\sqlite\sqlitedatabase.cpp" />
     <ClCompile Include="src\database\sqlite\sqliteresultset.cpp" />
     <ClCompile Include="src\database\sqlite\sqlitestatement.cpp" />
-    <ClCompile Include="src\demodb.cpp" />
+    <ClCompile Include="src\cinetico.cpp" />
     <ClCompile Include="src\entity\core\Action.cpp" />
     <ClCompile Include="src\entity\core\Body.cpp" />
     <ClCompile Include="src\entity\core\BodyPoint.cpp" />
@@ -144,6 +151,7 @@
     <ClCompile Include="src\entity\user\UserProfile.cpp" />
     <ClCompile Include="src\kinectsensor.cpp" />
     <ClCompile Include="src\lib\sqlite-amalgamation-3200100\sqlite3.c" />
+    <ClCompile Include="src\mainwindow.cpp" />
     <ClCompile Include="src\render3d\d3d9engine.cpp" />
     <ClCompile Include="src\render3d\renderengine.cpp" />
     <ClCompile Include="src\render3d\renderenginehelper.cpp" />
@@ -212,6 +220,9 @@
     <ClCompile Include="src\uilib\ui\uiobj.cpp" />
     <ClCompile Include="src\uilib\ui\uitools.cpp" />
     <ClCompile Include="src\uilib\ui\window.cpp" />
+    <ClCompile Include="src\user-interface\ExerciseManagementController.cpp" />
+    <ClCompile Include="src\user-interface\ExerciseRealizationController.cpp" />
+    <ClCompile Include="src\user-interface\ExercisesController.cpp" />
     <ClCompile Include="src\user-interface\LoginController.cpp" />
     <ClCompile Include="src\utils\crypter.cpp" />
     <ClCompile Include="src\world3d.cpp" />
