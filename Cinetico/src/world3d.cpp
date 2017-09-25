@@ -5,9 +5,6 @@
 
 using namespace render3d;
 
-
-
-
 HWND g_world3DWindow = NULL;
 
 #include "bodytracker.h"
@@ -15,78 +12,161 @@ HWND g_world3DWindow = NULL;
 
 using namespace cinetico_core;
 using namespace render3d;
-KinectSensor kinectSensor;
-BodyTracker *m_bodyTracker;
 
+namespace cinetico {
 
-float aspectRatio43 = 1.33334f; //4:3
-float aspectRatio51 = 1.25; //5:4
-float aspectRatio169 = 1.77778f; //16:9
+	KinectSensor kinectSensor;
+	BodyTracker *m_bodyTracker;
 
-float currentAspectRatio = aspectRatio169;
+	float aspectRatio43 = 1.33334f; //4:3
+	float aspectRatio51 = 1.25; //5:4
+	float aspectRatio169 = 1.77778f; //16:9
 
-int winWidth = 1280;
-int winHeight = (int)ceil(winWidth / currentAspectRatio);
+	float currentAspectRatio = aspectRatio169;
 
-int g_frameCount = 0;
+	int winWidth = 1280;
+	int winHeight = (int)ceil(winWidth / currentAspectRatio);
 
-RenderEngine *renderEngine;
-RenderEngineHelper *renderEngineHelper;
+	int g_frameCount = 0;
 
-int resQuad1;
-int resQuad2;
-int line1;
-int line2;
+	RenderEngine *renderEngine;
+	RenderEngineHelper *renderEngineHelper;
 
-int resTriangle;
-int resCube;
-int resTriangleType2;
-int resCircle;
-int resTerrain;
-int resPrism;
+	int resQuad1;
+	int resQuad2;
+	int line1;
+	int line2;
 
-int instanceQuad1;
-int instanceQuad2;
-int instanceTriangle;
-int instanceCube;
-int instanceTriangleType2;
-int instanceCircle;
-int instanceCircle2;
-int instanceTerrain;
-int instanceWall;
-int instancePrism;
+	int resTriangle;
+	int resCube;
+	int resTriangleType2;
+	int resCircle;
+	int resTerrain;
+	int resPrism;
 
-int cam1;
-int cam2;
+	int instanceQuad1;
+	int instanceQuad2;
+	int instanceTriangle;
+	int instanceCube;
+	int instanceTriangleType2;
+	int instanceCircle;
+	int instanceCircle2;
+	int instanceTerrain;
+	int instanceWall;
+	int instancePrism;
 
-int viewport1;
-int viewport2;
+	int cam1;
+	int cam2;
 
-bool keyStates[256] = { 0 };
-bool mouse[3] = { 0 };
+	int viewport1;
+	int viewport2;
 
-int mouseX = 0;
-int mouseY = 0;
-int mouseZ = 0;
-int lastMouseX = 0;
-int lastMouseY = 0;
-int lastMouseZ = 0;
+	bool keyStates[256] = { 0 };
+	bool mouse[3] = { 0 };
 
-int currentCameraId = cam1;
+	int mouseX = 0;
+	int mouseY = 0;
+	int mouseZ = 0;
+	int lastMouseX = 0;
+	int lastMouseY = 0;
+	int lastMouseZ = 0;
 
-int terrainId;
+	int currentCameraId = cam1;
+
+	int terrainId;
 
 #define NUM_CUBES 1000
 
-int instancedCubes[NUM_CUBES];
+	int instancedCubes[NUM_CUBES];
 
 
+#define HEAD_SIZE 4.f/10.f
+#define FOOT_SIZE HEAD_SIZE/2
+#define HAND_SIZE HEAD_SIZE/2
 
 
+	struct BodyResourceIds {
+		int head;
+		int hand;
+		int foot;
+	};
 
-LRESULT CALLBACK world3D_MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
-	switch(msg) {
+	struct BodyInstanceIds {
+		int head;
+		int leftHand;
+		int rightHand;
+		int leftFoot;
+		int rightFoot;
+	};
+
+	BodyResourceIds g_bodyResourceIds;
+	BodyInstanceIds g_bodyInstanceIds;
+
+
+	void setupBodyDrawables() {
+		BodyResourceIds &resId = g_bodyResourceIds;
+		BodyInstanceIds &instId = g_bodyInstanceIds;
+
+		resId.head = renderEngineHelper->createCube(HEAD_SIZE);
+		resId.hand = renderEngineHelper->createCube(HAND_SIZE);
+		resId.foot = renderEngineHelper->createCube(FOOT_SIZE);
+
+		instId.head = renderEngine->newResourceInstance(resId.head);
+		instId.leftHand = renderEngine->newResourceInstance(resId.hand);
+		instId.rightHand = renderEngine->newResourceInstance(resId.hand);
+		instId.leftFoot = renderEngine->newResourceInstance(resId.foot);
+		instId.rightFoot = renderEngine->newResourceInstance(resId.foot);
+	}
+
+	void Body_setup() {
+		setupBodyDrawables();
+	}
+
+	void Body_update() {
+		m_bodyTracker->track();
+		BodyInstanceIds &instId = g_bodyInstanceIds;
+		ResourceInstance *instance = renderEngine->resourceInstance(instId.head);
+
+		Body *body = m_bodyTracker->body();
+
+		if (!body)
+			return;
+
+		instance = renderEngine->resourceInstance(instId.head);
+		cinetico_core::Vector3 pos = body->bodyPoint(BodyPoint::Head)->position();
+		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
+
+		instance = renderEngine->resourceInstance(instId.leftHand);
+		pos = body->bodyPoint(BodyPoint::LeftHandCenter)->position();
+		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
+
+		instance = renderEngine->resourceInstance(instId.rightHand);
+		pos = body->bodyPoint(BodyPoint::RightHandCenter)->position();
+		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
+
+		instance = renderEngine->resourceInstance(instId.leftFoot);
+		pos = body->bodyPoint(BodyPoint::LeftFoot)->position();
+		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
+
+		instance = renderEngine->resourceInstance(instId.rightFoot);
+		pos = body->bodyPoint(BodyPoint::RightFoot)->position();
+		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
+	}
+
+	void Body_render() {
+		BodyInstanceIds &instId = g_bodyInstanceIds;
+		renderEngine->drawResource(instId.head);
+		renderEngine->drawResource(instId.leftHand);
+		renderEngine->drawResource(instId.rightHand);
+		renderEngine->drawResource(instId.leftFoot);
+		renderEngine->drawResource(instId.rightFoot);
+	}
+
+
+	LRESULT CALLBACK world3D_MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+
+		switch (msg) {
 		case WM_KEYDOWN:
 		{
 			keyStates[wParam] = true;
@@ -149,378 +229,382 @@ LRESULT CALLBACK world3D_MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
 
 		case WM_CLOSE:
 			::PostQuitMessage(0);
-			break; 
+			break;
 		case WM_DESTROY:
 			int a = 1;
 			break;
+		}
+
+
+		return ::DefWindowProc(hwnd, msg, wParam, lParam);
+	}
+
+	void setupWorld3DWindow() {
+
+		HINSTANCE hInstance = ::GetModuleHandle(NULL);
+
+		const char wndClassName[] = "World3DWindow";
+		const char wndName[] = "World3DWindow";
+
+		WNDCLASS wndClass = { 0 };
+		wndClass.style = 0;
+		wndClass.hInstance = hInstance;
+		wndClass.hCursor = ::LoadCursor(NULL, IDC_ARROW);
+		wndClass.lpszClassName = wndClassName;
+		wndClass.lpfnWndProc = world3D_MainWndProc;
+
+		ATOM res = ::RegisterClass(&wndClass);
+
+		DWORD winStyle = WS_OVERLAPPEDWINDOW;
+		RECT rc = { 0,0, winWidth, winHeight };
+		::AdjustWindowRect(&rc, winStyle, FALSE);
+
+		int w = rc.right - rc.left;
+		int h = rc.bottom - rc.top;
+		HWND hwnd = ::CreateWindow(wndClassName, wndName, winStyle,
+			CW_USEDEFAULT, CW_USEDEFAULT, w, h,
+			NULL, NULL, hInstance, 0);
+
+		g_world3DWindow = hwnd;
+
+		::ShowWindow(hwnd, SW_SHOWNORMAL);
+		::UpdateWindow(hwnd);
 	}
 
 
-	return ::DefWindowProc(hwnd, msg, wParam, lParam);
-}
-
-void setupWorld3DWindow() {
-
-	HINSTANCE hInstance = ::GetModuleHandle(NULL);
-
-	const char wndClassName[] = "World3DWindow";
-	const char wndName[] = "World3DWindow";
-
-	WNDCLASS wndClass = {0};
-	wndClass.style = 0;
-	wndClass.hInstance = hInstance;
-	wndClass.hCursor = ::LoadCursor(NULL, IDC_ARROW);
-	wndClass.lpszClassName = wndClassName;
-	wndClass.lpfnWndProc = world3D_MainWndProc;
-
-	ATOM res = ::RegisterClass(&wndClass);
-
-	DWORD winStyle = WS_OVERLAPPEDWINDOW;
-	RECT rc = { 0,0, winWidth, winHeight };
-	::AdjustWindowRect(&rc, winStyle, FALSE);
-
-	int w = rc.right - rc.left;
-	int h = rc.bottom - rc.top;
-	HWND hwnd = ::CreateWindow(wndClassName, wndName, winStyle,
-		CW_USEDEFAULT, CW_USEDEFAULT, w, h,
-		NULL, NULL, hInstance, 0);
-
-	g_world3DWindow = hwnd;
-
-	::ShowWindow(hwnd, SW_SHOWNORMAL);
-	::UpdateWindow(hwnd);
-}
 
 
-
-
-void setupRenderEngine(HWND hwnd)
-{
-	renderEngine = new D3D9Engine();
-	renderEngine->configure(hwnd);
-	renderEngine->init();
-	renderEngineHelper = new RenderEngineHelper(*renderEngine);
-}
-
-
-void setupDrawables() {
-	::srand((unsigned int)::time(0));
-
-	Vertex3 triangle1[] = {
-		{ 0.3f, 0.0f, 1 },
-		{ 0.5f, 0.0f, 1 },
-		{ 0, -0.5f, 1 },
-	};
-
-	Vertex3 triangle3[] = {
-		{ -1, 1, 0 },
-		{ 1, 1, 0 },
-		{ -1, -1, 0 }
-	};
-
-	int indicesTriangle1[] = {
-		0,1,2
-	};
-
-	Color triangle1Colors[3] = {
-		Color(255,0,0),
-		Color(255,0,0),
-		Color(255,0,0)
-	};
-
-	int indicesTriangle3[] = {
-		0,1,2
-	};
-	
-	Color triangle3Colors[3] = {
-		Color(255,0,0),
-		Color(255,0,0),
-		Color(255,0,0)
-	};
-
-
-	const int numPoints = 30;
-	Color circleColors[numPoints + 1];
-		for(int i = 0; i < numPoints + 1; ++i) {
-		circleColors[i] = Color(rand()%255, rand()%255, rand()%255, 122);
+	void setupRenderEngine(HWND hwnd)
+	{
+		renderEngine = new D3D9Engine();
+		renderEngine->configure(hwnd);
+		renderEngine->init();
+		renderEngineHelper = new RenderEngineHelper(*renderEngine);
 	}
 
-	resQuad1 = renderEngineHelper->createQuad(10, 0.25);
-	resQuad2 = renderEngineHelper->createQuad(100, 200);
-	resTriangle = renderEngine->newResource(sizeof(triangle1) / sizeof(triangle1[0]), triangle1, 3, indicesTriangle1,triangle1Colors);
-	resCube = renderEngineHelper->createCube(2);
- 	resTriangleType2 = renderEngine->newResource(sizeof(triangle3)/sizeof(triangle3[0]),triangle3,3,indicesTriangle3,triangle3Colors);
-	resCircle = renderEngineHelper->createCircle(0.3f, numPoints + 1,circleColors);
-	resPrism = renderEngineHelper->createRectangularPrism(0.3f, 2.f, 0.5f);
 
-	instanceQuad1 = renderEngine->newResourceInstance(resQuad1);
-	renderEngine->resourceInstance(instanceQuad1)->setPos(render3d::Vector3(10, 10, 0));
-	instanceQuad2 = renderEngine->newResourceInstance(resQuad2);
-	renderEngine->resourceInstance(instanceQuad2)->setPos(render3d::Vector3(120, 10, 0));
-	instanceTriangle = renderEngine->newResourceInstance(resTriangle);
-	instanceCube = renderEngine->newResourceInstance(resCube);
-	renderEngine->resourceInstance(resCube)->setPos(render3d::Vector3(0.f, 1.f, 0.f));
-	instanceTriangleType2 = renderEngine->newResourceInstance(resTriangleType2);
-	instanceCircle = renderEngine->newResourceInstance(resCircle);
-	instanceCircle2 = renderEngine->newResourceInstance(resCircle);
-	instancePrism = renderEngine->newResourceInstance(resPrism);
+	void setupDrawables() {
+		::srand((unsigned int)::time(0));
+		setupBodyDrawables();
 
-	ResourceInstance *circle2 = renderEngine->resourceInstance(instanceCircle2);
-	circle2->setPos(render3d::Vector3(2.0f, 0.0f, 0.0f));
+		Vertex3 triangle1[] = {
+			{ 0.3f, 0.0f, 1 },
+			{ 0.5f, 0.0f, 1 },
+			{ 0, -0.5f, 1 },
+		};
+
+		Vertex3 triangle3[] = {
+			{ -1, 1, 0 },
+			{ 1, 1, 0 },
+			{ -1, -1, 0 }
+		};
+
+		int indicesTriangle1[] = {
+			0,1,2
+		};
+
+		Color triangle1Colors[3] = {
+			Color(255,0,0),
+			Color(255,0,0),
+			Color(255,0,0)
+		};
+
+		int indicesTriangle3[] = {
+			0,1,2
+		};
+
+		Color triangle3Colors[3] = {
+			Color(255,0,0),
+			Color(255,0,0),
+			Color(255,0,0)
+		};
 
 
-	for(int i = 0; i < NUM_CUBES; ++i) {
-		instancedCubes[i] = renderEngine->newResourceInstance(resCube);
-		ResourceInstance* inst = renderEngine->resourceInstance(instancedCubes[i]);
-		float x, y, z;
-		float rx, ry, rz;
-		float s;
-		x = -100.f + 200.f * ((rand() % 101) / 100.f);
-		y = -10.f + 20.f * ((rand() % 101) / 100.f);
-		z = -10.f + 20.f * ((rand() % 101) / 100.f);
-		rx = ((rand() % 100 + 1) / 100.f) * 6.28f;
-		ry = ((rand() % 100 + 1) / 100.f) * 6.28f;
-		rz = ((rand() % 100 + 1) / 100.f) * 6.28f;
-		s = 0.1f + ((rand() % 101) / 100.f)* 0.9f;
-		inst->setPos(render3d::Vector3(x, y, z));
-		inst->setRot(render3d::Vector3(rx, ry, rz));
-		inst->setScale(s);
+		const int numPoints = 30;
+		Color circleColors[numPoints + 1];
+		for (int i = 0; i < numPoints + 1; ++i) {
+			circleColors[i] = Color(rand() % 255, rand() % 255, rand() % 255, 122);
+		}
+
+		resQuad1 = renderEngineHelper->createQuad(10, 0.25);
+		resQuad2 = renderEngineHelper->createQuad(100, 200);
+		resTriangle = renderEngine->newResource(sizeof(triangle1) / sizeof(triangle1[0]), triangle1, 3, indicesTriangle1, triangle1Colors);
+		resCube = renderEngineHelper->createCube(2);
+		resTriangleType2 = renderEngine->newResource(sizeof(triangle3) / sizeof(triangle3[0]), triangle3, 3, indicesTriangle3, triangle3Colors);
+		resCircle = renderEngineHelper->createCircle(0.3f, numPoints + 1, circleColors);
+		resPrism = renderEngineHelper->createRectangularPrism(0.3f, 2.f, 0.5f);
+
+		instanceQuad1 = renderEngine->newResourceInstance(resQuad1);
+		renderEngine->resourceInstance(instanceQuad1)->setPos(render3d::Vector3(10, 10, 0));
+		instanceQuad2 = renderEngine->newResourceInstance(resQuad2);
+		renderEngine->resourceInstance(instanceQuad2)->setPos(render3d::Vector3(120, 10, 0));
+		instanceTriangle = renderEngine->newResourceInstance(resTriangle);
+		instanceCube = renderEngine->newResourceInstance(resCube);
+		renderEngine->resourceInstance(resCube)->setPos(render3d::Vector3(0.f, 1.f, 0.f));
+		instanceTriangleType2 = renderEngine->newResourceInstance(resTriangleType2);
+		instanceCircle = renderEngine->newResourceInstance(resCircle);
+		instanceCircle2 = renderEngine->newResourceInstance(resCircle);
+		instancePrism = renderEngine->newResourceInstance(resPrism);
+
+		ResourceInstance *circle2 = renderEngine->resourceInstance(instanceCircle2);
+		circle2->setPos(render3d::Vector3(2.0f, 0.0f, 0.0f));
+
+
+		for (int i = 0; i < NUM_CUBES; ++i) {
+			instancedCubes[i] = renderEngine->newResourceInstance(resCube);
+			ResourceInstance* inst = renderEngine->resourceInstance(instancedCubes[i]);
+			float x, y, z;
+			float rx, ry, rz;
+			float s;
+			x = -100.f + 200.f * ((rand() % 101) / 100.f);
+			y = -10.f + 20.f * ((rand() % 101) / 100.f);
+			z = -10.f + 20.f * ((rand() % 101) / 100.f);
+			rx = ((rand() % 100 + 1) / 100.f) * 6.28f;
+			ry = ((rand() % 100 + 1) / 100.f) * 6.28f;
+			rz = ((rand() % 100 + 1) / 100.f) * 6.28f;
+			s = 0.1f + ((rand() % 101) / 100.f)* 0.9f;
+			inst->setPos(render3d::Vector3(x, y, z));
+			inst->setRot(render3d::Vector3(rx, ry, rz));
+			inst->setScale(s);
+		}
+
+		float quadSize = 3.2f;
+		int quadCountH = 128;
+		int quadCountV = 32;
+		resTerrain = renderEngineHelper->generateTerrain(quadSize, quadCountH, quadCountV);
+		instanceTerrain = renderEngine->newResourceInstance(resTerrain);
+		instanceWall = renderEngine->newResourceInstance(resTerrain);
+
+		ResourceInstance *instance = (ResourceInstance*)renderEngine->resourceInstance(instanceWall);
+		instance->setPos(render3d::Vector3(0.f, quadCountV / 2 * quadSize, quadCountV / 2 * quadSize));
+		instance->setRot(render3d::Vector3(-3.14159f * 0.5f, 0.f, 0.f));
+
+		ResourceInstance *terrain = (ResourceInstance*)renderEngine->resourceInstance(instanceTerrain);
+		terrain->setPos(render3d::Vector3(0, -2, 0));
 	}
 
-	float quadSize = 3.2f;
-	float quadCountH = 128;
-	float quadCountV = 32;
-	resTerrain = renderEngineHelper->generateTerrain(quadSize, quadCountH, quadCountV);
-	instanceTerrain = renderEngine->newResourceInstance(resTerrain);
-	instanceWall = renderEngine->newResourceInstance(resTerrain);
-
-	ResourceInstance *instance = (ResourceInstance*)renderEngine->resourceInstance(instanceWall);
-	instance->setPos(render3d::Vector3(0.f, quadCountV/2*quadSize, quadCountV/2*quadSize));
-	instance->setRot(render3d::Vector3(-3.14159f * 0.5f, 0.f,  0.f));
-}
-
-void setupCameras() {
-	cam1 = renderEngine->newCamera(render3d::Vector3(0.f, 3.f, -6.4f), render3d::Vector3(-0.3f, 0.f, 0.f));
-	cam2 = renderEngine->newCamera(render3d::Vector3(8.f, 8.f, -8.f), render3d::Vector3(0.f, 0.f, 0.f));
-}
-
-void setupViewports() {
-	viewport1 = renderEngine->newViewport(0, 0, winWidth, winHeight);
-	float percent = 0.25f;
-	viewport2 = renderEngine->newViewport(20, 20, (int)(winWidth*percent), (int)(winHeight*percent));
-}
-
-
-void setupWorld3D() {
-	kinectSensor.initialize();
-	m_bodyTracker = new BodyTracker(kinectSensor);
-	setupWorld3DWindow();
-	setupRenderEngine(g_world3DWindow);
-	setupDrawables();
-	setupCameras();
-	setupViewports();
-}
-
-void destroyWorld3D() {
-	if (m_bodyTracker)
-		delete m_bodyTracker;
-	kinectSensor.finalize();
-}
-
-void processUser() {
-	m_bodyTracker->track();
-}
-
-void processCamera() {
-
-	bool leftDown = keyStates['A'];
-	bool rightDown = keyStates['D'];
-	bool downDown = keyStates['S'];
-	bool upDown = keyStates['W'];
-	bool shiftDown = keyStates[VK_SHIFT];
-	bool ctrlDown = keyStates[VK_CONTROL];
-	bool tabDown = keyStates[VK_TAB];
-	bool spaceDown = keyStates[VK_SPACE];
-	bool mouse2Down = mouse[1];
-
-	int dx = mouseX - lastMouseX;
-	int dy = mouseY - lastMouseY;
-	int dz = mouseZ - lastMouseZ;
-	lastMouseX = mouseX;
-	lastMouseY = mouseY;
-	lastMouseZ = 0;
-	mouseZ = 0;
-
-	float d = 0.5f;
-	Camera *camera = renderEngine->camera(currentCameraId);
-	render3d::Vector3 camPos = camera->pos();
-	if (rightDown) {
-		camPos.setX(camPos.x() + d);
+	void setupCameras() {
+		cam1 = renderEngine->newCamera(render3d::Vector3(0.f, 3.f, -6.4f), render3d::Vector3(-0.3f, 0.f, 0.f));
+		cam2 = renderEngine->newCamera(render3d::Vector3(8.f, 8.f, -8.f), render3d::Vector3(0.f, 0.f, 0.f));
 	}
 
-	if (leftDown) {
-		camPos.setX(camPos.x() - d);
+	void setupViewports() {
+		viewport1 = renderEngine->newViewport(0, 0, winWidth, winHeight);
+		float percent = 0.25f;
+		viewport2 = renderEngine->newViewport(20, 20, (int)(winWidth*percent), (int)(winHeight*percent));
 	}
 
-	if (upDown) {
-		if (ctrlDown)
-			camPos.setZ(camPos.z() + d);
-		else
-			camPos.setY(camPos.y() + d);
+
+	void setupWorld3D() {
+		kinectSensor.initialize();
+		m_bodyTracker = new BodyTracker(kinectSensor);
+		setupWorld3DWindow();
+		setupRenderEngine(g_world3DWindow);
+		setupDrawables();
+		setupCameras();
+		setupViewports();
 	}
 
-	if (downDown) {
-		if (ctrlDown)
-			camPos.setZ(camPos.z() - d);
-		else
-			camPos.setY(camPos.y() - d);
+	void destroyWorld3D() {
+		if (m_bodyTracker)
+			delete m_bodyTracker;
+		kinectSensor.finalize();
 	}
 
-	camera->setPos(camPos);
+	void processCamera() {
 
-	if (spaceDown) {
-		currentCameraId = cam2;
-	}
-	else {
-		currentCameraId = cam1;
-	}
+		bool leftDown = keyStates['A'];
+		bool rightDown = keyStates['D'];
+		bool downDown = keyStates['S'];
+		bool upDown = keyStates['W'];
+		bool shiftDown = keyStates[VK_SHIFT];
+		bool ctrlDown = keyStates[VK_CONTROL];
+		bool tabDown = keyStates[VK_TAB];
+		bool spaceDown = keyStates[VK_SPACE];
+		bool mouse2Down = mouse[1];
 
-	if (mouse2Down) {
+		int dx = mouseX - lastMouseX;
+		int dy = mouseY - lastMouseY;
+		int dz = mouseZ - lastMouseZ;
+		lastMouseX = mouseX;
+		lastMouseY = mouseY;
+		lastMouseZ = 0;
+		mouseZ = 0;
+
+		float d = 0.5f;
 		Camera *camera = renderEngine->camera(currentCameraId);
-		render3d::Vector3 camRot = camera->rot();
-
-		if (dx != 0) {
-			camRot.setY(camRot.y() - 0.01f*dx);
+		render3d::Vector3 camPos = camera->pos();
+		if (rightDown) {
+			camPos.setX(camPos.x() + d);
 		}
 
-		if (dy != 0) {
-			camRot.setX(camRot.x() - 0.01f*dy);
+		if (leftDown) {
+			camPos.setX(camPos.x() - d);
 		}
 
-		if (dz != 0)
-			camera->setZoom(camera->zoom() - dz*0.1f);
+		if (upDown) {
+			if (ctrlDown)
+				camPos.setZ(camPos.z() + d);
+			else
+				camPos.setY(camPos.y() + d);
+		}
 
-		camera->setRot(camRot);
-	}
-	return;
-}
+		if (downDown) {
+			if (ctrlDown)
+				camPos.setZ(camPos.z() - d);
+			else
+				camPos.setY(camPos.y() - d);
+		}
 
+		camera->setPos(camPos);
 
-void updateWorld3D() {
-
-	processUser();
-
-	float d = 0.1f;
-
-	ResourceInstance *instance = renderEngine->resourceInstance(instanceCube);
-	render3d::Vector3 newPos = instance->pos();
-	render3d::Vector3 newRot = instance->rot();
-
-	bool leftDown = keyStates['A'];
-	bool rightDown = keyStates['D'];
-	bool downDown = keyStates['S'];
-	bool upDown = keyStates['W'];
-	bool shiftDown = keyStates[VK_SHIFT];
-	bool ctrlDown = keyStates[VK_CONTROL];
-	bool tabDown = keyStates[VK_TAB];
-	bool spaceDown = keyStates[VK_SPACE];
-
-	//Update quads (billboarding)
-	processCamera();
-	Camera *cam = renderEngine->camera(cam1);
-	render3d::Vector3 faceCam = render3d::Vector3(-cam->rot().x(), -cam->rot().y(), -cam->rot().z());
-	renderEngine->resourceInstance(instanceQuad1)->setRot(faceCam);
-	renderEngine->resourceInstance(instanceQuad2)->setRot(faceCam);
-
-	return;
-
-
-
-
-
-	if(leftDown) {
-		if(shiftDown) {
-			newRot.setY(newRot.y() + d);
+		if (spaceDown) {
+			currentCameraId = cam2;
 		}
 		else {
-			newPos.setX(newPos.x() - d);
+			currentCameraId = cam1;
 		}
+
+		if (mouse2Down) {
+			Camera *camera = renderEngine->camera(currentCameraId);
+			render3d::Vector3 camRot = camera->rot();
+
+			if (dx != 0) {
+				camRot.setY(camRot.y() - 0.01f*dx);
+			}
+
+			if (dy != 0) {
+				camRot.setX(camRot.x() - 0.01f*dy);
+			}
+
+			if (dz != 0)
+				camera->setZoom(camera->zoom() - dz*0.1f);
+
+			camera->setRot(camRot);
+		}
+		return;
 	}
 
-	if(rightDown) {
-		if(shiftDown) {
-			newRot.setY(newRot.y() - d);
+
+	void updateWorld3D() {
+
+		Body_update();
+
+		float d = 0.1f;
+
+		ResourceInstance *instance = renderEngine->resourceInstance(instanceCube);
+		render3d::Vector3 newPos = instance->pos();
+		render3d::Vector3 newRot = instance->rot();
+
+		bool leftDown = keyStates['A'];
+		bool rightDown = keyStates['D'];
+		bool downDown = keyStates['S'];
+		bool upDown = keyStates['W'];
+		bool shiftDown = keyStates[VK_SHIFT];
+		bool ctrlDown = keyStates[VK_CONTROL];
+		bool tabDown = keyStates[VK_TAB];
+		bool spaceDown = keyStates[VK_SPACE];
+
+		//Update quads (billboarding)
+		processCamera();
+		Camera *cam = renderEngine->camera(cam1);
+		render3d::Vector3 faceCam = render3d::Vector3(-cam->rot().x(), -cam->rot().y(), -cam->rot().z());
+		renderEngine->resourceInstance(instanceQuad1)->setRot(faceCam);
+		renderEngine->resourceInstance(instanceQuad2)->setRot(faceCam);
+
+		return;
+
+
+
+
+
+		if (leftDown) {
+			if (shiftDown) {
+				newRot.setY(newRot.y() + d);
+			}
+			else {
+				newPos.setX(newPos.x() - d);
+			}
 		}
-		else {
-			newPos.setX(newPos.x() + d);
+
+		if (rightDown) {
+			if (shiftDown) {
+				newRot.setY(newRot.y() - d);
+			}
+			else {
+				newPos.setX(newPos.x() + d);
+			}
 		}
+
+		if (downDown) {
+			if (shiftDown) {
+				newRot.setX(newRot.x() - d);
+			}
+			else if (ctrlDown) {
+				newPos.setZ(newPos.z() - d);
+			}
+			else {
+				newPos.setY(newPos.y() - d);
+			}
+		}
+
+		if (upDown) {
+			if (shiftDown) {
+				newRot.setX(newRot.x() + d);
+			}
+			else if (ctrlDown) {
+				newPos.setZ(newPos.z() + d);
+			}
+			else {
+				newPos.setY(newPos.y() + d);
+			}
+		}
+
+		instance->setPos(newPos);
+		instance->setRot(newRot);
 	}
 
-	if(downDown) {
-		if(shiftDown) {
-			newRot.setX(newRot.x() - d);
+
+	void renderWorld3D() {
+		g_frameCount++;
+
+		renderEngine->beginScene();
+
+		ResourceInstance *instance = renderEngine->resourceInstance(instanceCube);
+
+		renderEngine->setCurrentCamera(currentCameraId);
+		renderEngine->setCurrentViewport(viewport1);
+		renderEngine->clear(Color(30, 30, 30));
+
+		renderEngine->drawResource(instanceTerrain);
+		Body_render();
+
+		/*
+		static int state = 1;
+		if (g_frameCount % 30 == 0)
+			state ^= 1;
+		if(state == 1)
+			renderEngine->drawResource(instanceQuad1);
+		//renderEngine->drawResource(instanceQuad2);
+		//renderEngine->drawResource(instanceWall);
+		renderEngine->drawResource(instanceTriangle);
+		renderEngine->drawResource(instanceCube);
+		renderEngine->drawResource(instanceTriangleType2);
+		renderEngine->drawResource(instanceCircle);
+		renderEngine->drawResource(instanceCircle2);
+		renderEngine->drawResource(instancePrism);
+
+		for(int i = 0; i < NUM_CUBES; ++i) {
+	//		d3d9.drawResource(instancedCubes[i]);
 		}
-		else if(ctrlDown) {
-			newPos.setZ(newPos.z() - d);
-		}
-		else {
-			newPos.setY(newPos.y() - d);
-		}
+		*/
+		renderEngine->setCurrentCamera(cam2);
+		renderEngine->setCurrentViewport(viewport2);
+		renderEngine->clear(Color(0, 40, 100));
+		instance->setScale(0.5f);
+		renderEngine->drawResource(instanceCube);
+
+		renderEngine->endScene();
 	}
 
-	if(upDown) {
-		if(shiftDown) {
-			newRot.setX(newRot.x() + d);
-		}
-		else if(ctrlDown) {
-			newPos.setZ(newPos.z() + d);
-		}
-		else {
-			newPos.setY(newPos.y() + d);
-		}
-	}
-
-	instance->setPos(newPos);
-	instance->setRot(newRot);
-}
-
-
-void renderWorld3D() {
-	g_frameCount++;
-
-	renderEngine->beginScene();
-
-	ResourceInstance *instance = renderEngine->resourceInstance(instanceCube);
-
-	renderEngine->setCurrentCamera(currentCameraId);
-	renderEngine->setCurrentViewport(viewport1);
-	renderEngine->clear(Color(30, 30, 30));
-
-	static int state = 1;
-	if (g_frameCount % 30 == 0)
-		state ^= 1;
-	if(state == 1)
-		renderEngine->drawResource(instanceQuad1);
-	renderEngine->drawResource(instanceQuad2);
-	renderEngine->drawResource(instanceTerrain);
-	renderEngine->drawResource(instanceWall);
-	renderEngine->drawResource(instanceTriangle);
-	renderEngine->drawResource(instanceCube);
-	renderEngine->drawResource(instanceTriangleType2);
-	renderEngine->drawResource(instanceCircle);
-	renderEngine->drawResource(instanceCircle2);
-	renderEngine->drawResource(instancePrism);
-	
-	
-	for(int i = 0; i < NUM_CUBES; ++i) {
-//		d3d9.drawResource(instancedCubes[i]);
-	}
-
-	renderEngine->setCurrentCamera(cam2);
-	renderEngine->setCurrentViewport(viewport2);
-	renderEngine->clear(Color(0, 40, 100));
-	instance->setScale(0.5f);
-	renderEngine->drawResource(instanceCube);
-	
-	renderEngine->endScene();
 }

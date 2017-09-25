@@ -23,7 +23,8 @@ namespace cinetico_core {
 
 		void setBodyPointsTrackable(unsigned long parts, bool trackable);
 		void setAllBodyPointsTrackable(bool trackable);
-		int getIdentifiedBodyPointCount() const { return m_identifiedBodyPointCount; }
+		int identifiedBodyPointCount() const { return m_identifiedBodyPointCount; }
+		BodyPoint *bodyPoint(BodyPoint::BodyPart bodyPart) const { return m_bodyPoint[bodyPart]; }
 	};
 
 }

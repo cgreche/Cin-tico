@@ -20,6 +20,4 @@ namespace cinetico_core {
 
 }
 
-
-
 #endif

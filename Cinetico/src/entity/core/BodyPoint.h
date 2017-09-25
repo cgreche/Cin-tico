@@ -59,11 +59,12 @@ namespace cinetico_core {
 	public:
 		BodyPoint(Body& ownerBody, BodyPart bodyPart, const char *tag);
 
-		void setTrackable(bool trackable) { m_trackable = trackable; }
+		inline void setTrackable(bool trackable) { m_trackable = trackable; }
 
 		inline const BodyPart bodyPart() const { return m_bodyPart; }
 		inline const std::string &tag() const { return m_tag; }
 		inline const Vector3 &position() const { return m_position; }
+		inline const Vector3 &orientation() const { return m_orientation; }
 		inline bool trackable() const { return m_trackable; }
 		inline bool isIdentified() const { return m_identified; }
 		inline bool isOccluded() const { return m_occluded; }

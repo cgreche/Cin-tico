@@ -20,7 +20,7 @@ do { \
 	if(p->trackable()) { \
 		Joint joint = sensor.joint(identifiedBody, kj); \
 		JointOrientation jointOrientation = sensor.jointOrientation(identifiedBody, kj); \
-		Vector3 position = Vector3(joint.Position.X, joint.Position.Y, joint.Position.Z); \
+		Vector3 position = Vector3(-joint.Position.X, joint.Position.Y, joint.Position.Z); \
 		Vector3 orientation = Vector3(jointOrientation.Orientation.x, jointOrientation.Orientation.y, jointOrientation.Orientation.z); \
 		p->m_position = position; \
 		p->m_orientation = orientation; \
@@ -47,21 +47,47 @@ do { \
 			}
 		}
 
+		//Left and right must be mirrored
+
+		//todo: fingers
 		KinectJoint2CineticoBodyPoint(BodyPoint::Head, JointType_Head);
 		KinectJoint2CineticoBodyPoint(BodyPoint::SpineShoulder, JointType_SpineShoulder);
 		KinectJoint2CineticoBodyPoint(BodyPoint::Spine, JointType_SpineMid);
 		KinectJoint2CineticoBodyPoint(BodyPoint::SpineBase, JointType_SpineBase);
+		//Left
 		KinectJoint2CineticoBodyPoint(BodyPoint::LeftShoulder, JointType_ShoulderLeft);
 		KinectJoint2CineticoBodyPoint(BodyPoint::LeftElbow, JointType_ElbowLeft);
 		KinectJoint2CineticoBodyPoint(BodyPoint::LeftWrist, JointType_WristLeft);
 		KinectJoint2CineticoBodyPoint(BodyPoint::LeftHandCenter, JointType_HandLeft);
+		//fingers
+		//KinectJoint2CineticoBodyPoint(BodyPoint::LeftPinky, JointType_HandLeft);
+		//KinectJoint2CineticoBodyPoint(BodyPoint::LeftRingFinger, JointType_HandLeft);
+		//KinectJoint2CineticoBodyPoint(BodyPoint::LeftMiddleFinger, JointType_HandLeft);
+		//KinectJoint2CineticoBodyPoint(BodyPoint::LeftIndexFinger, JointType_HandLeft);
+		//KinectJoint2CineticoBodyPoint(BodyPoint::LeftThumb, JointType_HandLeft);
+		KinectJoint2CineticoBodyPoint(BodyPoint::LeftHip, JointType_HipLeft);
+		KinectJoint2CineticoBodyPoint(BodyPoint::LeftKnee, JointType_KneeLeft);
+		KinectJoint2CineticoBodyPoint(BodyPoint::LeftAnkle, JointType_AnkleLeft);
+		KinectJoint2CineticoBodyPoint(BodyPoint::LeftFoot, JointType_FootLeft);
+		//Right
 		KinectJoint2CineticoBodyPoint(BodyPoint::RightShoulder, JointType_ShoulderRight);
 		KinectJoint2CineticoBodyPoint(BodyPoint::RightElbow, JointType_ElbowRight);
 		KinectJoint2CineticoBodyPoint(BodyPoint::RightWrist, JointType_WristRight);
 		KinectJoint2CineticoBodyPoint(BodyPoint::RightHandCenter, JointType_HandRight);
-		//todo: complete body points
+		//fingers
+		//KinectJoint2CineticoBodyPoint(BodyPoint::RightPinky, JointType_HandRight);
+		//KinectJoint2CineticoBodyPoint(BodyPoint::RightRingFinger, JointType_HandRight);
+		//KinectJoint2CineticoBodyPoint(BodyPoint::RightMiddleFinger, JointType_HandRight);
+		//KinectJoint2CineticoBodyPoint(BodyPoint::RightIndexFinger, JointType_HandRight);
+		//KinectJoint2CineticoBodyPoint(BodyPoint::RightThumb, JointType_HandRight);
+		KinectJoint2CineticoBodyPoint(BodyPoint::RightHip, JointType_HipRight);
+		KinectJoint2CineticoBodyPoint(BodyPoint::RightKnee, JointType_KneeRight);
+		KinectJoint2CineticoBodyPoint(BodyPoint::RightAnkle, JointType_AnkleRight);
+		KinectJoint2CineticoBodyPoint(BodyPoint::RightFoot, JointType_FootRight);
 
 		return true;
+#else
+		return false;
 #endif
 	}
 
