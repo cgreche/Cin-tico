@@ -11,8 +11,6 @@
 
 namespace cinetico {
 	//todo: get rid of externs
-	extern void setupDB();
-	extern void destroyDB();
 	extern void setupWorld3D();
 	extern void updateWorld3D();
 	extern void renderWorld3D();
@@ -37,7 +35,7 @@ namespace cinetico {
 		registerView(EXERCISE_MANAGEMENT, "Exercise Management", new ExerciseManagementController());
 		registerView(EXERCISE_REALIZATION, "Exercise Realization", new ExerciseRealizationController());
 		
-		setupDB();
+		m_cineticoDB = new CineticoDB(*this);
 		m_mainWindow = new MainWindow();
 
 #if 1
@@ -69,7 +67,7 @@ namespace cinetico {
 			delete m_views[i].controller;
 		}
 
-		destroyDB();
+		delete m_cineticoDB;
 		destroyWorld3D();
 	}
 

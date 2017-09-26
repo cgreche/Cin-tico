@@ -134,7 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\bodytracker.cpp" />
-    <ClCompile Include="src\crudworld.cpp" />
+    <ClCompile Include="src\cineticodb.cpp" />
     <ClCompile Include="src\database\sqlite\sqlitedatabase.cpp" />
     <ClCompile Include="src\database\sqlite\sqliteresultset.cpp" />
     <ClCompile Include="src\database\sqlite\sqlitestatement.cpp" />
@@ -225,7 +225,7 @@
     <ClCompile Include="src\user-interface\ExercisesController.cpp" />
     <ClCompile Include="src\user-interface\LoginController.cpp" />
     <ClCompile Include="src\utils\crypter.cpp" />
-    <ClCompile Include="src\world3d.cpp" />
+    <ClCompile Include="src\cinetico3d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\lib\d3dx9math.inl" />

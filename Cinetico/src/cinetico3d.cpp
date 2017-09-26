@@ -15,6 +15,38 @@ using namespace render3d;
 
 namespace cinetico {
 
+	class Cinetico3D {
+		void setup();
+		void cleanUp();
+
+		void setupWindow();
+		void setupRenderEngine();
+		void setupDrawables();
+		void setupCameras();
+		void setupViewports();
+
+		void setupBody();
+		void updateBody();
+		void renderBody();
+		void setupBodyDrawables();
+		void processCamera();
+
+	public:
+		Cinetico3D();
+		~Cinetico3D();
+		void update();
+		void render();
+	};
+
+	Cinetico3D::Cinetico3D() {
+		setup();
+	}
+
+	Cinetico3D::~Cinetico3D() {
+		cleanUp();
+	}
+
+
 	KinectSensor kinectSensor;
 	BodyTracker *m_bodyTracker;
 
@@ -104,7 +136,7 @@ namespace cinetico {
 	BodyInstanceIds g_bodyInstanceIds;
 
 
-	void setupBodyDrawables() {
+	void Cinetico3D::setupBodyDrawables() {
 		BodyResourceIds &resId = g_bodyResourceIds;
 		BodyInstanceIds &instId = g_bodyInstanceIds;
 
@@ -119,11 +151,7 @@ namespace cinetico {
 		instId.rightFoot = renderEngine->newResourceInstance(resId.foot);
 	}
 
-	void Body_setup() {
-		setupBodyDrawables();
-	}
-
-	void Body_update() {
+	void Cinetico3D::updateBody() {
 		m_bodyTracker->track();
 		BodyInstanceIds &instId = g_bodyInstanceIds;
 		ResourceInstance *instance = renderEngine->resourceInstance(instId.head);
@@ -154,7 +182,7 @@ namespace cinetico {
 		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
 	}
 
-	void Body_render() {
+	void Cinetico3D::renderBody() {
 		BodyInstanceIds &instId = g_bodyInstanceIds;
 		renderEngine->drawResource(instId.head);
 		renderEngine->drawResource(instId.leftHand);
@@ -239,7 +267,7 @@ namespace cinetico {
 		return ::DefWindowProc(hwnd, msg, wParam, lParam);
 	}
 
-	void setupWorld3DWindow() {
+	void Cinetico3D::setupWindow() {
 
 		HINSTANCE hInstance = ::GetModuleHandle(NULL);
 
@@ -274,16 +302,16 @@ namespace cinetico {
 
 
 
-	void setupRenderEngine(HWND hwnd)
+	void Cinetico3D::setupRenderEngine()
 	{
 		renderEngine = new D3D9Engine();
-		renderEngine->configure(hwnd);
+		renderEngine->configure(m_hwnd);
 		renderEngine->init();
 		renderEngineHelper = new RenderEngineHelper(*renderEngine);
 	}
 
 
-	void setupDrawables() {
+	void Cinetico3D:: setupDrawables() {
 		::srand((unsigned int)::time(0));
 		setupBodyDrawables();
 
@@ -383,35 +411,34 @@ namespace cinetico {
 		terrain->setPos(render3d::Vector3(0, -2, 0));
 	}
 
-	void setupCameras() {
+	void Cinetico3D::setupCameras() {
 		cam1 = renderEngine->newCamera(render3d::Vector3(0.f, 3.f, -6.4f), render3d::Vector3(-0.3f, 0.f, 0.f));
 		cam2 = renderEngine->newCamera(render3d::Vector3(8.f, 8.f, -8.f), render3d::Vector3(0.f, 0.f, 0.f));
 	}
 
-	void setupViewports() {
+	void Cinetico3D::setupViewports() {
 		viewport1 = renderEngine->newViewport(0, 0, winWidth, winHeight);
 		float percent = 0.25f;
 		viewport2 = renderEngine->newViewport(20, 20, (int)(winWidth*percent), (int)(winHeight*percent));
 	}
 
-
-	void setupWorld3D() {
+	void Cinetico3D::setup() {
 		kinectSensor.initialize();
 		m_bodyTracker = new BodyTracker(kinectSensor);
-		setupWorld3DWindow();
+		setupWindow();
 		setupRenderEngine(g_world3DWindow);
 		setupDrawables();
 		setupCameras();
 		setupViewports();
 	}
 
-	void destroyWorld3D() {
+	void Cinetico3D::cleanUp() {
 		if (m_bodyTracker)
 			delete m_bodyTracker;
 		kinectSensor.finalize();
 	}
 
-	void processCamera() {
+	void Cinetico3D::processCamera() {
 
 		bool leftDown = keyStates['A'];
 		bool rightDown = keyStates['D'];
@@ -486,9 +513,9 @@ namespace cinetico {
 	}
 
 
-	void updateWorld3D() {
+	void Cinetico3D::update() {
 
-		Body_update();
+		updateBody();
 
 		float d = 0.1f;
 
@@ -565,7 +592,7 @@ namespace cinetico {
 	}
 
 
-	void renderWorld3D() {
+	void Cinetico3D::render() {
 		g_frameCount++;
 
 		renderEngine->beginScene();
@@ -577,7 +604,7 @@ namespace cinetico {
 		renderEngine->clear(Color(30, 30, 30));
 
 		renderEngine->drawResource(instanceTerrain);
-		Body_render();
+		renderBody();
 
 		/*
 		static int state = 1;

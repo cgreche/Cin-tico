@@ -24,6 +24,7 @@ namespace cinetico {
 		};
 
 	private:
+		CineticoDB *m_cineticoDB;
 		MainWindow *m_mainWindow;
 
 		std::vector<View> m_views;

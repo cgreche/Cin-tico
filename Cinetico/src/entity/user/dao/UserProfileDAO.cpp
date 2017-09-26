@@ -11,7 +11,7 @@ namespace cinetico {
 	}
 
 	void UserProfileDAO::save(UserProfile &user) {
-		const char *sql = "INSERT INTO USER_PROFILE(login_name,password,creation_date) VALUES(?,?,?);";
+		const char *sql = "INSERT INTO USER_PROFILE(login_name,password,creation_time) VALUES(?,?,?);";
 
 		SQLStatement *stmt;
 		stmt = m_db.prepare(sql);
@@ -27,7 +27,7 @@ namespace cinetico {
 
 
 	void UserProfileDAO::update(UserProfile &user) {
-		const char *sql = "UPDATE USER_PROFILE SET login_name = ?, password = ?, creation_date = ?;";
+		const char *sql = "UPDATE USER_PROFILE SET login_name = ?, password = ?, creation_time = ?;";
 		SQLStatement *stmt;
 		stmt = m_db.prepare(sql);
 		stmt->bind(1, user.username());

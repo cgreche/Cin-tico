@@ -440,12 +440,6 @@
     <ClCompile Include="src\render3d\viewport.cpp">
       <Filter>Arquivos de Origem\render3d</Filter>
     </ClCompile>
-    <ClCompile Include="src\world3d.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="src\crudworld.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
     <ClCompile Include="src\user-interface\LoginController.cpp">
       <Filter>Arquivos de Origem\user-interface</Filter>
     </ClCompile>
@@ -694,6 +688,12 @@
     </ClCompile>
     <ClCompile Include="src\user-interface\ExerciseManagementController.cpp">
       <Filter>Arquivos de Origem\user-interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cineticodb.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cinetico3d.cpp">
+      <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
