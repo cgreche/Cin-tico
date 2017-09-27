@@ -36,11 +36,10 @@ namespace cinetico {
 		m_cinetico3D = new Cinetico3D(*this);
 		m_mainWindow = new MainWindow();
 
-#if 1
+#if 0
 		goTo(LOGIN);
 #else
-		setupWorld3D();
-		m_onWorld3D = true;
+		enter3DWorld();
 #endif
 	}
 

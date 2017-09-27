@@ -41,6 +41,18 @@ namespace render3d {
 			m_height = height;
 		}
 
+		void setPosition(int x, int y) {
+			m_x = x;
+			m_y = y;
+			m_dirtyFlags |= RECT_DIRTY;
+		}
+
+		void setSize(int width, int height) {
+			m_width = width;
+			m_height = height;
+			m_dirtyFlags |= RECT_DIRTY;
+		}
+
 		int x() const { return m_x; }
 		int y() const { return m_y; }
 		int width() const { return m_width; }

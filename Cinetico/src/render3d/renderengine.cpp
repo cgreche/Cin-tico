@@ -4,6 +4,8 @@ namespace render3d {
 
 	RenderEngine::RenderEngine() {
 		m_currentCamera = NULL;
+		m_currentViewport = NULL;
+		m_currentFont = NULL;
 	}
 
 	int RenderEngine::newResource(unsigned int vertexCount, Vertex3 *vertices, unsigned int indexCount, int *indices, Color *colors) {
@@ -49,6 +51,24 @@ namespace render3d {
 		return curId;
 	}
 
+	int RenderEngine::newFontResource(const char *face, int width, int height, unsigned long flags)
+	{
+		int curId = m_fontResources.size();
+		FontResource *font = new FontResource(this, curId, face, width, height, flags);
+		font->m_internalData = newInternalFontResource(font);
+		m_fontResources.push_back(font);
+		return curId;
+	}
+
+	int RenderEngine::newTextResource(int x, int y, int width, int height)
+	{
+		int curId = m_textResources.size();
+		TextResource *text = new TextResource(this, curId, x, y, width, height);
+		text->m_internalData = newInternalTextResource(text);
+		m_textResources.push_back(text);
+		return curId;
+	}
+
 	void RenderEngine::drawResource(int resInstanceId) {
 		drawInternalResource(m_instances[resInstanceId]);
 	}
@@ -63,4 +83,11 @@ namespace render3d {
 		setCurrentInternalViewport(m_currentViewport);
 	}
 
+	void RenderEngine::setCurrentFont(int fontId) {
+		m_currentFont = m_fontResources[fontId];
+		setCurrentInternalFont(m_currentFont);
+	}
+
+	void RenderEngine::drawText(const char *text, int x, int y, const Color &color) {
+	}
 }

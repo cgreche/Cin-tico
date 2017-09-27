@@ -28,8 +28,11 @@ namespace render3d {
 	};
 
 	D3D9Engine::D3D9Engine()
-		: m_hwnd(NULL)
 	{
+		m_hwnd = NULL;
+		m_d3d9 = NULL;
+		m_device = NULL;
+		m_currentFont = NULL;
 	}
 
 	void D3D9Engine::configure(void *options)
@@ -270,6 +273,28 @@ namespace render3d {
 		return internalData;
 	}
 
+	void *D3D9Engine::newInternalFontResource(FontResource *font) {
+		ID3DXFont *d3dxFont;
+		unsigned long flags = font->flags();
+		UINT weight = flags & FontResource::BOLD ? FW_BOLD : FW_NORMAL;
+		BOOL italic = (flags & FontResource::ITALIC) != 0;
+		HRESULT hr = ::D3DXCreateFont(m_device, font->height(), font->width(), weight,
+			1, italic,
+			DEFAULT_CHARSET,
+			OUT_DEFAULT_PRECIS,
+			CLEARTYPE_QUALITY,
+			DEFAULT_PITCH | FF_DONTCARE,
+			font->face().c_str(), &d3dxFont);
+		if (hr == S_OK) {
+			return d3dxFont;
+		}
+		return NULL;
+	}
+
+	void *D3D9Engine::newInternalTextResource(TextResource *text) {
+		return NULL;
+	}
+
 	void D3D9Engine::setCurrentInternalCamera(Camera *camera)
 	{
 		if (camera) {
@@ -303,6 +328,13 @@ namespace render3d {
 		HRESULT hr;
 		if (viewport) {
 			hr = m_device->SetViewport((D3DVIEWPORT9*)viewport->internalData());
+		}
+	}
+
+	void D3D9Engine::setCurrentInternalFont(FontResource *font)
+	{
+		if (font) {
+			m_currentFont = (LPD3DXFONT)font->internalData();
 		}
 	}
 
@@ -403,6 +435,14 @@ namespace render3d {
 			0,
 			resData->indexCount() / 3
 		);
+	}
+
+	void D3D9Engine::drawText(const char *text, int x, int y, const Color &color) {
+		ID3DXFont *font = m_currentFont;
+		if (font) {
+			RECT rect = { x,y,0,0 };
+			font->DrawText(NULL, text, -1, &rect, DT_LEFT | DT_NOCLIP, D3DCOLOR_RGBA(color.r(), color.g(), color.b(), color.a()));
+		}
 	}
 
 }

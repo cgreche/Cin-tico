@@ -426,6 +426,9 @@
     <ClInclude Include="src\cinetico3d.h">
       <Filter>Arquivos de Origem</Filter>
     </ClInclude>
+    <ClInclude Include="src\render3d\fontresource.h">
+      <Filter>Arquivos de Origem\render3d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -709,6 +712,9 @@
     </ClCompile>
     <ClCompile Include="src\entity\core\dao\ExerciseDAO.cpp">
       <Filter>Arquivos de Origem\entity\core\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render3d\fontresource.cpp">
+      <Filter>Arquivos de Origem\render3d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

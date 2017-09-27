@@ -60,6 +60,7 @@
     <ClInclude Include="src\render3d\color.h" />
     <ClInclude Include="src\render3d\d3d9engine.h" />
     <ClInclude Include="src\render3d\d3dx12.h" />
+    <ClInclude Include="src\render3d\fontresource.h" />
     <ClInclude Include="src\render3d\renderengine.h" />
     <ClInclude Include="src\render3d\renderenginehelper.h" />
     <ClInclude Include="src\render3d\renderobject.h" />
@@ -157,6 +158,7 @@
     <ClCompile Include="src\lib\sqlite-amalgamation-3200100\sqlite3.c" />
     <ClCompile Include="src\mainwindow.cpp" />
     <ClCompile Include="src\render3d\d3d9engine.cpp" />
+    <ClCompile Include="src\render3d\fontresource.cpp" />
     <ClCompile Include="src\render3d\renderengine.cpp" />
     <ClCompile Include="src\render3d\renderenginehelper.cpp" />
     <ClCompile Include="src\render3d\resourcedata.cpp" />

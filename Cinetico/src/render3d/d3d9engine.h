@@ -14,6 +14,7 @@ namespace render3d {
 		HWND m_hwnd;
 		LPDIRECT3D9 m_d3d9;
 		LPDIRECT3DDEVICE9 m_device;
+		LPD3DXFONT m_currentFont;
 
 		void updateResourceInstanceData(ResourceInstance *instance);
 		void updateCamera(Camera *camera);
@@ -25,9 +26,13 @@ namespace render3d {
 		virtual void *newInternalCamera(Camera *camera);
 		virtual void *newInternalViewport(Viewport *viewport);
 		virtual void *newInternalResourceInstance(ResourceInstance *instance);
+		virtual void *newInternalFontResource(FontResource *font);
+		virtual void *newInternalTextResource(TextResource *text);
 		virtual void drawInternalResource(ResourceInstance *resData);
+		virtual void drawText(const char *text, int x, int y, const Color &color);
 		virtual void setCurrentInternalCamera(Camera *camera);
 		virtual void setCurrentInternalViewport(Viewport *viewport);
+		virtual void setCurrentInternalFont(FontResource *font);
 
 	public:
 		D3D9Engine();

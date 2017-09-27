@@ -89,6 +89,10 @@ namespace cinetico {
 	int instancedCubes[NUM_CUBES];
 
 
+	int resFontArial;
+	int resFontVerdana;
+
+
 #define HEAD_SIZE 4.f/10.f
 #define FOOT_SIZE HEAD_SIZE/2
 #define HAND_SIZE HEAD_SIZE/2
@@ -386,6 +390,10 @@ namespace cinetico {
 
 		ResourceInstance *terrain = (ResourceInstance*)renderEngine->resourceInstance(instanceTerrain);
 		terrain->setPos(render3d::Vector3(0, -2, 0));
+
+
+		resFontArial = renderEngine->newFontResource("Arial", 15, 100, FontResource::BOLD);
+		resFontVerdana = renderEngine->newFontResource("Verdana", 20, 200, FontResource::ITALIC);
 	}
 
 	void Cinetico3D::setupCameras() {
@@ -579,6 +587,11 @@ namespace cinetico {
 		renderEngine->setCurrentCamera(currentCameraId);
 		renderEngine->setCurrentViewport(viewport1);
 		renderEngine->clear(Color(30, 30, 30));
+
+		renderEngine->setCurrentFont(resFontArial);
+		renderEngine->drawText("HELLO WORLD", 400, 10, Color(255, 0, 0, 100));
+		renderEngine->setCurrentFont(resFontVerdana);
+		renderEngine->drawText("FUUUUUUUUUUUU", 400, 50, Color(125, 200, 30, 50));
 
 		renderEngine->drawResource(instanceTerrain);
 		renderBody();

@@ -12,12 +12,14 @@ namespace render3d {
 
 	class RenderEngine;
 
-#define VERTEX_DIRTY 0x01
-#define INDEX_DIRTY 0x02
-#define COLOR_DIRTY 0x04
-
 	class ResourceData : public RenderObject
 	{
+		enum DirtyFlags {
+			VERTEX_DIRTY = 0x01,
+			INDEX_DIRTY = 0x02,
+			COLOR_DIRTY = 0x04
+		};
+
 		int m_vertexCount;
 		Vertex3 *m_vertices;
 		Color *m_colors;
