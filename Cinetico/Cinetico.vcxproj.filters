@@ -429,6 +429,9 @@
     <ClInclude Include="src\render3d\fontresource.h">
       <Filter>Arquivos de Origem\render3d</Filter>
     </ClInclude>
+    <ClInclude Include="src\user-interface\template.h">
+      <Filter>Arquivos de Origem\user-interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">

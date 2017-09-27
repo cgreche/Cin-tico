@@ -4,9 +4,11 @@
 namespace cinetico {
 
 	class Cinetico;
+	class Exercise;
 
 	class Cinetico3D {
 		Cinetico &m_application;
+		Exercise *m_playingExercise;
 
 		void setup();
 		void cleanUp();
@@ -25,6 +27,7 @@ namespace cinetico {
 	public:
 		Cinetico3D(Cinetico &cinetico);
 		~Cinetico3D();
+		void startExercise(Exercise &exercise);
 		void update();
 		void render();
 	};

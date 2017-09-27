@@ -134,6 +134,7 @@
     <ClInclude Include="src\user-interface\ExerciseRealizationController.h" />
     <ClInclude Include="src\user-interface\ExercisesController.h" />
     <ClInclude Include="src\user-interface\LoginController.h" />
+    <ClInclude Include="src\user-interface\template.h" />
     <ClInclude Include="src\utils\crypter.h" />
   </ItemGroup>
   <ItemGroup>

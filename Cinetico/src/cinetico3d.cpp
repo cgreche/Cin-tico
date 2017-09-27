@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <time.h>
 #include "cinetico.h"
+#include "entity/core/exercise.h"
 #include "cinetico3d.h"
 #include "render3d/d3d9engine.h"
 #include "render3d/renderenginehelper.h"
@@ -18,6 +19,7 @@ namespace cinetico {
 
 	Cinetico3D::Cinetico3D(Cinetico &cinetico)
 	: m_application(cinetico) {
+		m_playingExercise = NULL;
 		setup();
 	}
 
@@ -581,6 +583,9 @@ namespace cinetico {
 		return;
 	}
 
+	void Cinetico3D::startExercise(Exercise &exercise) {
+		m_playingExercise = &exercise;
+	}
 
 	void Cinetico3D::update() {
 
@@ -698,10 +703,15 @@ namespace cinetico {
 		}
 		*/
 
-		renderEngine->setCurrentFont(resFontArial);
-		renderEngine->drawText("HELLO WORLD", 400, 10, Color(255, 255, 255, 100));
-		renderEngine->setCurrentFont(resFontVerdana);
-		renderEngine->drawText("FUUUUUUUUUUUU", 400, 50, Color(125, 200, 30, 150));
+
+		if (m_playingExercise) {
+			renderEngine->setCurrentFont(resFontArial);
+			std::string str = "Exercício selecionado: ";
+			str += m_playingExercise->name();
+			renderEngine->drawText(str.c_str(), 500, 10, Color(255, 255, 255, 100));
+			renderEngine->setCurrentFont(resFontVerdana);
+			renderEngine->drawText("FUUUUUUUUUUUU", 400, 50, Color(125, 200, 30, 150));
+		}
 
 
 		//

@@ -14,13 +14,24 @@ namespace cinetico {
 			VerticalLayout layoutActions;
 				Label labelViewTitle;
 				Label labelViewDescr;
-				HorizontalLayout layouActionbuttons;
+				HorizontalLayout layoutActionButtons;
 					Button buttonCreateExercise;
 					Button buttonRecordExercise;
 					Button buttonDoExercise;
 
 			VerticalLayout layoutContent;
+
+			VerticalLayout layoutContentList;
 				ListView listExercises;
+
+			VerticalLayout layoutContentEditData;
+				EditBox editExerciseName;
+					CheckBox checkHead;
+					CheckBox checkLeftHand;
+					CheckBox checkRightHand;
+					CheckBox checkHip;
+					CheckBox checkLeftFoot;
+					CheckBox checkRightFoot;
 			
 	public:
 		ExercisesController();

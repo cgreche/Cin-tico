@@ -11,7 +11,13 @@ namespace cinetico {
 	{
 	public:
 		VerticalLayout layout;
-			HorizontalLayout layoutAction;
+			HorizontalLayout layoutActions;
+				Label labelViewTitle;
+				Label labelViewDescr;
+				HorizontalLayout layoutActionButtons;
+					Button buttonSaveExercise;
+					Button buttonCancelExercise;
+
 				VerticalLayout layoutActionType;
 					Label labelActionType;
 					ComboBox comboActionType;

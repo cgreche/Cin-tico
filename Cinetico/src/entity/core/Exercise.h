@@ -11,6 +11,9 @@ namespace cinetico_core {
 
 	public:
 		Exercise();
+
+		const std::string& name() const { return m_name; }
+		const std::string& author() const { return m_author; }
 	};
 
 }
