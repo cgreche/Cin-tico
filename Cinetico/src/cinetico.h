@@ -1,4 +1,9 @@
 
+#ifndef __CINETICO_H__
+#define __CINETICO_H__
+
+#include "cineticodb.h"
+#include "cinetico3d.h"
 #include <vector>
 
 namespace cinetico {
@@ -25,6 +30,7 @@ namespace cinetico {
 
 	private:
 		CineticoDB *m_cineticoDB;
+		Cinetico3D *m_cinetico3D;
 		MainWindow *m_mainWindow;
 
 		std::vector<View> m_views;
@@ -42,6 +48,11 @@ namespace cinetico {
 		void registerView(int id, const char *name, Controller *controller);
 		int run();
 		void goTo(ViewID viewId);
+		void enter3DWorld();
 		void setOnWorld3D(bool onWorld3D) { m_onWorld3D = onWorld3D; }
+		CineticoDB *cineticoDB() const { return m_cineticoDB; }
+		Cinetico3D *cinetico3D() const { return m_cinetico3D; }
 	};
 }
+
+#endif

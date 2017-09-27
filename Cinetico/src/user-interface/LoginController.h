@@ -7,6 +7,8 @@
 
 namespace cinetico {
 
+	class UserProfileDAO;
+
 	class LoginController : public Controller
 	{
 	public:
@@ -29,6 +31,9 @@ namespace cinetico {
 					Label labelCreateAccountPassword;
 					EditBox editCreateAccountPassword;
 					Button buttonCreateAccount;
+
+
+		UserProfileDAO *m_userProfileDAO;
 	public:
 		LoginController();
 

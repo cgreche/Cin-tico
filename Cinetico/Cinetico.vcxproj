@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClInclude Include="src\bodytracker.h" />
     <ClInclude Include="src\cinetico.h" />
+    <ClInclude Include="src\cinetico3d.h" />
+    <ClInclude Include="src\cineticodb.h" />
     <ClInclude Include="src\database\database.h" />
     <ClInclude Include="src\database\resultset.h" />
     <ClInclude Include="src\database\sqlite\sqlitedatabase.h" />
@@ -31,6 +33,7 @@
     <ClInclude Include="src\entity\core\Action.h" />
     <ClInclude Include="src\entity\core\Body.h" />
     <ClInclude Include="src\entity\core\BodyPoint.h" />
+    <ClInclude Include="src\entity\core\dao\ExerciseDAO.h" />
     <ClInclude Include="src\entity\core\Exercise.h" />
     <ClInclude Include="src\entity\core\HandHandler.h" />
     <ClInclude Include="src\entity\core\MovementAction.h" />
@@ -142,6 +145,7 @@
     <ClCompile Include="src\entity\core\Action.cpp" />
     <ClCompile Include="src\entity\core\Body.cpp" />
     <ClCompile Include="src\entity\core\BodyPoint.cpp" />
+    <ClCompile Include="src\entity\core\dao\ExerciseDAO.cpp" />
     <ClCompile Include="src\entity\core\Exercise.cpp" />
     <ClCompile Include="src\entity\core\HandHandler.cpp" />
     <ClCompile Include="src\entity\core\MovementAction.cpp" />

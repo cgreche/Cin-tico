@@ -76,6 +76,9 @@
     <Filter Include="Arquivos de Origem\entity\core">
       <UniqueIdentifier>{59e42ef3-6ef6-4f78-af82-341eb11646a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Arquivos de Origem\entity\core\dao">
+      <UniqueIdentifier>{20f5d732-52c1-4a31-825c-af2a100c6a7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\render\camera.h">
@@ -414,6 +417,15 @@
     <ClInclude Include="src\user-interface\ExerciseManagementController.h">
       <Filter>Arquivos de Origem\user-interface</Filter>
     </ClInclude>
+    <ClInclude Include="src\entity\core\dao\ExerciseDAO.h">
+      <Filter>Arquivos de Origem\entity\core\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cineticodb.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cinetico3d.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -694,6 +706,9 @@
     </ClCompile>
     <ClCompile Include="src\cinetico3d.cpp">
       <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\core\dao\ExerciseDAO.cpp">
+      <Filter>Arquivos de Origem\entity\core\dao</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

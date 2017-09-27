@@ -7,7 +7,6 @@
 
 namespace cinetico {
 
-	extern UserProfileDAO *userProfileDAO;
 	extern Cinetico g_cinetico;
 
 	void onClick_login(Button &button) {
@@ -75,6 +74,7 @@ namespace cinetico {
 	}
 
 	void LoginController::onViewEnter() {
+		m_userProfileDAO = g_cinetico.cineticoDB()->userProfileDAO();
 	}
 
 	void LoginController::onViewQuit() {
@@ -84,7 +84,7 @@ namespace cinetico {
 	void LoginController::login() {
 		string &username = editUsername.text();
 		string &password = editPassword.text();
-		UserProfile *user = userProfileDAO->getByLoginName(username.data());
+		UserProfile *user = m_userProfileDAO->getByLoginName(username.data());
 		if (user) {
 			std::string cryptPW = Crypter::SimpleHash(password.data());
 			if (user->login(cryptPW)) {
@@ -122,7 +122,7 @@ namespace cinetico {
 			return;
 		//
 
-		UserProfile *user = userProfileDAO->getByLoginName(username.data());
+		UserProfile *user = m_userProfileDAO->getByLoginName(username.data());
 		if (user) {
 			//usuario já existe
 			Message::warning(NULL, "Nome de usuário já existente.");
@@ -132,7 +132,7 @@ namespace cinetico {
 
 		//Account creation
 		user = new UserProfile(username.data(), cryptPW);
-		userProfileDAO->save(*user);
+		m_userProfileDAO->save(*user);
 
 		//account created successfully
 		Message::msg(NULL, "Conta criada com sucesso.");

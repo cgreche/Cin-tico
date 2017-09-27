@@ -3,6 +3,8 @@
 #include <time.h>
 
 #include "cinetico.h"
+#include "cineticodb.h"
+#include "cinetico3d.h"
 #include "mainwindow.h"
 #include "user-interface/LoginController.h"
 #include "user-interface/ExercisesController.h"
@@ -10,11 +12,6 @@
 #include "user-interface/ExerciseRealizationController.h"
 
 namespace cinetico {
-	//todo: get rid of externs
-	extern void setupWorld3D();
-	extern void updateWorld3D();
-	extern void renderWorld3D();
-	extern void destroyWorld3D();
 
 	Cinetico g_cinetico;
 	
@@ -36,6 +33,7 @@ namespace cinetico {
 		registerView(EXERCISE_REALIZATION, "Exercise Realization", new ExerciseRealizationController());
 		
 		m_cineticoDB = new CineticoDB(*this);
+		m_cinetico3D = new Cinetico3D(*this);
 		m_mainWindow = new MainWindow();
 
 #if 1
@@ -50,7 +48,7 @@ namespace cinetico {
 	void Cinetico::update()
 	{
 		if (m_onWorld3D) {
-			updateWorld3D();
+			m_cinetico3D->update();
 		}
 	}
 
@@ -58,7 +56,7 @@ namespace cinetico {
 	void Cinetico::render()
 	{
 		if (m_onWorld3D) {
-			renderWorld3D();
+			m_cinetico3D->render();
 		}
 	}
 
@@ -67,8 +65,10 @@ namespace cinetico {
 			delete m_views[i].controller;
 		}
 
-		delete m_cineticoDB;
-		destroyWorld3D();
+		if(m_cinetico3D)
+			delete m_cinetico3D;
+		if(m_cineticoDB)
+			delete m_cineticoDB;
 	}
 
 
@@ -78,9 +78,6 @@ namespace cinetico {
 		while (uibase::UIProcess()) {
 			update();
 			render();
-		}
-
-		if (!m_onWorld3D) {
 		}
 
 		cleanUp();
@@ -99,6 +96,10 @@ namespace cinetico {
 		controller->onViewEnter();
 
 		m_mainWindow->setSize(Size(1024, 768));
+	}
+
+	void Cinetico::enter3DWorld() {
+		m_onWorld3D = true;
 	}
 
 }

@@ -1,8 +1,6 @@
 
-#include "cinetico.h"
-#include "database/database.h"
+#include "cineticodb.h"
 #include "entity/user/UserProfile.h"
-#include "entity/user/dao/UserProfileDAO.h"
 #include "utils/crypter.h"
 #include "database/sqlite/sqlitedatabase.h"
 
@@ -31,24 +29,6 @@ namespace cinetico {
 
 		throw "Unsupported SGBD";
 	}
-
-	//DB management module
-	class CineticoDB {
-		Cinetico &m_application;
-		Database *m_db;
-
-		UserProfileDAO *m_userProfileDAO;
-
-		void setup();
-		void cleanUp();
-
-	public:
-		CineticoDB(Cinetico &cinetico);
-		~CineticoDB();
-
-		Database *db() const { return m_db; }
-		UserProfileDAO *userProfileDAO() const { return m_userProfileDAO; }
-	};
 
 	CineticoDB::CineticoDB(Cinetico &cinetico)
 		: m_application(cinetico) {

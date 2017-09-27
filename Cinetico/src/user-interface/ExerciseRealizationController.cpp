@@ -5,7 +5,6 @@
 namespace cinetico {
 
 	extern Cinetico g_cinetico;
-	extern void setupWorld3D();
 
 	ExerciseRealizationController::ExerciseRealizationController() {
 
@@ -16,9 +15,7 @@ namespace cinetico {
 	}
 
 	void ExerciseRealizationController::onViewEnter() {
-		
-		setupWorld3D();
-		g_cinetico.setOnWorld3D(true);
+		g_cinetico.enter3DWorld();
 	}
 
 	void ExerciseRealizationController::onViewQuit() {

@@ -1,44 +1,21 @@
 #include <windows.h>
 #include <time.h>
+#include "cinetico.h"
+#include "cinetico3d.h"
 #include "render3d/d3d9engine.h"
 #include "render3d/renderenginehelper.h"
-
-using namespace render3d;
-
-HWND g_world3DWindow = NULL;
-
 #include "bodytracker.h"
 #include "kinectsensor.h"
 
 using namespace cinetico_core;
 using namespace render3d;
 
+HWND g_world3DWindow = NULL;
+
 namespace cinetico {
 
-	class Cinetico3D {
-		void setup();
-		void cleanUp();
-
-		void setupWindow();
-		void setupRenderEngine();
-		void setupDrawables();
-		void setupCameras();
-		void setupViewports();
-
-		void setupBody();
-		void updateBody();
-		void renderBody();
-		void setupBodyDrawables();
-		void processCamera();
-
-	public:
-		Cinetico3D();
-		~Cinetico3D();
-		void update();
-		void render();
-	};
-
-	Cinetico3D::Cinetico3D() {
+	Cinetico3D::Cinetico3D(Cinetico &cinetico)
+	: m_application(cinetico) {
 		setup();
 	}
 
@@ -136,7 +113,7 @@ namespace cinetico {
 	BodyInstanceIds g_bodyInstanceIds;
 
 
-	void Cinetico3D::setupBodyDrawables() {
+	void Cinetico3D::setupBody() {
 		BodyResourceIds &resId = g_bodyResourceIds;
 		BodyInstanceIds &instId = g_bodyInstanceIds;
 
@@ -305,7 +282,7 @@ namespace cinetico {
 	void Cinetico3D::setupRenderEngine()
 	{
 		renderEngine = new D3D9Engine();
-		renderEngine->configure(m_hwnd);
+		renderEngine->configure(g_world3DWindow);
 		renderEngine->init();
 		renderEngineHelper = new RenderEngineHelper(*renderEngine);
 	}
@@ -313,7 +290,7 @@ namespace cinetico {
 
 	void Cinetico3D:: setupDrawables() {
 		::srand((unsigned int)::time(0));
-		setupBodyDrawables();
+		setupBody();
 
 		Vertex3 triangle1[] = {
 			{ 0.3f, 0.0f, 1 },
@@ -426,7 +403,7 @@ namespace cinetico {
 		kinectSensor.initialize();
 		m_bodyTracker = new BodyTracker(kinectSensor);
 		setupWindow();
-		setupRenderEngine(g_world3DWindow);
+		setupRenderEngine();
 		setupDrawables();
 		setupCameras();
 		setupViewports();
