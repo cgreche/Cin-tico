@@ -9,14 +9,14 @@ using namespace cinetico;
 namespace cinetico {
 
 	void MainWindow::buildHeaderLayout() {
-		labelTitle.setText("Cinético");
-		labelTitle.setTextColor(Color(0x80, 0x80, 0x80));
-		labelTitle.setAlignment(Label::VCenter);
-		labelTitle.setBackgroundColor(Color(0, 0, 0));
-		labelTitle.setTransparent(false);
-		labelTitle.setFont(FontDesc("Arial", 16, FONT_BOLD));
+		labelAppname.setText("Cinético");
+		labelAppname.setTextColor(Color(0x80, 0x80, 0x80));
+		labelAppname.setAlignment(Label::VCenter);
+		labelAppname.setBackgroundColor(Color(0, 0, 0));
+		labelAppname.setTransparent(false);
+		labelAppname.setFont(FontDesc("Arial", 16, FONT_BOLD));
 
-		layoutHeader.append(labelTitle, Size(SizeTypeMax, SizeTypeMax));
+		layoutHeader.append(labelAppname, Size(SizeTypeMax, SizeTypeMax));
 	}
 
 	void MainWindow::buildFooterLayout() {

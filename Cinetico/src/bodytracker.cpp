@@ -13,6 +13,8 @@ namespace cinetico_core {
 	}
 
 	bool BodyTracker::track() {
+		int identifiedBodyPointCount = 0;
+
 #ifdef _WIN32
 #define KinectJoint2CineticoBodyPoint(bp,kj) \
 do { \
@@ -26,6 +28,7 @@ do { \
 		p->m_orientation = orientation; \
 		p->m_identified = joint.TrackingState != TrackingState_NotTracked; \
 		p->m_occluded = joint.TrackingState != TrackingState_Tracked; \
+		if(p->m_identified) identifiedBodyPointCount++; \
 	} \
 } while(0)
 
@@ -33,8 +36,11 @@ do { \
 		sensor.update();
 
 		m_identifiedBodyCount = sensor.identifiedBodyCount();
-		if(m_identifiedBodyCount != 1)
+		if(m_identifiedBodyCount != 1) {
+			if (m_body)
+				m_body->m_identifiedBodyPointCount = 0;
 			return false;
+		}
 
 		if (!m_body)
 			m_body = new Body(sensor);
@@ -85,6 +91,7 @@ do { \
 		KinectJoint2CineticoBodyPoint(BodyPoint::RightAnkle, JointType_AnkleRight);
 		KinectJoint2CineticoBodyPoint(BodyPoint::RightFoot, JointType_FootRight);
 
+		m_body->m_identifiedBodyPointCount = identifiedBodyPointCount;
 		return true;
 #else
 		return false;

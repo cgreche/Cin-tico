@@ -12,7 +12,12 @@ namespace cinetico {
 	{
 		VerticalLayout layout;
 		VerticalLayout layoutHeader;
-		Label labelTitle;
+			HorizontalLayout layoutAppState;
+				Label labelAppname;
+				HorizontalLayout layoutLoginInfo;
+					Label labelUsername;
+					Label buttonLogoff;
+
 		VerticalLayout layoutContent;
 		VerticalLayout layoutFooter;
 		Label labelAuthor;

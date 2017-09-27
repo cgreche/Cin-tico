@@ -12,6 +12,8 @@ using namespace render3d;
 
 HWND g_world3DWindow = NULL;
 
+#define GRAY_COLOR 80
+
 namespace cinetico {
 
 	Cinetico3D::Cinetico3D(Cinetico &cinetico)
@@ -22,7 +24,6 @@ namespace cinetico {
 	Cinetico3D::~Cinetico3D() {
 		cleanUp();
 	}
-
 
 	KinectSensor kinectSensor;
 	BodyTracker *m_bodyTracker;
@@ -121,8 +122,6 @@ namespace cinetico {
 		BodyResourceIds &resId = g_bodyResourceIds;
 		BodyInstanceIds &instId = g_bodyInstanceIds;
 
-#define GRAY_COLOR 128
-
 		Color bodyColors[] =
 		{
 			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
@@ -205,6 +204,12 @@ namespace cinetico {
 
 	void Cinetico3D::renderBody() {
 		BodyInstanceIds &instId = g_bodyInstanceIds;
+
+		Body *body = m_bodyTracker->body();
+
+		if (!body || body->identifiedBodyPointCount() == 0)
+			return;
+
 		renderEngine->drawResource(instId.head);
 		renderEngine->drawResource(instId.leftHand);
 		renderEngine->drawResource(instId.rightHand);
