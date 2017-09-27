@@ -20,10 +20,10 @@ namespace render3d {
 		int createCircle(float radius, unsigned int numPoints, Color *colors);
 		int createSquare(float sideLength) { return createQuad(sideLength, sideLength); }
 
-		int createRectangularPrism(float width, float height, float length);
+		int createRectangularPrism(float width, float height, float length, Color *colors);
 		int createTriangularPrism();
 		int createSphere();
-		int createCube(float edgeLength) { return createRectangularPrism(edgeLength, edgeLength, edgeLength); }
+		int createCube(float edgeLength, Color *colors) { return createRectangularPrism(edgeLength, edgeLength, edgeLength,colors); }
 		int generateTerrain(float squareSize, int terrainGridWidth, int terrainGridHeight);
 
 		int loadSprite();

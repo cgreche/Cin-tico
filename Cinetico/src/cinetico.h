@@ -49,7 +49,7 @@ namespace cinetico {
 		int run();
 		void goTo(ViewID viewId);
 		void enter3DWorld();
-		void setOnWorld3D(bool onWorld3D) { m_onWorld3D = onWorld3D; }
+
 		CineticoDB *cineticoDB() const { return m_cineticoDB; }
 		Cinetico3D *cinetico3D() const { return m_cinetico3D; }
 	};

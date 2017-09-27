@@ -74,7 +74,7 @@ namespace render3d {
 		return retId;
 	}
 
-	int RenderEngineHelper::createRectangularPrism(float width, float height, float length)
+	int RenderEngineHelper::createRectangularPrism(float width, float height, float length, Color *colors)
 	{
 		float hw = width / 2.f;
 		float hh = height / 2.f;
@@ -121,46 +121,7 @@ namespace render3d {
 			20,21,22,22,23,20
 		};
 
-		Color prismColors[] =
-		{
-			Color(255,0,0),
-			Color(255,0,0),
-			Color(255,0,0),
-			Color(255,0,0),
-
-			//Back
-			Color(255,0,0),
-			Color(255,0,0),
-			Color(255,0,0),
-			Color(255,0,0),
-
-			//Top
-			Color(0,0,0),
-			Color(0,0,0),
-			Color(0,0,0),
-			Color(0,0,0),
-
-			//Bottom
-			Color(255,255,0),
-			Color(255,255,0),
-			Color(255,255,0),
-			Color(255,255,0),
-
-			//Left
-			Color(255,255,255),
-			Color(255,255,255),
-			Color(255,255,255),
-			Color(255,255,255),
-
-			//Right
-			Color(0,0,255),
-			Color(0,0,255),
-			Color(0,0,255),
-			Color(0,0,255),
-		};
-
-		return m_renderEngine.newResource(24, prism, 36, prismIndices, prismColors);
-
+		return m_renderEngine.newResource(24, prism, 36, prismIndices, colors);
 	}
 
 	int RenderEngineHelper::generateTerrain(float squareSize, int terrainGridWidth, int terrainGridHeight)

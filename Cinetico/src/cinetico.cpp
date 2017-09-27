@@ -98,6 +98,7 @@ namespace cinetico {
 	}
 
 	void Cinetico::enter3DWorld() {
+		m_mainWindow->setVisible(false);
 		m_onWorld3D = true;
 	}
 

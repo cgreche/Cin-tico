@@ -90,4 +90,5 @@ namespace render3d {
 
 	void RenderEngine::drawText(const char *text, int x, int y, const Color &color) {
 	}
+
 }

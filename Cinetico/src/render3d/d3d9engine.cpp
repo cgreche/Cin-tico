@@ -207,7 +207,7 @@ namespace render3d {
 			pData += sizeof(Vertex3);
 			D3DCOLOR d3dColor;
 			if (!colors)
-				d3dColor = D3DCOLOR_ARGB(255, 0, 0, 0);
+				d3dColor = D3DCOLOR_ARGB(255, 128, 128, 128);
 			else
 				d3dColor = D3DCOLOR_ARGB(colors[i].a(), colors[i].r(), colors[i].g(), colors[i].b());
 			*(D3DCOLOR*)pData = d3dColor;
@@ -417,8 +417,10 @@ namespace render3d {
 		D3D9ResData *d3d9ResData = (D3D9ResData*)resData->internalData();
 
 		m_device->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
+		m_device->SetRenderState(D3DRS_ZWRITEENABLE, D3DZB_TRUE);
 		m_device->SetRenderState(D3DRS_LIGHTING, FALSE);
 		m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		m_device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 		m_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 		m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 		m_device->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);

@@ -121,9 +121,49 @@ namespace cinetico {
 		BodyResourceIds &resId = g_bodyResourceIds;
 		BodyInstanceIds &instId = g_bodyInstanceIds;
 
-		resId.head = renderEngineHelper->createCube(HEAD_SIZE);
-		resId.hand = renderEngineHelper->createCube(HAND_SIZE);
-		resId.foot = renderEngineHelper->createCube(FOOT_SIZE);
+#define GRAY_COLOR 128
+
+		Color bodyColors[] =
+		{
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+
+			//Back
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+
+			//Top
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+
+			//Bottom
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+
+			//Left
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+
+			//Right
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+		};
+
+		resId.head = renderEngineHelper->createCube(HEAD_SIZE, bodyColors);
+		resId.hand = renderEngineHelper->createCube(HAND_SIZE, bodyColors);
+		resId.foot = renderEngineHelper->createCube(FOOT_SIZE, bodyColors);
 
 		instId.head = renderEngine->newResourceInstance(resId.head);
 		instId.leftHand = renderEngine->newResourceInstance(resId.hand);
@@ -338,10 +378,49 @@ namespace cinetico {
 		resQuad1 = renderEngineHelper->createQuad(10, 0.25);
 		resQuad2 = renderEngineHelper->createQuad(100, 200);
 		resTriangle = renderEngine->newResource(sizeof(triangle1) / sizeof(triangle1[0]), triangle1, 3, indicesTriangle1, triangle1Colors);
-		resCube = renderEngineHelper->createCube(2);
+
+		Color cubeColors[] =
+		{
+			Color(255,0,0),
+			Color(255,0,0),
+			Color(255,0,0),
+			Color(255,0,0),
+
+			//Back
+			Color(255,0,0),
+			Color(255,0,0),
+			Color(255,0,0),
+			Color(255,0,0),
+
+			//Top
+			Color(0,0,0),
+			Color(0,0,0),
+			Color(0,0,0),
+			Color(0,0,0),
+
+			//Bottom
+			Color(255,255,0),
+			Color(255,255,0),
+			Color(255,255,0),
+			Color(255,255,0),
+
+			//Left
+			Color(255,255,255),
+			Color(255,255,255),
+			Color(255,255,255),
+			Color(255,255,255),
+
+			//Right
+			Color(0,0,255),
+			Color(0,0,255),
+			Color(0,0,255),
+			Color(0,0,255),
+		};
+
+		resCube = renderEngineHelper->createCube(2, cubeColors);
 		resTriangleType2 = renderEngine->newResource(sizeof(triangle3) / sizeof(triangle3[0]), triangle3, 3, indicesTriangle3, triangle3Colors);
 		resCircle = renderEngineHelper->createCircle(0.3f, numPoints + 1, circleColors);
-		resPrism = renderEngineHelper->createRectangularPrism(0.3f, 2.f, 0.5f);
+		resPrism = renderEngineHelper->createRectangularPrism(0.3f, 2.f, 0.5f,cubeColors);
 
 		instanceQuad1 = renderEngine->newResourceInstance(resQuad1);
 		renderEngine->resourceInstance(instanceQuad1)->setPos(render3d::Vector3(10, 10, 0));
@@ -588,22 +667,20 @@ namespace cinetico {
 		renderEngine->setCurrentViewport(viewport1);
 		renderEngine->clear(Color(30, 30, 30));
 
-		renderEngine->setCurrentFont(resFontArial);
-		renderEngine->drawText("HELLO WORLD", 400, 10, Color(255, 0, 0, 100));
-		renderEngine->setCurrentFont(resFontVerdana);
-		renderEngine->drawText("FUUUUUUUUUUUU", 400, 50, Color(125, 200, 30, 50));
-
 		renderEngine->drawResource(instanceTerrain);
 		renderBody();
 
+		
 		/*
+		renderEngine->drawResource(instanceQuad2);
 		static int state = 1;
 		if (g_frameCount % 30 == 0)
 			state ^= 1;
-		if(state == 1)
+		if (state == 1)
 			renderEngine->drawResource(instanceQuad1);
-		//renderEngine->drawResource(instanceQuad2);
+		*/
 		//renderEngine->drawResource(instanceWall);
+		/*
 		renderEngine->drawResource(instanceTriangle);
 		renderEngine->drawResource(instanceCube);
 		renderEngine->drawResource(instanceTriangleType2);
@@ -615,6 +692,14 @@ namespace cinetico {
 	//		d3d9.drawResource(instancedCubes[i]);
 		}
 		*/
+
+		renderEngine->setCurrentFont(resFontArial);
+		renderEngine->drawText("HELLO WORLD", 400, 10, Color(255, 255, 255, 100));
+		renderEngine->setCurrentFont(resFontVerdana);
+		renderEngine->drawText("FUUUUUUUUUUUU", 400, 50, Color(125, 200, 30, 150));
+
+
+		//
 		renderEngine->setCurrentCamera(cam2);
 		renderEngine->setCurrentViewport(viewport2);
 		renderEngine->clear(Color(0, 40, 100));
