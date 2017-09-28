@@ -8,7 +8,9 @@
 
 class Database;
 
-namespace cinetico_core {
+namespace cinetico {
+
+	using namespace cinetico_core;
 
 	class ExerciseDAO
 	{

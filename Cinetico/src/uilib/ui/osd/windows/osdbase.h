@@ -537,6 +537,7 @@ public:
 	void insertColumn(int at);
 	void setItem(int row, int column, ListViewItem *item);
 	int getColumnWidth(int col);
+	void clear();
 
 	virtual void create();
 	virtual void update();

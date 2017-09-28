@@ -1,6 +1,6 @@
 
 #include "LoginController.h"
-#include "entity/user/dao/UserProfileDAO.h"
+#include "entity/dao/UserProfileDAO.h"
 #include "utils/crypter.h"
 #include "uilib/ui/uibase.h"
 #include "cinetico.h"

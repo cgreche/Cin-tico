@@ -1,7 +1,7 @@
 
 //OSDGridView
 // File: osdgridview.cpp
-// Last edit: 02/07/2017 01:13 (UTC-3)
+// Last edit: 28/09/2017 13:49 (UTC-3)
 // Author: CGR
 
 #include "..\\..\\uibase.h"
@@ -41,8 +41,7 @@ void OSDGridView::update()
 //	setStyle(ref.m_style);
 	setCellCount(ref().m_rowCount,ref().m_colCount);
 
-
-	int row, col;
+	unsigned int row, col;
 	//update header text
 	for(col = 0; col < ref().m_colCount; ++col) {
 		setHeaderText(col, ref().m_headerText[col]);
@@ -151,7 +150,7 @@ void OSDGridView::insertColumn(int at)
 	//todo: find a better way to disable resizing
 //	EnableWindow(ListView_GetHeader(m_hwnd),FALSE); //disable resizing
 //	ListView_SetColumnWidth(m_hwnd,0,LVSCW_AUTOSIZE/*LVSCW_AUTOSIZE_USEHEADER*/); //set same size as window
-	for(uint i = 0; i < ref().m_colCount; ++i) {
+	for(int i = 0; i < ref().m_colCount; ++i) {
 		ListView_SetColumnWidth(m_hwnd,i,LVSCW_AUTOSIZE_USEHEADER);
 	}
 }
@@ -169,6 +168,11 @@ void OSDGridView::setItem(int row, int column, ListViewItem *item)
 	}	
 	int res = ListView_SetItem(m_hwnd, &lvi);
 	ListView_SetColumnWidth(m_hwnd,column,/*LVSCW_AUTOSIZE*/LVSCW_AUTOSIZE_USEHEADER);
+}
+
+void OSDGridView::clear()
+{
+	ListView_DeleteAllItems(m_hwnd);
 }
 
 int OSDGridView::getColumnWidth(int col)
@@ -373,9 +377,9 @@ LRESULT OSDGridView::HandleParentMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 
 				if(!(nmlv->uOldState & LVIS_SELECTED) && (nmlv->uNewState & LVIS_SELECTED)) {
 					item->m_state |= ListViewItem::Selected;
-					//if(ref().m_onSelect) {
-					//	ref().m_onSelect(ref(),nmlv->iItem,nmlv->iSubItem);
-					//}
+					if(ref().m_onItemSelect) {
+						ref().m_onItemSelect(ref(),nmlv->iItem,nmlv->iSubItem);
+					}
 				}
 				else if((nmlv->uOldState & LVIS_SELECTED) && !(nmlv->uNewState & LVIS_SELECTED)) {
 					item->m_state &= ~ListViewItem::Selected;

@@ -48,7 +48,11 @@ namespace cinetico {
 
 		int m_editMode;
 		int m_currentSelection;
-			
+
+
+		void setEditionMode(int mode);
+		void updateExerciseList();
+
 	public:
 		ExercisesController();
 

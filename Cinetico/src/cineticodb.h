@@ -3,8 +3,8 @@
 #define __CINETICO_DB_H__
 
 #include "database/database.h"
-#include "entity/user/dao/UserProfileDAO.h"
-#include "entity/core/dao/ExerciseDAO.h"
+#include "entity/dao/UserProfileDAO.h"
+#include "entity/dao/ExerciseDAO.h"
 
 namespace cinetico {
 

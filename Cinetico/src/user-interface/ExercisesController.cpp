@@ -7,22 +7,8 @@ namespace cinetico {
 	using namespace cinetico_core;
 	extern Cinetico g_cinetico;
 
-	static void updateExerciseList(ExercisesController *controller) {
-		std::vector<Exercise*> exerciseList = g_cinetico.cineticoDB()->exerciseDAO()->getAllExercises();
-		//controller->gridExercises.clear();
-		for (int i = 0; i < exerciseList.size(); ++i) {
-			controller->gridExercises.insertRow();
-			int lastRow = controller->gridExercises.rowCount() - 1;
-			controller->gridExercises.setItem(lastRow, 0, new ListViewItem(exerciseList[i]->name().c_str(), Color(0, 0, 0),FontDesc("Arial", 10, 0), exerciseList[i]));
-			controller->gridExercises.setItem(lastRow, 1, new ListViewItem(exerciseList[i]->author().c_str()));
-			controller->gridExercises.setItem(lastRow, 2, new ListViewItem(exerciseList[i]->isPublic() ? "Sim" : "Não"));
-		}
-	}
-
 	static void onClick_CreateNew(Button &button) {
 		ExercisesController *controller = (ExercisesController*)button.param();
-		if (controller->m_editMode == 0)
-			controller->layoutContent.remove(controller->layoutContentList);
 
 		controller->editExerciseName.setEditable(true);
 		controller->editExerciseName.setText("");
@@ -33,9 +19,7 @@ namespace cinetico {
 		controller->checkLeftFoot.setChecked(true);
 		controller->checkRightFoot.setChecked(true);
 
-		controller->layoutContent.append(controller->layoutContentEditData);
-		controller->layoutContent.setSize(controller->layoutContent.size());
-		controller->m_editMode = 1;
+		controller->setEditionMode(1);
 	}
 
 	static void onClick_Do(Button &button) {
@@ -93,21 +77,60 @@ namespace cinetico {
 			g_cinetico.cineticoDB()->exerciseDAO()->update(*exercise);
 		}
 
-		controller->layoutContent.remove(controller->layoutContentEditData);
-		controller->layoutContent.append(controller->layoutContentList);
-		controller->layoutContent.setSize(controller->layoutContent.size());
-		controller->m_editMode = 0;
-		updateExerciseList(controller);
+		controller->setEditionMode(0);
 	}
 
 	static void onClick_Cancel(Button &button) {
 		ExercisesController *controller = (ExercisesController*)button.param();
-		if (controller->m_editMode == 1 || controller->m_editMode == 2)
-			controller->layoutContent.remove(controller->layoutContentEditData);
-		controller->layoutContent.append(controller->layoutContentList);
-		controller->layoutContent.setSize(controller->layoutContent.size());
-		controller->m_editMode = 0;
-		updateExerciseList(controller);
+		controller->setEditionMode(0);
+	}
+
+	void ExercisesController::setEditionMode(int mode) {
+
+		if (mode == m_editMode)
+			return;
+
+		if(m_editMode == 0) {
+			layoutContent.remove(layoutContentList);
+		}
+		else if (m_editMode == 1) {
+			layoutContent.remove(layoutContentEditData);
+		}
+		else if (m_editMode == 2) {
+			layoutContent.remove(layoutContentEditData);
+		}
+
+		m_editMode = mode;
+
+		if (mode == 0) {
+			layoutContent.append(layoutContentList);
+			updateExerciseList();
+		}
+		else if (mode == 1) {
+			layoutContent.append(layoutContentEditData);
+		}
+		else if (mode == 2) {
+			layoutContent.append(layoutContentEditData);
+		}
+		layoutContent.setSize(layoutContent.size());
+		layoutContent.setVisible(true);
+	}
+
+	static void gridExercises_onItemSelect(GridView& grid, int itemIndex, int subItemIndex) {
+		int i = itemIndex;
+		int s = subItemIndex;
+	}
+
+	void ExercisesController::updateExerciseList() {
+		std::vector<Exercise*> exerciseList = g_cinetico.cineticoDB()->exerciseDAO()->getAllExercises();
+		gridExercises.clear();
+		for (unsigned int i = 0; i < exerciseList.size(); ++i) {
+			gridExercises.insertRow();
+			int lastRow = gridExercises.rowCount() - 1;
+			gridExercises.setItem(lastRow, 0, new ListViewItem(exerciseList[i]->name().c_str(), Color(0, 0, 0), FontDesc("Arial", 10, 0), exerciseList[i]));
+			gridExercises.setItem(lastRow, 1, new ListViewItem(exerciseList[i]->author().c_str()));
+			gridExercises.setItem(lastRow, 2, new ListViewItem(exerciseList[i]->isPublic() ? "Sim" : "Não"));
+		}
 	}
 
 	ExercisesController::ExercisesController() {
@@ -131,6 +154,7 @@ namespace cinetico {
 		gridExercises.setHeaderText(0, "Nome");
 		gridExercises.setHeaderText(1, "Autor");
 		gridExercises.setHeaderText(2, "Público");
+		gridExercises.setOnItemSelect(gridExercises_onItemSelect);
 
 		layoutActionButtons.append(buttonCreateExercise);
 		layoutActionButtons.append(buttonRecordExercise);
@@ -140,7 +164,7 @@ namespace cinetico {
 		layoutActions.append(labelViewDescr);
 		layoutActions.append(layoutActionButtons);
 
-		layoutContentList.append(gridExercises, MaximumSize);
+		layoutContentList.append(gridExercises,MaximumSize);
 		layoutContent.append(layoutContentList,MaximumSize);
 
 
@@ -193,7 +217,7 @@ namespace cinetico {
 	void ExercisesController::onViewEnter() {
 		m_editMode = 0;
 		m_currentSelection = 0;
-		updateExerciseList(this);
+		updateExerciseList();
 	}
 
 	void ExercisesController::onViewQuit() {

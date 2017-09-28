@@ -1,6 +1,6 @@
 //GridView 1.0
 // File: gridview.h
-// Last edit: 30/06/2017 22:30 (UTC-3)
+// Last edit: 28/09/2017 13:49 (UTC-3)
 // Author: CGR
 
 #ifndef __UILIB_GRIDVIEW_H__
@@ -15,6 +15,7 @@ class ListViewItem;
 class GridView;
 
 typedef void (*GridViewColResizeFunc)(GridView &gridView, int col, int newWidth);
+typedef void (*GridViewActionProc)(GridView &gridView, int itemIndex, int subitemIndex);
 
 class GridView : public Control
 {
@@ -26,6 +27,7 @@ protected:
 	std::vector<std::vector<ListViewItem *> > m_items;
 
 	GridViewColResizeFunc m_onColResize;
+	GridViewActionProc m_onItemSelect;
 
 	void _setRowCount(int rowCount);
 	void _setColumnCount(int rowCount);
@@ -48,6 +50,8 @@ public:
 	void setColumnCount(int colCount);
 	void setItem(int row, int col, ListViewItem *item);
 
+	void clear();
+
 	ListViewItem* item(int row, int col) const { return m_items[row][col]; }
 	bool headerVisible() const { return m_headerVisible; }
 	const string &headerText(int col) const { return m_headerText[col]; }
@@ -57,6 +61,7 @@ public:
 	int contentScrollPosY() const { return m_contentScrollY; }
 
 	void setOnColumnResize(GridViewColResizeFunc onColResize);
+	void setOnItemSelect(GridViewActionProc onItemSelect);
 	void onColumnResize(int col, int newWidth);
 
 	friend class OSDGridView;

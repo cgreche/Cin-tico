@@ -1,7 +1,7 @@
 
 //GridView 1.0
 // File: gridview.h
-// Last edit: 30/06/2017 30:06 (UTC-3)
+// Last edit: 28/09/2017 13:49 (UTC-3)
 // Author: CGR
 
 #include "..\\uibase.h"
@@ -42,9 +42,9 @@ void GridView::setHeaderText(int col, const string &text)
 
 void GridView::_setRowCount(int rowCount)
 {
-	uint i, j;
+	int i, j;
 	if(rowCount < m_rowCount) {
-		uint diff = m_rowCount - rowCount;
+		int diff = m_rowCount - rowCount;
 		for(i = rowCount; i < m_rowCount; ++i) {
 			for(j = 0; j < m_colCount; ++j) {
 				if(m_items[i][j])
@@ -61,7 +61,7 @@ void GridView::_setRowCount(int rowCount)
 
 void GridView::_setColumnCount(int colCount)
 {
-	uint i, j;
+	int i, j;
 	if(colCount < m_colCount) {
 		uint diff = m_colCount - colCount;
 		for(i = 0; i < m_rowCount; ++i) {
@@ -159,6 +159,26 @@ void GridView::setItem(int row, int col, ListViewItem *item)
 	osdRef().setItem(row, col, item);
 }
 
+void GridView::clear()
+{
+	if(m_rowCount > 0) {
+		for (int i = 0; i < m_rowCount; ++i) {
+			for (int j = 0; j < m_colCount; ++j) {
+				if (m_items[i][j])
+					delete m_items[i][j];
+			}
+		}
+
+		m_rowCount = 0;
+		m_colCount = 0;
+		m_items.clear();
+	}
+	osdRef().clear();
+}
+
+
+
+
 int GridView::getColumnWidth(int col) {
 	if(col < 0 || col >= m_colCount)
 		return -1;
@@ -168,6 +188,11 @@ int GridView::getColumnWidth(int col) {
 void GridView::setOnColumnResize(GridViewColResizeFunc onColResize)
 {
 	m_onColResize = onColResize;
+}
+
+void GridView::setOnItemSelect(GridViewActionProc onItemSelect)
+{
+	m_onItemSelect = onItemSelect;
 }
 
 //todo: change maybe

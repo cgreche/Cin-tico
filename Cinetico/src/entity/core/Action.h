@@ -1,8 +1,11 @@
 #ifndef __CINETICO_CORE_ACTION_H__
 #define __CINETICO_CORE_ACTION_H__
 
+#include <string>
+
 namespace cinetico_core {
-	class ActionResult {
+
+	enum ActionResult {
 		Missed,
 		Bad,
 		Good,

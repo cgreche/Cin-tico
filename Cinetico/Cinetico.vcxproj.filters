@@ -70,14 +70,11 @@
     <Filter Include="Arquivos de Origem\database\sqlite">
       <UniqueIdentifier>{93edbc9f-525c-4952-a39d-d739a585f208}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Arquivos de Origem\entity\user\dao">
-      <UniqueIdentifier>{9167bb4b-baf3-42d6-a5dc-99a729437871}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Arquivos de Origem\entity\core">
       <UniqueIdentifier>{59e42ef3-6ef6-4f78-af82-341eb11646a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Arquivos de Origem\entity\core\dao">
-      <UniqueIdentifier>{20f5d732-52c1-4a31-825c-af2a100c6a7b}</UniqueIdentifier>
+    <Filter Include="Arquivos de Origem\entity\dao">
+      <UniqueIdentifier>{48d08050-1bbb-45fd-a91b-e7cbe0d24bd7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +158,6 @@
     </ClInclude>
     <ClInclude Include="src\render3d\vertex3.h">
       <Filter>Arquivos de Origem\render3d</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity\user\dao\UserProfileDAO.h">
-      <Filter>Arquivos de Origem\entity\user\dao</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\d3dx9.h">
       <Filter>Arquivos de Origem\lib</Filter>
@@ -417,9 +411,6 @@
     <ClInclude Include="src\user-interface\ExerciseManagementController.h">
       <Filter>Arquivos de Origem\user-interface</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity\core\dao\ExerciseDAO.h">
-      <Filter>Arquivos de Origem\entity\core\dao</Filter>
-    </ClInclude>
     <ClInclude Include="src\cineticodb.h">
       <Filter>Arquivos de Origem</Filter>
     </ClInclude>
@@ -431,6 +422,12 @@
     </ClInclude>
     <ClInclude Include="src\user-interface\template.h">
       <Filter>Arquivos de Origem\user-interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\dao\ExerciseDAO.h">
+      <Filter>Arquivos de Origem\entity\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\dao\UserProfileDAO.h">
+      <Filter>Arquivos de Origem\entity\dao</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -656,9 +653,6 @@
     <ClCompile Include="src\entity\user\UserProfile.cpp">
       <Filter>Arquivos de Origem\entity\user</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity\user\dao\UserProfileDAO.cpp">
-      <Filter>Arquivos de Origem\entity\user\dao</Filter>
-    </ClCompile>
     <ClCompile Include="src\entity\core\Exercise.cpp">
       <Filter>Arquivos de Origem\entity\core</Filter>
     </ClCompile>
@@ -713,11 +707,14 @@
     <ClCompile Include="src\cinetico3d.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity\core\dao\ExerciseDAO.cpp">
-      <Filter>Arquivos de Origem\entity\core\dao</Filter>
-    </ClCompile>
     <ClCompile Include="src\render3d\fontresource.cpp">
       <Filter>Arquivos de Origem\render3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\dao\ExerciseDAO.cpp">
+      <Filter>Arquivos de Origem\entity\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\dao\UserProfileDAO.cpp">
+      <Filter>Arquivos de Origem\entity\dao</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

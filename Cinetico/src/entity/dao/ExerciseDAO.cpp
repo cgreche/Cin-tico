@@ -2,7 +2,7 @@
 #include "database/database.h"
 #include "ExerciseDAO.h"
 
-namespace cinetico_core {
+namespace cinetico {
 
 	ExerciseDAO::ExerciseDAO(Database &db)
 		: m_db(db)
