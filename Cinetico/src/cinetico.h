@@ -41,6 +41,7 @@ namespace cinetico {
 		void render();
 		void cleanUp();
 
+		UserProfile *m_currentUser;
 		ViewID m_currentView;
 
 	public:
@@ -50,8 +51,12 @@ namespace cinetico {
 		void goTo(ViewID viewId);
 		void enter3DWorld();
 
+		void setUser(UserProfile *user) { m_currentUser = user; }
+
 		CineticoDB *cineticoDB() const { return m_cineticoDB; }
 		Cinetico3D *cinetico3D() const { return m_cinetico3D; }
+
+		UserProfile *currentUser() const { return m_currentUser; }
 	};
 }
 

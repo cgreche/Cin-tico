@@ -84,15 +84,17 @@ namespace cinetico {
 	void LoginController::login() {
 		string &username = editUsername.text();
 		string &password = editPassword.text();
+
+		//todo: send login validation to Cinetico class
 		UserProfile *user = m_userProfileDAO->getByLoginName(username.data());
 		if (user) {
 			std::string cryptPW = Crypter::SimpleHash(password.data());
 			if (user->login(cryptPW)) {
+				g_cinetico.setUser(user);
 				string str = "Sucesso! Usuário logado como ";
 				str += username;
-				str += ". Get into the 3D World.";
 				Message::msg(NULL, str);
-				g_cinetico.goTo(Cinetico::EXERCISE_REALIZATION);
+				g_cinetico.goTo(Cinetico::EXERCISES);
 				return;
 			}
 			delete user;

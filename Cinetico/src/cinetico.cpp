@@ -18,6 +18,7 @@ namespace cinetico {
 	Cinetico::Cinetico() {
 		m_onWorld3D = false;
 		m_currentView = INVALID;
+		m_currentUser = NULL;
 	}
 
 	void Cinetico::registerView(int id, const char *name, Controller *controller) {
@@ -36,7 +37,7 @@ namespace cinetico {
 		m_cinetico3D = new Cinetico3D(*this);
 		m_mainWindow = new MainWindow();
 
-#if 0
+#if 1
 		goTo(LOGIN);
 #else
 		enter3DWorld();

@@ -109,6 +109,7 @@ void OSDGridView::setCellCount(int rowCount, int colCount)
 		while(count < colCount) {
 			column.iSubItem = count;
 			int index = ListView_InsertColumn(m_hwnd, count, &column);
+			ListView_SetColumnWidth(m_hwnd, count, LVSCW_AUTOSIZE);
 			++count;
 		}
 	}

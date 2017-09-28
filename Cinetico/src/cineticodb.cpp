@@ -6,8 +6,8 @@
 
 namespace cinetico {
 
-const char *Table_UserProfile = "CREATE TABLE USER_PROFILE(id INTEGER PRIMARY KEY, login_name TEXT, password TEXT, creation_date INTEGER);";
-const char *Table_Exercise = "CREATE TABLE USER_PROFILE(id INTEGER PRIMARY KEY, author REFERENCES USER_PROFILE(login_name), exercise_name TEXT, creation_date INTEGER, identifiable_body_points INTEGER, public INTEGER);";
+const char *Table_UserProfile = "CREATE TABLE USER_PROFILE(id INTEGER PRIMARY KEY, login_name TEXT, password TEXT, creation_time INTEGER);";
+const char *Table_Exercise = "CREATE TABLE EXERCISE(id INTEGER PRIMARY KEY, author TEXT, name TEXT, creation_date INTEGER, trackable_body_points INTEGER, is_public INTEGER);";
 const char *Table_Action = "CREATE TABLE ACTION(id INTEGER PRIMARY KEY, exercise_id REFERENCES EXERCISE(id), type INTEGER NOT NULL, min_execution_time INTEGER, max_execution_time INTEGER);";
 const char *Table_SpaceAction = "CREATE TABLE SPACE_ACTION(id INTEGER PRIMARY KEY, action_id REFERENCES ACTION(id), space_type_x INTEGER, space_type_y INTEGER, space_type_z INTEGER, position_x REAL, position_y REAL, position_z REAL);";
 const char *Table_PositionAction = "CREATE TABLE POSITION_ACTION(id INTEGER PRIMARY KEY, space_action_id REFERENCES SPACE_ACTION(id), hold_time REAL);";
@@ -72,11 +72,14 @@ const char *Table_MovementAction = "CREATE TABLE MOVEMENT_ACTION(id INTEGER PRIM
 				int a = 1;
 
 			m_userProfileDAO = new UserProfileDAO(db);
+			m_exerciseDAO = new ExerciseDAO(db);
 			//criando default login
 			UserProfile *adminProfile = m_userProfileDAO->getByLoginName("admin");
 			if (!adminProfile) {
 				adminProfile = new UserProfile("admin", Crypter::SimpleHash("admin"));
 				m_userProfileDAO->save(*adminProfile);
+				UserProfile *test = m_userProfileDAO->getByLoginName("admin");
+				int a = 1;
 			}
 
 			delete adminProfile;

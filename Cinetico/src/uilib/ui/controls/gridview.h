@@ -48,6 +48,7 @@ public:
 	void setColumnCount(int colCount);
 	void setItem(int row, int col, ListViewItem *item);
 
+	ListViewItem* item(int row, int col) const { return m_items[row][col]; }
 	bool headerVisible() const { return m_headerVisible; }
 	const string &headerText(int col) const { return m_headerText[col]; }
 	int rowCount() const { return m_rowCount; }

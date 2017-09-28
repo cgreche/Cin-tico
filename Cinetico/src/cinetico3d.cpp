@@ -1,7 +1,6 @@
 #include <windows.h>
 #include <time.h>
 #include "cinetico.h"
-#include "entity/core/exercise.h"
 #include "cinetico3d.h"
 #include "render3d/d3d9engine.h"
 #include "render3d/renderenginehelper.h"
@@ -710,7 +709,6 @@ namespace cinetico {
 			str += m_playingExercise->name();
 			renderEngine->drawText(str.c_str(), 500, 10, Color(255, 255, 255, 100));
 			renderEngine->setCurrentFont(resFontVerdana);
-			renderEngine->drawText("FUUUUUUUUUUUU", 400, 50, Color(125, 200, 30, 150));
 		}
 
 

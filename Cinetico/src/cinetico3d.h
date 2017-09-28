@@ -1,14 +1,15 @@
 #ifndef __CINETICO_3D_H__
 #define __CINETICO_3D_H__
 
+#include "entity/core/Exercise.h"
+
 namespace cinetico {
 
 	class Cinetico;
-	class Exercise;
 
 	class Cinetico3D {
 		Cinetico &m_application;
-		Exercise *m_playingExercise;
+		cinetico_core::Exercise *m_playingExercise;
 
 		void setup();
 		void cleanUp();
@@ -27,7 +28,7 @@ namespace cinetico {
 	public:
 		Cinetico3D(Cinetico &cinetico);
 		~Cinetico3D();
-		void startExercise(Exercise &exercise);
+		void startExercise(cinetico_core::Exercise &exercise);
 		void update();
 		void render();
 	};

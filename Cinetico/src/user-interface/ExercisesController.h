@@ -3,9 +3,11 @@
 #define __CINETICO_EXERCISESCONTROLLER_H__
 
 #include "Controller.h"
+#include "entity/core/exercise.h"
 #include "uilib/ui/uibase.h"
 
 namespace cinetico {
+	using namespace cinetico_core;
 
 	class ExercisesController : public Controller
 	{
@@ -22,16 +24,30 @@ namespace cinetico {
 			VerticalLayout layoutContent;
 
 			VerticalLayout layoutContentList;
-				ListView listExercises;
+				GridView gridExercises;
 
 			VerticalLayout layoutContentEditData;
-				EditBox editExerciseName;
-					CheckBox checkHead;
-					CheckBox checkLeftHand;
-					CheckBox checkRightHand;
-					CheckBox checkHip;
-					CheckBox checkLeftFoot;
-					CheckBox checkRightFoot;
+				VerticalLayout layoutExerciseName;
+					Label labelExerciseName;
+					EditBox editExerciseName;
+					CheckBox checkPublic;
+
+				Label labelChecks;
+				HorizontalLayout layoutChecks1;
+						CheckBox checkHead;
+						CheckBox checkLeftHand;
+						CheckBox checkRightHand;
+				HorizontalLayout layoutChecks2;
+						CheckBox checkHip;
+						CheckBox checkLeftFoot;
+						CheckBox checkRightFoot;
+
+				HorizontalLayout layoutEditActions;
+					Button buttonCreateEdit;
+					Button buttonCancel;
+
+		int m_editMode;
+		int m_currentSelection;
 			
 	public:
 		ExercisesController();

@@ -144,8 +144,10 @@ void Control::setPosition(const Point &position)
 
 void Control::setSize(const Size &size)
 {
+	/* Commented, so layout can be updated
 	if(m_size == size)
 		return;
+	*/
 
 	m_applicationResize = true; //not a user resize
 	m_size = size;
