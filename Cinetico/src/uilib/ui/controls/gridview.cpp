@@ -72,7 +72,7 @@ void GridView::_setColumnCount(int colCount)
 		}
 	}
 
-	for(i = 0; i < m_items.size(); ++i) {
+	for(i = 0; i < m_rowCount; ++i) {
 		m_items[i].resize(colCount);
 	}
 	m_headerText.resize(colCount);
@@ -174,6 +174,11 @@ void GridView::clear()
 		m_items.clear();
 	}
 	osdRef().clear();
+}
+
+void GridView::deleteRows()
+{
+	setRowCount(0);
 }
 
 

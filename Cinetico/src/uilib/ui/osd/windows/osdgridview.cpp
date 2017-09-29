@@ -41,14 +41,14 @@ void OSDGridView::update()
 //	setStyle(ref.m_style);
 	setCellCount(ref().m_rowCount,ref().m_colCount);
 
-	unsigned int row, col;
+	int row, col;
 	//update header text
 	for(col = 0; col < ref().m_colCount; ++col) {
 		setHeaderText(col, ref().m_headerText[col]);
 	}
 
 	//update items
-	for(row = 0; row < ref().m_items.size(); ++row) {
+	for(row = 0; row < ref().m_rowCount; ++row) {
 		for(col = 0; col < ref().m_items[row].size(); ++col) {
 			setItem(row, col, ref().m_items[row][col]);
 		}
@@ -83,8 +83,10 @@ void OSDGridView::setCellCount(int rowCount, int colCount)
 	lvi.lParam = (LPARAM)NULL;
 	int count = ListView_GetItemCount(m_hwnd);
 	if(rowCount < count) {
-		for(int i = rowCount; i < count; ++i)
-			ListView_DeleteItem(m_hwnd, i);
+		for (int i = rowCount; i < count; ++i) {
+			BOOL result = ListView_DeleteItem(m_hwnd, 0);
+			int a = 1;
+		}
 	}
 	else {
 		while(count < rowCount) {
@@ -377,8 +379,15 @@ LRESULT OSDGridView::HandleParentMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 
 				if(!(nmlv->uOldState & LVIS_SELECTED) && (nmlv->uNewState & LVIS_SELECTED)) {
 					item->m_state |= ListViewItem::Selected;
+
+					POINT curPos;
+					::GetCursorPos(&curPos);
+					::ScreenToClient(m_hwnd, &curPos);
+					LVHITTESTINFO info = { 0 };
+					info.pt = curPos;
+					ListView_SubItemHitTest(m_hwnd, &info);
 					if(ref().m_onItemSelect) {
-						ref().m_onItemSelect(ref(),nmlv->iItem,nmlv->iSubItem);
+						ref().m_onItemSelect(ref(),nmlv->iItem,info.iSubItem);
 					}
 				}
 				else if((nmlv->uOldState & LVIS_SELECTED) && !(nmlv->uNewState & LVIS_SELECTED)) {

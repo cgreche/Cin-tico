@@ -47,6 +47,13 @@ namespace cinetico {
 
 	void Cinetico::update()
 	{
+		if (m_currentView != INVALID) {
+			Controller *currentController = m_views[m_currentView].controller;
+			if (currentController) {
+				currentController->onViewTick();
+			}
+		}
+
 		if (m_onWorld3D) {
 			m_cinetico3D->update();
 		}
@@ -101,6 +108,12 @@ namespace cinetico {
 	void Cinetico::enter3DWorld() {
 		m_mainWindow->setVisible(false);
 		m_onWorld3D = true;
+	}
+
+	void Cinetico::quit3DWorld() {
+		goTo(EXERCISES);
+		m_mainWindow->setVisible(true);
+		m_onWorld3D = false;
 	}
 
 }

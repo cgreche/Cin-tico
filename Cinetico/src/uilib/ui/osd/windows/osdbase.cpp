@@ -95,11 +95,11 @@ bool OSDBase::UIProcess()
 //			::ShowWindow(test,SW_HIDE);
 		}
 
-		if(!::IsDialogMessage(hwndToUse, &msg)) {
+		//if(!::IsDialogMessage(hwndToUse, &msg)) {
 			::TranslateMessage(&msg);
 			::DispatchMessage(&msg);
-		}
-		else {
+		//}
+		//else {
 			
 			/*
 			if(msg.message != WM_MOUSEMOVE
@@ -156,7 +156,7 @@ bool OSDBase::UIProcess()
 				}
 			}
 			*/
-		}
+		//}
 
 		if(msg.message == WM_QUIT) {
 			if(objects)

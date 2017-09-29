@@ -26,12 +26,7 @@ namespace cinetico {
 		ExercisesController *controller = (ExercisesController*)button.param();
 
 		Exercise *exercise = (Exercise*)controller->gridExercises.item(0, 0)->data();
-
-		std::string str;
-		str += "Congratulations. Now get into the 3D World.";
-		Message::msg(NULL, str.c_str());
-		g_cinetico.enter3DWorld();
-		g_cinetico.cinetico3D()->startExercise(*exercise);
+		controller->doSelectedExercise();
 	}
 
 	static void onClick_CreateEdit(Button &button) {
@@ -116,14 +111,31 @@ namespace cinetico {
 		layoutContent.setVisible(true);
 	}
 
-	static void gridExercises_onItemSelect(GridView& grid, int itemIndex, int subItemIndex) {
-		int i = itemIndex;
-		int s = subItemIndex;
+	static void gridExercises_onItemSelect(GridView& grid, int row, int col) {
+		ExercisesController *controller = (ExercisesController*)grid.param();
+		controller->onExerciseSelect(row);
+	}
+
+	void ExercisesController::onExerciseSelect(int row) {
+		m_currentSelection = row;
+	}
+
+	void ExercisesController::doSelectedExercise() {
+		if (m_currentSelection == -1)
+			return;
+		ListViewItem *item = gridExercises.item(m_currentSelection, 0);
+		Exercise *exercise = (Exercise*)item->data();
+
+		std::string str;
+		str += "Congratulations. Now get into the 3D World.";
+		Message::msg(NULL, str.c_str());
+		g_cinetico.enter3DWorld();
+		g_cinetico.cinetico3D()->startExercise(*exercise);
 	}
 
 	void ExercisesController::updateExerciseList() {
 		std::vector<Exercise*> exerciseList = g_cinetico.cineticoDB()->exerciseDAO()->getAllExercises();
-		gridExercises.clear();
+		gridExercises.deleteRows();
 		for (unsigned int i = 0; i < exerciseList.size(); ++i) {
 			gridExercises.insertRow();
 			int lastRow = gridExercises.rowCount() - 1;
@@ -149,6 +161,7 @@ namespace cinetico {
 		buttonDoExercise.setParam(this);
 		buttonDoExercise.setOnClick(onClick_Do);
 
+		gridExercises.setParam(this);
 		gridExercises.setColumnCount(3);
 		gridExercises.setHeaderVisible(true);
 		gridExercises.setHeaderText(0, "Nome");
@@ -166,8 +179,6 @@ namespace cinetico {
 
 		layoutContentList.append(gridExercises,MaximumSize);
 		layoutContent.append(layoutContentList,MaximumSize);
-
-
 
 		labelExerciseName.setText("Nome do exercício");
 		checkPublic.setText("Público");
@@ -216,8 +227,12 @@ namespace cinetico {
 
 	void ExercisesController::onViewEnter() {
 		m_editMode = 0;
-		m_currentSelection = 0;
+		m_currentSelection = -1;
 		updateExerciseList();
+	}
+
+	void ExercisesController::onViewTick() {
+
 	}
 
 	void ExercisesController::onViewQuit() {

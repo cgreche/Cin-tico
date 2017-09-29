@@ -49,7 +49,9 @@ namespace cinetico {
 		void registerView(int id, const char *name, Controller *controller);
 		int run();
 		void goTo(ViewID viewId);
+		
 		void enter3DWorld();
+		void quit3DWorld();
 
 		void setUser(UserProfile *user) { m_currentUser = user; }
 

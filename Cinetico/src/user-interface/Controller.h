@@ -11,6 +11,7 @@ namespace cinetico {
 	public:
 		virtual Layout *viewDefinition() = 0;
 		virtual void onViewEnter() { }
+		virtual void onViewTick() { }
 		virtual void onViewQuit() { }
 	};
 

@@ -49,8 +49,9 @@ namespace cinetico {
 		int m_editMode;
 		int m_currentSelection;
 
-
 		void setEditionMode(int mode);
+		void onExerciseSelect(int row);
+		void doSelectedExercise();
 		void updateExerciseList();
 
 	public:
@@ -58,6 +59,7 @@ namespace cinetico {
 
 		Layout *viewDefinition();
 		void onViewEnter();
+		void onViewTick();
 		void onViewQuit();
 	};
 

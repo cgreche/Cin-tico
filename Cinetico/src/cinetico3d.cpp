@@ -73,6 +73,7 @@ namespace cinetico {
 	int viewport2;
 
 	bool keyStates[256] = { 0 };
+	bool lastKeyStates[256] = { 0 };
 	bool mouse[3] = { 0 };
 
 	int mouseX = 0;
@@ -222,6 +223,16 @@ namespace cinetico {
 	LRESULT CALLBACK world3D_MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 		switch (msg) {
+		case WM_SYSKEYDOWN:
+			keyStates[wParam] = true;
+			break;
+
+		case WM_CHAR:
+		{
+			int c = wParam;
+			break;
+		}
+
 		case WM_KEYDOWN:
 		{
 			keyStates[wParam] = true;
@@ -588,14 +599,6 @@ namespace cinetico {
 
 	void Cinetico3D::update() {
 
-		updateBody();
-
-		float d = 0.1f;
-
-		ResourceInstance *instance = renderEngine->resourceInstance(instanceCube);
-		render3d::Vector3 newPos = instance->pos();
-		render3d::Vector3 newRot = instance->rot();
-
 		bool leftDown = keyStates['A'];
 		bool rightDown = keyStates['D'];
 		bool downDown = keyStates['S'];
@@ -604,7 +607,23 @@ namespace cinetico {
 		bool ctrlDown = keyStates[VK_CONTROL];
 		bool tabDown = keyStates[VK_TAB];
 		bool spaceDown = keyStates[VK_SPACE];
+		bool escDown = keyStates[VK_ESCAPE];
 
+		bool quit3D = false;
+		if (keyStates[VK_ESCAPE] == 1 && lastKeyStates[VK_ESCAPE] == 0) {
+			quit3D = true;
+		}
+
+		lastKeyStates[VK_ESCAPE] = keyStates[VK_ESCAPE];
+
+		if (quit3D) {
+			m_application.quit3DWorld();
+			return;
+		}
+
+		float d = 0.1f;
+
+		updateBody();
 		//Update quads (billboarding)
 		processCamera();
 		Camera *cam = renderEngine->camera(cam1);
@@ -614,10 +633,10 @@ namespace cinetico {
 
 		return;
 
-
-
-
-
+		ResourceInstance *instance = renderEngine->resourceInstance(instanceCube);
+		render3d::Vector3 newPos = instance->pos();
+		render3d::Vector3 newRot = instance->rot();
+		
 		if (leftDown) {
 			if (shiftDown) {
 				newRot.setY(newRot.y() + d);

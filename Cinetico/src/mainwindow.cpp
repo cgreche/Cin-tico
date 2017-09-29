@@ -45,8 +45,10 @@ namespace cinetico {
 	void MainWindow::setContentLayout(Layout *layout) {
 		if (m_currentContentLayout)
 			layoutContent.remove(*m_currentContentLayout);
-		if (layout)
+		if (layout) {
 			layoutContent.append(*layout);
+			layout->setVisible(true); //todo: set layout visibility internally
+		}
 		m_currentContentLayout = layout;
 	}
 

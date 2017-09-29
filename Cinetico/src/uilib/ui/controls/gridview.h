@@ -15,7 +15,7 @@ class ListViewItem;
 class GridView;
 
 typedef void (*GridViewColResizeFunc)(GridView &gridView, int col, int newWidth);
-typedef void (*GridViewActionProc)(GridView &gridView, int itemIndex, int subitemIndex);
+typedef void (*GridViewActionProc)(GridView &gridView, int row, int col);
 
 class GridView : public Control
 {
@@ -51,6 +51,7 @@ public:
 	void setItem(int row, int col, ListViewItem *item);
 
 	void clear();
+	void deleteRows();
 
 	ListViewItem* item(int row, int col) const { return m_items[row][col]; }
 	bool headerVisible() const { return m_headerVisible; }
