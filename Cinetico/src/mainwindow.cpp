@@ -1,6 +1,3 @@
-#include <windows.h>
-#include <math.h>
-#include <time.h>
 
 #include "mainwindow.h"
 
@@ -35,7 +32,7 @@ namespace cinetico {
 
 		layout.append(layoutHeader, Size(SizeTypeMax, MakePercentType(10)), 20);
 		layout.append(layoutContent, AutoSize, 20);
-		layout.append(layoutFooter, Size(SizeTypeMax, MakePercentType(20)));
+		layout.append(layoutFooter, Size(SizeTypeMax, MakePercentType(10)));
 
 		setLayout(&layout);
 		setFrameSize(Size(1024, 768));

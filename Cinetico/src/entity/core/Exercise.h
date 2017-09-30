@@ -11,7 +11,7 @@ namespace cinetico_core {
 		unsigned long m_trackableBodyPoints;
 
 	public:
-		Exercise(int id = -1) {
+		Exercise(unsigned long id = -1) {
 			m_id = id;
 		}
 
@@ -20,6 +20,7 @@ namespace cinetico_core {
 		void setPublic(bool isPublic) { m_public = isPublic; }
 		void setTrackableBodyPoints(unsigned long trackableBodyPoints) { m_trackableBodyPoints = trackableBodyPoints; }
 
+		unsigned long id() const { return m_id; }
 		const std::string& name() const { return m_name; }
 		const std::string& author() const { return m_author; }
 		bool isPublic() const { return m_public; }

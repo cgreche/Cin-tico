@@ -10,11 +10,14 @@ namespace cinetico_core {
 		Sensor &m_sensor;
 		Body *m_body;
 
+		unsigned long m_trackableBodyPoints;
+
 		int m_identifiedBodyCount;
 
 		public:
 			BodyTracker(Sensor& sensor);
 			bool track();
+			void setTrackableBodyPoints(unsigned long trackableBodyPoints) { m_trackableBodyPoints = trackableBodyPoints; }
 			Body *body() const { return m_body; }
 	};
 

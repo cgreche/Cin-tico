@@ -188,11 +188,11 @@ namespace cinetico {
 		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
 
 		instance = renderEngine->resourceInstance(instId.leftHand);
-		pos = body->bodyPoint(BodyPoint::LeftHandCenter)->position();
+		pos = body->bodyPoint(BodyPoint::LeftPalm)->position();
 		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
 
 		instance = renderEngine->resourceInstance(instId.rightHand);
-		pos = body->bodyPoint(BodyPoint::RightHandCenter)->position();
+		pos = body->bodyPoint(BodyPoint::RightPalm)->position();
 		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
 
 		instance = renderEngine->resourceInstance(instId.leftFoot);
@@ -488,7 +488,7 @@ namespace cinetico {
 		terrain->setPos(render3d::Vector3(0, -2, 0));
 
 
-		resFontArial = renderEngine->newFontResource("Arial", 15, 100, FontResource::BOLD);
+		resFontArial = renderEngine->newFontResource("Arial", 15, 30, FontResource::BOLD);
 		resFontVerdana = renderEngine->newFontResource("Verdana", 20, 200, FontResource::ITALIC);
 	}
 
@@ -595,6 +595,7 @@ namespace cinetico {
 
 	void Cinetico3D::startExercise(Exercise &exercise) {
 		m_playingExercise = &exercise;
+		m_bodyTracker->setTrackableBodyPoints(exercise.trackableBodyPoints());
 	}
 
 	void Cinetico3D::update() {

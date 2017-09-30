@@ -15,17 +15,17 @@ namespace cinetico_core {
 
 		BodyPartTag bodyPartTag[] = {
 			{ BodyPoint::Head, "Head" },
-			{ BodyPoint::SpineShoulder, "Spine Shoulder" },
+			{ BodyPoint::Cervical, "Cervical" },
 			{ BodyPoint::Spine, "Spine" },
 			{ BodyPoint::SpineBase, "Spine Base" },
 			{ BodyPoint::LeftShoulder, "Left Shoulder" },
 			{ BodyPoint::LeftElbow, "Left Elbow" },
 			{ BodyPoint::LeftWrist, "Left Wrist" },
-			{ BodyPoint::LeftHandCenter, "Left Palm" },
+			{ BodyPoint::LeftPalm, "Left Palm" },
 			{ BodyPoint::RightShoulder, "Right Shoulder" },
 			{ BodyPoint::RightElbow, "Right Elbow" },
 			{ BodyPoint::RightWrist, "Right Wrist" },
-			{ BodyPoint::RightHandCenter, "Right Palm" },
+			{ BodyPoint::RightPalm, "Right Palm" },
 			{ BodyPoint::LeftFoot, "Left Foot" },
 		};
 
@@ -47,8 +47,8 @@ namespace cinetico_core {
 		}
 	}
 
-	void Body::setBodyPointsTrackable(unsigned long bodyParts, bool trackable) {
-		//todo
+	void Body::setBodyPointTrackable(BodyPoint::BodyPart bodyPart, bool trackable) {
+		m_bodyPoint[bodyPart]->setTrackable(trackable);
 	}
 
 	void Body::setAllBodyPointsTrackable(bool trackable) {

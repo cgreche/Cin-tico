@@ -7,22 +7,29 @@ namespace cinetico {
 
 	class UserProfile
 	{
+		int m_id;
 		std::string m_username;
 		std::string m_password;
+		std::string m_name;
 		unsigned int m_creationDate;
-		bool m_logged;
+		bool m_loggedIn;
 
 		bool validatePassword(const std::string &currentPassword);
 
 	public:
-		UserProfile(const std::string &username, const std::string &password);
-		UserProfile(const std::string &username, const std::string &password, unsigned int creationDate);
+		UserProfile(const std::string &username, const std::string &password, int id = -1);
+		UserProfile(const std::string &username, const std::string &password, unsigned int creationDate, int id = -1);
 		bool changePassword(const std::string &oldPassword, const std::string &newPassword);
 		bool login(const std::string &password);
+		bool logoff();
 
-		const char *username() const { return m_username.c_str(); }
-		const char *password() const { return m_password.c_str(); }
+		void setName(const std::string &name) { m_name = name; }
+
+		const std::string& username() const { return m_username; }
+		const std::string& password() const { return m_password; }
+		const std::string& name() const { return m_name; }
 		inline unsigned int creationDate() const { return m_creationDate; }
+		bool loggedIn() const { return m_loggedIn; }
 	};
 
 }

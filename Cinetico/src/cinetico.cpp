@@ -10,6 +10,7 @@
 #include "user-interface/ExercisesController.h"
 #include "user-interface/ExerciseManagementController.h"
 #include "user-interface/ExerciseRealizationController.h"
+#include "utils/crypter.h"
 
 namespace cinetico {
 
@@ -78,6 +79,34 @@ namespace cinetico {
 			delete m_cineticoDB;
 	}
 
+	Cinetico::CineticoError Cinetico::createAccount(const char *username, const char *password) {
+
+		UserProfile *user = cineticoDB()->userProfileDAO()->getByLoginName(username);
+		if(user) {
+			delete user;
+			return USER_ALREADY_EXISTS;
+		}
+
+		//Account creation
+		std::string cryptPW = Crypter::SimpleHash(password);
+		user = new UserProfile(username, cryptPW);
+		cineticoDB()->userProfileDAO()->save(*user);
+
+		return SUCCESS;
+	}
+
+	Cinetico::CineticoError Cinetico::loginUser(const char *username, const char *password) {
+		UserProfile *user = m_cineticoDB->userProfileDAO()->getByLoginName(username);
+		if (user) {
+			std::string cryptPW = Crypter::SimpleHash(password);
+			if (user->login(cryptPW)) {
+				m_currentUser = user;
+				return this->SUCCESS;
+			}
+			delete user;
+		}
+		return this->INVALID_USER_CREDENTIALS;
+	}
 
 	int Cinetico::run() {
 		setup();

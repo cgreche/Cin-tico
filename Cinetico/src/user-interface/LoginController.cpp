@@ -1,7 +1,6 @@
 
 #include "LoginController.h"
 #include "entity/dao/UserProfileDAO.h"
-#include "utils/crypter.h"
 #include "uilib/ui/uibase.h"
 #include "cinetico.h"
 
@@ -85,29 +84,22 @@ namespace cinetico {
 		string &username = editUsername.text();
 		string &password = editPassword.text();
 
-		//todo: send login validation to Cinetico class
-		UserProfile *user = m_userProfileDAO->getByLoginName(username.data());
-		if (user) {
-			std::string cryptPW = Crypter::SimpleHash(password.data());
-			if (user->login(cryptPW)) {
-				g_cinetico.setUser(user);
-				string str = "Sucesso! Usuário logado como ";
-				str += username;
-				Message::msg(NULL, str);
-				g_cinetico.goTo(Cinetico::EXERCISES);
-				return;
-			}
-			delete user;
+		Cinetico::CineticoError res = g_cinetico.loginUser(username.data(), password.data());
+		if (res == Cinetico::SUCCESS) {
+			string str = "Sucesso! Usuário logado como ";
+			str += username;
+			Message::msg(NULL, str);
+			g_cinetico.goTo(Cinetico::EXERCISES);
 		}
-
-		Message::error(NULL, "Usuário ou senha inválida.");
+		else {
+			Message::error(NULL, "Usuário ou senha inválida.");
+		}
 	}
 
 	void LoginController::createAccount() {
 		string &username = editCreateAccountUsername.text();
 		string &password = editCreateAccountPassword.text();
-		std::string cryptPW = Crypter::SimpleHash(password.data());
-
+		
 		//Validação de preenchimento
 		if (username == "")
 			return;
@@ -124,23 +116,18 @@ namespace cinetico {
 			return;
 		//
 
-		UserProfile *user = m_userProfileDAO->getByLoginName(username.data());
-		if (user) {
-			//usuario já existe
-			Message::warning(NULL, "Nome de usuário já existente.");
-			delete user;
+		Cinetico::CineticoError res = g_cinetico.createAccount(username.data(), password.data());
+		if (res == Cinetico::SUCCESS) {
+			Message::msg(NULL, "Conta criada com sucesso.");
+
+			editCreateAccountUsername.setText("");
+			editCreateAccountPassword.setText("");
 			return;
 		}
-
-		//Account creation
-		user = new UserProfile(username.data(), cryptPW);
-		m_userProfileDAO->save(*user);
-
-		//account created successfully
-		Message::msg(NULL, "Conta criada com sucesso.");
-
-		editCreateAccountUsername.setText("");
-		editCreateAccountPassword.setText("");
+		else if(res == Cinetico::USER_ALREADY_EXISTS) {
+			Message::warning(NULL, "Nome de usuário já existente.");
+			return;
+		}
 	}
 
 }
