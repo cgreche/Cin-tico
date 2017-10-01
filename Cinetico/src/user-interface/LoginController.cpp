@@ -90,6 +90,9 @@ namespace cinetico {
 			str += username;
 			Message::msg(NULL, str);
 			g_cinetico.goTo(Cinetico::EXERCISES);
+			//
+			editUsername.setText("");
+			editPassword.setText("");
 		}
 		else {
 			Message::error(NULL, "Usuário ou senha inválida.");

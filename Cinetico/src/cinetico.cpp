@@ -36,7 +36,7 @@ namespace cinetico {
 		
 		m_cineticoDB = new CineticoDB(*this);
 		m_cinetico3D = new Cinetico3D(*this);
-		m_mainWindow = new MainWindow();
+		m_mainWindow = new MainWindow(*this);
 
 #if 1
 		goTo(LOGIN);
@@ -48,6 +48,7 @@ namespace cinetico {
 
 	void Cinetico::update()
 	{
+		m_mainWindow->update();
 		if (m_currentView != INVALID) {
 			Controller *currentController = m_views[m_currentView].controller;
 			if (currentController) {
@@ -73,6 +74,8 @@ namespace cinetico {
 			delete m_views[i].controller;
 		}
 
+//		if (m_mainWindow)
+//			delete m_mainWindow;
 		if(m_cinetico3D)
 			delete m_cinetico3D;
 		if(m_cineticoDB)
@@ -106,6 +109,13 @@ namespace cinetico {
 			delete user;
 		}
 		return this->INVALID_USER_CREDENTIALS;
+	}
+
+	void Cinetico::logoffCurrentUser() {
+		if (m_currentUser) {
+			m_currentUser->logoff();
+			m_currentUser = NULL;
+		}
 	}
 
 	int Cinetico::run() {

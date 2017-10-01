@@ -4,6 +4,7 @@
 
 #include <vector>
 
+#include "cinetico.h"
 #include "uilib/ui/uibase.h"
 
 namespace cinetico {
@@ -12,11 +13,13 @@ namespace cinetico {
 	{
 		VerticalLayout layout;
 		VerticalLayout layoutHeader;
+			Label bgBlack;
 			HorizontalLayout layoutAppState;
 				Label labelAppname;
-				HorizontalLayout layoutLoginInfo;
-					Label labelUsername;
-					Label buttonLogoff;
+				VerticalLayout layoutLoginInfo;
+					HorizontalLayout layoutLoginInfo2;
+						Label labelUsername;
+						Button buttonLogoff;
 
 		VerticalLayout layoutContent;
 		VerticalLayout layoutFooter;
@@ -24,11 +27,18 @@ namespace cinetico {
 
 		Layout *m_currentContentLayout;
 
-	public:
 		void buildHeaderLayout();
 		void buildFooterLayout();
-		MainWindow();
+
+		Cinetico &m_cinetico;
+
+		friend void buttonLogoff_onClick(Button &button);
+		void onClickLogoff();
+	public:
+		MainWindow(Cinetico &cinetico);
+		void update();
 		void setContentLayout(Layout *layout);
+		
 		void onCloseEvent();
 	};
 

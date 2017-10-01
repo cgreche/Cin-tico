@@ -67,6 +67,7 @@ namespace cinetico {
 		
 		CineticoError createAccount(const char *username, const char *password);
 		CineticoError loginUser(const char *username, const char *password);
+		void logoffCurrentUser();
 		int run();
 
 		void enter3DWorld();

@@ -1,11 +1,10 @@
 
 //Control
 // File name: control.cpp
-// Last edit: 30/06/2017 22:20 (UTC-3)
+// Last edit: 01/10/2017 14:36 (UTC-3)
 // Author: CGR
 
 #include "uibase.h"
-
 
 void Control::onPaintEvent(PaintEvent &event) { osdRef().onPaintEvent(event); }
 void Control::onCloseEvent() { setVisible(false); }
@@ -283,52 +282,6 @@ bool Control::contains(Control &control)
 	return false;
 }
 
-/*
-void Control::append(Layout &layout)
-{
-	if(contains(layout))
-		return;
-	layout.setParent(this);
-	if(layout.size()==Size(0,0)) {
-		Size layoutSize = layout.getAutoSize();
-		Size frameSize = getFrameSize();
-		layout.setSize(Size(max(layoutSize.w,frameSize.w),max(layoutSize.h,frameSize.h)));
-	}
-	m_layouts.push_back(&layout);
-//	setFrameSize(Size(500,600));
-	setSize(getAutoSize());
-	m_autoSize = true;
-}
-
-
-void Control::remove(Layout &layout)
-{
-	if(!contains(layout))
-		return;
-	layout.setParent(NULL);
-	m_layouts.remove(&layout);
-	if(m_visible && m_autoSize) {
-		setSize(getAutoSize());
-		m_autoSize = true;
-	}
-}
-
-bool Control::contains(Layout &layout)
-{
-	LayoutList::iterator it;
-	for(it = m_layouts.begin(); it != m_layouts.end(); ++it) {
-		if(*it == &layout)
-			return true;
-	}
-
-	return false;
-}
-*/
-
-
-
-
-
 Control* Control::parent() const { return m_parent; }
 bool Control::visible() const { return m_visible; }
 bool Control::enabled() const { return m_enabled; }
@@ -345,14 +298,6 @@ Layout* Control::layout() const { return m_layout; }
 Size Control::getAutoSize()
 {
 	Size ret;
-/*	LayoutList::iterator it;
-	for(it = m_layouts.begin(); it != m_layouts.end(); ++it) {
-		Layout* layout = *it;
-		Size layoutSize = layout->size();
-		ret.w = max(ret.w,layout->position().x+layoutSize.w);
-		ret.h = max(ret.h,layout->position().y+layoutSize.h);
-	}
-	*/
 
 	if(m_layout)
 		ret = m_layout->size();
