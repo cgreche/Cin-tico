@@ -17,6 +17,7 @@ namespace cinetico {
 
 		Layout *viewDefinition();
 		void onViewEnter();
+		void onViewTick();
 		void onViewQuit();
 	};
 

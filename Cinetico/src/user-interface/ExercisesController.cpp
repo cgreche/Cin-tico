@@ -309,7 +309,7 @@ namespace cinetico {
 			std::string str;
 			str += "Congratulations. Now get into the 3D World.";
 			Message::msg(NULL, str.c_str());
-			g_cinetico.enter3DWorld();
+			g_cinetico.goTo(Cinetico::EXERCISE_REALIZATION);
 			g_cinetico.cinetico3D()->startExercise(*m_currentExercise);
 		}
 	}

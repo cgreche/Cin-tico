@@ -55,18 +55,11 @@ namespace cinetico {
 				currentController->onViewTick();
 			}
 		}
-
-		if (m_onWorld3D) {
-			m_cinetico3D->update();
-		}
 	}
 
 
 	void Cinetico::render()
 	{
-		if (m_onWorld3D) {
-			m_cinetico3D->render();
-		}
 	}
 
 	void Cinetico::cleanUp() {

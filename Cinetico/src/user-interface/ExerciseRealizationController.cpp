@@ -18,6 +18,11 @@ namespace cinetico {
 		g_cinetico.enter3DWorld();
 	}
 
+	void ExerciseRealizationController::onViewTick() {
+		g_cinetico.cinetico3D()->update();
+		g_cinetico.cinetico3D()->render();
+	}
+
 	void ExerciseRealizationController::onViewQuit() {
 
 	}
