@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "vector3.h"
-#include "vertex3.h"
 #include "renderobject.h"
 #include "resourcedata.h"
 #include "viewport.h"
@@ -41,7 +40,7 @@ namespace render3d {
 		virtual void endScene() = 0;
 
 		//Resource allocation
-		virtual int newResource(unsigned int vertexCount, Vertex3 *vertices, unsigned int indexCount = 0, int *indices = NULL, Color *colors = NULL);
+		virtual int newResource(unsigned int vertexCount, Vector3 *vertices, unsigned int indexCount = 0, int *indices = NULL, Color *colors = NULL);
 		virtual int newCamera(const Vector3 &pos, const Vector3 &rot, float zoom = 1.f);
 		virtual int newViewport(int x, int y, int width, int height);
 		virtual int newResourceInstance(int resDataId);

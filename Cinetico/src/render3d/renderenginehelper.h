@@ -3,8 +3,6 @@
 #ifndef __RENDERENGINEHELPER_H__
 #define __RENDERENGINEHELPER_H__
 
-#include "vertex3.h"
-
 namespace render3d {
 
 	class RenderEngine;

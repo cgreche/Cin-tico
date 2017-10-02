@@ -61,6 +61,7 @@
     <ClInclude Include="src\render3d\d3d9engine.h" />
     <ClInclude Include="src\render3d\d3dx12.h" />
     <ClInclude Include="src\render3d\fontresource.h" />
+    <ClInclude Include="src\render3d\light.h" />
     <ClInclude Include="src\render3d\renderengine.h" />
     <ClInclude Include="src\render3d\renderenginehelper.h" />
     <ClInclude Include="src\render3d\renderobject.h" />
@@ -68,7 +69,6 @@
     <ClInclude Include="src\render3d\resourceinstance.h" />
     <ClInclude Include="src\render3d\textresource.h" />
     <ClInclude Include="src\render3d\vector3.h" />
-    <ClInclude Include="src\render3d\vertex3.h" />
     <ClInclude Include="src\render3d\viewport.h" />
     <ClInclude Include="src\render\camera.h" />
     <ClInclude Include="src\render\color.h" />

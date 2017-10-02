@@ -353,13 +353,13 @@ namespace cinetico {
 		::srand((unsigned int)::time(0));
 		setupBody();
 
-		Vertex3 triangle1[] = {
+		render3d::Vector3 triangle1[] = {
 			{ 0.3f, 0.0f, 1 },
 			{ 0.5f, 0.0f, 1 },
 			{ 0, -0.5f, 1 },
 		};
 
-		Vertex3 triangle3[] = {
+		render3d::Vector3 triangle3[] = {
 			{ -1, 1, 0 },
 			{ 1, 1, 0 },
 			{ -1, -1, 0 }

@@ -4,7 +4,6 @@
 #define __RENDER3D_RESOURCEDATA_H__
 
 #include "color.h"
-#include "vertex3.h"
 #include "vector3.h"
 #include "renderobject.h"
 
@@ -17,11 +16,13 @@ namespace render3d {
 		enum DirtyFlags {
 			VERTEX_DIRTY = 0x01,
 			INDEX_DIRTY = 0x02,
-			COLOR_DIRTY = 0x04
+			NORMALS_DIRTY = 0x04,
+			COLOR_DIRTY = 0x08
 		};
 
 		int m_vertexCount;
-		Vertex3 *m_vertices;
+		Vector3 *m_vertices;
+		Vector3 *m_normals;
 		Color *m_colors;
 		int m_indexCount;
 		int *m_indices;
@@ -33,14 +34,16 @@ namespace render3d {
 
 		~ResourceData();
 
-		void setVertices(unsigned int vertexCount, Vertex3 vertices[]);
+		void setVertices(unsigned int vertexCount, Vector3 vertices[]);
 		void setIndices(unsigned int indexCount, int indices[]);
+		void setNormals(Vector3 normals[]);
 		void setColors(Color *colors);
 
 		int vertexCount() const { return m_vertexCount; }
-		Vertex3 *vertices() const { return m_vertices; }
+		Vector3 *vertices() const { return m_vertices; }
 		int indexCount() const { return m_indexCount; }
 		int *indices() const { return m_indices; }
+		Vector3 *normals() const { return m_normals; }
 		Color *colors() const { return m_colors; }
 	};
 

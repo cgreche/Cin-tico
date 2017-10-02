@@ -194,17 +194,17 @@ namespace render3d {
 		LPDIRECT3DVERTEXBUFFER9 vertexBuffer;
 		LPDIRECT3DINDEXBUFFER9 indexBuffer;
 		int vertexCount = resData->vertexCount();
-		Vertex3 *vertices = resData->vertices();
+		Vector3 *vertices = resData->vertices();
 		int indexCount = resData->indexCount();
 		Color *colors = resData->colors();
-		unsigned int stride = sizeof(Vertex3) + sizeof(D3DCOLOR);
+		unsigned int stride = sizeof(Vector3) + sizeof(D3DCOLOR);
 		hr = m_device->CreateVertexBuffer(vertexCount * stride, 0, 0, D3DPOOL_MANAGED, &vertexBuffer, NULL);
 		hr = m_device->CreateIndexBuffer(indexCount * 4, 0, D3DFMT_INDEX32, D3DPOOL_MANAGED, &indexBuffer, NULL);
 		BYTE *pData;
 		vertexBuffer->Lock(0, 0, (void**)&pData, 0);
 		for (int i = 0; i < vertexCount; ++i) {
-			memcpy(pData, &vertices[i], sizeof(Vertex3));
-			pData += sizeof(Vertex3);
+			memcpy(pData, &vertices[i], sizeof(Vector3));
+			pData += sizeof(Vector3);
 			D3DCOLOR d3dColor;
 			if (!colors)
 				d3dColor = D3DCOLOR_ARGB(255, 128, 128, 128);

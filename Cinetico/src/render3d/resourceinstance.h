@@ -4,7 +4,6 @@
 #define __RENDER3D_RESOURCEINSTANCE_H__
 
 #include "color.h"
-#include "vertex3.h"
 #include "vector3.h"
 #include "renderobject.h"
 #include "resourcedata.h"

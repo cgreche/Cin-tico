@@ -27,12 +27,12 @@ namespace render3d {
 			delete[] m_colors;
 	}
 
-	void ResourceData::setVertices(unsigned int vertexCount, Vertex3 vertices[]) {
+	void ResourceData::setVertices(unsigned int vertexCount, Vector3 vertices[]) {
 		if (m_vertices)
 			delete[] m_vertices;
 
-		m_vertices = new Vertex3[vertexCount];
-		::memcpy(m_vertices, vertices, vertexCount * sizeof(Vertex3));
+		m_vertices = new Vector3[vertexCount];
+		::memcpy(m_vertices, vertices, vertexCount * sizeof(Vector3));
 		m_vertexCount = vertexCount;
 
 		m_dirtyFlags |= VERTEX_DIRTY;

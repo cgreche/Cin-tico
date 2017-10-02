@@ -156,9 +156,6 @@
     <ClInclude Include="src\render3d\vector3.h">
       <Filter>Arquivos de Origem\render3d</Filter>
     </ClInclude>
-    <ClInclude Include="src\render3d\vertex3.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
-    </ClInclude>
     <ClInclude Include="src\lib\d3dx9.h">
       <Filter>Arquivos de Origem\lib</Filter>
     </ClInclude>
@@ -428,6 +425,9 @@
     </ClInclude>
     <ClInclude Include="src\entity\dao\UserProfileDAO.h">
       <Filter>Arquivos de Origem\entity\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render3d\light.h">
+      <Filter>Arquivos de Origem\render3d</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

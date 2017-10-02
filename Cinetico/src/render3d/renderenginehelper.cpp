@@ -10,7 +10,7 @@ namespace render3d {
 		float midW = width*0.5f;
 		float midL = length*0.5f;
 
-		Vertex3 quad[] = {
+		Vector3 quad[] = {
 			{-midW, midL, 0}, {midW, midL, 0},
 			{-midW,-midL, 0}, {midW,-midL, 0}
 		};
@@ -35,7 +35,7 @@ namespace render3d {
 		//Size of angle between two points on the circle (single wedge)
 		float WedgeAngle;
 
-		Vertex3 *circle = new Vertex3[numPoints];
+		Vector3 *circle = new Vector3[numPoints];
 		int *indices = new int[(numPoints - 1) * 3];
 
 		//Precompute WedgeAngle
@@ -53,9 +53,9 @@ namespace render3d {
 			x = (float)(0.0f + radius * cos(theta));
 			y = (float)(0.0f - radius * sin(theta));
 
-			circle[i] = Vertex3(x, y, 1.0f);
+			circle[i] = Vector3(x, y, 1.0f);
 		}
-		circle[i] = Vertex3(0, 0, 1.f);
+		circle[i] = Vector3(0, 0, 1.f);
 
 		//Fill indices
 		int j = 0;
@@ -80,33 +80,59 @@ namespace render3d {
 		float hh = height / 2.f;
 		float hl = length / 2.f;
 
-		Vertex3 prism[] = {
+		Vector3 vertices[] = {
 			//Front-Face
-			{ -hw, hh, -hl }, { hw, hh, -hl },
-			{ hw, -hh, -hl }, { -hw, -hh, -hl },
+			{ -hw, hh, -hl },{ hw, hh, -hl },
+			{ hw, -hh, -hl },{ -hw, -hh, -hl },
 
 			//Back-Face
-			{ -hw, hh, hl }, { hw, hh, hl },
-			{ hw, -hh, hl }, { -hw, -hh, hl },
+			{ -hw, hh, hl },{ hw, hh, hl },
+			{ hw, -hh, hl },{ -hw, -hh, hl },
 
 			//Up-Face
-			{ -hw, hh, -hl }, { -hw, hh, hl },
-			{ hw, hh, hl }, { hw, hh, -hl },
+			{ -hw, hh, -hl },{ -hw, hh, hl },
+			{ hw, hh, hl },{ hw, hh, -hl },
 
 			//Down-Face
-			{ -hw, -hh, hl }, { -hw, -hh, -hl },
-			{ hw, -hh, -hl }, { hw, -hh, hl },
+			{ -hw, -hh, hl },{ -hw, -hh, -hl },
+			{ hw, -hh, -hl },{ hw, -hh, hl },
 
 			//Left-Face
-			{ -hw, -hh, hl }, { -hw, hh, hl },
-			{ -hw, hh, -hl}, { -hw, -hh, -hl },
+			{ -hw, -hh, hl },{ -hw, hh, hl },
+			{ -hw, hh, -hl },{ -hw, -hh, -hl },
 
 			//Right-Face
-			{ hw, -hh, -hl }, { hw, hh, -hl },
-			{ hw, hh, hl}, { hw, -hh, hl }
+			{ hw, -hh, -hl },{ hw, hh, -hl },
+			{ hw, hh, hl },{ hw, -hh, hl }
 		};
 
-		int prismIndices[] = {
+		Vector3 normals[] = {
+			//Front-Face
+			{ 0, 0, -1 },{ 0, 0, -1 },
+			{ 0, 0, -1 },{ 0, 0, -1 },
+
+			//Back-Face
+			{ 0, 0, 1 },{ 0, 0, 1 },
+			{ 0, 0, 1 },{ 0, 0, 1 },
+
+			//Up-Face
+			{ 0, 1, 0 },{ 0, 1, 0 },
+			{ 0, 1, 0 },{ 0, 1, 0 },
+
+			//Down-Face
+			{ 0, -1, 0 },{ 0, -1, 0 },
+			{ 0, -1, 0 },{ 0, -1, 0 },
+
+			//Left-Face
+			{ -1, 0, 0 },{ -1, 0, 0 },
+			{ -1, 0, 0 },{ -1, 0, 0 },
+
+			//Right-Face
+			{ 0, 0, 1 },{ 0, 0, 1 },
+			{ 0, 0, 1 },{ 0, 0, 1 }
+		};
+
+		int indices[] = {
 			//Front-face
 			0,1,2,2,3,0,
 			//Back-face
@@ -121,7 +147,7 @@ namespace render3d {
 			20,21,22,22,23,20
 		};
 
-		return m_renderEngine.newResource(24, prism, 36, prismIndices, colors);
+		return m_renderEngine.newResource(24, vertices, 36, indices, colors);
 	}
 
 	int RenderEngineHelper::generateTerrain(float squareSize, int terrainGridWidth, int terrainGridHeight)
@@ -130,7 +156,7 @@ namespace render3d {
 		int vertexCount = squareCount * 4;
 		int indexCount = squareCount * 6;
 		int vertexPerRow = terrainGridWidth * 4;
-		Vertex3 *vertices = new Vertex3[vertexCount];
+		Vector3 *vertices = new Vector3[vertexCount];
 		int *indices = new int[indexCount];
 		int i, j;
 		int p;
@@ -147,10 +173,10 @@ namespace render3d {
 			x = xOrigin;
 			z = zOrigin - i * squareSize - 1;
 			for (j = 0; j < terrainGridWidth; ++j) {
-				vertices[p++] = Vertex3(x, y, z);
-				vertices[p++] = Vertex3(x + squareSize, y, z);
-				vertices[p++] = Vertex3(x + squareSize, y, z - (squareSize));
-				vertices[p++] = Vertex3(x, y, z - (squareSize));
+				vertices[p++] = Vector3(x, y, z);
+				vertices[p++] = Vector3(x + squareSize, y, z);
+				vertices[p++] = Vector3(x + squareSize, y, z - (squareSize));
+				vertices[p++] = Vector3(x, y, z - (squareSize));
 				x += squareSize;
 			}
 		}
