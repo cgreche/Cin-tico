@@ -21,7 +21,7 @@ namespace cinetico {
 
 	static void onClick_CreateEdit(Button &button) {
 		ExercisesController *controller = (ExercisesController*)button.param();
-		controller->saveCurrentExercise();
+		g_cinetico.goTo(Cinetico::EXERCISE_MANAGEMENT);
 	}
 
 	static void onClick_Cancel(Button &button) {
@@ -241,7 +241,7 @@ namespace cinetico {
 
 		if (m_currentSelection != lastSelection) {
 			buttonEdit.setEnabled(m_currentSelection >= 0);
-			buttonEdit.setEnabled(m_currentSelection >= 0);
+			buttonDelete.setEnabled(m_currentSelection >= 0);
 			buttonDoExercise.setEnabled(m_editMode == 0 && m_currentSelection >= 0);
 		}
 

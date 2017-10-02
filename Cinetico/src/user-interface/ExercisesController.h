@@ -67,7 +67,6 @@ namespace cinetico {
 		void updateExerciseList();
 
 		void saveCurrentExercise();
-		void editSelectedExercise();
 		void deleteSelectedExercise();
 		void doSelectedExercise();
 	};

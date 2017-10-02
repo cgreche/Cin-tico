@@ -11,25 +11,46 @@ namespace cinetico {
 	{
 	public:
 		VerticalLayout layout;
-			HorizontalLayout layoutActions;
+			VerticalLayout layoutActions;
 				Label labelViewTitle;
 				Label labelViewDescr;
 				HorizontalLayout layoutActionButtons;
 					Button buttonSaveExercise;
 					Button buttonCancelExercise;
 
-				VerticalLayout layoutActionType;
-					Label labelActionType;
-					ComboBox comboActionType;
-				VerticalLayout layoutMinTime;
-					Label labelMinTime;
-					EditBox editMinTime;
-				VerticalLayout layoutMaxTime;
-					Label labelMaxTime;
-					EditBox editMaxTime;
-		
+			VerticalLayout layoutContent;
 
-			VerticalLayout layoutSpacing;
+			HorizontalLayout layoutContentList;
+				GridView gridActions;
+				VerticalLayout layoutGridActions;
+					Button buttonAdd;
+					Button buttonEdit;
+					Button buttonDelete;
+
+			VerticalLayout layoutActionData;
+				HorizontalLayout layoutActionDataActionButtons;
+					Button buttonSaveAction;
+					Button buttonCancelAction;
+
+				HorizontalLayout layoutActionDataRow1;
+					VerticalLayout layoutName;
+						Label labelName;
+						EditBox editName;
+					VerticalLayout layoutPartOf;
+						Label labelPartOf;
+						ComboBox comboPartOf;
+				HorizontalLayout layoutBaseActionData;
+					VerticalLayout layoutActionType;
+						Label labelActionType;
+						ComboBox comboActionType;
+					VerticalLayout layoutMinTime;
+						Label labelMinTime;
+						EditBox editMinTime;
+					VerticalLayout layoutMaxTime;
+						Label labelMaxTime;
+						EditBox editMaxTime;
+		
+				Label labelSpaceType;
 				HorizontalLayout layoutSpaceType;
 					VerticalLayout layoutSpaceTypeX;
 						Label labelSpaceTypeX;
@@ -41,6 +62,7 @@ namespace cinetico {
 						Label labelSpaceTypeZ;
 						ComboBox comboSpaceTypeZ;
 
+				Label labelPosition;
 				HorizontalLayout layoutPosition;
 					VerticalLayout layoutPositionX;
 						Label labelPositionX;
@@ -49,33 +71,36 @@ namespace cinetico {
 						Label labelPositionY;
 						EditBox editPositionY;
 					VerticalLayout layoutPositionZ;
-						Label labelSpaceZ;
+						Label labelPositionZ;
 						EditBox editPositionZ;
 
-			VerticalLayout layoutSpecific;
-			//Position action
-				HorizontalLayout layoutMinHoldTime;
-					Label labelMinHoldtimeX;
-					EditBox editMinHoldtimeX;
+				VerticalLayout layoutSpecific;
+				//Position action
+					VerticalLayout layoutMinHoldTime;
+						Label labelMinHoldtime;
+						EditBox editMinHoldtime;
 
-			//Movement action
-				HorizontalLayout layoutMovementAction;
-					VerticalLayout layoutMovementType;
-						Label labelMovementType;
-						ComboBox comboMovementType;
-					VerticalLayout layoutMinSpeed;
-						Label labelMinSpeed;
-						EditBox editMinSpeed;
-					VerticalLayout layoutMaxSpeed;
-						Label labelMaxSpeed;
-						EditBox editMaxSpeed;
+				//Movement action
+					HorizontalLayout layoutMovementAction;
+						VerticalLayout layoutMovementType;
+							Label labelMovementType;
+							ComboBox comboMovementType;
+						VerticalLayout layoutMinSpeed;
+							Label labelMinSpeed;
+							EditBox editMinSpeed;
+						VerticalLayout layoutMaxSpeed;
+							Label labelMaxSpeed;
+							EditBox editMaxSpeed;
 
+		int m_editMode;
 	public:
 		ExerciseManagementController();
 
 		Layout *viewDefinition();
 		void onViewEnter();
 		void onViewQuit();
+
+		void setEditionMode(int mode);
 	};
 
 }

@@ -39,7 +39,7 @@ namespace cinetico {
 		m_mainWindow = new MainWindow(*this);
 
 #if 1
-		goTo(LOGIN);
+		goTo(EXERCISE_MANAGEMENT);
 #else
 		enter3DWorld();
 #endif
