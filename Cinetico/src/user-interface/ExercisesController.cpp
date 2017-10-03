@@ -222,7 +222,7 @@ namespace cinetico {
 		return &layout;
 	}
 
-	void ExercisesController::onViewEnter() {
+	void ExercisesController::onViewEnter(ViewParams *params) {
 		m_editMode = 0;
 		m_currentSelection = -1;
 		buttonCreateExercise.setEnabled(true);

@@ -125,7 +125,7 @@ namespace cinetico {
 		return 0;
 	}
 
-	void Cinetico::goTo(ViewID viewId) {
+	void Cinetico::goTo(ViewID viewId, Controller::ViewParams *params) {
 		if (m_currentView != INVALID) {
 			Controller *currentController = m_views[m_currentView].controller;
 			currentController->onViewQuit();
@@ -134,7 +134,7 @@ namespace cinetico {
 		Controller *controller = m_views[viewId].controller;
 		m_mainWindow->setContentLayout(controller->viewDefinition());
 		m_currentView = viewId;
-		controller->onViewEnter();
+		controller->onViewEnter(params);
 
 		m_mainWindow->setSize(Size(1024, 768));
 	}

@@ -7,6 +7,8 @@
 
 namespace cinetico {
 
+	using namespace uilib;
+
 	class ExerciseManagementController : public Controller
 	{
 	public:
@@ -98,7 +100,7 @@ namespace cinetico {
 		ExerciseManagementController();
 
 		Layout *viewDefinition();
-		void onViewEnter();
+		void onViewEnter(ViewParams *params);
 		void onViewQuit();
 
 		void setEditionMode(int mode);

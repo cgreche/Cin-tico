@@ -72,7 +72,7 @@ namespace cinetico {
 		return &layout;
 	}
 
-	void LoginController::onViewEnter() {
+	void LoginController::onViewEnter(ViewParams *params) {
 		m_userProfileDAO = g_cinetico.cineticoDB()->userProfileDAO();
 	}
 

@@ -176,8 +176,10 @@ namespace cinetico {
 		return &layout; 
 	}
 
-	void ExerciseManagementController::onViewEnter() {
+	void ExerciseManagementController::onViewEnter(ViewParams *params) {
 		m_editMode = 0;
+		Exercise *exercise = params ? (Exercise*)(*params)["exercise"] : NULL;
+		m_currentExercise = exercise;
 	}
 
 	void ExerciseManagementController::onViewQuit() {

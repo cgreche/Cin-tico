@@ -5,7 +5,8 @@
 #include "Controller.h"
 #include "uilib/ui/uibase.h"
 
-namespace cinetico {
+namespace cinetico {	
+	using namespace uilib;
 
 	class UserProfileDAO;
 
@@ -38,7 +39,7 @@ namespace cinetico {
 		LoginController();
 
 		Layout *viewDefinition();
-		void onViewEnter();
+		void onViewEnter(ViewParams *params);
 		void onViewQuit();
 		void login();
 		void createAccount();

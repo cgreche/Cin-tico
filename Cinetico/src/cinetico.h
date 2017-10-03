@@ -4,13 +4,13 @@
 
 #include "cineticodb.h"
 #include "cinetico3d.h"
+#include "user-interface/controller.h"
 #include <vector>
 #include <list>
 
 namespace cinetico {
 
 	class MainWindow;
-	class Controller;
 
 	struct View {
 		int id;
@@ -63,7 +63,7 @@ namespace cinetico {
 	public:
 		Cinetico();
 		void registerView(int id, const char *name, Controller *controller);
-		void goTo(ViewID viewId);
+		void goTo(ViewID viewId, Controller::ViewParams *params = NULL);
 		
 		CineticoError createAccount(const char *username, const char *password);
 		CineticoError loginUser(const char *username, const char *password);

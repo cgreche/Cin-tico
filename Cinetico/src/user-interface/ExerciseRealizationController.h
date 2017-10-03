@@ -6,6 +6,7 @@
 #include "uilib/ui/uibase.h"
 
 namespace cinetico {
+	using namespace uilib;
 
 	class ExerciseRealizationController : public Controller
 	{
@@ -16,7 +17,7 @@ namespace cinetico {
 		ExerciseRealizationController();
 
 		Layout *viewDefinition();
-		void onViewEnter();
+		void onViewEnter(ViewParams *params);
 		void onViewTick();
 		void onViewQuit();
 	};

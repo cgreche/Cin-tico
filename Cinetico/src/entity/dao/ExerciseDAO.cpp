@@ -30,7 +30,7 @@ namespace cinetico {
 			SQLStatement *stmtAction = m_db.prepare(sqlAction);
 			SQLStatement *stmtActionPosition = m_db.prepare(sqlActionPosition);
 			SQLStatement *stmtActionMovement = m_db.prepare(sqlActionMovement);
-			for (unsigned int i = 0; i < exercise.actionCount; ++i) {
+			for (unsigned int i = 0; i < exercise.actionCount(); ++i) {
 				Action *action = exercise.action(i);
 				stmtAction->bind(1, exercise.id());
 				stmtAction->bind(2, action->tag().c_str());

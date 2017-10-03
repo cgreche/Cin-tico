@@ -9,6 +9,8 @@
 
 namespace cinetico {
 
+	using namespace uilib;
+
 	class MainWindow : public Window
 	{
 		VerticalLayout layout;
@@ -34,6 +36,7 @@ namespace cinetico {
 
 		friend void buttonLogoff_onClick(Button &button);
 		void onClickLogoff();
+
 	public:
 		MainWindow(Cinetico &cinetico);
 		void update();

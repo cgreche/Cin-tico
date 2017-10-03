@@ -14,7 +14,7 @@ namespace cinetico {
 		return &layout;
 	}
 
-	void ExerciseRealizationController::onViewEnter() {
+	void ExerciseRealizationController::onViewEnter(ViewParams *params) {
 		g_cinetico.enter3DWorld();
 	}
 
