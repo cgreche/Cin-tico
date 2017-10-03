@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 
+#include "entity/user/UserProfile.h"
 #include "entity/core/Exercise.h"
 
 class Database;
@@ -19,9 +20,10 @@ namespace cinetico {
 	public:
 		ExerciseDAO(Database &db);
 
-		void save(Exercise &exercise);
+		void save(Exercise &exercise, UserProfile *owner);
 		void update(Exercise &exercise);
 		std::vector<Exercise *> getAllExercises();
+		std::vector<Exercise *> getAllExercisesByUserProfile(UserProfile *user);
 		void exclude(Exercise &exercise);
 
 	};

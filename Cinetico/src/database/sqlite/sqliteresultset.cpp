@@ -35,6 +35,10 @@ std::string SQLiteResultSet::getString(int colIndex) {
 	return ret;
 }
 
+bool SQLiteResultSet::isNull(int colIndex) {
+	return sqlite3_column_type(m_internalStmt, colIndex) == SQLITE_NULL;
+}
+
 int SQLiteResultSet::close()
 {
 	delete this;

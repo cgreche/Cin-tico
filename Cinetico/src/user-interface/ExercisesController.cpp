@@ -21,7 +21,8 @@ namespace cinetico {
 
 	static void onClick_CreateEdit(Button &button) {
 		ExercisesController *controller = (ExercisesController*)button.param();
-		g_cinetico.goTo(Cinetico::EXERCISE_MANAGEMENT);
+		//g_cinetico.goTo(Cinetico::EXERCISE_MANAGEMENT);
+		controller->saveCurrentExercise();
 	}
 
 	static void onClick_Cancel(Button &button) {
@@ -100,7 +101,7 @@ namespace cinetico {
 	}
 
 	void ExercisesController::updateExerciseList() {
-		std::vector<Exercise*> exerciseList = g_cinetico.cineticoDB()->exerciseDAO()->getAllExercises();
+		std::vector<Exercise*> exerciseList = g_cinetico.cineticoDB()->exerciseDAO()->getAllExercisesByUserProfile(g_cinetico.currentUser());
 		gridExercises.deleteRows();
 		for (unsigned int i = 0; i < exerciseList.size(); ++i) {
 			gridExercises.insertRow();
@@ -279,7 +280,7 @@ namespace cinetico {
 			exercise->setPublic(isPublic);
 			exercise->setTrackableBodyPoints(bpFlags);
 
-			g_cinetico.cineticoDB()->exerciseDAO()->save(*exercise);
+			g_cinetico.cineticoDB()->exerciseDAO()->save(*exercise, g_cinetico.currentUser());
 			delete exercise;
 		}
 		else if (m_editMode == 2) {

@@ -23,6 +23,10 @@ int SQLiteStatement::bind(int paramIndex, const std::string &value) {
 	return sqlite3_bind_text(m_internalStmt, paramIndex, cstr, len, NULL);
 }
 
+int SQLiteStatement::bindNull(int paramIndex) {
+	return sqlite3_bind_null(m_internalStmt, paramIndex);
+}
+
 int SQLiteStatement::close() {
 	int rc;
 	rc = sqlite3_finalize(m_internalStmt);

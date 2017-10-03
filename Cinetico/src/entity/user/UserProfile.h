@@ -25,6 +25,7 @@ namespace cinetico {
 
 		void setName(const std::string &name) { m_name = name; }
 
+		const int id() const { return m_id; }
 		const std::string& username() const { return m_username; }
 		const std::string& password() const { return m_password; }
 		const std::string& name() const { return m_name; }

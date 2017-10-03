@@ -10,8 +10,8 @@ namespace cinetico {
 
 	}
 
-	void ExerciseDAO::save(Exercise &exercise) {
-		const char *sql = "INSERT INTO EXERCISE(name,author,creation_date,trackable_body_points,is_public) VALUES(?,?,?,?,?);";
+	void ExerciseDAO::save(Exercise &exercise, UserProfile *user) {
+		const char *sql = "INSERT INTO EXERCISE(name,author,creation_date,trackable_body_points,is_public,owner_id) VALUES(?,?,?,?,?,?);";
 
 		SQLStatement *stmt;
 		stmt = m_db.prepare(sql);
@@ -20,6 +20,10 @@ namespace cinetico {
 		stmt->bind(3, 0);
 		stmt->bind(4, (int)exercise.trackableBodyPoints());
 		stmt->bind(5, exercise.isPublic() != false);
+		if (user)
+			stmt->bind(6, user->id());
+		else
+			stmt->bindNull(6);
 		int rc = stmt->execute();
 		if (rc != 0) {
 			//todo
@@ -42,6 +46,32 @@ namespace cinetico {
 			//todo
 		}
 		stmt->close();
+	}
+
+	std::vector<Exercise *> ExerciseDAO::getAllExercisesByUserProfile(UserProfile *user) {
+		const char *sql = "SELECT * FROM EXERCISE WHERE owner_id = ? OR is_public = 1;";
+		SQLStatement *stmt;
+		std::vector<Exercise *> exerciseList;
+		stmt = m_db.prepare(sql);
+		if (user)
+			stmt->bind(1, user->id());
+		else
+			stmt->bindNull(1);
+
+		ResultSet *rs = stmt->query();
+		if (rs) {
+			while (rs->next()) {
+				Exercise *exercise = new Exercise(rs->getInt(0));
+				exercise->setName(rs->getString(1).c_str());
+				exercise->setAuthor(rs->getString(2).c_str());
+				exercise->setTrackableBodyPoints(rs->getInt(4));
+				exercise->setPublic(rs->getInt(5) != 0);
+				exerciseList.push_back(exercise);
+			}
+			rs->close();
+		}
+		stmt->close();
+		return exerciseList;
 	}
 
 	std::vector<Exercise *> ExerciseDAO::getAllExercises() {

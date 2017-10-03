@@ -12,6 +12,8 @@
 #include "user-interface/ExerciseRealizationController.h"
 #include "utils/crypter.h"
 
+#define INITIAL_VIEW Cinetico::LOGIN
+
 namespace cinetico {
 
 	Cinetico g_cinetico;
@@ -39,7 +41,7 @@ namespace cinetico {
 		m_mainWindow = new MainWindow(*this);
 
 #if 1
-		goTo(EXERCISE_MANAGEMENT);
+		goTo(INITIAL_VIEW);
 #else
 		enter3DWorld();
 #endif

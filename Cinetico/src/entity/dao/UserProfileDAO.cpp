@@ -48,7 +48,7 @@ namespace cinetico {
 		ResultSet *rs = stmt->query();
 		if (rs) {
 			while (rs->next()) {
-				UserProfile *user = new UserProfile(rs->getString(1), rs->getString(2), rs->getInt(3));
+				UserProfile *user = new UserProfile(rs->getString(1), rs->getString(2), rs->getInt(3), rs->getInt(0));
 				userList.push_back(user);
 			}
 			rs->close();
@@ -65,7 +65,7 @@ namespace cinetico {
 		ResultSet *rs = stmt->query();
 		if (rs) {
 			if (rs->next())
-				user = new UserProfile(rs->getString(1), rs->getString(2), rs->getInt(3));
+				user = new UserProfile(rs->getString(1), rs->getString(2), rs->getInt(3), rs->getInt(0));
 		}
 		stmt->close();
 		return user;
