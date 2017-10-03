@@ -1,6 +1,10 @@
 #ifndef __CINETICO_CORE_EXERCISE_H__
 #define __CINETICO_CORE_EXERCISE_H__
 
+#include <vector>
+
+#include "action.h"
+
 namespace cinetico_core {
 
 	class Exercise {
@@ -10,10 +14,13 @@ namespace cinetico_core {
 		bool m_public;
 		unsigned long m_trackableBodyPoints;
 
+		std::vector<Action*> m_actions;
+
 	public:
-		Exercise(unsigned long id = -1) {
-			m_id = id;
-		}
+		Exercise(unsigned long id = -1);
+		~Exercise();
+
+		void insertAction(Action *action);
 
 		void setName(const char *name) { m_name = name; }
 		void setAuthor(const char *author) { m_author = author; }
@@ -25,6 +32,8 @@ namespace cinetico_core {
 		const std::string& author() const { return m_author; }
 		bool isPublic() const { return m_public; }
 		unsigned long trackableBodyPoints() const { return m_trackableBodyPoints; }
+		Action *action(int index) const { return m_actions[index]; }
+		unsigned int actionCount() const { return m_actions.size(); }
 	};
 
 }

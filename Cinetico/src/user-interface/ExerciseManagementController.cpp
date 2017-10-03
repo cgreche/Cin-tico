@@ -21,7 +21,6 @@ namespace cinetico {
 		controller->setEditionMode(0);
 	}
 
-
 	ExerciseManagementController::ExerciseManagementController() {
 		labelViewTitle.setText("Gerenciamento de Exercício");
 		labelViewTitle.setFont(FontDesc("Arial", 46, FONT_BOLD));

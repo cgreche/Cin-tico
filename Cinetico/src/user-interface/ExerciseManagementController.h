@@ -92,6 +92,7 @@ namespace cinetico {
 							Label labelMaxSpeed;
 							EditBox editMaxSpeed;
 
+		Exercise *m_currentExercise;
 		int m_editMode;
 	public:
 		ExerciseManagementController();

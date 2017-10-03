@@ -12,7 +12,7 @@
 #include "user-interface/ExerciseRealizationController.h"
 #include "utils/crypter.h"
 
-#define INITIAL_VIEW Cinetico::LOGIN
+#define INITIAL_VIEW Cinetico::EXERCISE_MANAGEMENT
 
 namespace cinetico {
 

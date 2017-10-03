@@ -7,7 +7,9 @@ namespace cinetico_core {
 
 	class PositionAction : public Action {
 	public:
-		PositionAction();
+		PositionAction()
+			: Action(Action::Position) {
+		}
 	};
 
 }

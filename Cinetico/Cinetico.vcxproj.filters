@@ -375,9 +375,6 @@
     <ClInclude Include="src\entity\core\PositionAction.h">
       <Filter>Arquivos de Origem\entity\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity\core\SpaceAction.h">
-      <Filter>Arquivos de Origem\entity\core</Filter>
-    </ClInclude>
     <ClInclude Include="src\kinectsensor.h">
       <Filter>Arquivos de Origem</Filter>
     </ClInclude>
@@ -675,9 +672,6 @@
       <Filter>Arquivos de Origem\entity\core</Filter>
     </ClCompile>
     <ClCompile Include="src\entity\core\PositionAction.cpp">
-      <Filter>Arquivos de Origem\entity\core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entity\core\SpaceAction.cpp">
       <Filter>Arquivos de Origem\entity\core</Filter>
     </ClCompile>
     <ClCompile Include="src\kinectsensor.cpp">

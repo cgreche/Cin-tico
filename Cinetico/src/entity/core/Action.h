@@ -13,6 +13,16 @@ namespace cinetico_core {
 	};
 
 	class Action {
+	public:
+		enum ActionType {
+			Position,
+			Movement
+		};
+
+	protected:
+		int m_id;
+		ActionType m_actionType;
+
 		//Definition attributes
 		std::string m_tag;
 		float minTime;
@@ -20,8 +30,15 @@ namespace cinetico_core {
 
 		//State attributes
 		bool m_correct;
+	protected:
+		Action(ActionType actionType, int id = -1)
+			: m_actionType(actionType), m_id(id) {
+		}
+
 	public:
-		Action();
+		int id() const { return m_id; }
+		ActionType type() const { return m_actionType; }
+		const std::string& tag() const { return m_tag; }
 		bool isCorrect() const { return m_correct; }
 	};
 

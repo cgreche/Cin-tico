@@ -25,7 +25,6 @@ namespace cinetico {
 		std::vector<Exercise *> getAllExercises();
 		std::vector<Exercise *> getAllExercisesByUserProfile(UserProfile *user);
 		void exclude(Exercise &exercise);
-
 	};
 
 }

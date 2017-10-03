@@ -98,7 +98,7 @@ Size OSDComboBox::getAutoSize()
 
 	//method 2:
 	//clientrect - textsize = difference of 8
-	return Size(SizeTypeAuto,textSize.height()+8);
+	return Size(100,textSize.height()+8);
 }
 
 void OSDComboBox::setSize(const Size &size)

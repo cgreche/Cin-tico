@@ -7,7 +7,9 @@ namespace cinetico_core {
 
 	class MovementAction : public Action {
 	public:
-		MovementAction();
+		MovementAction()
+			: Action(Action::Movement) {
+		}
 	};
 
 }
