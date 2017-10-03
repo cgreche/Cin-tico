@@ -78,29 +78,40 @@ namespace cinetico {
 
 				VerticalLayout layoutSpecific;
 				//Position action
-					VerticalLayout layoutMinHoldTime;
-						Label labelMinHoldtime;
-						EditBox editMinHoldtime;
+					VerticalLayout layoutPositionSpecific;
+						VerticalLayout layoutMinHoldTime;
+							Label labelMinHoldtime;
+							EditBox editMinHoldtime;
 
 				//Movement action
-					HorizontalLayout layoutMovementAction;
-						VerticalLayout layoutMovementType;
-							Label labelMovementType;
-							ComboBox comboMovementType;
-						VerticalLayout layoutMinSpeed;
-							Label labelMinSpeed;
-							EditBox editMinSpeed;
-						VerticalLayout layoutMaxSpeed;
-							Label labelMaxSpeed;
-							EditBox editMaxSpeed;
+					VerticalLayout layoutMovementSpecific;
+						HorizontalLayout layoutMovementAction;
+							VerticalLayout layoutMovementType;
+								Label labelMovementType;
+								ComboBox comboMovementType;
+							VerticalLayout layoutMinSpeed;
+								Label labelMinSpeed;
+								EditBox editMinSpeed;
+							VerticalLayout layoutMaxSpeed;
+								Label labelMaxSpeed;
+								EditBox editMaxSpeed;
 
 		Exercise *m_currentExercise;
 		int m_editMode;
+
+		int m_currentActionTypeSelection;
+		int m_currentMovementTypeSelection;
+
+		void fillSpaceTypeCombo(ComboBox &combo);
+
+		friend void comboActionType_onChange(ComboBox &combo, ComboBoxItem *item);
+
 	public:
 		ExerciseManagementController();
 
 		Layout *viewDefinition();
 		void onViewEnter(ViewParams *params);
+		void onViewTick();
 		void onViewQuit();
 
 		void setEditionMode(int mode);

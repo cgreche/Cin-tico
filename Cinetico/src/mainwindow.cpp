@@ -77,7 +77,10 @@ namespace cinetico {
 		UserProfile *currentUser = m_cinetico.currentUser();
 		if (lastUserProfile != currentUser) {
 			if (currentUser) {
-				labelUsername.setText(currentUser->username().c_str());
+				uilib::string userStr;
+				userStr = "Usuário: ";
+				userStr += currentUser->username().c_str();
+				labelUsername.setText(userStr);
 				layoutLoginInfo.setVisible(true);
 				layoutHeader.setSize(layoutHeader.size());
 			}

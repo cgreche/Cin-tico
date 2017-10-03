@@ -2,6 +2,9 @@
 #include "cinetico.h"
 #include "ExerciseManagementController.h"
 
+#include "entity/core/PositionAction.h"
+#include "entity/core/MovementAction.h"
+
 namespace cinetico {
 
 	extern Cinetico g_cinetico;
@@ -19,6 +22,22 @@ namespace cinetico {
 	static void buttonSaveAction_onClick(Button &button) {
 		ExerciseManagementController *controller = (ExerciseManagementController*)button.param();
 		controller->setEditionMode(0);
+	}
+
+	static void buttonCancelAction_onClick(Button &button) {
+		ExerciseManagementController *controller = (ExerciseManagementController*)button.param();
+		controller->setEditionMode(0);
+	}
+
+	static void comboActionType_onChange(ComboBox &combo, ComboBoxItem *item) {
+		ExerciseManagementController *controller = (ExerciseManagementController*)combo.param();
+		controller->m_currentActionTypeSelection = combo.selection();
+	}
+
+	void ExerciseManagementController::fillSpaceTypeCombo(ComboBox &combo) {
+		combo.fastinsertItem("Mundo");
+		combo.fastinsertItem("Última posição");
+		combo.fastinsertItem("Cabeça");
 	}
 
 	ExerciseManagementController::ExerciseManagementController() {
@@ -66,6 +85,8 @@ namespace cinetico {
 		buttonSaveAction.setParam(this);
 		buttonSaveAction.setOnClick(buttonSaveAction_onClick);
 		buttonCancelAction.setText("Cancelar");
+		buttonCancelAction.setParam(this);
+		buttonCancelAction.setOnClick(buttonCancelAction_onClick);
 		layoutActionDataActionButtons.append(buttonSaveAction);
 		layoutActionDataActionButtons.append(buttonCancelAction);
 
@@ -73,18 +94,25 @@ namespace cinetico {
 		labelName.setText("Nome");
 		layoutName.append(labelName);
 		layoutName.append(editName);
+		
 
 		labelPartOf.setText("Faz parte da...");
+		comboPartOf.fastinsertItem("Nova ação");
+		comboPartOf.fastinsertItem("Última ação");
+		comboPartOf.fastinsertItem("Todas as ações");
 		layoutPartOf.append(labelPartOf);
-		layoutPartOf.append(comboPartOf);
+		layoutPartOf.append(comboPartOf, Size(SizeTypeMax, SizeTypeAuto));
 
 		layoutActionDataRow1.append(layoutName);
-		layoutActionDataRow1.append(layoutPartOf);
+		layoutActionDataRow1.append(layoutPartOf, Size(MakePercentType(30), SizeTypeAuto));
 
 		labelActionType.setText("Tipo");
-		//comboActionType.append("test1");
+		comboActionType.fastinsertItem("Posição");
+		comboActionType.fastinsertItem("Movimento");
+		comboActionType.setParam(this);
+		comboActionType.setOnSelect(comboActionType_onChange);
 		layoutActionType.append(labelActionType);
-		layoutActionType.append(comboActionType);
+		layoutActionType.append(comboActionType, Size(SizeTypeMax, SizeTypeAuto));
 
 		labelMinTime.setText("Tempo mínimo para execução (s)");
 		layoutMinTime.append(labelMinTime);
@@ -98,12 +126,15 @@ namespace cinetico {
 		labelSpaceTypeX.setText("X");
 		labelSpaceTypeY.setText("Y");
 		labelSpaceTypeZ.setText("Z");
+		fillSpaceTypeCombo(comboSpaceTypeX);
+		fillSpaceTypeCombo(comboSpaceTypeY);
+		fillSpaceTypeCombo(comboSpaceTypeZ);
 		layoutSpaceTypeX.append(labelSpaceTypeX);
-		layoutSpaceTypeX.append(comboSpaceTypeX);
+		layoutSpaceTypeX.append(comboSpaceTypeX, Size(SizeTypeMax, SizeTypeAuto));
 		layoutSpaceTypeY.append(labelSpaceTypeY);
-		layoutSpaceTypeY.append(comboSpaceTypeY);
+		layoutSpaceTypeY.append(comboSpaceTypeY, Size(SizeTypeMax, SizeTypeAuto));
 		layoutSpaceTypeZ.append(labelSpaceTypeZ);
-		layoutSpaceTypeZ.append(comboSpaceTypeZ);
+		layoutSpaceTypeZ.append(comboSpaceTypeZ, Size(SizeTypeMax, SizeTypeAuto));
 		layoutSpaceType.append(layoutSpaceTypeX, Size(SizeTypeMax, SizeTypeAuto));
 		layoutSpaceType.append(layoutSpaceTypeY, Size(SizeTypeMax, SizeTypeAuto));
 		layoutSpaceType.append(layoutSpaceTypeZ, Size(SizeTypeMax, SizeTypeAuto));
@@ -124,7 +155,7 @@ namespace cinetico {
 		layoutPosition.append(layoutPositionZ);
 
 
-		layoutBaseActionData.append(layoutActionType,Size(SizeTypeMax,SizeTypeAuto));
+		layoutBaseActionData.append(layoutActionType,Size(SizeTypeMax, SizeTypeAuto));
 		layoutBaseActionData.append(layoutMinTime, Size(SizeTypeMax, SizeTypeAuto));
 		layoutBaseActionData.append(layoutMaxTime, Size(SizeTypeMax, SizeTypeAuto));
 
@@ -133,11 +164,14 @@ namespace cinetico {
 		labelMinHoldtime.setText("Tempo mínimo para segurar a posição (s)");
 		layoutMinHoldTime.append(labelMinHoldtime);
 		layoutMinHoldTime.append(editMinHoldtime);
+		layoutPositionSpecific.append(layoutMinHoldTime);
 
 		//Movement Action
 		labelMovementType.setText("Tipo de movimento");
+		comboMovementType.fastinsertItem("Linear");
+		comboMovementType.fastinsertItem("Angular");
 		layoutMovementType.append(labelMovementType);
-		layoutMovementType.append(comboMovementType);
+		layoutMovementType.append(comboMovementType, Size(SizeTypeMax, SizeTypeAuto));
 
 		labelMinSpeed.setText("Velocidade mínima para execução");
 		layoutMinSpeed.append(labelMinSpeed);
@@ -150,10 +184,7 @@ namespace cinetico {
 		layoutMovementAction.append(layoutMovementType, Size(SizeTypeMax, SizeTypeAuto));
 		layoutMovementAction.append(layoutMinSpeed, Size(SizeTypeMax, SizeTypeAuto));
 		layoutMovementAction.append(layoutMaxSpeed, Size(SizeTypeMax, SizeTypeAuto));
-
-
-		layoutSpecific.append(layoutMinHoldTime);
-		layoutSpecific.append(layoutMovementAction);
+		layoutMovementSpecific.append(layoutMovementAction);
 
 		layoutActionData.append(layoutActionDataActionButtons);
 		layoutActionData.append(layoutActionDataRow1);
@@ -178,8 +209,36 @@ namespace cinetico {
 
 	void ExerciseManagementController::onViewEnter(ViewParams *params) {
 		m_editMode = 0;
+		m_currentActionTypeSelection = -1;
+		m_currentMovementTypeSelection = -1;
 		Exercise *exercise = params ? (Exercise*)(*params)["exercise"] : NULL;
 		m_currentExercise = exercise;
+	}
+
+	void ExerciseManagementController::onViewTick() {
+		static int lastActionType = -1;
+		static int lastMovementType = -1;
+
+		if (m_currentActionTypeSelection != lastActionType) {
+			if (lastActionType == Action::Position) {
+				layoutSpecific.remove(layoutPositionSpecific);
+			}
+			else if (lastActionType == Action::Movement) {
+				layoutSpecific.remove(layoutMovementSpecific);
+			}
+
+			if (m_currentActionTypeSelection == Action::Position) {
+				layoutSpecific.append(layoutPositionSpecific);
+			}
+			else if (m_currentActionTypeSelection == Action::Movement) {
+				layoutSpecific.append(layoutMovementSpecific);
+			}
+
+			layout.setSize(layout.size());
+			layout.setVisible(true);
+		}
+
+		lastActionType = m_currentActionTypeSelection;
 	}
 
 	void ExerciseManagementController::onViewQuit() {
