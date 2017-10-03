@@ -6,45 +6,49 @@
 
 #include "uibase.h"
 
-Font::Font(const FontDesc &desc)
-	: m_osdRef(NULL)
-{
-	set(desc);
-}
+namespace uilib {
 
-Font::Font(const Font& font)
-	: m_osdRef(&font.osdRef())
-{
-	m_desc = ((Font&)font).desc();
-	osdRef().addRef();
-}
+	Font::Font(const FontDesc &desc)
+		: m_osdRef(NULL)
+	{
+		set(desc);
+	}
 
-Font::Font()
-	: m_osdRef(NULL)
-{
-	set(FontDesc("Arial",10,0));
-}
+	Font::Font(const Font& font)
+		: m_osdRef(&font.osdRef())
+	{
+		m_desc = ((Font&)font).desc();
+		osdRef().addRef();
+	}
 
-Font::~Font()
-{
-	osdRef().release();
-}
+	Font::Font()
+		: m_osdRef(NULL)
+	{
+		set(FontDesc("Arial", 10, 0));
+	}
 
-bool Font::set(const FontDesc &desc)
-{
-	if(m_osdRef)
+	Font::~Font()
+	{
+		osdRef().release();
+	}
+
+	bool Font::set(const FontDesc &desc)
+	{
+		if (m_osdRef)
+			m_osdRef->release();
+		m_desc = desc;
+		m_osdRef = new OSDFont(desc);
+		return m_osdRef != NULL;
+	}
+
+
+	Font& Font::operator=(const Font& font)
+	{
 		m_osdRef->release();
-	m_desc = desc;
-	m_osdRef = new OSDFont(desc);
-	return m_osdRef != NULL;
-}
+		m_desc = font.desc();
+		m_osdRef = &font.osdRef();
+		m_osdRef->addRef();
+		return *this;
+	}
 
-
-Font& Font::operator=(const Font& font)
-{
-	m_osdRef->release();
-	m_desc = font.desc();
-	m_osdRef = &font.osdRef();
-	m_osdRef->addRef();
-	return *this;
 }

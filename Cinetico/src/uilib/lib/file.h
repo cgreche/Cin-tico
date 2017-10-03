@@ -4,30 +4,31 @@
 #include "..\\types.h"
 #include <time.h>
 
+namespace uilib {
 
-class OSDFile;
+	class OSDFile;
 
-enum FILEERR
-{
-	FILEERR_NONE = 0,
-	FILEERR_OUT_OF_MEMORY,
-	FILEERR_FILE_NOT_FOUND,
-	FILEERR_ACCESS_DENIED,
-	FILEERR_ALREADY_OPEN,
-	FILEERR_UNKNOWN = -1
-};
+	enum FILEERR
+	{
+		FILEERR_NONE = 0,
+		FILEERR_OUT_OF_MEMORY,
+		FILEERR_FILE_NOT_FOUND,
+		FILEERR_ACCESS_DENIED,
+		FILEERR_ALREADY_OPEN,
+		FILEERR_UNKNOWN = -1
+	};
 
 
 #define OPENFLAG_READ 1
 #define OPENFLAG_WRITE 2
 #define OPENFLAG_CREATE 4
 
-class File
-{
-	File();
-	~File();
+	class File
+	{
+		File();
+		~File();
 
-	OSDFile *m_osdfile;
+		OSDFile *m_osdfile;
 	public:
 
 		//OSDFile methods
@@ -44,6 +45,8 @@ class File
 		FILEERR Read(void *pBuffer, unsigned int length);
 		FILEERR Write(const void *pBuffer, unsigned int length);
 		FILEERR Seek(unsigned __int64 offset);
-};
+	};
+
+}
 
 #endif

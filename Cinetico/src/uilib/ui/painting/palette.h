@@ -11,26 +11,30 @@
 
 #include "rgb.h"
 
-class Palette
-{
-private:
-	int m_refCount;
+namespace uilib {
 
-protected:
-	Rgb *m_colors;
-	u32 m_nColors;
+	class Palette
+	{
+	private:
+		int m_refCount;
 
-	~Palette();
+	protected:
+		Rgb *m_colors;
+		u32 m_nColors;
 
-public:
-	Palette(u32 nColors);
+		~Palette();
 
-	void setColor(u32 index, Rgb color);
-	Rgb getColor(u32 index) const;
-	u32 colorCount() const;
+	public:
+		Palette(u32 nColors);
 
-	int ref();
-	int deref();
-};
+		void setColor(u32 index, Rgb color);
+		Rgb getColor(u32 index) const;
+		u32 colorCount() const;
+
+		int ref();
+		int deref();
+	};
+
+}
 
 #endif

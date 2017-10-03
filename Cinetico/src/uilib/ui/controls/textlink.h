@@ -11,61 +11,65 @@
 #error This file must be included only by "uibase.h"
 #endif
 
-class Label;
-class TextLink;
+namespace uilib {
 
-typedef void (*TextLinkFunc)(TextLink &link);
+	class Label;
+	class TextLink;
 
-class TextLink : public Label
-{
-public:
-	enum Properties
+	typedef void(*TextLinkFunc)(TextLink &link);
+
+	class TextLink : public Label
 	{
-		Simple = 0,
-		Hover = 1,
-		Pushed = 2,
-		Visited = 4,
+	public:
+		enum Properties
+		{
+			Simple = 0,
+			Hover = 1,
+			Pushed = 2,
+			Visited = 4,
+		};
+
+	protected:
+		Color m_overColor;
+		Font m_overFont;
+		Color m_visitedColor;
+		Font m_visitedFont;
+		Color m_pushedColor;
+		Font m_pushedFont;
+
+		u32 m_visitcount;
+
+		Properties m_props;
+
+		TextLinkFunc m_onClick;
+
+	public:
+		TextLink();
+
+		void setOnClick(TextLinkFunc onClick) { m_onClick = onClick; }
+
+		void setHoverColor(const Color &color);
+		void setHoverFont(const FontDesc &fd);
+		void setVisitedColor(const Color &color);
+		void setVisitedFont(const FontDesc &fd);
+		void setProperties(TextLink::Properties props);
+
+		Color hoverColor() const { return m_overColor; }
+		Font& hoverFont() { return m_overFont; }
+		u32 visitCount() const { return m_visitcount; }
+		Color visitedColor() const { return m_visitedColor; }
+		Font& visitedFont() { return m_visitedFont; }
+		Color pushedColor() const { return m_pushedColor; }
+		Font& pushedFont() { return m_pushedFont; }
+		TextLink::Properties properties() const { return m_props; }
+
+		void increaseVisits() { ++m_visitcount; }
+		bool visited() { return m_visitcount > 0; }
+
+		friend class OSDTextLink;
+		OSDTextLink& osdRef() const { return reinterpret_cast<OSDTextLink&>(Label::osdRef()); }
 	};
 
-protected:
-	Color m_overColor;
-	Font m_overFont;
-	Color m_visitedColor;
-	Font m_visitedFont;
-	Color m_pushedColor;
-	Font m_pushedFont;
-
-	u32 m_visitcount;
-
-	Properties m_props;
-
-	TextLinkFunc m_onClick;
-
-public:
-	TextLink();
-
-	void setOnClick(TextLinkFunc onClick) { m_onClick = onClick; }
-
-	void setHoverColor(const Color &color);
-	void setHoverFont(const FontDesc &fd);
-	void setVisitedColor(const Color &color);
-	void setVisitedFont(const FontDesc &fd);
-	void setProperties(TextLink::Properties props);
-
-	Color hoverColor() const { return m_overColor; }
-	Font& hoverFont() { return m_overFont; }
-	u32 visitCount() const { return m_visitcount; }
-	Color visitedColor() const { return m_visitedColor; }
-	Font& visitedFont() { return m_visitedFont; }
-	Color pushedColor() const { return m_pushedColor; }
-	Font& pushedFont() { return m_pushedFont; }
-	TextLink::Properties properties() const { return m_props; }
-
-	void increaseVisits() { ++m_visitcount; }
-	bool visited() { return m_visitcount > 0; }
-
-	friend class OSDTextLink;
-	OSDTextLink& osdRef() const { return reinterpret_cast<OSDTextLink&>(Label::osdRef()); }
-};
+}
 
 #endif

@@ -8,81 +8,82 @@
 #error This file must be included only by "uibase.h"
 #endif
 
-
 #ifndef __COMBOBOX_H__
 #define __COMBOBOX_H__
 
 #include <vector>
 
-class ComboBox;
-class ComboBoxItem;
+namespace uilib {
 
-typedef void (*ComboFunc)(ComboBox &combo, ComboBoxItem *item);
+	class ComboBox;
+	class ComboBoxItem;
 
-
-class ComboBoxItem
-{
-	string m_text;
-	u32 state;
-
-	Color m_textcolor;
-	Font m_font;
-
-	void *m_param;
-
-public:
-	friend class ComboBox;
-
-	ComboBoxItem(const string &text,
-		const Color &textcolor,
-		FontDesc &fd,
-		void *param = NULL):
-						m_text(text), m_textcolor(textcolor),
-						m_param(param)
-						{
-							m_font.set(fd);
-						}
-
-	const string &text() const { return m_text; }
-	Color textColor() const { return m_textcolor; }
-	void *param() const { return m_param; }
-
-	Font &font() { return m_font; }
-
-};
+	typedef void(*ComboFunc)(ComboBox &combo, ComboBoxItem *item);
 
 
-class ComboBox : public Control
-{
-	ComboFunc m_onSelect;
+	class ComboBoxItem
+	{
+		string m_text;
+		u32 state;
 
-	std::vector<ComboBoxItem*> m_items;
-	u32 m_selection;
+		Color m_textcolor;
+		Font m_font;
 
-public:
-	ComboBox();
+		void *m_param;
 
- 	void setOnSelect(ComboFunc onSelect) { m_onSelect = onSelect; }
+	public:
+		friend class ComboBox;
 
-	u32 fastinsertItem(const string &text);
-	u32 insertItem(ComboBoxItem &item);
-	void removeItem(u32 index);
-	void removeItem(ComboBoxItem &item);
-	void reset();
-	void sort();
-	u32 setSelection(u32 row);
+		ComboBoxItem(const string &text,
+			const Color &textcolor,
+			FontDesc &fd,
+			void *param = NULL) :
+			m_text(text), m_textcolor(textcolor),
+			m_param(param)
+		{
+			m_font.set(fd);
+		}
 
-	u32 selection();
-	ComboBoxItem *item();
-	ComboBoxItem *item(u32 row);
+		const string &text() const { return m_text; }
+		Color textColor() const { return m_textcolor; }
+		void *param() const { return m_param; }
 
-	virtual Size getAutoSize();
+		Font &font() { return m_font; }
 
-
-	friend class OSDComboBox;
-	OSDComboBox& osdRef() const { return reinterpret_cast<OSDComboBox&>(Control::osdRef()); }
-};
+	};
 
 
+	class ComboBox : public Control
+	{
+		ComboFunc m_onSelect;
+
+		std::vector<ComboBoxItem*> m_items;
+		u32 m_selection;
+
+	public:
+		ComboBox();
+
+		void setOnSelect(ComboFunc onSelect) { m_onSelect = onSelect; }
+
+		u32 fastinsertItem(const string &text);
+		u32 insertItem(ComboBoxItem &item);
+		void removeItem(u32 index);
+		void removeItem(ComboBoxItem &item);
+		void reset();
+		void sort();
+		u32 setSelection(u32 row);
+
+		u32 selection();
+		ComboBoxItem *item();
+		ComboBoxItem *item(u32 row);
+
+		virtual Size getAutoSize();
+
+
+		friend class OSDComboBox;
+		OSDComboBox& osdRef() const { return reinterpret_cast<OSDComboBox&>(Control::osdRef()); }
+	};
+
+}
 
 #endif

@@ -6,29 +6,31 @@
 
 #include "..\\uibase.h"
 
+namespace uilib {
+
+	CheckBox::CheckBox() :Button(*new OSDCheckBox(*this))
+	{
+		m_checked = false;
+		osdRef().create();
+		setDefaultFont();
+	}
 
 
-CheckBox::CheckBox():Button(*new OSDCheckBox(*this))
-{
-	m_checked = false;
-	osdRef().create();
-	setDefaultFont();
-}
+	Size CheckBox::getAutoSize()
+	{
+		return osdRef().getAutoSize();
+	}
 
 
-Size CheckBox::getAutoSize()
-{
-	return osdRef().getAutoSize();
-}
+	void CheckBox::setChecked(bool checked)
+	{
+		m_checked = checked;
+		osdRef().setChecked(checked);
+	}
 
+	bool CheckBox::checked() const
+	{
+		return m_checked;
+	}
 
-void CheckBox::setChecked(bool checked)
-{
-	m_checked = checked;
-	osdRef().setChecked(checked);
-}
-
-bool CheckBox::checked() const
-{
-	return m_checked;
 }

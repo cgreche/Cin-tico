@@ -11,14 +11,18 @@
 #ifndef __LINEARLAYOUT_H__
 #define __LINEARLAYOUT_H__
 
-class LinearLayout : public Layout
-{
-protected:
-	void calcMinMaxSize();
+namespace uilib {
 
-public:
-	LinearLayout() { };
-	virtual ~LinearLayout() { };
-};
+	class LinearLayout : public Layout
+	{
+	protected:
+		void calcMinMaxSize();
+
+	public:
+		LinearLayout() { };
+		virtual ~LinearLayout() { };
+	};
+
+}
 
 #endif

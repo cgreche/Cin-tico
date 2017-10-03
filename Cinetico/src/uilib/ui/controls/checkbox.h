@@ -11,25 +11,27 @@
 #ifndef __CHECKBOX_H__
 #define __CHECKBOX_H__
 
-class CheckBox : public Button
-{
-protected:
-	bool m_checked;
+namespace uilib {
 
-public:
-	CheckBox();
+	class CheckBox : public Button
+	{
+	protected:
+		bool m_checked;
 
-	//Control
-	virtual Size getAutoSize();
+	public:
+		CheckBox();
 
-	//CheckBox
-	void setChecked(bool checked);
-	bool checked() const;
+		//Control
+		virtual Size getAutoSize();
 
-	friend class OSDCheckBox;
-	OSDCheckBox& osdRef() const { return reinterpret_cast<OSDCheckBox&>(Button::osdRef()); }
-};
+		//CheckBox
+		void setChecked(bool checked);
+		bool checked() const;
 
+		friend class OSDCheckBox;
+		OSDCheckBox& osdRef() const { return reinterpret_cast<OSDCheckBox&>(Button::osdRef()); }
+	};
 
+}
 
 #endif

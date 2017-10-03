@@ -18,7 +18,9 @@
 #include <vector>
 #include <list>
 
-//Mouse buttons state
+namespace uilib {
+
+	//Mouse buttons state
 #define MOUSE_BUTTON_LEFT_PRESSED 1
 #define MOUSE_BUTTON_RIGHT_PRESSED 2
 #define MOUSE_BUTTON_MIDDLE_PRESSED 4
@@ -30,54 +32,55 @@
 #define MOUSE_BUTTON_4_RELEASED 256
 #define MOUSE_BUTTON_5_RELEASED 512
 
-class uibase
-{
-	static bool g_uiinit;
-public:
-	static void UIInit();
-	static int UIProcess();
-	static void UIQuit();
-};
+	class uibase
+	{
+		static bool g_uiinit;
+	public:
+		static void UIInit();
+		static int UIProcess();
+		static void UIQuit();
+	};
 
-typedef struct _FontDesc FontDesc;
-extern FontDesc g_pUIdefFontDesc;
+	typedef struct _FontDesc FontDesc;
+	extern FontDesc g_pUIdefFontDesc;
 
-class OSDFont;
+	class OSDFont;
 
-class OSDUIObj;
-class OSDWindowObject;
-class OSDWindow;
+	class OSDUIObj;
+	class OSDWindowObject;
+	class OSDWindow;
 
-class OSDFrame;
-class OSDLayout;
-class OSDControl;
+	class OSDFrame;
+	class OSDLayout;
+	class OSDControl;
 
-class OSDButton;
-class OSDRadionButton;
-class OSDCheckBox;
-class OSDEditBox;
-class OSDLabel;
-class OSDSeparator;
-class OSDTextLink;
-class OSDListView;
-class OSDGridView;
-class OSDComboBox;
-class OSDGroupBox;
-class OSDVerticalScrollBar;
-class OSDHorizontalScrollBar;
-class OSDStatusBar;
+	class OSDButton;
+	class OSDRadionButton;
+	class OSDCheckBox;
+	class OSDEditBox;
+	class OSDLabel;
+	class OSDSeparator;
+	class OSDTextLink;
+	class OSDListView;
+	class OSDGridView;
+	class OSDComboBox;
+	class OSDGroupBox;
+	class OSDVerticalScrollBar;
+	class OSDHorizontalScrollBar;
+	class OSDStatusBar;
 
-class OSDMenuBar;
-class OSDMenuObject;
-class OSDMenu;
-class OSDMenuItem;
-class OSDMenuSeparator;
+	class OSDMenuBar;
+	class OSDMenuObject;
+	class OSDMenu;
+	class OSDMenuItem;
+	class OSDMenuSeparator;
 
-class OSDMessage;
-class OSDUITools;
+	class OSDMessage;
+	class OSDUITools;
 
-class OSDFileDialog;
-class OSDPainter;
+	class OSDFileDialog;
+	class OSDPainter;
+}
 
 #include "uiobj.h"
 #include "font.h"

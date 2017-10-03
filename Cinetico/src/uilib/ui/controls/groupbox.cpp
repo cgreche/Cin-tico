@@ -6,15 +6,18 @@
 
 #include "..\\uibase.h"
 
+namespace uilib {
 
-GroupBox::GroupBox() : Control(*new OSDGroupBox(*this))
-{
-	osdRef().create();
-	setDefaultFont();
-}
+	GroupBox::GroupBox() : Control(*new OSDGroupBox(*this))
+	{
+		osdRef().create();
+		setDefaultFont();
+	}
 
-void GroupBox::setText(const string &text)
-{
-	m_text = text;
-	osdRef().setText(text);
+	void GroupBox::setText(const string &text)
+	{
+		m_text = text;
+		osdRef().setText(text);
+	}
+
 }

@@ -7,28 +7,32 @@
 #ifndef __COLOR_H__
 #define __COLOR_H__
 
-class Color
-{
-	u8 m_red, m_green, m_blue, m_alpha;
+namespace uilib {
 
-public:
-	Color() {
-		setRGBA(0,0,0,255);
-	}
-	Color(int r, int g, int b, int a = 255) { setRGBA(r,g,b,a); }
+	class Color
+	{
+		u8 m_red, m_green, m_blue, m_alpha;
 
-	void setRGB(int r, int g, int b) { setRGBA(r,g,b,255); }
-	void setRGBA(int r, int g, int b, int a) { 
-		m_red = r&0xff;
-		m_green = g&0xff;
-		m_blue = b&0xff;
-		m_alpha = a&0xff;
-	}
+	public:
+		Color() {
+			setRGBA(0, 0, 0, 255);
+		}
+		Color(int r, int g, int b, int a = 255) { setRGBA(r, g, b, a); }
 
-	int red() const { return m_red; }
-	int green() const { return m_green; }
-	int blue() const { return m_blue; }
-	int alpha() const { return m_alpha; }
-};
+		void setRGB(int r, int g, int b) { setRGBA(r, g, b, 255); }
+		void setRGBA(int r, int g, int b, int a) {
+			m_red = r & 0xff;
+			m_green = g & 0xff;
+			m_blue = b & 0xff;
+			m_alpha = a & 0xff;
+		}
+
+		int red() const { return m_red; }
+		int green() const { return m_green; }
+		int blue() const { return m_blue; }
+		int alpha() const { return m_alpha; }
+	};
+
+}
 
 #endif

@@ -6,10 +6,12 @@
 
 #include "..\\file.h"
 
-class OSDFile
-{
-	OSDFile();
-	virtual ~OSDFile();
+namespace uilib {
+
+	class OSDFile
+	{
+		OSDFile();
+		virtual ~OSDFile();
 	public:
 
 		//OSDFile methods
@@ -32,11 +34,13 @@ class OSDFile
 		static FILEERR CreatePath(const char *path);
 		static FILEERR SystemErrorToFileError(unsigned long error);
 		static time_t filetime_to_timet(FILETIME &ft);
-		static void timet_to_filetime( time_t t, LPFILETIME pft);
+		static void timet_to_filetime(time_t t, LPFILETIME pft);
 
 	protected: //as var
 		HANDLE m_handle;
 		bool is_directory;
-};
+	};
+
+}
 
 #endif

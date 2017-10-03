@@ -8,26 +8,29 @@
 #error This file must be included only by "uibase.h"
 #endif
 
-
 #ifndef __GROUPBOX_H__
 #define __GROUPBOX_H__
 
-class GroupBox : public Control
-{
-protected:
-	string m_text;
+namespace uilib {
 
-public:
-	GroupBox();
+	class GroupBox : public Control
+	{
+	protected:
+		string m_text;
 
-	void setText(const string &text);
-	void settextColor(const Color &color);
+	public:
+		GroupBox();
 
-	const string& text() const { return m_text; }
+		void setText(const string &text);
+		void settextColor(const Color &color);
 
-	//
-	friend class OSDGroupBox;
-	OSDGroupBox& osdRef() const { return reinterpret_cast<OSDGroupBox&>(Control::osdRef()); }
-};
+		const string& text() const { return m_text; }
+
+		//
+		friend class OSDGroupBox;
+		OSDGroupBox& osdRef() const { return reinterpret_cast<OSDGroupBox&>(Control::osdRef()); }
+	};
+
+}
 
 #endif

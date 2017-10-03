@@ -11,14 +11,18 @@
 #ifndef __HORIZONTALLAYOUT_H__
 #define __HORIZONTALLAYOUT_H__
 
-class HorizontalLayout : public LinearLayout
-{
-public:
-	HorizontalLayout();
-	~HorizontalLayout();
+namespace uilib {
 
-	virtual void setSize(const Size &size);
-	virtual Size getAutoSize();
-};
+	class HorizontalLayout : public LinearLayout
+	{
+	public:
+		HorizontalLayout();
+		~HorizontalLayout();
+
+		virtual void setSize(const Size &size);
+		virtual Size getAutoSize();
+	};
+
+}
 
 #endif

@@ -11,28 +11,32 @@
 #error This file must be included only by "uibase.h"
 #endif
 
-class Label;
-class Separator;
+namespace uilib {
 
-class Separator : public Label
-{
+	class Label;
+	class Separator;
 
-protected:
-	Color m_lineColor;
-	u32 m_thickness;
+	class Separator : public Label
+	{
 
-public:
-	Separator();
+	protected:
+		Color m_lineColor;
+		u32 m_thickness;
 
-	virtual Size getAutoSize();
-	void setLineThickness(u32 thickness);
-	void setLineColor(const Color &color);
+	public:
+		Separator();
 
-	Color lineColor() const { return m_lineColor; }
-	u32 thickness() const { return m_thickness; }
+		virtual Size getAutoSize();
+		void setLineThickness(u32 thickness);
+		void setLineColor(const Color &color);
 
-	friend class OSDSeparator;
-	OSDSeparator& osdRef() const { return reinterpret_cast<OSDSeparator&>(Label::osdRef()); }
-};
+		Color lineColor() const { return m_lineColor; }
+		u32 thickness() const { return m_thickness; }
+
+		friend class OSDSeparator;
+		OSDSeparator& osdRef() const { return reinterpret_cast<OSDSeparator&>(Label::osdRef()); }
+	};
+
+}
 
 #endif

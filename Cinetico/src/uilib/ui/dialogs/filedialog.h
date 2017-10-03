@@ -7,44 +7,48 @@
 #ifndef __FILEDIALOG_H__
 #define __FILEDIALOG_H__
 
-class FileDialog
-{
-	OSDFileDialog &m_osdRef;
+namespace uilib {
 
-public:
-	enum OpenMode { Save, Open, OpenMulti };
+	class FileDialog
+	{
+		OSDFileDialog &m_osdRef;
 
-	FileDialog();
-	~FileDialog();
+	public:
+		enum OpenMode { Save, Open, OpenMulti };
 
-	int open(Control *parent);
+		FileDialog();
+		~FileDialog();
 
-	void setOpenMode(OpenMode mode);
-	OpenMode openMode() const { return m_openMode; }
+		int open(Control *parent);
 
-	void setDefaultFileName(const string &fileName);
-	int addFilter(const string &description, const string &patterns);
-	void clearFilterList();
-	void setCaption(const string &caption);
+		void setOpenMode(OpenMode mode);
+		OpenMode openMode() const { return m_openMode; }
 
-	string& currentPath() { return m_currentPath; }
-	void getFilter(int index, string *description, string *patterns);
-	uint selectedCount() const { return m_selectedFileNames.size(); }
-	std::vector<string> &selectedFileNames() { return m_selectedFileNames; }
-	int openResult() const { return m_result; }
+		void setDefaultFileName(const string &fileName);
+		int addFilter(const string &description, const string &patterns);
+		void clearFilterList();
+		void setCaption(const string &caption);
 
-	friend class OSDFileDialog;
-	OSDFileDialog& osdRef() const { return m_osdRef; }
+		string& currentPath() { return m_currentPath; }
+		void getFilter(int index, string *description, string *patterns);
+		uint selectedCount() const { return m_selectedFileNames.size(); }
+		std::vector<string> &selectedFileNames() { return m_selectedFileNames; }
+		int openResult() const { return m_result; }
 
-protected:
-	OpenMode m_openMode;
-	string m_currentPath;
-	std::vector<string> m_selectedFileNames; 
-	std::vector<string> m_filterDescription;
-	std::vector<string> m_filterPatterns;
-	string m_caption;
-	string m_defaultFileName;
-	int m_result;
-};
+		friend class OSDFileDialog;
+		OSDFileDialog& osdRef() const { return m_osdRef; }
+
+	protected:
+		OpenMode m_openMode;
+		string m_currentPath;
+		std::vector<string> m_selectedFileNames;
+		std::vector<string> m_filterDescription;
+		std::vector<string> m_filterPatterns;
+		string m_caption;
+		string m_defaultFileName;
+		int m_result;
+	};
+
+}
 
 #endif

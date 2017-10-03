@@ -11,46 +11,49 @@
 #error This file must be included only by "uibase.h"
 #endif
 
-class Event
-{
-	bool m_accepted;
-public:
-	Event() { m_accepted = true; }
-	void accept() { m_accepted = true; }
-	void ignore() { m_accepted = false; }
-	bool accepted() const { return m_accepted; }
-};
+namespace uilib {
 
-class PaintEvent : public Event
-{
-public:
-	PaintEvent() { }
-};
+	class Event
+	{
+		bool m_accepted;
+	public:
+		Event() { m_accepted = true; }
+		void accept() { m_accepted = true; }
+		void ignore() { m_accepted = false; }
+		bool accepted() const { return m_accepted; }
+	};
 
-class MouseEvent : public Event
-{
-	Point m_mousePos;
-	u32 m_button;
-	u32 m_buttonsState;
+	class PaintEvent : public Event
+	{
+	public:
+		PaintEvent() { }
+	};
 
-public:
-	MouseEvent(Point position, u32 button, u32 buttonsState)
-	  : m_button(button), m_buttonsState(buttonsState), m_mousePos(position) { }
+	class MouseEvent : public Event
+	{
+		Point m_mousePos;
+		u32 m_button;
+		u32 m_buttonsState;
 
-	Point position() const { return m_mousePos; }
-	u32 button() const { return m_button; }
-	u32 buttonsState() const { return m_buttonsState; }
-};
+	public:
+		MouseEvent(Point position, u32 button, u32 buttonsState)
+			: m_button(button), m_buttonsState(buttonsState), m_mousePos(position) { }
 
-class ScrollEvent : public Event
-{
-	Point m_position;
+		Point position() const { return m_mousePos; }
+		u32 button() const { return m_button; }
+		u32 buttonsState() const { return m_buttonsState; }
+	};
 
-public:
-	ScrollEvent(Point position) { m_position = position; }
-	Point position() const { return m_position; }
-};
+	class ScrollEvent : public Event
+	{
+		Point m_position;
 
+	public:
+		ScrollEvent(Point position) { m_position = position; }
+		Point position() const { return m_position; }
+	};
+
+}
 
 #endif
 

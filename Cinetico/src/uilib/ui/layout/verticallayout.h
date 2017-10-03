@@ -11,14 +11,18 @@
 #ifndef __VERTICALLAYOUT_H__
 #define __VERTICALLAYOUT_H__
 
-class VerticalLayout : public LinearLayout
-{
-public:
-	VerticalLayout();
-	~VerticalLayout();
+namespace uilib {
 
-	virtual void setSize(const Size &size);
-	virtual Size getAutoSize();
-};
+	class VerticalLayout : public LinearLayout
+	{
+	public:
+		VerticalLayout();
+		~VerticalLayout();
+
+		virtual void setSize(const Size &size);
+		virtual Size getAutoSize();
+	};
+
+}
 
 #endif

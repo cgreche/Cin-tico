@@ -2,6 +2,7 @@
 #ifndef __WINDOWSCONTROLS_H__
 #define __WINDOWSCONTROLS_H__
 
+namespace uilib {
 
 #define WIN_MSG(_msg,_class,_method) \
 	LRESULT _class::_method(WPARAM wParam, LPARAM lParam)
@@ -17,7 +18,8 @@
 #define MSG_HANDLER(_method) \
 	virtual LRESULT _method(WPARAM wParam,LPARAM lParam);
 
-void createWindow(OSDControl &osdControl, const TCHAR *windowClass, DWORD exStyle, DWORD style);
+	void createWindow(OSDControl &osdControl, const TCHAR *windowClass, DWORD exStyle, DWORD style);
 
+}
 
 #endif

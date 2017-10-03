@@ -6,45 +6,48 @@
 
 #include "..\\uibase.h"
 
+namespace uilib {
 
-StatusBar::StatusBar():Control(*new OSDStatusBar(*this))
-{
-	m_parent = NULL;
-	m_visible = false;
-	m_text = NULL;
-	m_margin = Rect(4,0,4,0);
-	m_color = Color(0,0,0);
-	m_format = 0;
+	StatusBar::StatusBar() :Control(*new OSDStatusBar(*this))
+	{
+		m_parent = NULL;
+		m_visible = false;
+		m_text = NULL;
+		m_margin = Rect(4, 0, 4, 0);
+		m_color = Color(0, 0, 0);
+		m_format = 0;
 
-	osdRef().create();
-	setDefaultFont();
-}
+		osdRef().create();
+		setDefaultFont();
+	}
 
-StatusBar::~StatusBar()
-{
-}
+	StatusBar::~StatusBar()
+	{
+	}
 
-void StatusBar::setText(const string &text)
-{
-	m_text = text;
-	osdRef().setText(text);
-}
+	void StatusBar::setText(const string &text)
+	{
+		m_text = text;
+		osdRef().setText(text);
+	}
 
-void StatusBar::setTextColor(const Color &c)
-{
-	m_color = c;
-	osdRef().setTextColor(c);
-}
+	void StatusBar::setTextColor(const Color &c)
+	{
+		m_color = c;
+		osdRef().setTextColor(c);
+	}
 
-void StatusBar::setMargin(const Rect &margin)
-{
-	m_margin = margin;
-	osdRef().setMargin(margin);
-}
+	void StatusBar::setMargin(const Rect &margin)
+	{
+		m_margin = margin;
+		osdRef().setMargin(margin);
+	}
 
 
-void StatusBar::setFormat(u32 format)
-{
-	m_format = format;
-	osdRef().setFormat(format);
+	void StatusBar::setFormat(u32 format)
+	{
+		m_format = format;
+		osdRef().setFormat(format);
+	}
+
 }

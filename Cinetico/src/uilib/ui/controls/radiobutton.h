@@ -11,27 +11,29 @@
 #ifndef __RADIOBUTTON_H__
 #define __RADIOBUTTON_H__
 
-class RadioButton : public Button
-{
-protected:
+namespace uilib {
 
-	bool m_checked;
+	class RadioButton : public Button
+	{
+	protected:
 
-public:
-	RadioButton();
+		bool m_checked;
 
-	//Control
-	virtual Size getAutoSize();
+	public:
+		RadioButton();
 
-	//RadioButton
-	void setChecked(bool checked);
-	bool checked() const;
-	u32 radius();
+		//Control
+		virtual Size getAutoSize();
 
-	friend class OSDRadioButton;
-	OSDRadioButton& osdRef() const { return reinterpret_cast<OSDRadioButton&>(Button::osdRef()); }
-};
+		//RadioButton
+		void setChecked(bool checked);
+		bool checked() const;
+		u32 radius();
 
+		friend class OSDRadioButton;
+		OSDRadioButton& osdRef() const { return reinterpret_cast<OSDRadioButton&>(Button::osdRef()); }
+	};
 
+}
 
 #endif

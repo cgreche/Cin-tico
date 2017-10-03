@@ -5,19 +5,17 @@
 
 #include <time.h>
 
+namespace uilib {
+
 #define PMEOF (SHORT)-1
 
 #define MIN_BUFFER_SIZE 1024
 
-
-
-
-
-class PMFile
-{
-protected:
-	PMFile();
-	~PMFile();
+	class PMFile
+	{
+	protected:
+		PMFile();
+		~PMFile();
 
 	public:
 
@@ -33,7 +31,7 @@ protected:
 		static PMFile *Open(const char *filename, openmode mode, FILEERR *err);
 		static bool Delete(const char *filename, FILEERR *err);
 
-		
+
 		void Close();
 
 		char GetCh();
@@ -59,7 +57,7 @@ protected:
 		//
 		time_t m_creationtime;
 		time_t m_modifytime;
-	
+
 
 		unsigned int m_CurrLine;
 		unsigned int m_CurrCol;
@@ -69,7 +67,7 @@ protected:
 	public:
 		//acessors
 		char *FileName() { return m_Filename; }
-		UINT64 FileSize() { return m_FileSize;}
+		UINT64 FileSize() { return m_FileSize; }
 		time_t CreationTime() { return m_creationtime; }
 		time_t ModifyTime() { return m_modifytime; }
 		void SetCreationTime(time_t time) { m_creationtime = time; }
@@ -83,29 +81,25 @@ protected:
 		void Write(void *buffer, unsigned int length);
 		void WriteString(const char *string, unsigned int count = 0)
 		{
-			if(!count) count = strlen(string);
-			Write((void*)string,count);
+			if (!count) count = strlen(string);
+			Write((void*)string, count);
 		}
-		void WriteByte(unsigned char b) { Write((void*)&b,1); }
-		void Write2(short val) { Write((void*)&val,2); }
-		void Write4(long val) {	Write((void*)&val,4); }
+		void WriteByte(unsigned char b) { Write((void*)&b, 1); }
+		void Write2(short val) { Write((void*)&val, 2); }
+		void Write4(long val) { Write((void*)&val, 4); }
 
 		void Read(void *buffer, unsigned int length = 1);
-		void Read2(void *number) {	Read((void*)number,4); }
-		void Read4(void *number) {	Read((void*)number,4); }
+		void Read2(void *number) { Read((void*)number, 4); }
+		void Read4(void *number) { Read((void*)number, 4); }
 
 
-};
+	};
 
-static inline int is_space(int ch)
-{
-    return ch == ' ' || ch == '\t' || ch == '\v' || ch == '\f' || ch == '\r';
+	static inline int is_space(int ch)
+	{
+		return ch == ' ' || ch == '\t' || ch == '\v' || ch == '\f' || ch == '\r';
+	}
+
 }
-
-
-
-
-
-
 
 #endif

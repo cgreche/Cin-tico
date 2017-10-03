@@ -7,23 +7,24 @@
 #ifndef __UIOBJ_H__
 #define __UIOBJ_H__
 
+namespace uilib {
 
-class UIObj
-{
-	OSDUIObj &m_osdRef;
+	class UIObj
+	{
+		OSDUIObj &m_osdRef;
 
-	virtual void update();
+		virtual void update();
 
-public:
+	public:
 
-	UIObj();
-	UIObj(OSDUIObj& ref);
-	virtual ~UIObj();
+		UIObj();
+		UIObj(OSDUIObj& ref);
+		virtual ~UIObj();
 
-	OSDUIObj& osdRef() const;
-};
+		OSDUIObj& osdRef() const;
+	};
 
-
+}
 
 #endif
 

@@ -11,33 +11,35 @@
 #ifndef __BUTTON_H__
 #define __BUTTON_H__
 
-class Button;
-typedef void (*ButtonFunc)(Button &button);
+namespace uilib {
 
-class Button : public Control
-{
-protected:
-	string m_text;
-	Color m_textColor;
-	ButtonFunc m_onClick;
+	class Button;
+	typedef void(*ButtonFunc)(Button &button);
 
-public:
-	Button();
-	Button(OSDButton& ref);
+	class Button : public Control
+	{
+	protected:
+		string m_text;
+		Color m_textColor;
+		ButtonFunc m_onClick;
 
-	void setOnClick(ButtonFunc onClick) { m_onClick = onClick; }
-	void setText(const string &text);
-	void setTextColor(const Color &color);
+	public:
+		Button();
+		Button(OSDButton& ref);
 
-	const string& text() const { return m_text; }
-	Color textColor() const { return m_textColor; }
+		void setOnClick(ButtonFunc onClick) { m_onClick = onClick; }
+		void setText(const string &text);
+		void setTextColor(const Color &color);
 
-	Size getAutoSize();
+		const string& text() const { return m_text; }
+		Color textColor() const { return m_textColor; }
 
-	friend class OSDButton;
-	OSDButton& osdRef() const { return reinterpret_cast<OSDButton&>(Control::osdRef()); }
-};
+		Size getAutoSize();
 
+		friend class OSDButton;
+		OSDButton& osdRef() const { return reinterpret_cast<OSDButton&>(Control::osdRef()); }
+	};
 
+}
 
 #endif

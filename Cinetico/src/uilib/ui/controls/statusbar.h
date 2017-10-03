@@ -12,45 +12,45 @@
 #error This file must be included only by "uibase.h"
 #endif
 
+namespace uilib {
+
+	enum {
+		format_left = 0,
+		format_center = 1,
+		format_right = 2,
+		format_vcenter = 4,
+		format_bottom = 8
+	};
 
 
-enum {
-	format_left = 0,
-	format_center = 1,
-	format_right = 2,
-	format_vcenter = 4,
-	format_bottom = 8
-};
+	class StatusBar : public Control
+	{
 
+	protected:
+		string m_text;
+		Color m_color;
+		Rect m_margin;
+		u32 m_format;
 
-class StatusBar : public Control
-{
+	public:
+		friend class Window;
+		StatusBar();
+		~StatusBar();
 
-protected:
-	string m_text;
-	Color m_color;
-	Rect m_margin;
-	u32 m_format;
+		void setMargin(const Rect &margin);
+		void setText(const string &text);
+		void setTextColor(const Color &color);
+		void setFormat(u32 format);
 
-public:
-	friend class Window;
-	StatusBar();
-	~StatusBar();
+		Rect margin() const { return m_margin; }
+		u32 format() const { return m_format; }
+		Color textcolor() const { return m_color; }
+		const string &text() { return m_text; }
 
-	void setMargin(const Rect &margin);
-	void setText(const string &text);
-	void setTextColor(const Color &color);
-	void setFormat(u32 format);
+		friend class OSDStatusBar;
+		OSDStatusBar &osdRef() const { return reinterpret_cast<OSDStatusBar&>(Control::osdRef()); }
+	};
 
-	Rect margin() const { return m_margin; }
-	u32 format() const { return m_format; }
-	Color textcolor() const { return m_color; }
-	const string &text() { return m_text; }
-
-	friend class OSDStatusBar;
-	OSDStatusBar &osdRef() const { return reinterpret_cast<OSDStatusBar&>(Control::osdRef()); }
-};
-
+}
 
 #endif
-

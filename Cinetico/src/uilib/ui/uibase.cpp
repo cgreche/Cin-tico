@@ -6,27 +6,30 @@
 
 #include "uibase.h"
 
-FontDesc g_pUIdefFontDesc;
+namespace uilib {
 
-bool uibase::g_uiinit(false);
+	FontDesc g_pUIdefFontDesc;
+
+	bool uibase::g_uiinit(false);
 
 
-void uibase::UIInit() //static
-{
-	if(g_uiinit) return;
-	OSDBase::UIInit();
-	uibase::g_uiinit = true;
-	g_pUIdefFontDesc = FontDesc("Arial",10,0);
+	void uibase::UIInit() //static
+	{
+		if (g_uiinit) return;
+		OSDBase::UIInit();
+		uibase::g_uiinit = true;
+		g_pUIdefFontDesc = FontDesc("Arial", 10, 0);
+	}
+
+
+	int uibase::UIProcess() //static 
+	{
+		return OSDBase::UIProcess();
+	}
+
+	void uibase::UIQuit() //static
+	{
+		OSDBase::UIQuit();
+	}
+
 }
-
-
-int uibase::UIProcess() //static 
-{
-	return OSDBase::UIProcess();
-}
-
-void uibase::UIQuit() //static
-{ 
-	OSDBase::UIQuit();
-}
-

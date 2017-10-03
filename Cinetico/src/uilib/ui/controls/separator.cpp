@@ -6,36 +6,40 @@
 
 #include "..\\uibase.h"
 
-Separator::Separator():Label(*new OSDSeparator(*this))
-{
-	m_thickness = 1;
-	m_lineColor = Color(0,0,0);
+namespace uilib {
 
-	//
-	osdRef().create();
-	setDefaultFont();
-}
+	Separator::Separator() :Label(*new OSDSeparator(*this))
+	{
+		m_thickness = 1;
+		m_lineColor = Color(0, 0, 0);
 
-void Separator::setLineColor(const Color &color)
-{
-	m_lineColor = color;
-	osdRef().setLineColor(color);
-}
-
-void Separator::setLineThickness(u32 size)
-{
-	m_thickness = size;
-	osdRef().setLineThickness(size);
-}
-
-Size Separator::getAutoSize()
-{
-	//todo
-	Size textSize;
-	if(m_text == "") {
-		textSize = UITools::getTextSize(" ",m_font.desc()); 
-		return Size(SizeTypeMax,textSize.height());
+		//
+		osdRef().create();
+		setDefaultFont();
 	}
-	textSize = this->calcTextSize();
-	return Size(SizeTypeMax,textSize.height());
+
+	void Separator::setLineColor(const Color &color)
+	{
+		m_lineColor = color;
+		osdRef().setLineColor(color);
+	}
+
+	void Separator::setLineThickness(u32 size)
+	{
+		m_thickness = size;
+		osdRef().setLineThickness(size);
+	}
+
+	Size Separator::getAutoSize()
+	{
+		//todo
+		Size textSize;
+		if (m_text == "") {
+			textSize = UITools::getTextSize(" ", m_font.desc());
+			return Size(SizeTypeMax, textSize.height());
+		}
+		textSize = this->calcTextSize();
+		return Size(SizeTypeMax, textSize.height());
+	}
+
 }

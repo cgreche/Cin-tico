@@ -6,49 +6,53 @@
 
 #include "..\\..\\uibase.h"
 
-OSDFont::OSDFont(const FontDesc& fontDesc)
-	: m_refCount(1)
-{
-	__create(fontDesc);
-}
+namespace uilib {
 
-OSDFont::~OSDFont()
-{
-	if(m_hFont)
-		::DeleteObject(m_hFont);
-}
+	OSDFont::OSDFont(const FontDesc& fontDesc)
+		: m_refCount(1)
+	{
+		__create(fontDesc);
+	}
 
-int OSDFont::addRef()
-{
-	return ++m_refCount;
-}
+	OSDFont::~OSDFont()
+	{
+		if (m_hFont)
+			::DeleteObject(m_hFont);
+	}
 
-int OSDFont::release()
-{
-	int refCount = --m_refCount;
-	if(refCount == 0)
-		delete this;
-	return refCount;
-}
+	int OSDFont::addRef()
+	{
+		return ++m_refCount;
+	}
 
-bool OSDFont::__create(const FontDesc& fontDesc)
-{
-	if(!fontDesc.name || !*fontDesc.name)
-		return false;
+	int OSDFont::release()
+	{
+		int refCount = --m_refCount;
+		if (refCount == 0)
+			delete this;
+		return refCount;
+	}
 
-	int fontHeight = (int)-(fontDesc.size * 96.0 / 72.0 + 0.5);
+	bool OSDFont::__create(const FontDesc& fontDesc)
+	{
+		if (!fontDesc.name || !*fontDesc.name)
+			return false;
 
-	m_hFont = ::CreateFont(fontHeight,0,0,0,
-		(fontDesc.flags&FONT_BOLD)?FW_BOLD:FW_NORMAL,
-		(fontDesc.flags&FONT_ITALIC),
-		(fontDesc.flags&FONT_UNDERLINE),
-		(fontDesc.flags&FONT_STRIKEOUT),
-		0,
-		OUT_DEFAULT_PRECIS,
-		CLIP_DEFAULT_PRECIS,
-		DEFAULT_QUALITY,
-		0,
-		fontDesc.name);
+		int fontHeight = (int)-(fontDesc.size * 96.0 / 72.0 + 0.5);
 
-	return m_hFont != NULL;
+		m_hFont = ::CreateFont(fontHeight, 0, 0, 0,
+			(fontDesc.flags&FONT_BOLD) ? FW_BOLD : FW_NORMAL,
+			(fontDesc.flags&FONT_ITALIC),
+			(fontDesc.flags&FONT_UNDERLINE),
+			(fontDesc.flags&FONT_STRIKEOUT),
+			0,
+			OUT_DEFAULT_PRECIS,
+			CLIP_DEFAULT_PRECIS,
+			DEFAULT_QUALITY,
+			0,
+			fontDesc.name);
+
+		return m_hFont != NULL;
+	}
+
 }

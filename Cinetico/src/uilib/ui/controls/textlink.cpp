@@ -6,49 +6,53 @@
 
 #include "..\\uibase.h"
 
-TextLink::TextLink():Label(*new OSDTextLink(*this))
-{
-	m_visitcount = 0;
-	m_props = TextLink::Simple;
-	m_onClick = NULL;
+namespace uilib {
 
-	m_overColor = m_visitedColor = m_pushedColor = m_textColor;
-	FontDesc defFontDesc = m_font.desc();
-	m_overFont.set(defFontDesc);
-	m_visitedFont.set(defFontDesc);
-	m_pushedFont.set(defFontDesc);
+	TextLink::TextLink() :Label(*new OSDTextLink(*this))
+	{
+		m_visitcount = 0;
+		m_props = TextLink::Simple;
+		m_onClick = NULL;
 
-	//
-	osdRef().create();
-	setDefaultFont();
-}
+		m_overColor = m_visitedColor = m_pushedColor = m_textColor;
+		FontDesc defFontDesc = m_font.desc();
+		m_overFont.set(defFontDesc);
+		m_visitedFont.set(defFontDesc);
+		m_pushedFont.set(defFontDesc);
 
-void TextLink::setHoverColor(const Color &color)
-{
-	m_overColor = color;
-	osdRef().setHoverColor(color);
-}
+		//
+		osdRef().create();
+		setDefaultFont();
+	}
 
-void TextLink::setHoverFont(const FontDesc &fd)
-{
-	m_overFont.set(fd);
-	osdRef().setHoverFont(fd);
-}
+	void TextLink::setHoverColor(const Color &color)
+	{
+		m_overColor = color;
+		osdRef().setHoverColor(color);
+	}
 
-void TextLink::setVisitedColor(const Color &color)
-{
-	m_visitedColor = color;
-	osdRef().setVisitedColor(color);
-}
+	void TextLink::setHoverFont(const FontDesc &fd)
+	{
+		m_overFont.set(fd);
+		osdRef().setHoverFont(fd);
+	}
 
-void TextLink::setVisitedFont(const FontDesc &fd)
-{
-	m_visitedFont.set(fd);
-	osdRef().setVisitedFont(fd);
-}
+	void TextLink::setVisitedColor(const Color &color)
+	{
+		m_visitedColor = color;
+		osdRef().setVisitedColor(color);
+	}
 
-void TextLink::setProperties(TextLink::Properties props)
-{
-	m_props = props;
-	osdRef().setProperties(props);
+	void TextLink::setVisitedFont(const FontDesc &fd)
+	{
+		m_visitedFont.set(fd);
+		osdRef().setVisitedFont(fd);
+	}
+
+	void TextLink::setProperties(TextLink::Properties props)
+	{
+		m_props = props;
+		osdRef().setProperties(props);
+	}
+
 }
