@@ -97,21 +97,29 @@ namespace cinetico {
 
 
 #define HEAD_SIZE 4.f/10.f
-#define FOOT_SIZE HEAD_SIZE/2
-#define HAND_SIZE HEAD_SIZE/2
+#define FOOT_SIZE HEAD_SIZE/2.f
+#define HAND_SIZE HEAD_SIZE/2.f
+#define ELBOW_SIZE HEAD_SIZE/4.f
+#define KNEE_SIZE HEAD_SIZE/4.f
 
 
 	struct BodyResourceIds {
 		int head;
+		int elbow;
 		int hand;
+		int knee;
 		int foot;
 	};
 
 
 	struct BodyInstanceIds {
 		int head;
+		int leftElbow;
+		int rightElbow;
 		int leftHand;
 		int rightHand;
+		int leftKnee;
+		int rightKnee;
 		int leftFoot;
 		int rightFoot;
 	};
@@ -163,45 +171,45 @@ namespace cinetico {
 		};
 
 		resId.head = renderEngineHelper->createCube(HEAD_SIZE, bodyColors);
+		resId.elbow = renderEngineHelper->createCube(ELBOW_SIZE, bodyColors);
 		resId.hand = renderEngineHelper->createCube(HAND_SIZE, bodyColors);
+		resId.knee = renderEngineHelper->createCube(KNEE_SIZE, bodyColors);
 		resId.foot = renderEngineHelper->createCube(FOOT_SIZE, bodyColors);
 
 		instId.head = renderEngine->newResourceInstance(resId.head);
+		instId.leftElbow = renderEngine->newResourceInstance(resId.elbow);
+		instId.rightElbow = renderEngine->newResourceInstance(resId.elbow);
 		instId.leftHand = renderEngine->newResourceInstance(resId.hand);
 		instId.rightHand = renderEngine->newResourceInstance(resId.hand);
+		instId.leftKnee = renderEngine->newResourceInstance(resId.knee);
+		instId.rightKnee = renderEngine->newResourceInstance(resId.knee);
 		instId.leftFoot = renderEngine->newResourceInstance(resId.foot);
 		instId.rightFoot = renderEngine->newResourceInstance(resId.foot);
+	}
+
+	void Cinetico3D::mapBodyPointToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint) {
+		ResourceInstance *instance;
+		Body *body = m_bodyTracker->body();
+		if (!body)
+			return;
+		instance = renderEngine->resourceInstance(instId);
+		cinetico_core::Vector3 pos = body->bodyPoint(bodyPoint)->position();
+		instance->setPos(render3d::Vector3(pos.x()*2, pos.y()*2, pos.z()*2));
 	}
 
 	void Cinetico3D::updateBody() {
 		m_bodyTracker->track();
 		BodyInstanceIds &instId = g_bodyInstanceIds;
-		ResourceInstance *instance = renderEngine->resourceInstance(instId.head);
 
-		Body *body = m_bodyTracker->body();
-
-		if (!body)
-			return;
-
-		instance = renderEngine->resourceInstance(instId.head);
-		cinetico_core::Vector3 pos = body->bodyPoint(BodyPoint::Head)->position();
-		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
-
-		instance = renderEngine->resourceInstance(instId.leftHand);
-		pos = body->bodyPoint(BodyPoint::LeftPalm)->position();
-		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
-
-		instance = renderEngine->resourceInstance(instId.rightHand);
-		pos = body->bodyPoint(BodyPoint::RightPalm)->position();
-		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
-
-		instance = renderEngine->resourceInstance(instId.leftFoot);
-		pos = body->bodyPoint(BodyPoint::LeftFoot)->position();
-		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
-
-		instance = renderEngine->resourceInstance(instId.rightFoot);
-		pos = body->bodyPoint(BodyPoint::RightFoot)->position();
-		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
+		mapBodyPointToWorldPoint(instId.head, BodyPoint::Head);
+		mapBodyPointToWorldPoint(instId.leftElbow, BodyPoint::LeftElbow);
+		mapBodyPointToWorldPoint(instId.rightElbow, BodyPoint::RightElbow);
+		mapBodyPointToWorldPoint(instId.leftHand, BodyPoint::LeftPalm);
+		mapBodyPointToWorldPoint(instId.rightHand, BodyPoint::RightPalm);
+		mapBodyPointToWorldPoint(instId.leftKnee, BodyPoint::LeftKnee);
+		mapBodyPointToWorldPoint(instId.rightKnee, BodyPoint::RightKnee);
+		mapBodyPointToWorldPoint(instId.leftFoot, BodyPoint::LeftFoot);
+		mapBodyPointToWorldPoint(instId.rightFoot, BodyPoint::RightFoot);
 	}
 
 	void Cinetico3D::renderBody() {
@@ -213,8 +221,12 @@ namespace cinetico {
 			return;
 
 		renderEngine->drawResource(instId.head);
+		renderEngine->drawResource(instId.leftElbow);
+		renderEngine->drawResource(instId.rightElbow);
 		renderEngine->drawResource(instId.leftHand);
 		renderEngine->drawResource(instId.rightHand);
+		renderEngine->drawResource(instId.leftKnee);
+		renderEngine->drawResource(instId.rightKnee);
 		renderEngine->drawResource(instId.leftFoot);
 		renderEngine->drawResource(instId.rightFoot);
 	}

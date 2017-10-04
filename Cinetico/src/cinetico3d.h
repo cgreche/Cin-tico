@@ -21,6 +21,7 @@ namespace cinetico {
 		void setupViewports();
 
 		void setupBody();
+		void mapBodyPointToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint);
 		void updateBody();
 		void renderBody();
 		void processCamera();
