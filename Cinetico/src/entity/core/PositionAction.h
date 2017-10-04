@@ -6,10 +6,15 @@
 namespace cinetico_core {
 
 	class PositionAction : public Action {
+		float m_minHoldTime;
+
 	public:
-		PositionAction()
-			: Action(Action::Position) {
+		PositionAction(Exercise &owner, int id = -1)
+			: Action(Action::Position, owner, id) {
 		}
+
+		void setMinHoldTime(float minHoldTime) { m_minHoldTime = minHoldTime; }
+		float minHoldTime() const { return m_minHoldTime; }
 	};
 
 }

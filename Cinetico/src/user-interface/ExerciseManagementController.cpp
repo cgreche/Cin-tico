@@ -6,10 +6,10 @@
 #include "entity/core/MovementAction.h"
 
 namespace cinetico {
-
+	using namespace cinetico_core;
 	extern Cinetico g_cinetico;
 
-	static void buttonSaveExercise_onClick(Button &button) {
+	static void buttonBack_onClick(Button &button) {
 		ExerciseManagementController *controller = (ExerciseManagementController*)button.param();
 		g_cinetico.goTo(Cinetico::EXERCISES);
 	}
@@ -21,7 +21,7 @@ namespace cinetico {
 
 	static void buttonSaveAction_onClick(Button &button) {
 		ExerciseManagementController *controller = (ExerciseManagementController*)button.param();
-		controller->setEditionMode(0);
+		controller->saveCurrentAction();
 	}
 
 	static void buttonCancelAction_onClick(Button &button) {
@@ -34,10 +34,73 @@ namespace cinetico {
 		controller->m_currentActionTypeSelection = combo.selection();
 	}
 
+	void ExerciseManagementController::fillBodyPointCombo(ComboBox &combo) {
+		combo.fastinsertItem("Cabeça");
+		combo.fastinsertItem("Ombro");
+	}
+
 	void ExerciseManagementController::fillSpaceTypeCombo(ComboBox &combo) {
 		combo.fastinsertItem("Mundo");
 		combo.fastinsertItem("Última posição");
 		combo.fastinsertItem("Cabeça");
+	}
+
+	bool ExerciseManagementController::checkRequiredFields() {
+
+	}
+
+	void ExerciseManagementController::saveCurrentAction() {
+
+		if (!checkRequiredFields())
+			return;
+
+		string &name = editName.text();
+		int order = comboPartOf.selection();
+		int type = comboActionType.selection();
+		string &minTimeStr = editMinTime.text();
+		string &maxTimeStr = editMaxTime.text();
+		int bodyPoint = comboBodyPoint.selection();
+		int refPoint = comboRefPoint.selection();
+		string &posXStr = editPositionX.text();
+		string &posYStr = editPositionX.text();
+		string &posZStr = editPositionX.text();
+
+		Action *action;
+
+		if ((Action::ActionType)type == Action::Position) {
+			string &minHoldTimeStr = editMinHoldtime.text();
+
+			PositionAction *posAction = new PositionAction();
+			posAction->setMinHoldTime(string_op::decimal(minHoldTimeStr.data()));
+
+			action = posAction;
+		}
+		else if ((Action::ActionType)type == Action::Movement) {
+			int movementType = comboMovementType.selection();
+			string &minSpeedStr = editMinSpeed.text();
+			string &maxSpeedStr = editMaxSpeed.text();
+
+			MovementAction *movementAction = new MovementAction();
+			movementAction->setMovementType((MovementAction::MovementType)movementType);
+			movementAction->setMinSpeed(string_op::decimal(minSpeedStr.data()));
+			movementAction->setMaxSpeed(string_op::decimal(maxSpeedStr.data()));
+
+			action = movementAction;
+		}
+		else {
+			//Should never reach here
+			return;
+		}
+
+		action->setName(name.data());
+		action->setOrder((Action::ActionOrder)order);
+		action->setMinTime(string_op::decimal(minTimeStr.data()));
+		action->setMaxTime(string_op::decimal(maxTimeStr.data()));
+		action->setBodyPoint((BodyPoint::BodyPart)bodyPoint);
+		action->setRefPoint(refPoint);
+		action->setPosition(Vector3(string_op::decimal(posXStr.data()), string_op::decimal(posYStr.data()), string_op::decimal(posZStr.data())));
+
+		g_cinetico.cineticoDB().actionDAO().save(action);
 	}
 
 	ExerciseManagementController::ExerciseManagementController() {
@@ -46,12 +109,10 @@ namespace cinetico {
 		labelViewDescr.setText("Adicione ou altere ações para um exercício.");
 		labelViewDescr.setFont(FontDesc("Arial", 10, FONT_BOLD));
 
-		buttonSaveExercise.setText("Salvar");
-		buttonSaveExercise.setParam(this);
-		buttonSaveExercise.setOnClick(buttonSaveExercise_onClick);
-		buttonCancelExercise.setText("Cancelar");
-		layoutActionButtons.append(buttonSaveExercise);
-		layoutActionButtons.append(buttonCancelExercise);
+		buttonBack.setText("Voltar");
+		buttonBack.setParam(this);
+		buttonBack.setOnClick(buttonBack_onClick);
+		layoutActionButtons.append(buttonBack);
 		layoutActions.append(labelViewTitle);
 		layoutActions.append(labelViewDescr);
 		layoutActions.append(layoutActionButtons);
@@ -60,7 +121,7 @@ namespace cinetico {
 		gridActions.setStyle(CS_Border);
 		gridActions.setColumnCount(3);
 		gridActions.setHeaderVisible(true);
-		gridActions.setHeaderText(0, "Tipo");
+		gridActions.setHeaderText(0, "Tipo *");
 		gridActions.setHeaderText(1, "Nome");
 		gridActions.setHeaderText(2, "Posição");
 		buttonAdd.setText("Adicionar");
@@ -94,9 +155,8 @@ namespace cinetico {
 		labelName.setText("Nome");
 		layoutName.append(labelName);
 		layoutName.append(editName);
-		
 
-		labelPartOf.setText("Faz parte da...");
+		labelPartOf.setText("Ordem *");
 		comboPartOf.fastinsertItem("Nova ação");
 		comboPartOf.fastinsertItem("Última ação");
 		comboPartOf.fastinsertItem("Todas as ações");
@@ -122,25 +182,14 @@ namespace cinetico {
 		layoutMaxTime.append(labelMaxTime);
 		layoutMaxTime.append(editMaxTime);
 
-		labelSpaceType.setText("Tipo de espaçamento");
-		labelSpaceTypeX.setText("X");
-		labelSpaceTypeY.setText("Y");
-		labelSpaceTypeZ.setText("Z");
-		fillSpaceTypeCombo(comboSpaceTypeX);
-		fillSpaceTypeCombo(comboSpaceTypeY);
-		fillSpaceTypeCombo(comboSpaceTypeZ);
-		layoutSpaceTypeX.append(labelSpaceTypeX);
-		layoutSpaceTypeX.append(comboSpaceTypeX, Size(SizeTypeMax, SizeTypeAuto));
-		layoutSpaceTypeY.append(labelSpaceTypeY);
-		layoutSpaceTypeY.append(comboSpaceTypeY, Size(SizeTypeMax, SizeTypeAuto));
-		layoutSpaceTypeZ.append(labelSpaceTypeZ);
-		layoutSpaceTypeZ.append(comboSpaceTypeZ, Size(SizeTypeMax, SizeTypeAuto));
-		layoutSpaceType.append(layoutSpaceTypeX, Size(SizeTypeMax, SizeTypeAuto));
-		layoutSpaceType.append(layoutSpaceTypeY, Size(SizeTypeMax, SizeTypeAuto));
-		layoutSpaceType.append(layoutSpaceTypeZ, Size(SizeTypeMax, SizeTypeAuto));
+		labelBodyPoint.setText("Ponto do corpo *");
+		labelRefPoint.setText("Ponto de referência *");
+		fillBodyPointCombo(comboBodyPoint);
+		fillSpaceTypeCombo(comboRefPoint);
+		layoutBodyAndRefPoints.append(layoutBodyPoint);
+		layoutBodyAndRefPoints.append(layoutRefPoint);
 
-
-		labelPosition.setText("Posição");
+		labelPosition.setText("Posição *");
 		labelPositionX.setText("X");
 		layoutPositionX.append(labelPositionX);
 		layoutPositionX.append(editPositionX);
@@ -173,11 +222,11 @@ namespace cinetico {
 		layoutMovementType.append(labelMovementType);
 		layoutMovementType.append(comboMovementType, Size(SizeTypeMax, SizeTypeAuto));
 
-		labelMinSpeed.setText("Velocidade mínima para execução");
+		labelMinSpeed.setText("Velocidade mínima para execução (cm/s²)");
 		layoutMinSpeed.append(labelMinSpeed);
 		layoutMinSpeed.append(editMinSpeed);
 
-		labelMaxSpeed.setText("Velocidade máxima para execução");
+		labelMaxSpeed.setText("Velocidade máxima para execução (cm/s²)");
 		layoutMaxSpeed.append(labelMaxSpeed);
 		layoutMaxSpeed.append(editMaxSpeed);
 

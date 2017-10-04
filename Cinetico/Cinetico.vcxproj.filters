@@ -426,6 +426,9 @@
     <ClInclude Include="src\render3d\light.h">
       <Filter>Arquivos de Origem\render3d</Filter>
     </ClInclude>
+    <ClInclude Include="src\entity\dao\ActionDAO.h">
+      <Filter>Arquivos de Origem\entity\dao</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -708,6 +711,9 @@
       <Filter>Arquivos de Origem\entity\dao</Filter>
     </ClCompile>
     <ClCompile Include="src\entity\dao\UserProfileDAO.cpp">
+      <Filter>Arquivos de Origem\entity\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\dao\ActionDAO.cpp">
       <Filter>Arquivos de Origem\entity\dao</Filter>
     </ClCompile>
   </ItemGroup>

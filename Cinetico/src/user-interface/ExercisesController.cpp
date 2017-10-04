@@ -21,7 +21,6 @@ namespace cinetico {
 
 	static void onClick_CreateEdit(Button &button) {
 		ExercisesController *controller = (ExercisesController*)button.param();
-		//g_cinetico.goTo(Cinetico::EXERCISE_MANAGEMENT);
 		controller->saveCurrentExercise();
 	}
 

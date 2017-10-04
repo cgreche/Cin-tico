@@ -17,8 +17,7 @@ namespace cinetico {
 				Label labelViewTitle;
 				Label labelViewDescr;
 				HorizontalLayout layoutActionButtons;
-					Button buttonSaveExercise;
-					Button buttonCancelExercise;
+					Button buttonBack;
 
 			VerticalLayout layoutContent;
 
@@ -52,17 +51,13 @@ namespace cinetico {
 						Label labelMaxTime;
 						EditBox editMaxTime;
 		
-				Label labelSpaceType;
-				HorizontalLayout layoutSpaceType;
-					VerticalLayout layoutSpaceTypeX;
-						Label labelSpaceTypeX;
-						ComboBox comboSpaceTypeX;
-					VerticalLayout layoutSpaceTypeY;
-						Label labelSpaceTypeY;
-						ComboBox comboSpaceTypeY;
-					VerticalLayout layoutSpaceTypeZ;
-						Label labelSpaceTypeZ;
-						ComboBox comboSpaceTypeZ;
+				HorizontalLayout layoutBodyAndRefPoints;
+					VerticalLayout layoutBodyPoint;
+						Label labelBodyPoint;
+						ComboBox comboBodyPoint;
+					VerticalLayout layoutRefPoint;
+						Label labelRefPoint;
+						ComboBox comboRefPoint;
 
 				Label labelPosition;
 				HorizontalLayout layoutPosition;
@@ -102,7 +97,10 @@ namespace cinetico {
 		int m_currentActionTypeSelection;
 		int m_currentMovementTypeSelection;
 
+		void fillBodyPointCombo(ComboBox &combo);
 		void fillSpaceTypeCombo(ComboBox &combo);
+		bool checkRequiredFields();
+		void saveCurrentAction();
 
 		friend void comboActionType_onChange(ComboBox &combo, ComboBoxItem *item);
 
