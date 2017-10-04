@@ -22,6 +22,7 @@ public:
 	virtual bool next();
 	virtual int getInt(int colIndex);
 	virtual std::string getString(int colIndex);
+	virtual float getFloat(int colIndex);
 	virtual bool isNull(int colIndex);
 	virtual int close();
 };

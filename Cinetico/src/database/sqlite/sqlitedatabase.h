@@ -18,6 +18,7 @@ public:
 	virtual int open();
 	virtual int close();
 	virtual SQLStatement *prepare(const char *stmt);
+	virtual int getLastRowId();
 	sqlite3* internalDB() const { return m_internalDB; }
 };
 

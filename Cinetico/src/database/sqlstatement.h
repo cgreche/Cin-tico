@@ -25,6 +25,7 @@ public:
 	virtual int bind(int paramIndex, int value) = 0;
 	virtual int bind(int paramIndex, const char *value) = 0;
 	virtual int bind(int paramIndex, const std::string &value) = 0;
+	virtual int bind(int paramIndex, float value) = 0;
 	virtual int bindNull(int paramIndex) = 0;
 	virtual int execute() = 0;
 	virtual ResultSet *query() = 0;

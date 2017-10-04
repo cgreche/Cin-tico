@@ -34,3 +34,7 @@ SQLStatement* SQLiteDatabase::prepare(const char *sqlStmt) {
 	stmt->m_internalStmt = internalStmt;
 	return stmt;
 }
+
+int SQLiteDatabase::getLastRowId() {
+	return sqlite3_last_insert_rowid(m_internalDB);
+}

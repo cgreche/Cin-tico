@@ -29,6 +29,7 @@ public:
 	virtual int open() = 0;
 	virtual int close() = 0;
 	virtual SQLStatement *prepare(const char *stmt) = 0;
+	virtual int getLastRowId() = 0;
 
 	bool isOpen() const { return m_isOpen; }
 };
