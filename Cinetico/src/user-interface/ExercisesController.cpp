@@ -285,6 +285,11 @@ namespace cinetico {
 		if (exerciseName == "")
 			return;
 
+		if (g_cinetico.cineticoDB()->exerciseDAO()->getUserExerciseByName(exerciseName.c_str(), g_cinetico.currentUser()) != NULL) {
+			Message::error(NULL, "Já há um exercício criado com o nome escolhido. Por favor, escolha outro nome para o exercício.");
+			return;
+		}
+
 		std::string authorName = g_cinetico.currentUser()->username();
 		unsigned long bpFlags = 0;
 		bool isPublic = checkPublic.checked();

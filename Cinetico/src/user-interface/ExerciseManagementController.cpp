@@ -238,7 +238,7 @@ namespace cinetico {
 		//Base Action data
 		separatorActionBasicData.setText("Informação básica da ação");
 		separatorActionBasicData.setFont(FontDesc("Arial",12,FONT_BOLD));
-		labelActionType.setText("Tipo");
+		labelActionType.setText("Tipo *");
 		comboActionType.fastinsertItem("Posição");
 		comboActionType.fastinsertItem("Movimento");
 		comboActionType.setParam(this);
@@ -306,7 +306,7 @@ namespace cinetico {
 		layoutPositionSpecific.append(layoutMinHoldTime);
 
 		//Movement Action
-		labelMovementType.setText("Tipo de movimento");
+		labelMovementType.setText("Tipo de movimento *");
 		comboMovementType.fastinsertItem("Linear");
 		comboMovementType.fastinsertItem("Angular");
 		layoutMovementType.append(labelMovementType);

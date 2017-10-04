@@ -72,6 +72,30 @@ namespace cinetico {
 		stmt->close();
 	}
 
+	Exercise* ExerciseDAO::getUserExerciseByName(const char *name, UserProfile *user) {
+		const char *sql = "SELECT * FROM EXERCISE WHERE owner_id = ? AND name = ?;";
+		SQLStatement *stmt;
+		std::vector<Exercise *> exerciseList;
+		stmt = m_db.prepare(sql);
+		stmt->bind(1, user->id());
+		stmt->bind(2, name);
+
+		Exercise *exercise = NULL;
+		ResultSet *rs = stmt->query();
+		if (rs) {
+			while (rs->next()) {
+				exercise = new Exercise(rs->getInt(0));
+				exercise->setName(rs->getString(1).c_str());
+				exercise->setAuthor(rs->getString(2).c_str());
+				exercise->setTrackableBodyPoints(rs->getInt(4));
+				exercise->setPublic(rs->getInt(5) != 0);
+			}
+			rs->close();
+		}
+		stmt->close();
+		return exercise;
+	}
+
 	std::vector<Exercise *> ExerciseDAO::getAllExercisesByUserProfile(UserProfile *user) {
 		const char *sql = "SELECT * FROM EXERCISE WHERE owner_id = ? OR is_public = 1;";
 		SQLStatement *stmt;

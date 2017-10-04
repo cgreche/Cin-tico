@@ -22,6 +22,7 @@ namespace cinetico {
 
 		void create(Exercise &exercise, UserProfile *owner);
 		void update(Exercise &exercise);
+		Exercise* getUserExerciseByName(const char *name, UserProfile *user);
 		std::vector<Exercise *> getAllExercises();
 		std::vector<Exercise *> getAllExercisesByUserProfile(UserProfile *user);
 		void exclude(Exercise &exercise);
