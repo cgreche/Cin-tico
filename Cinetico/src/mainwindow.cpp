@@ -29,8 +29,9 @@ namespace cinetico {
 		layoutLoginInfo.setVisible(false);
 
 		layoutAppState.append(labelAppname);
-		layoutAppState.append(layoutLoginInfo,MaximumSize);
+		layoutAppState.append(layoutLoginInfo,Size(SizeTypeMax,SizeTypeAuto));
 		layoutAppState.setAlignment(Layout::center_align);
+		layoutAppState.setMargin(10);
 
 		bgBlack.setBackgroundColor(Color(0, 0, 0));
 		bgBlack.setTransparent(false);
@@ -54,7 +55,7 @@ namespace cinetico {
 		buildFooterLayout();
 
 		layout.append(layoutHeader, Size(SizeTypeMax, MakePercentType(10)), 20);
-		layout.append(layoutContent, AutoSize, 20);
+		layout.append(layoutContent, MaximumSize, 20);
 		layout.append(layoutFooter, Size(SizeTypeMax, MakePercentType(10)));
 
 		setLayout(&layout);

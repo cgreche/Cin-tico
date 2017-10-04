@@ -74,7 +74,7 @@ const char *Table_MovementAction = "CREATE TABLE MOVEMENT_ACTION(id INTEGER PRIM
 			UserProfile *adminProfile = m_userProfileDAO->getByLoginName("admin");
 			if (!adminProfile) {
 				adminProfile = new UserProfile("admin", Crypter::SimpleHash("admin"));
-				m_userProfileDAO->save(*adminProfile);
+				m_userProfileDAO->create(*adminProfile);
 				UserProfile *test = m_userProfileDAO->getByLoginName("admin");
 				int a = 1;
 			}

@@ -10,7 +10,7 @@ namespace cinetico {
 
 	}
 
-	void UserProfileDAO::save(UserProfile &user) {
+	void UserProfileDAO::create(UserProfile &user) {
 		const char *sql = "INSERT INTO USER_PROFILE(login_name,password,creation_time) VALUES(?,?,?);";
 
 		SQLStatement *stmt;

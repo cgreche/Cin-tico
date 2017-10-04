@@ -70,9 +70,6 @@ namespace cinetico {
 		void logoffCurrentUser();
 		int run();
 
-		void enter3DWorld();
-		void quit3DWorld();		
-
 		MainWindow *mainWindow() const { return m_mainWindow; }
 		CineticoDB *cineticoDB() const { return m_cineticoDB; }
 		Cinetico3D *cinetico3D() const { return m_cinetico3D; }

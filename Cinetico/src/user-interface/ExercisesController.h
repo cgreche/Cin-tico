@@ -18,6 +18,7 @@ namespace cinetico {
 			VerticalLayout layoutActions;
 				Label labelViewTitle;
 				Label labelViewDescr;
+				Separator separatorActionButtons;
 				HorizontalLayout layoutActionButtons;
 					Button buttonCreateExercise;
 					Button buttonManageActions;
@@ -39,7 +40,7 @@ namespace cinetico {
 							EditBox editExerciseName;
 							CheckBox checkPublic;
 
-					Label labelChecks;
+					Separator separatorChecks;
 					std::vector<HorizontalLayout> layoutCheckBodyPointList;
 					std::vector<CheckBox> checkBodyPointList;
 

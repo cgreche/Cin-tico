@@ -17,7 +17,7 @@ namespace cinetico {
 	public:
 		UserProfileDAO(Database &db);
 
-		void save(UserProfile &profile);
+		void create(UserProfile &profile);
 		void update(UserProfile &user);
 		std::vector<UserProfile *> getAllUsers();
 		UserProfile *getByLoginName(const char *username);

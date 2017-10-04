@@ -17,6 +17,7 @@ namespace cinetico {
 			VerticalLayout layoutStartText;
 				Label labelWelcome;
 				Label labelStartInfo;
+			Separator separator;
 			HorizontalLayout layoutLoginArea;
 				VerticalLayout layoutLogin;
 					Label labelLoginTitle;

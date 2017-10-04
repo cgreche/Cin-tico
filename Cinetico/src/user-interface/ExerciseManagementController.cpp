@@ -21,6 +21,31 @@ namespace cinetico {
 		controller->setEditionMode(1);
 	}
 
+	static void buttonEdit_onClick(Button& button) {
+		ExerciseManagementController *controller = (ExerciseManagementController*)button.param();
+		if (controller->m_currentAction)
+			controller->setEditionMode(2);
+	}
+
+	static void buttonDelete_onClick(Button& button) {
+		ExerciseManagementController *controller = (ExerciseManagementController*)button.param();
+		if (controller->m_currentAction) {
+			Message::message_result res = Message::question(NULL, "Deseja excluir este registro?");
+			if (res == Message::yes) {
+				g_cinetico.cineticoDB()->actionDAO()->exclude(*controller->m_currentAction);
+				controller->updateActionList();
+			}
+		}
+	}
+
+	static void gridActions_onChange(GridView &grid, int row, int col) {
+		ExerciseManagementController *controller = (ExerciseManagementController*)grid.param();
+		controller->m_currentActionSelection = row;
+		if (row >= 0)
+			controller->m_currentAction = (Action*)grid.item(row, 0)->data();
+	}
+
+
 	static void buttonSaveAction_onClick(Button &button) {
 		ExerciseManagementController *controller = (ExerciseManagementController*)button.param();
 		controller->saveCurrentAction();
@@ -47,13 +72,39 @@ namespace cinetico {
 		combo.fastinsertItem("Cabeça");
 	}
 
-	bool ExerciseManagementController::checkRequiredFields() {
-		return true;
+	bool ExerciseManagementController::validateFields() {
+		bool required = false;
+		bool invalid = false;
+
+		if (comboActionType.selection() == -1
+			|| comboPartOf.selection() == -1
+			|| comboRefPoint.selection() == -1
+			|| editPositionX.text() == ""
+			|| editPositionY.text() == ""
+			|| editPositionZ.text() == ""
+			) {
+			required = true;
+		}
+
+		if (comboActionType.selection() == 1) {
+			if (comboMovementType.selection() == -1) {
+				required = true;
+			}
+		}
+
+		if (required) {
+			Message::warning(NULL, "Os campos com '*' devem ser preenchidos obrigatoriamente.");
+		}
+		else if (invalid) {
+			//todo: campos somente numéricos
+		}
+
+		return !required && !invalid;
 	}
 
 	void ExerciseManagementController::saveCurrentAction() {
 
-		if (!checkRequiredFields())
+		if(!validateFields())
 			return;
 
 		string &name = editName.text();
@@ -64,15 +115,24 @@ namespace cinetico {
 		int bodyPoint = comboBodyPoint.selection();
 		int refPoint = comboRefPoint.selection();
 		string &posXStr = editPositionX.text();
-		string &posYStr = editPositionX.text();
-		string &posZStr = editPositionX.text();
+		string &posYStr = editPositionY.text();
+		string &posZStr = editPositionZ.text();
+		/*
+		string &orientationXStr = editOrientationX.text();
+		string &orientationYStr = editOrientationY.text();
+		string &orientationZStr = editOrientationZ.text();
+		*/
 
 		Action *action;
 
 		if ((Action::ActionType)type == Action::Position) {
 			string &minHoldTimeStr = editMinHoldtime.text();
 
-			PositionAction *posAction = new PositionAction(*m_currentExercise);
+			PositionAction *posAction;
+			if (m_editMode == 1)
+				posAction = new PositionAction(*m_currentExercise);
+			else
+				posAction = (PositionAction*)m_currentAction;
 			posAction->setMinHoldTime(string_op::decimal(minHoldTimeStr.data()));
 
 			action = posAction;
@@ -82,7 +142,11 @@ namespace cinetico {
 			string &minSpeedStr = editMinSpeed.text();
 			string &maxSpeedStr = editMaxSpeed.text();
 
-			MovementAction *movementAction = new MovementAction(*m_currentExercise);
+			MovementAction *movementAction;
+			if (m_editMode == 1)
+				movementAction = new MovementAction(*m_currentExercise);
+			else
+				movementAction = (MovementAction*)m_currentAction;
 			movementAction->setMovementType((MovementAction::MovementType)movementType);
 			movementAction->setMinSpeed(string_op::decimal(minSpeedStr.data()));
 			movementAction->setMaxSpeed(string_op::decimal(maxSpeedStr.data()));
@@ -102,8 +166,17 @@ namespace cinetico {
 		action->setRefPoint(refPoint);
 		action->setPosition(Vector3(string_op::decimal(posXStr.data()), string_op::decimal(posYStr.data()), string_op::decimal(posZStr.data())));
 
-		g_cinetico.cineticoDB()->actionDAO()->create(*action);
-		delete action;
+		
+
+		if (m_editMode == 1) {
+			g_cinetico.cineticoDB()->actionDAO()->create(*action);
+			delete action;
+		}
+		else {
+			g_cinetico.cineticoDB()->actionDAO()->update(*action);
+		}
+
+		setEditionMode(0);
 	}
 
 	ExerciseManagementController::ExerciseManagementController() {
@@ -112,13 +185,19 @@ namespace cinetico {
 		labelViewDescr.setText("Adicione ou altere ações para um exercício.");
 		labelViewDescr.setFont(FontDesc("Arial", 10, FONT_BOLD));
 
+		buttonAdd.setText("Adicionar");
+		buttonAdd.setParam(this);
+		buttonAdd.setOnClick(buttonAdd_onClick);
 		buttonBack.setText("Voltar");
 		buttonBack.setParam(this);
 		buttonBack.setOnClick(buttonBack_onClick);
+		layoutActionButtons.append(buttonAdd);
 		layoutActionButtons.append(buttonBack);
 		layoutActions.append(labelViewTitle);
 		layoutActions.append(labelViewDescr);
+		layoutActions.append(separatorActionButtons);
 		layoutActions.append(layoutActionButtons);
+		layoutActions.append(separatorContent);
 
 		//List
 		gridActions.setStyle(CS_Border);
@@ -126,14 +205,16 @@ namespace cinetico {
 		gridActions.setHeaderVisible(true);
 		gridActions.setHeaderText(0, "Tipo");
 		gridActions.setHeaderText(1, "Nome");
-		gridActions.setHeaderText(2, "Posição");
-		buttonAdd.setText("Adicionar");
-		buttonAdd.setParam(this);
-		buttonAdd.setOnClick(buttonAdd_onClick);
+		gridActions.setHeaderText(2, "Posição (cm)");
+		gridActions.setParam(this);
+		gridActions.setOnItemSelect(gridActions_onChange);
 		buttonEdit.setText("Editar");
+		buttonEdit.setParam(this);
+		buttonEdit.setOnClick(buttonEdit_onClick);
 		buttonDelete.setText("Excluir");
+		buttonDelete.setParam(this);
+		buttonDelete.setOnClick(buttonDelete_onClick);
 
-		layoutGridActions.append(buttonAdd);
 		layoutGridActions.append(buttonEdit);
 		layoutGridActions.append(buttonDelete);
 		layoutContentList.append(gridActions, MaximumSize);
@@ -155,20 +236,8 @@ namespace cinetico {
 		layoutActionDataActionButtons.append(buttonCancelAction);
 
 		//Base Action data
-		labelName.setText("Nome");
-		layoutName.append(labelName);
-		layoutName.append(editName);
-
-		labelPartOf.setText("Ordem *");
-		comboPartOf.fastinsertItem("Nova ação");
-		comboPartOf.fastinsertItem("Última ação");
-		comboPartOf.fastinsertItem("Todas as ações");
-		layoutPartOf.append(labelPartOf);
-		layoutPartOf.append(comboPartOf, Size(SizeTypeMax, SizeTypeAuto));
-
-		layoutActionDataRow1.append(layoutName);
-		layoutActionDataRow1.append(layoutPartOf, Size(MakePercentType(30), SizeTypeAuto));
-
+		separatorActionBasicData.setText("Informação básica da ação");
+		separatorActionBasicData.setFont(FontDesc("Arial",12,FONT_BOLD));
 		labelActionType.setText("Tipo");
 		comboActionType.fastinsertItem("Posição");
 		comboActionType.fastinsertItem("Movimento");
@@ -176,6 +245,28 @@ namespace cinetico {
 		comboActionType.setOnSelect(comboActionType_onChange);
 		layoutActionType.append(labelActionType);
 		layoutActionType.append(comboActionType, Size(SizeTypeMax, SizeTypeAuto));
+		labelPartOf.setText("Ordem *");
+		comboPartOf.fastinsertItem("Nova ação");
+		comboPartOf.fastinsertItem("Última ação");
+		comboPartOf.fastinsertItem("Todas as ações");
+		layoutPartOf.append(labelPartOf);
+		layoutPartOf.append(comboPartOf, Size(SizeTypeMax, SizeTypeAuto));
+		labelName.setText("Nome");
+		layoutName.append(labelName);
+		layoutName.append(editName);
+		layoutActionDataRow1.append(layoutActionType, Size(MakePercentType(30), SizeTypeAuto));
+		layoutActionDataRow1.append(layoutPartOf, Size(MakePercentType(30), SizeTypeAuto));
+		layoutActionDataRow1.append(layoutName);
+
+
+		labelBodyPoint.setText("Ponto do corpo *");
+		labelRefPoint.setText("Ponto de referência *");
+		fillBodyPointCombo(comboBodyPoint);
+		fillSpaceTypeCombo(comboRefPoint);
+		layoutBodyPoint.append(labelBodyPoint);
+		layoutBodyPoint.append(comboBodyPoint, Size(SizeTypeMax, SizeTypeAuto));
+		layoutRefPoint.append(labelRefPoint);
+		layoutRefPoint.append(comboRefPoint, Size(SizeTypeMax, SizeTypeAuto));
 
 		labelMinTime.setText("Tempo mínimo para execução (s)");
 		layoutMinTime.append(labelMinTime);
@@ -185,12 +276,11 @@ namespace cinetico {
 		layoutMaxTime.append(labelMaxTime);
 		layoutMaxTime.append(editMaxTime);
 
-		labelBodyPoint.setText("Ponto do corpo *");
-		labelRefPoint.setText("Ponto de referência *");
-		fillBodyPointCombo(comboBodyPoint);
-		fillSpaceTypeCombo(comboRefPoint);
-		layoutBodyAndRefPoints.append(layoutBodyPoint);
-		layoutBodyAndRefPoints.append(layoutRefPoint);
+		layoutBaseActionData.append(layoutBodyPoint, Size(SizeTypeMax, SizeTypeAuto));
+		layoutBaseActionData.append(layoutRefPoint, Size(SizeTypeMax, SizeTypeAuto));
+		layoutBaseActionData.append(layoutMinTime, Size(SizeTypeMax, SizeTypeAuto));
+		layoutBaseActionData.append(layoutMaxTime, Size(SizeTypeMax, SizeTypeAuto));
+
 
 		labelPosition.setText("Posição *");
 		labelPositionX.setText("X");
@@ -207,9 +297,6 @@ namespace cinetico {
 		layoutPosition.append(layoutPositionZ);
 
 
-		layoutBaseActionData.append(layoutActionType,Size(SizeTypeMax, SizeTypeAuto));
-		layoutBaseActionData.append(layoutMinTime, Size(SizeTypeMax, SizeTypeAuto));
-		layoutBaseActionData.append(layoutMaxTime, Size(SizeTypeMax, SizeTypeAuto));
 
 
 		//Position Action
@@ -238,17 +325,21 @@ namespace cinetico {
 		layoutMovementAction.append(layoutMaxSpeed, Size(SizeTypeMax, SizeTypeAuto));
 		layoutMovementSpecific.append(layoutMovementAction);
 
-		layoutActionData.append(layoutActionDataActionButtons);
+		separatorSpecificData.setText("Informação específica para o tipo de ação");
+		separatorSpecificData.setFont(FontDesc("Arial", 12, FONT_BOLD));
+		layoutSpecific.append(separatorSpecificData);
+
+		layoutActionData.append(layoutActionDataActionButtons, AutoSize, 10);
+		layoutActionData.append(separatorActionBasicData);
 		layoutActionData.append(layoutActionDataRow1);
 		layoutActionData.append(layoutBaseActionData);
-		layoutActionData.append(layoutBodyAndRefPoints);
 		layoutActionData.append(labelPosition);
-		layoutActionData.append(layoutPosition);
+		layoutActionData.append(layoutPosition,AutoSize,20);
 		layoutActionData.append(layoutSpecific);
 		//
 		layoutContent.append(layoutContentList);
 
-		layout.append(layoutActions, AutoSize, 20);
+		layout.append(layoutActions);
 		layout.append(layoutContent);
 		layout.setMargin(10);
 
@@ -262,14 +353,26 @@ namespace cinetico {
 		m_editMode = 0;
 		m_currentActionTypeSelection = -1;
 		m_currentMovementTypeSelection = -1;
+		buttonEdit.setEnabled(false);
+
 		Exercise *exercise = params ? (Exercise*)(*params)["exercise"] : NULL;
 		m_currentExercise = exercise;
 		updateActionList();
 	}
 
 	void ExerciseManagementController::onViewTick() {
+		static int lastEditMode = 0;
+		static int lastActionSelection = -1;
 		static int lastActionType = -1;
-		static int lastMovementType = -1;
+
+		if (m_editMode != lastEditMode) {
+			buttonAdd.setEnabled(m_editMode == 0);
+			buttonBack.setEnabled(m_editMode == 0);
+		}
+
+		if (m_currentActionSelection != lastActionSelection) {
+			buttonEdit.setEnabled(m_currentActionSelection >= 0);
+		}
 
 		if (m_currentActionTypeSelection != lastActionType) {
 			if (lastActionType == Action::Position) {
@@ -290,6 +393,8 @@ namespace cinetico {
 			layout.setVisible(true);
 		}
 
+		lastEditMode = m_editMode;
+		lastActionSelection = m_currentActionSelection;
 		lastActionType = m_currentActionTypeSelection;
 	}
 
@@ -300,15 +405,57 @@ namespace cinetico {
 	void ExerciseManagementController::setEditionMode(int mode) {
 		if (m_editMode == 0)
 			layoutContent.remove(layoutContentList);
-		else if (m_editMode == 1) {
+		else if (m_editMode == 1 || m_editMode == 2) {
 			layoutContent.remove(layoutActionData);
 		}
 
 		if (mode == 0) {
 			layoutContent.append(layoutContentList);
+			updateActionList();
 		}
-		else if (mode == 1) {
+		else if (mode == 1 || mode == 2) {
 			layoutContent.append(layoutActionData);
+			//
+			comboActionType.setSelection(-1);
+			comboActionType.setEnabled(mode == 1);
+			comboPartOf.setSelection(-1);
+			editName.setText("");
+			comboBodyPoint.setSelection(-1);
+			comboRefPoint.setSelection(-1);
+			editMinTime.setText("");
+			editMaxTime.setText("");
+			editPositionX.setText("");
+			editPositionY.setText("");
+			editPositionZ.setText("");
+			//
+			editMinHoldtime.setText("");
+			//
+			comboMovementType.setSelection(-1);
+			editMinSpeed.setText("");
+			editMaxSpeed.setText("");
+			if (mode == 2) {
+				Action *action = m_currentAction;
+				comboActionType.setSelection(action->type());
+				comboPartOf.setSelection(action->order());
+				editName.setText(action->name().c_str());
+				comboBodyPoint.setSelection(action->bodyPoint());
+				comboRefPoint.setSelection(action->refPoint());
+				editMinTime.setText(string::fromFloat(action->minTime()));
+				editMaxTime.setText(string::fromFloat(action->maxTime()));
+				editPositionX.setText(string::fromFloat(action->position().x()));
+				editPositionY.setText(string::fromFloat(action->position().y()));
+				editPositionZ.setText(string::fromFloat(action->position().z()));
+
+				if (action->type() == Action::Position) {
+					editMinHoldtime.setText(string::fromFloat(((PositionAction*)action)->minHoldTime()));
+				}
+				else if (action->type() == Action::Movement) {
+					comboMovementType.setSelection(((MovementAction*)action)->movementType());
+					editMinSpeed.setText(string::fromFloat(((MovementAction*)action)->minSpeed()));
+					editMinSpeed.setText(string::fromFloat(((MovementAction*)action)->maxSpeed()));
+				}
+
+			}
 		}
 
 		m_editMode = mode;

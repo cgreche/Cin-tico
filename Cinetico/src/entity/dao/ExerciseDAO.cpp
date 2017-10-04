@@ -8,7 +8,7 @@ namespace cinetico {
 		: m_db(db) {
 	}
 
-	void ExerciseDAO::save(Exercise &exercise, UserProfile *user) {
+	void ExerciseDAO::create(Exercise &exercise, UserProfile *user) {
 		const char *sql = "INSERT INTO EXERCISE(name,author,creation_date,trackable_body_points,is_public,owner_id) VALUES(?,?,?,?,?,?);";
 
 		SQLStatement *stmt;

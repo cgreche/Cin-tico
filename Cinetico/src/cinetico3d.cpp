@@ -332,9 +332,6 @@ namespace cinetico {
 			NULL, NULL, hInstance, 0);
 
 		g_world3DWindow = hwnd;
-
-		::ShowWindow(hwnd, SW_SHOWNORMAL);
-		::UpdateWindow(hwnd);
 	}
 
 
@@ -596,6 +593,8 @@ namespace cinetico {
 	void Cinetico3D::startExercise(Exercise &exercise) {
 		m_playingExercise = &exercise;
 		m_bodyTracker->setTrackableBodyPoints(exercise.trackableBodyPoints());
+		::ShowWindow(g_world3DWindow, SW_SHOWNORMAL);
+		::UpdateWindow(g_world3DWindow);
 	}
 
 	void Cinetico3D::update() {
@@ -618,7 +617,8 @@ namespace cinetico {
 		lastKeyStates[VK_ESCAPE] = keyStates[VK_ESCAPE];
 
 		if (quit3D) {
-			m_application.quit3DWorld();
+			::ShowWindow(g_world3DWindow, SW_HIDE);
+			m_application.goTo(Cinetico::EXERCISES);
 			return;
 		}
 

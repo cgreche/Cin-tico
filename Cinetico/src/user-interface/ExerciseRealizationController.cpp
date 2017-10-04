@@ -1,6 +1,7 @@
 
 #include "ExerciseRealizationController.h"
 #include "cinetico.h"
+#include "mainwindow.h"
 
 namespace cinetico {
 
@@ -15,7 +16,7 @@ namespace cinetico {
 	}
 
 	void ExerciseRealizationController::onViewEnter(ViewParams *params) {
-		g_cinetico.enter3DWorld();
+		g_cinetico.mainWindow()->setVisible(false);
 		g_cinetico.cinetico3D()->startExercise(*(Exercise*)(*params)["exercise"]);
 	}
 
@@ -25,7 +26,7 @@ namespace cinetico {
 	}
 
 	void ExerciseRealizationController::onViewQuit() {
-
+		g_cinetico.mainWindow()->setVisible(true);
 	}
 
 }

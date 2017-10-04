@@ -24,6 +24,8 @@ namespace cinetico {
 		void update(Action &exercise);
 		std::vector<Action *> getAllActionsByExercise(Exercise &exercise);
 		void exclude(Action &exercise);
+
+		int getActionCountByExercise(Exercise &exercise);
 	};
 
 }

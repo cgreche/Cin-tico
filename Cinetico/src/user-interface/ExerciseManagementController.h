@@ -16,15 +16,17 @@ namespace cinetico {
 			VerticalLayout layoutActions;
 				Label labelViewTitle;
 				Label labelViewDescr;
+				Separator separatorActionButtons;
 				HorizontalLayout layoutActionButtons;
+					Button buttonAdd;
 					Button buttonBack;
+				Separator separatorContent;
 
 			VerticalLayout layoutContent;
 
 			HorizontalLayout layoutContentList;
 				GridView gridActions;
 				VerticalLayout layoutGridActions;
-					Button buttonAdd;
 					Button buttonEdit;
 					Button buttonDelete;
 
@@ -33,31 +35,30 @@ namespace cinetico {
 					Button buttonSaveAction;
 					Button buttonCancelAction;
 
+				Separator separatorActionBasicData;
 				HorizontalLayout layoutActionDataRow1;
-					VerticalLayout layoutName;
-						Label labelName;
-						EditBox editName;
-					VerticalLayout layoutPartOf;
-						Label labelPartOf;
-						ComboBox comboPartOf;
-				HorizontalLayout layoutBaseActionData;
 					VerticalLayout layoutActionType;
 						Label labelActionType;
 						ComboBox comboActionType;
-					VerticalLayout layoutMinTime;
-						Label labelMinTime;
-						EditBox editMinTime;
-					VerticalLayout layoutMaxTime;
-						Label labelMaxTime;
-						EditBox editMaxTime;
-		
-				HorizontalLayout layoutBodyAndRefPoints;
+					VerticalLayout layoutPartOf;
+						Label labelPartOf;
+						ComboBox comboPartOf;
+					VerticalLayout layoutName;
+						Label labelName;
+						EditBox editName;
+				HorizontalLayout layoutBaseActionData;
 					VerticalLayout layoutBodyPoint;
 						Label labelBodyPoint;
 						ComboBox comboBodyPoint;
 					VerticalLayout layoutRefPoint;
 						Label labelRefPoint;
 						ComboBox comboRefPoint;
+					VerticalLayout layoutMinTime;
+						Label labelMinTime;
+						EditBox editMinTime;
+					VerticalLayout layoutMaxTime;
+						Label labelMaxTime;
+						EditBox editMaxTime;
 
 				Label labelPosition;
 				HorizontalLayout layoutPosition;
@@ -72,6 +73,7 @@ namespace cinetico {
 						EditBox editPositionZ;
 
 				VerticalLayout layoutSpecific;
+					Separator separatorSpecificData;
 				//Position action
 					VerticalLayout layoutPositionSpecific;
 						VerticalLayout layoutMinHoldTime;
@@ -104,7 +106,7 @@ namespace cinetico {
 
 		void fillBodyPointCombo(ComboBox &combo);
 		void fillSpaceTypeCombo(ComboBox &combo);
-		bool checkRequiredFields();
+		bool validateFields();
 		void saveCurrentAction();
 
 		friend void comboActionType_onChange(ComboBox &combo, ComboBoxItem *item);

@@ -24,10 +24,10 @@ namespace cinetico {
 		labelStartInfo.setText("Para começar, selecione ou crie um Perfil de usuário");
 		labelStartInfo.setFont(FontDesc("Arial", 10, FONT_BOLD));
 
-		labelLoginTitle.setText("Selecionar Perfil de usuário");
+		labelLoginTitle.setText("Entrar com Perfil de usuário");
 		labelLoginTitle.setFont(FontDesc("Arial", 18, FONT_BOLD));
-		labelUsername.setText("Nome do usuário");
-		labelPassword.setText("Senha");
+		labelUsername.setText("Nome do usuário *");
+		labelPassword.setText("Senha *");
 		editPassword.setPasswordMode(true);
 		buttonLogin.setText("Entrar");
 		buttonLogin.setParam(this);
@@ -35,8 +35,8 @@ namespace cinetico {
 
 		labelCreateAccountTitle.setText("Criar Perfil de usuário");
 		labelCreateAccountTitle.setFont(FontDesc("Arial", 18, FONT_BOLD));
-		labelCreateAccountUsername.setText("Nome do usuário");
-		labelCreateAccountPassword.setText("Senha");
+		labelCreateAccountUsername.setText("Nome do usuário *");
+		labelCreateAccountPassword.setText("Senha *");
 		editCreateAccountPassword.setPasswordMode(true);
 		buttonCreateAccount.setText("Criar conta");
 		buttonCreateAccount.setParam(this);
@@ -62,7 +62,8 @@ namespace cinetico {
 		layoutLoginArea.append(layoutLogin, AutoSize, 40);
 		layoutLoginArea.append(layoutCreateAccount);
 
-		layout.append(layoutStartText, AutoSize, 20);
+		layout.append(layoutStartText);
+		layout.append(separator);
 		layout.append(layoutLoginArea);
 
 		layout.setMargin(10);
@@ -88,6 +89,7 @@ namespace cinetico {
 		if (res == Cinetico::SUCCESS) {
 			string str = "Sucesso! Usuário logado como ";
 			str += username;
+			str += ".";
 			Message::msg(NULL, str);
 			g_cinetico.goTo(Cinetico::EXERCISES);
 			//

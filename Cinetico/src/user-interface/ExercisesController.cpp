@@ -112,11 +112,16 @@ namespace cinetico {
 		std::vector<Exercise*> exerciseList = g_cinetico.cineticoDB()->exerciseDAO()->getAllExercisesByUserProfile(g_cinetico.currentUser());
 		gridExercises.deleteRows();
 		for (unsigned int i = 0; i < exerciseList.size(); ++i) {
+			Exercise *exercise = exerciseList[i];
 			gridExercises.insertRow();
 			int lastRow = gridExercises.rowCount() - 1;
-			gridExercises.setItem(lastRow, 0, new ListViewItem(exerciseList[i]->name().c_str(), Color(0, 0, 0), FontDesc("Arial", 10, 0), exerciseList[i]));
-			gridExercises.setItem(lastRow, 1, new ListViewItem(exerciseList[i]->author().c_str()));
-			gridExercises.setItem(lastRow, 2, new ListViewItem(exerciseList[i]->isPublic() ? "Sim" : "Não"));
+
+			int actionCount = g_cinetico.cineticoDB()->actionDAO()->getActionCountByExercise(*exercise);
+
+			gridExercises.setItem(lastRow, 0, new ListViewItem(exercise->name().c_str(), Color(0, 0, 0), FontDesc("Arial", 10, 0), exerciseList[i]));
+			gridExercises.setItem(lastRow, 1, new ListViewItem(exercise->author().c_str()));
+			gridExercises.setItem(lastRow, 2, new ListViewItem(uilib::string::fromInteger(actionCount).data()));
+			gridExercises.setItem(lastRow, 3, new ListViewItem(exercise->isPublic() ? "Sim" : "Não"));
 		}
 		m_currentSelection = -1;
 		m_currentExercise = NULL;
@@ -141,11 +146,12 @@ namespace cinetico {
 
 		gridExercises.setParam(this);
 		gridExercises.setStyle(CS_Border);
-		gridExercises.setColumnCount(3);
+		gridExercises.setColumnCount(4);
 		gridExercises.setHeaderVisible(true);
 		gridExercises.setHeaderText(0, "Nome");
 		gridExercises.setHeaderText(1, "Autor");
-		gridExercises.setHeaderText(2, "Público");
+		gridExercises.setHeaderText(2, "Número de ações");
+		gridExercises.setHeaderText(3, "Público");
 		gridExercises.setOnItemSelect(gridExercises_onItemSelect);
 
 		buttonEdit.setText("Editar");
@@ -161,6 +167,7 @@ namespace cinetico {
 
 		layoutActions.append(labelViewTitle);
 		layoutActions.append(labelViewDescr);
+		layoutActions.append(separatorActionButtons);
 		layoutActions.append(layoutActionButtons);
 
 		layoutExerciseListActions.append(buttonEdit);
@@ -173,7 +180,8 @@ namespace cinetico {
 
 		labelExerciseName.setText("Nome do exercício");
 		checkPublic.setText("Público");
-		labelChecks.setText("Partes do corpo que serão utilizadas");
+		separatorChecks.setText("Partes do corpo que serão utilizadas");
+		separatorChecks.setFont(FontDesc("Arial", 12, FONT_BOLD));
 
 		/*Preenchendo os layouts e checkBoxes do corpo*/
 		std::vector<BodyPointConfig*> bpConfig = g_cinetico.getAllBodyPointsCaps();
@@ -218,7 +226,7 @@ namespace cinetico {
 		layoutExerciseName.append(layoutExerciseNameData);
 
 		layoutExerciseData.append(layoutExerciseName, AutoSize, 20);
-		layoutExerciseData.append(labelChecks);
+		layoutExerciseData.append(separatorChecks);
 		for (i = 0; i < bpLayoutCount; ++i)
 			layoutExerciseData.append(layoutCheckBodyPointList[i]);
 
@@ -295,7 +303,7 @@ namespace cinetico {
 			exercise->setPublic(isPublic);
 			exercise->setTrackableBodyPoints(bpFlags);
 
-			g_cinetico.cineticoDB()->exerciseDAO()->save(*exercise, g_cinetico.currentUser());
+			g_cinetico.cineticoDB()->exerciseDAO()->create(*exercise, g_cinetico.currentUser());
 			delete exercise;
 		}
 		else if (m_editMode == 2) {

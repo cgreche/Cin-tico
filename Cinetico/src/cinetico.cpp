@@ -19,7 +19,6 @@ namespace cinetico {
 	Cinetico g_cinetico;
 	
 	Cinetico::Cinetico() {
-		m_onWorld3D = false;
 		m_currentView = INVALID;
 		m_currentUser = NULL;
 	}
@@ -88,7 +87,7 @@ namespace cinetico {
 		//Account creation
 		std::string cryptPW = Crypter::SimpleHash(password);
 		user = new UserProfile(username, cryptPW);
-		cineticoDB()->userProfileDAO()->save(*user);
+		cineticoDB()->userProfileDAO()->create(*user);
 
 		return SUCCESS;
 	}
@@ -138,18 +137,6 @@ namespace cinetico {
 
 		m_mainWindow->setSize(Size(1024, 768));
 	}
-
-	void Cinetico::enter3DWorld() {
-		m_mainWindow->setVisible(false);
-		m_onWorld3D = true;
-	}
-
-	void Cinetico::quit3DWorld() {
-		goTo(EXERCISES);
-		m_mainWindow->setVisible(true);
-		m_onWorld3D = false;
-	}
-
 }
 
 using namespace cinetico;

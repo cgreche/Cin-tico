@@ -20,7 +20,7 @@ namespace cinetico {
 	public:
 		ExerciseDAO(Database &db);
 
-		void save(Exercise &exercise, UserProfile *owner);
+		void create(Exercise &exercise, UserProfile *owner);
 		void update(Exercise &exercise);
 		std::vector<Exercise *> getAllExercises();
 		std::vector<Exercise *> getAllExercisesByUserProfile(UserProfile *user);
