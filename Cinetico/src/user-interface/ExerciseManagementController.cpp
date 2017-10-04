@@ -5,6 +5,8 @@
 #include "entity/core/PositionAction.h"
 #include "entity/core/MovementAction.h"
 
+#include <sstream>
+
 namespace cinetico {
 	using namespace cinetico_core;
 	extern Cinetico g_cinetico;
@@ -46,7 +48,7 @@ namespace cinetico {
 	}
 
 	bool ExerciseManagementController::checkRequiredFields() {
-
+		return true;
 	}
 
 	void ExerciseManagementController::saveCurrentAction() {
@@ -70,7 +72,7 @@ namespace cinetico {
 		if ((Action::ActionType)type == Action::Position) {
 			string &minHoldTimeStr = editMinHoldtime.text();
 
-			PositionAction *posAction = new PositionAction();
+			PositionAction *posAction = new PositionAction(*m_currentExercise);
 			posAction->setMinHoldTime(string_op::decimal(minHoldTimeStr.data()));
 
 			action = posAction;
@@ -80,7 +82,7 @@ namespace cinetico {
 			string &minSpeedStr = editMinSpeed.text();
 			string &maxSpeedStr = editMaxSpeed.text();
 
-			MovementAction *movementAction = new MovementAction();
+			MovementAction *movementAction = new MovementAction(*m_currentExercise);
 			movementAction->setMovementType((MovementAction::MovementType)movementType);
 			movementAction->setMinSpeed(string_op::decimal(minSpeedStr.data()));
 			movementAction->setMaxSpeed(string_op::decimal(maxSpeedStr.data()));
@@ -100,7 +102,8 @@ namespace cinetico {
 		action->setRefPoint(refPoint);
 		action->setPosition(Vector3(string_op::decimal(posXStr.data()), string_op::decimal(posYStr.data()), string_op::decimal(posZStr.data())));
 
-		g_cinetico.cineticoDB().actionDAO().save(action);
+		g_cinetico.cineticoDB()->actionDAO()->create(*action);
+		delete action;
 	}
 
 	ExerciseManagementController::ExerciseManagementController() {
@@ -121,7 +124,7 @@ namespace cinetico {
 		gridActions.setStyle(CS_Border);
 		gridActions.setColumnCount(3);
 		gridActions.setHeaderVisible(true);
-		gridActions.setHeaderText(0, "Tipo *");
+		gridActions.setHeaderText(0, "Tipo");
 		gridActions.setHeaderText(1, "Nome");
 		gridActions.setHeaderText(2, "Posição");
 		buttonAdd.setText("Adicionar");
@@ -238,8 +241,7 @@ namespace cinetico {
 		layoutActionData.append(layoutActionDataActionButtons);
 		layoutActionData.append(layoutActionDataRow1);
 		layoutActionData.append(layoutBaseActionData);
-		layoutActionData.append(labelSpaceType);
-		layoutActionData.append(layoutSpaceType);
+		layoutActionData.append(layoutBodyAndRefPoints);
 		layoutActionData.append(labelPosition);
 		layoutActionData.append(layoutPosition);
 		layoutActionData.append(layoutSpecific);
@@ -262,6 +264,7 @@ namespace cinetico {
 		m_currentMovementTypeSelection = -1;
 		Exercise *exercise = params ? (Exercise*)(*params)["exercise"] : NULL;
 		m_currentExercise = exercise;
+		updateActionList();
 	}
 
 	void ExerciseManagementController::onViewTick() {
@@ -312,4 +315,30 @@ namespace cinetico {
 		layout.setSize(layout.size());
 		layout.setVisible(true);
 	}
+
+	void ExerciseManagementController::updateActionList() {
+		std::vector<Action*> actionList = g_cinetico.cineticoDB()->actionDAO()->getAllActionsByExercise(*m_currentExercise);
+		gridActions.deleteRows();
+		for (unsigned int i = 0; i < actionList.size(); ++i) {
+			Action *action = actionList[i];
+			gridActions.insertRow();
+			int lastRow = gridActions.rowCount() - 1;
+			gridActions.setItem(lastRow, 0, new ListViewItem(action->type() == Action::Position ? "Posição" : "Movimento", Color(0, 0, 0), FontDesc("Arial", 10, 0), action));
+			gridActions.setItem(lastRow, 1, new ListViewItem(action->name().c_str()));
+
+			std::ostringstream ss;
+			ss << "[";
+			ss << action->position().x();
+			ss << ", ";
+			ss << action->position().y();
+			ss << ", ";
+			ss << action->position().z();
+			ss << "]";
+
+			gridActions.setItem(lastRow, 2, new ListViewItem(ss.str().c_str()));
+		}
+		m_currentActionSelection = -1;
+		m_currentAction = NULL;
+	}
+
 }

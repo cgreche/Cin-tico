@@ -20,6 +20,9 @@ namespace cinetico_core {
 	public:
 		MovementAction(Exercise &owner, int id = -1)
 			: Action(Action::Movement, owner, id) {
+			m_movementType = Linear;
+			m_minSpeed = 0.f;
+			m_maxSpeed = 0.f;
 		}
 
 		void setMovementType(MovementType movementType) { m_movementType = movementType; }

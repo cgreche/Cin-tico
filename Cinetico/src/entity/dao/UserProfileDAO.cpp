@@ -17,7 +17,7 @@ namespace cinetico {
 		stmt = m_db.prepare(sql);
 		stmt->bind(1, user.username()); //safer to use the created user properties
 		stmt->bind(2, user.password());
-		stmt->bind(3, user.creationDate());
+		stmt->bind(3, (int)user.creationDate());
 		int rc = stmt->execute();
 		if (rc != 0) {
 			//todo
@@ -32,7 +32,7 @@ namespace cinetico {
 		stmt = m_db.prepare(sql);
 		stmt->bind(1, user.username());
 		stmt->bind(2, user.password());
-		stmt->bind(3, user.creationDate());
+		stmt->bind(3, (int)user.creationDate());
 		int rc = stmt->execute();
 		if (rc != 0) {
 			//todo

@@ -12,7 +12,7 @@ namespace cinetico {
 
 	void ActionDAO::create(Action &action) {
 		const char *actionSql = "INSERT INTO ACTION("
-			"exercise_id,type,order"
+			"exercise_id,type,order_type"
 			",name,min_time,max_time"
 			",body_point,ref_point"
 			",position_x,position_y,position_z"
@@ -38,21 +38,21 @@ namespace cinetico {
 		int rc = actionStmt->execute();
 		actionStmt->close();
 
-		if (rc == 0) {
+		if (rc == 1) {
 			const char *childClassSql;
 			SQLStatement *childClassStmt;
 
 			int lastRowId = m_db.getLastRowId();
 			if (action.type() == Action::Position) {
 				childClassSql = "INSERT INTO POSITION_ACTION(action_id,min_hold_time) VALUES(?,?);";
-				childClassStmt = m_db.prepare(actionSql);
-				childClassStmt->bind(1, lastRowId); //safer to use the created user properties
+				childClassStmt = m_db.prepare(childClassSql);
+				childClassStmt->bind(1, lastRowId);
 				childClassStmt->bind(2, ((PositionAction&)action).minHoldTime());
 			}
 			else if (action.type() == Action::Movement) {
-				childClassSql = "INSERT INTO POSITION_ACTION(action_id,movement_type,min_speed,max_speed) VALUES(?,?,?,?);";
-				childClassStmt = m_db.prepare(actionSql);
-				childClassStmt->bind(1, lastRowId); //safer to use the created user properties
+				childClassSql = "INSERT INTO MOVEMENT_ACTION(action_id,movement_type,min_speed,max_speed) VALUES(?,?,?,?);";
+				childClassStmt = m_db.prepare(childClassSql);
+				childClassStmt->bind(1, lastRowId);
 				childClassStmt->bind(2, (int)((MovementAction&)action).movementType());
 				childClassStmt->bind(3, ((MovementAction&)action).minSpeed());
 				childClassStmt->bind(4, ((MovementAction&)action).maxSpeed());
@@ -87,7 +87,7 @@ namespace cinetico {
 	std::vector<Action *> ActionDAO::getAllActionsByExercise(Exercise &exercise) {
 		const char *sql = "SELECT id,type FROM ACTION WHERE exercise_id = ?;";
 		SQLStatement *stmt;
-		std::vector<Action *> exerciseList;
+		std::vector<Action *> actionList;
 		stmt = m_db.prepare(sql);
 		stmt->bind(1, (int)exercise.id());
 		ResultSet *rs = stmt->query();
@@ -102,7 +102,7 @@ namespace cinetico {
 					PositionAction *positionAction = new PositionAction(exercise, id);
 
 					sql = "SELECT "
-						"a.id,a.exercise_id,a.type,a.order"
+						"a.id,a.exercise_id,a.type,a.order_type"
 						",a.name,a.min_time,a.max_time"
 						",a.body_point,a.ref_point"
 						",a.position_x,a.position_y,a.position_z"
@@ -114,13 +114,16 @@ namespace cinetico {
 					pStmt = m_db.prepare(sql);
 					if (!pStmt)
 						continue;
+					pStmt->bind(1, id);
+					pStmt->bind(2, id);
 					pRS = pStmt->query();
 					if (!pRS) {
 						pStmt->close();
 						continue;
 					}
+					pRS->next();
 
-					positionAction->setMinHoldTime(rs->getFloat(15));
+					positionAction->setMinHoldTime(pRS->getFloat(15));
 
 					action = positionAction;
 
@@ -128,7 +131,7 @@ namespace cinetico {
 				else if (actionType == Action::Movement) {
 					MovementAction *movementAction = new MovementAction(exercise, id);
 					sql = "SELECT "
-						"a.id,a.exercise_id,a.type,a.order"
+						"a.id,a.exercise_id,a.type,a.order_type"
 						",a.name,a.min_time,a.max_time"
 						",a.body_point,a.ref_point"
 						",a.position_x,a.position_y,a.position_z"
@@ -140,15 +143,18 @@ namespace cinetico {
 					pStmt = m_db.prepare(sql);
 					if (!pStmt)
 						continue;
+					pStmt->bind(1, id);
+					pStmt->bind(2, id);
 					pRS = pStmt->query();
 					if (!pRS) {
 						pStmt->close();
 						continue;
 					}
+					pRS->next();
 
-					movementAction->setMovementType((MovementAction::MovementType)rs->getInt(15));
-					movementAction->setMinSpeed(rs->getFloat(16));
-					movementAction->setMaxSpeed(rs->getFloat(17));
+					movementAction->setMovementType((MovementAction::MovementType)pRS->getInt(15));
+					movementAction->setMinSpeed(pRS->getFloat(16));
+					movementAction->setMaxSpeed(pRS->getFloat(17));
 
 					action = movementAction;
 				}
@@ -156,23 +162,22 @@ namespace cinetico {
 					continue;
 				}
 
-				action->setOrder((Action::ActionOrder)rs->getInt(3));
-				action->setName(rs->getString(4).c_str());
-				action->setMinTime(rs->getFloat(3));
-				action->setMaxTime(rs->getFloat(4));
-				action->setBodyPoint((BodyPoint::BodyPart)rs->getInt(5));
-				action->setRefPoint(rs->getInt(6));
-				action->setRefPoint(rs->getInt(7));
-				action->setPosition(Vector3(rs->getFloat(8), rs->getFloat(9), rs->getFloat(10)));
-				action->setOrientation(Vector3(rs->getFloat(11), rs->getFloat(12), rs->getFloat(13)));
-
+				action->setOrder((Action::ActionOrder)pRS->getInt(3));
+				action->setName(pRS->getString(4).c_str());
+				action->setMinTime(pRS->getFloat(5));
+				action->setMaxTime(pRS->getFloat(6));
+				action->setBodyPoint((BodyPoint::BodyPart)pRS->getInt(7));
+				action->setRefPoint(pRS->getInt(8));
+				action->setPosition(Vector3(pRS->getFloat(9), pRS->getFloat(10), pRS->getFloat(11)));
+				action->setOrientation(Vector3(pRS->getFloat(12), pRS->getFloat(13), pRS->getFloat(14)));
+				actionList.push_back(action);
 				pRS->close();
 				pStmt->close();
 			}
 			rs->close();
 		}
 		stmt->close();
-		return exerciseList;
+		return actionList;
 	}
 
 	void ActionDAO::exclude(Action &action) {

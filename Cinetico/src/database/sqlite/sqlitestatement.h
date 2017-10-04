@@ -21,6 +21,7 @@ protected:
 
 public:
 	virtual int bind(int paramIndex, int value);
+	virtual int bind(int paramIndex, unsigned int value);
 	virtual int bind(int paramIndex, const char *value);
 	virtual int bind(int paramIndex, const std::string &value);
 	virtual int bind(int paramIndex, float value);

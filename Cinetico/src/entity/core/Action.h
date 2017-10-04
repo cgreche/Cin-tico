@@ -7,6 +7,8 @@
 
 namespace cinetico_core {
 
+	class Exercise;
+
 	enum ActionResult {
 		Missed,
 		Bad,
@@ -49,6 +51,8 @@ namespace cinetico_core {
 	protected:
 		Action(ActionType actionType, Exercise &owner, int id = -1)
 			: m_actionType(actionType), m_owner(owner), m_id(id) {
+			m_minTime = m_maxTime = 0.f;
+			m_refPoint = -2;
 		}
 
 	public:

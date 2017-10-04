@@ -20,6 +20,7 @@ namespace cinetico {
 				Label labelViewDescr;
 				HorizontalLayout layoutActionButtons;
 					Button buttonCreateExercise;
+					Button buttonManageActions;
 					Button buttonDoExercise;
 
 			VerticalLayout layoutContent;
@@ -70,6 +71,8 @@ namespace cinetico {
 		void saveCurrentExercise();
 		void deleteSelectedExercise();
 		void doSelectedExercise();
+
+		friend void buttonManageActions_onClick(Button &button);
 	};
 
 }

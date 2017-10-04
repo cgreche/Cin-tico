@@ -31,8 +31,11 @@ int SQLiteResultSet::getInt(int colIndex) {
 
 std::string SQLiteResultSet::getString(int colIndex) {
 	const char *text = (const char *)sqlite3_column_text(m_internalStmt, colIndex);
-	std::string ret = text;
-	return ret;
+	return text ? text : "";
+}
+
+float SQLiteResultSet::getFloat(int colIndex) {
+	return (float)sqlite3_column_double(m_internalStmt, colIndex);
 }
 
 bool SQLiteResultSet::isNull(int colIndex) {

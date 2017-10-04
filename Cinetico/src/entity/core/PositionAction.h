@@ -11,6 +11,7 @@ namespace cinetico_core {
 	public:
 		PositionAction(Exercise &owner, int id = -1)
 			: Action(Action::Position, owner, id) {
+			m_minHoldTime = 0.f;
 		}
 
 		void setMinHoldTime(float minHoldTime) { m_minHoldTime = minHoldTime; }

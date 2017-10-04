@@ -94,8 +94,13 @@ namespace cinetico {
 		Exercise *m_currentExercise;
 		int m_editMode;
 
+		int m_currentActionSelection;
+		Action *m_currentAction;
 		int m_currentActionTypeSelection;
 		int m_currentMovementTypeSelection;
+
+		void setEditionMode(int mode);
+		void updateActionList();
 
 		void fillBodyPointCombo(ComboBox &combo);
 		void fillSpaceTypeCombo(ComboBox &combo);
@@ -112,7 +117,7 @@ namespace cinetico {
 		void onViewTick();
 		void onViewQuit();
 
-		void setEditionMode(int mode);
+
 	};
 
 }

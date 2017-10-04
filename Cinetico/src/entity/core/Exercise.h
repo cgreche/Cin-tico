@@ -26,6 +26,7 @@ namespace cinetico_core {
 		void setAuthor(const char *author) { m_author = author; }
 		void setPublic(bool isPublic) { m_public = isPublic; }
 		void setTrackableBodyPoints(unsigned long trackableBodyPoints) { m_trackableBodyPoints = trackableBodyPoints; }
+		void setActionList(std::vector<Action*> actionList) { m_actions = actionList; }
 
 		unsigned long id() const { return m_id; }
 		const std::string& name() const { return m_name; }

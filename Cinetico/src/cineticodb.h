@@ -5,6 +5,7 @@
 #include "database/database.h"
 #include "entity/dao/UserProfileDAO.h"
 #include "entity/dao/ExerciseDAO.h"
+#include "entity/dao/ActionDAO.h"
 
 namespace cinetico {
 
@@ -19,6 +20,7 @@ namespace cinetico {
 
 		UserProfileDAO *m_userProfileDAO;
 		ExerciseDAO *m_exerciseDAO;
+		ActionDAO *m_actionDAO;
 
 		void setup();
 		void cleanUp();
@@ -30,6 +32,7 @@ namespace cinetico {
 		Database *db() const { return m_db; }
 		UserProfileDAO *userProfileDAO() const { return m_userProfileDAO; }
 		ExerciseDAO *exerciseDAO() const { return m_exerciseDAO; }
+		ActionDAO *actionDAO() const { return m_actionDAO; }
 	};
 
 }

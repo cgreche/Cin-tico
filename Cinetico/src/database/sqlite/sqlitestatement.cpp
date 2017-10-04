@@ -12,6 +12,10 @@ int SQLiteStatement::bind(int paramIndex, int value) {
 	return sqlite3_bind_int(m_internalStmt, paramIndex, value);
 }
 
+int SQLiteStatement::bind(int paramIndex, unsigned int value) {
+	return sqlite3_bind_int(m_internalStmt, paramIndex, value);
+}
+
 int SQLiteStatement::bind(int paramIndex, const char *value) {
 	return sqlite3_bind_text(m_internalStmt, paramIndex, value, ::strlen(value), SQLITE_STATIC);
 }

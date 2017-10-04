@@ -16,6 +16,7 @@ namespace cinetico {
 
 	void ExerciseRealizationController::onViewEnter(ViewParams *params) {
 		g_cinetico.enter3DWorld();
+		g_cinetico.cinetico3D()->startExercise(*(Exercise*)(*params)["exercise"]);
 	}
 
 	void ExerciseRealizationController::onViewTick() {

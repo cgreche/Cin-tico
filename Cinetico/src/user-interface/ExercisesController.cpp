@@ -7,12 +7,21 @@ namespace cinetico {
 	using namespace cinetico_core;
 	extern Cinetico g_cinetico;
 
-	static void onClick_CreateNew(Button &button) {
+	static void buttonCreateNew_onClick(Button &button) {
 		ExercisesController *controller = (ExercisesController*)button.param();
 		controller->setEditionMode(1);
 	}
 
-	static void onClick_Do(Button &button) {
+	static void buttonManageActions_onClick(Button &button) {
+		ExercisesController *controller = (ExercisesController*)button.param();
+		if (controller->m_currentExercise) {
+			Controller::ViewParams params;
+			params["exercise"] = controller->m_currentExercise;
+			g_cinetico.goTo(Cinetico::EXERCISE_MANAGEMENT, &params);
+		}
+	}
+
+	static void buttonDoExercise_onClick(Button &button) {
 		ExercisesController *controller = (ExercisesController*)button.param();
 
 		Exercise *exercise = (Exercise*)controller->gridExercises.item(0, 0)->data();
@@ -122,10 +131,13 @@ namespace cinetico {
 
 		buttonCreateExercise.setText("Criar Exercício");
 		buttonCreateExercise.setParam(this);
-		buttonCreateExercise.setOnClick(onClick_CreateNew);
+		buttonCreateExercise.setOnClick(buttonCreateNew_onClick);
+		buttonManageActions.setText("Gerenciar ações");
+		buttonManageActions.setParam(this);
+		buttonManageActions.setOnClick(buttonManageActions_onClick);
 		buttonDoExercise.setText("Realizar Exercício");
 		buttonDoExercise.setParam(this);
-		buttonDoExercise.setOnClick(onClick_Do);
+		buttonDoExercise.setOnClick(buttonDoExercise_onClick);
 
 		gridExercises.setParam(this);
 		gridExercises.setStyle(CS_Border);
@@ -144,6 +156,7 @@ namespace cinetico {
 		buttonDelete.setOnClick(buttonDelete_onClick);
 
 		layoutActionButtons.append(buttonCreateExercise);
+		layoutActionButtons.append(buttonManageActions);
 		layoutActionButtons.append(buttonDoExercise);
 
 		layoutActions.append(labelViewTitle);
@@ -188,7 +201,7 @@ namespace cinetico {
 			layoutCheckBodyPointList[i].append(checkBodyPointList[k], Size(SizeTypeMax, SizeTypeAuto));
 		}
 
-		buttonCreateEdit.setText("Criar");
+		buttonCreateEdit.setText("Salvar");
 		buttonCreateEdit.setParam(this);
 		buttonCreateEdit.setOnClick(onClick_CreateEdit);
 		buttonCancel.setText("Cancelar");
@@ -227,6 +240,7 @@ namespace cinetico {
 		buttonCreateExercise.setEnabled(true);
 		buttonEdit.setEnabled(false);
 		buttonDelete.setEnabled(false);
+		buttonManageActions.setEnabled(false);
 		buttonDoExercise.setEnabled(false);
 		updateExerciseList();
 	}
@@ -236,12 +250,14 @@ namespace cinetico {
 		static int lastSelection = -1;
 		if (m_editMode != lastEditMode) {
 			buttonCreateExercise.setEnabled(m_editMode == 0);
+			buttonManageActions.setEnabled(m_editMode == 0);
 			buttonDoExercise.setEnabled(m_editMode == 0 && m_currentSelection >= 0);
 		}
 
 		if (m_currentSelection != lastSelection) {
 			buttonEdit.setEnabled(m_currentSelection >= 0);
 			buttonDelete.setEnabled(m_currentSelection >= 0);
+			buttonManageActions.setEnabled(m_currentSelection >= 0);
 			buttonDoExercise.setEnabled(m_editMode == 0 && m_currentSelection >= 0);
 		}
 
@@ -306,13 +322,22 @@ namespace cinetico {
 
 	void ExercisesController::doSelectedExercise() {
 		if (m_currentExercise) {
+
+			std::vector<Action*> actionList = g_cinetico.cineticoDB()->actionDAO()->getAllActionsByExercise(*m_currentExercise);
+
 			std::string str;
-			str += "Congratulations. Now get into the 3D World.";
-			Message::msg(NULL, str.c_str());
-			g_cinetico.goTo(Cinetico::EXERCISE_REALIZATION);
-			g_cinetico.cinetico3D()->startExercise(*m_currentExercise);
+			if (actionList.size() == 0) {
+				Message::warning(NULL, "Para realizar um exercício, este deve conter pelo menos uma ação.");
+				return;
+			}
+
+			m_currentExercise->setActionList(actionList);
+
+			Message::msg(NULL, "Congratulations. Now get into the 3D World.");
+			ViewParams params;
+			params["exercise"] = m_currentExercise;
+			g_cinetico.goTo(Cinetico::EXERCISE_REALIZATION,&params);
 		}
 	}
-
 
 }

@@ -32,9 +32,9 @@ namespace cinetico {
 			SQLStatement *stmtActionMovement = m_db.prepare(sqlActionMovement);
 			for (unsigned int i = 0; i < exercise.actionCount(); ++i) {
 				Action *action = exercise.action(i);
-				stmtAction->bind(1, exercise.id());
-				stmtAction->bind(2, action->tag().c_str());
-				stmtAction->bind(3,i);
+				stmtAction->bind(1, (int)exercise.id());
+				stmtAction->bind(2, action->name().c_str());
+				stmtAction->bind(3,(int)i);
 				stmt->execute();
 				if (action->type() == Action::Position) {
 					stmtActionPosition->bind(1, action->id());
@@ -62,9 +62,9 @@ namespace cinetico {
 		stmt = m_db.prepare(sql);
 		stmt->bind(1, exercise.name());
 		stmt->bind(2, exercise.author());
-		stmt->bind(3, exercise.trackableBodyPoints());
+		stmt->bind(3, (int)exercise.trackableBodyPoints());
 		stmt->bind(4, exercise.isPublic());
-		stmt->bind(5, exercise.id());
+		stmt->bind(5, (int)exercise.id());
 		int rc = stmt->execute();
 		if (rc != 0) {
 			//todo
@@ -123,7 +123,7 @@ namespace cinetico {
 		const char *sql = "DELETE FROM EXERCISE WHERE id = ?;";
 		SQLStatement *stmt;
 		stmt = m_db.prepare(sql);
-		stmt->bind(1, exercise.id());
+		stmt->bind(1, (int)exercise.id());
 		int rc = stmt->execute();
 		if (rc != 0) {
 			//todo

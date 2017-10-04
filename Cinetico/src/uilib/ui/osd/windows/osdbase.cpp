@@ -97,10 +97,12 @@ namespace uilib {
 				//			::ShowWindow(test,SW_HIDE);
 			}
 
-			//if(!::IsDialogMessage(hwndToUse, &msg)) {
-			::TranslateMessage(&msg);
-			::DispatchMessage(&msg);
-			//}
+			BOOL res = ::IsDialogMessage(hwndToUse, &msg);
+			//little hacky
+			if(!res || (msg.message == WM_KEYDOWN && msg.wParam == VK_ESCAPE)) {
+				::TranslateMessage(&msg);
+				::DispatchMessage(&msg);
+			}
 			//else {
 
 				/*
