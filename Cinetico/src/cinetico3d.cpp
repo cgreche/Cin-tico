@@ -99,12 +99,13 @@ namespace cinetico {
 #define HEAD_SIZE 4.f/10.f
 #define FOOT_SIZE HEAD_SIZE/2.f
 #define HAND_SIZE HEAD_SIZE/2.f
-#define ELBOW_SIZE HEAD_SIZE/4.f
-#define KNEE_SIZE HEAD_SIZE/4.f
+#define ELBOW_SIZE HEAD_SIZE/6.f
+#define KNEE_SIZE HEAD_SIZE/6.f
 
 
 	struct BodyResourceIds {
 		int head;
+		int spine;
 		int elbow;
 		int hand;
 		int knee;
@@ -114,6 +115,7 @@ namespace cinetico {
 
 	struct BodyInstanceIds {
 		int head;
+		int spine;
 		int leftElbow;
 		int rightElbow;
 		int leftHand;
@@ -171,12 +173,14 @@ namespace cinetico {
 		};
 
 		resId.head = renderEngineHelper->createCube(HEAD_SIZE, bodyColors);
+		resId.spine = renderEngineHelper->createRectangularPrism(HEAD_SIZE / 3.5f, HEAD_SIZE * 1.5, HEAD_SIZE / 3.5f, bodyColors);
 		resId.elbow = renderEngineHelper->createCube(ELBOW_SIZE, bodyColors);
 		resId.hand = renderEngineHelper->createCube(HAND_SIZE, bodyColors);
 		resId.knee = renderEngineHelper->createCube(KNEE_SIZE, bodyColors);
 		resId.foot = renderEngineHelper->createCube(FOOT_SIZE, bodyColors);
 
 		instId.head = renderEngine->newResourceInstance(resId.head);
+		instId.spine = renderEngine->newResourceInstance(resId.spine);
 		instId.leftElbow = renderEngine->newResourceInstance(resId.elbow);
 		instId.rightElbow = renderEngine->newResourceInstance(resId.elbow);
 		instId.leftHand = renderEngine->newResourceInstance(resId.hand);
@@ -202,6 +206,7 @@ namespace cinetico {
 		BodyInstanceIds &instId = g_bodyInstanceIds;
 
 		mapBodyPointToWorldPoint(instId.head, BodyPoint::Head);
+		mapBodyPointToWorldPoint(instId.spine, BodyPoint::Spine);
 		mapBodyPointToWorldPoint(instId.leftElbow, BodyPoint::LeftElbow);
 		mapBodyPointToWorldPoint(instId.rightElbow, BodyPoint::RightElbow);
 		mapBodyPointToWorldPoint(instId.leftHand, BodyPoint::LeftPalm);
@@ -221,6 +226,7 @@ namespace cinetico {
 			return;
 
 		renderEngine->drawResource(instId.head);
+		renderEngine->drawResource(instId.spine);
 		renderEngine->drawResource(instId.leftElbow);
 		renderEngine->drawResource(instId.rightElbow);
 		renderEngine->drawResource(instId.leftHand);
