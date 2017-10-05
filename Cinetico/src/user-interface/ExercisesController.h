@@ -5,6 +5,7 @@
 #include "Controller.h"
 #include "entity/core/exercise.h"
 #include "uilib/ui/uibase.h"
+#include "components/PageTitle.h"
 #include <list>
 
 namespace cinetico {
@@ -15,14 +16,11 @@ namespace cinetico {
 	{
 	public:
 		VerticalLayout layout;
-			VerticalLayout layoutActions;
-				Label labelViewTitle;
-				Label labelViewDescr;
-				Separator separatorActionButtons;
-				HorizontalLayout layoutActionButtons;
-					Button buttonCreateExercise;
-					Button buttonManageActions;
-					Button buttonDoExercise;
+			PageTitle title;
+			HorizontalLayout layoutActionButtons;
+				Button buttonCreateExercise;
+				Button buttonManageActions;
+				Button buttonDoExercise;
 
 			VerticalLayout layoutContent;
 

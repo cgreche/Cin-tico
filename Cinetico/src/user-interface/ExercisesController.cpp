@@ -127,12 +127,9 @@ namespace cinetico {
 		m_currentExercise = NULL;
 	}
 
-	ExercisesController::ExercisesController() {
-
-		labelViewTitle.setText("Exercícios");
-		labelViewTitle.setFont(FontDesc("Arial", 46, FONT_BOLD));
-		labelViewDescr.setText("Crie, altere, grave ou realize um exercício.");
-		labelViewDescr.setFont(FontDesc("Arial", 10, FONT_BOLD));
+	ExercisesController::ExercisesController()
+		: title("Exercícios","Crie, altere, grave ou realize um exercício.")
+	{
 
 		buttonCreateExercise.setText("Criar Exercício");
 		buttonCreateExercise.setParam(this);
@@ -164,11 +161,6 @@ namespace cinetico {
 		layoutActionButtons.append(buttonCreateExercise);
 		layoutActionButtons.append(buttonManageActions);
 		layoutActionButtons.append(buttonDoExercise);
-
-		layoutActions.append(labelViewTitle);
-		layoutActions.append(labelViewDescr);
-		layoutActions.append(separatorActionButtons);
-		layoutActions.append(layoutActionButtons);
 
 		layoutExerciseListActions.append(buttonEdit);
 		layoutExerciseListActions.append(buttonDelete);
@@ -233,7 +225,8 @@ namespace cinetico {
 		layoutContentEditData.append(layoutExerciseData, AutoSize, 20);
 		layoutContentEditData.append(layoutEditActions);
 
-		layout.append(layoutActions,AutoSize,20);
+		layout.append(title);
+		layout.append(layoutActionButtons, AutoSize, 20);
 		layout.append(layoutContent);
 		layout.setMargin(10);
 	}

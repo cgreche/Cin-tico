@@ -129,6 +129,7 @@
     <ClInclude Include="src\uilib\ui\uiobj.h" />
     <ClInclude Include="src\uilib\ui\uitools.h" />
     <ClInclude Include="src\uilib\ui\window.h" />
+    <ClInclude Include="src\user-interface\components\PageTitle.h" />
     <ClInclude Include="src\user-interface\Controller.h" />
     <ClInclude Include="src\user-interface\ExerciseManagementController.h" />
     <ClInclude Include="src\user-interface\ExerciseRealizationController.h" />
@@ -227,6 +228,7 @@
     <ClCompile Include="src\uilib\ui\uiobj.cpp" />
     <ClCompile Include="src\uilib\ui\uitools.cpp" />
     <ClCompile Include="src\uilib\ui\window.cpp" />
+    <ClCompile Include="src\user-interface\components\PageTitle.cpp" />
     <ClCompile Include="src\user-interface\ExerciseManagementController.cpp" />
     <ClCompile Include="src\user-interface\ExerciseRealizationController.cpp" />
     <ClCompile Include="src\user-interface\ExercisesController.cpp" />

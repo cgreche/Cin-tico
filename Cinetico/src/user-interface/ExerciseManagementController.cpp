@@ -179,12 +179,9 @@ namespace cinetico {
 		setEditionMode(0);
 	}
 
-	ExerciseManagementController::ExerciseManagementController() {
-		labelViewTitle.setText("Gerenciamento de Exercício");
-		labelViewTitle.setFont(FontDesc("Arial", 46, FONT_BOLD));
-		labelViewDescr.setText("Adicione ou altere ações para um exercício.");
-		labelViewDescr.setFont(FontDesc("Arial", 10, FONT_BOLD));
-
+	ExerciseManagementController::ExerciseManagementController()
+		: title("Gerenciamento de Ações", "Adicione ou altere ações para o exercício.")
+	{
 		buttonAdd.setText("Adicionar");
 		buttonAdd.setParam(this);
 		buttonAdd.setOnClick(buttonAdd_onClick);
@@ -193,11 +190,6 @@ namespace cinetico {
 		buttonBack.setOnClick(buttonBack_onClick);
 		layoutActionButtons.append(buttonAdd);
 		layoutActionButtons.append(buttonBack);
-		layoutActions.append(labelViewTitle);
-		layoutActions.append(labelViewDescr);
-		layoutActions.append(separatorActionButtons);
-		layoutActions.append(layoutActionButtons);
-		layoutActions.append(separatorContent);
 
 		//List
 		gridActions.setStyle(CS_Border);
@@ -339,7 +331,9 @@ namespace cinetico {
 		//
 		layoutContent.append(layoutContentList);
 
-		layout.append(layoutActions);
+		layout.append(title);
+		layout.append(layoutActionButtons);
+		layout.append(separatorContent);
 		layout.append(layoutContent);
 		layout.setMargin(10);
 

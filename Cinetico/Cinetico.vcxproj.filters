@@ -76,6 +76,9 @@
     <Filter Include="Arquivos de Origem\entity\dao">
       <UniqueIdentifier>{48d08050-1bbb-45fd-a91b-e7cbe0d24bd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Arquivos de Origem\user-interface\components">
+      <UniqueIdentifier>{34cda9e9-215c-479c-ac80-5eacab16b4b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\render\camera.h">
@@ -429,6 +432,9 @@
     <ClInclude Include="src\entity\dao\ActionDAO.h">
       <Filter>Arquivos de Origem\entity\dao</Filter>
     </ClInclude>
+    <ClInclude Include="src\user-interface\components\PageTitle.h">
+      <Filter>Arquivos de Origem\user-interface\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -715,6 +721,9 @@
     </ClCompile>
     <ClCompile Include="src\entity\dao\ActionDAO.cpp">
       <Filter>Arquivos de Origem\entity\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\components\PageTitle.cpp">
+      <Filter>Arquivos de Origem\user-interface\components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
