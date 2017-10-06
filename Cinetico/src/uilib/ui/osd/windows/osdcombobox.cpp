@@ -1,7 +1,7 @@
 
 //OSDComboBox
 // File: osdcombobox.cpp
-// Last edit: 04/08/2014 21:55 (UTC-3)
+// Last edit: 06/10/2017 04:39 (UTC-3)
 // Author: CGR
 
 #include "..\\..\\uibase.h"
@@ -52,7 +52,7 @@ namespace uilib {
 	{
 	}
 
-	u32 OSDComboBox::setSelection(u32 row)
+	int OSDComboBox::setSelection(int row)
 	{
 		u32 lResult = ::SendMessage(m_hwnd, CB_SETCURSEL, (WPARAM)row, (LPARAM)0);
 		if (lResult == CB_ERR)
@@ -61,15 +61,6 @@ namespace uilib {
 			ref().m_onSelect(ref(), ref().item(lResult));
 		return lResult; //returns the selected item
 	}
-
-	u32 OSDComboBox::selection()
-	{
-		u32 lResult = ::SendMessage(m_hwnd, CB_GETCURSEL, 0, 0);
-		if (lResult == CB_ERR)
-			return 0xffffffff;
-		return lResult;
-	}
-
 
 	Size OSDComboBox::getAutoSize()
 	{

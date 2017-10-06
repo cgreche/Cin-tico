@@ -1,7 +1,7 @@
 
 //Combo Box
 // File name: combobox.cpp
-// Last Edit: 20/12/2013 14:17 (UTC-3)
+// Last edit: 06/10/2017 04:27 (UTC-3)
 // Author: CGR
 
 #include "..\\uibase.h"
@@ -71,28 +71,21 @@ namespace uilib {
 
 	void ComboBox::sort()
 	{
+		//todo
 	}
 
-	u32 ComboBox::setSelection(u32 row)
+	int ComboBox::setSelection(int row)
 	{
+		if (row < 0 || row >= m_items.size())
+			return -1;
 		m_selection = row;
 		osdRef().setSelection(row);
-		return m_selection;
+		return row;
 	}
 
-	u32 ComboBox::selection()
+	ComboBoxItem *ComboBox::item(int row) const
 	{
-		return m_selection;
-	}
-
-	ComboBoxItem *ComboBox::item()
-	{
-		return item(selection());
-	}
-
-	ComboBoxItem *ComboBox::item(u32 row)
-	{
-		if (row + 1 > m_items.size())
+		if (row < 0 || row >= m_items.size())
 			return NULL;
 		return m_items[row];
 	}

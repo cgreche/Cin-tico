@@ -1,7 +1,7 @@
 
 //ComboBox
 // File: combobox.h
-// Last edit: 01/08/2014 01:35 (UTC-3)
+// Last edit: 06/10/2017 04:27 (UTC-3)
 // Author: CGR
 
 #ifndef __UIBASE_H__
@@ -24,12 +24,12 @@ namespace uilib {
 	class ComboBoxItem
 	{
 		string m_text;
-		u32 state;
+		u32 state; //todo
 
 		Color m_textcolor;
 		Font m_font;
 
-		void *m_param;
+		void *m_data;
 
 	public:
 		friend class ComboBox;
@@ -37,16 +37,16 @@ namespace uilib {
 		ComboBoxItem(const string &text,
 			const Color &textcolor,
 			FontDesc &fd,
-			void *param = NULL) :
+			void *data = NULL) :
 			m_text(text), m_textcolor(textcolor),
-			m_param(param)
+			m_data(data)
 		{
 			m_font.set(fd);
 		}
 
 		const string &text() const { return m_text; }
 		Color textColor() const { return m_textcolor; }
-		void *param() const { return m_param; }
+		void *data() const { return m_data; }
 
 		Font &font() { return m_font; }
 
@@ -58,7 +58,7 @@ namespace uilib {
 		ComboFunc m_onSelect;
 
 		std::vector<ComboBoxItem*> m_items;
-		u32 m_selection;
+		int m_selection;
 
 	public:
 		ComboBox();
@@ -71,14 +71,12 @@ namespace uilib {
 		void removeItem(ComboBoxItem &item);
 		void reset();
 		void sort();
-		u32 setSelection(u32 row);
-
-		u32 selection();
-		ComboBoxItem *item();
-		ComboBoxItem *item(u32 row);
+		int setSelection(int row);
+		int selection() const { return m_selection; }
+		ComboBoxItem *selectedItem() const { return item(selection()); }
+		ComboBoxItem *item(int row) const ;
 
 		virtual Size getAutoSize();
-
 
 		friend class OSDComboBox;
 		OSDComboBox& osdRef() const { return reinterpret_cast<OSDComboBox&>(Control::osdRef()); }

@@ -435,6 +435,12 @@
     <ClInclude Include="src\user-interface\components\PageTitle.h">
       <Filter>Arquivos de Origem\user-interface\components</Filter>
     </ClInclude>
+    <ClInclude Include="src\user-interface\components\TextBox.h">
+      <Filter>Arquivos de Origem\user-interface\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\components\ComboBox.h">
+      <Filter>Arquivos de Origem\user-interface\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -723,6 +729,12 @@
       <Filter>Arquivos de Origem\entity\dao</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\components\PageTitle.cpp">
+      <Filter>Arquivos de Origem\user-interface\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\components\TextBox.cpp">
+      <Filter>Arquivos de Origem\user-interface\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\components\ComboBox.cpp">
       <Filter>Arquivos de Origem\user-interface\components</Filter>
     </ClCompile>
   </ItemGroup>

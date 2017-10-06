@@ -383,8 +383,7 @@ namespace uilib {
 		void removeItem(u32 index);
 		void reset();
 		void sort();
-		u32 setSelection(u32 row);
-		u32 selection();
+		int setSelection(int row);
 
 		virtual void setSize(const Size &size);
 		virtual Size getAutoSize();

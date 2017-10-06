@@ -3,9 +3,10 @@
 #define __CINETICO_LOGINCONTROLLER_H__
 
 #include "Controller.h"
-#include "uilib/ui/uibase.h"
+#include "components/PageTitle.h"
+#include "components/TextBox.h"
 
-namespace cinetico {	
+namespace cinetico {
 	using namespace uilib;
 
 	class UserProfileDAO;
@@ -14,26 +15,18 @@ namespace cinetico {
 	{
 	public:
 		VerticalLayout layout;
-			VerticalLayout layoutStartText;
-				Label labelWelcome;
-				Label labelStartInfo;
-			Separator separator;
+			PageTitle title;
 			HorizontalLayout layoutLoginArea;
 				VerticalLayout layoutLogin;
 					Label labelLoginTitle;
-					Label labelUsername;
-					EditBox editUsername;
-					Label labelPassword;
-					EditBox editPassword;
+					TextBox tbLoginUsername;
+					TextBox tbLoginPassword;
 					Button buttonLogin;
 				VerticalLayout layoutCreateAccount;
 					Label labelCreateAccountTitle;
-					Label labelCreateAccountUsername;
-					EditBox editCreateAccountUsername;
-					Label labelCreateAccountPassword;
-					EditBox editCreateAccountPassword;
+					TextBox tbCreateAccountUsername;
+					TextBox tbCreateAccountPassword;
 					Button buttonCreateAccount;
-
 
 		UserProfileDAO *m_userProfileDAO;
 	public:

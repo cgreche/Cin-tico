@@ -18,52 +18,43 @@ namespace cinetico {
 		controller->createAccount();
 	}
 
-	LoginController::LoginController() {
-		labelWelcome.setText("Bem-vindo!");
-		labelWelcome.setFont(FontDesc("Arial", 46, FONT_BOLD));
-		labelStartInfo.setText("Para começar, selecione ou crie um Perfil de usuário");
-		labelStartInfo.setFont(FontDesc("Arial", 10, FONT_BOLD));
+	LoginController::LoginController()
+		: title("Bem-vindo!", "Para começar, selecione ou crie um Perfil de usuário")
+	{
 
 		labelLoginTitle.setText("Entrar com Perfil de usuário");
 		labelLoginTitle.setFont(FontDesc("Arial", 18, FONT_BOLD));
-		labelUsername.setText("Nome do usuário *");
-		labelPassword.setText("Senha *");
-		editPassword.setPasswordMode(true);
+		tbLoginUsername.setLabel("Nome do usuário *");
+		tbLoginPassword.setLabel("Senha *");
+		tbLoginPassword.setPasswordMode(true);
 		buttonLogin.setText("Entrar");
 		buttonLogin.setParam(this);
 		buttonLogin.setOnClick(onClick_login);
 
 		labelCreateAccountTitle.setText("Criar Perfil de usuário");
 		labelCreateAccountTitle.setFont(FontDesc("Arial", 18, FONT_BOLD));
-		labelCreateAccountUsername.setText("Nome do usuário *");
-		labelCreateAccountPassword.setText("Senha *");
-		editCreateAccountPassword.setPasswordMode(true);
+		tbCreateAccountUsername.setLabel("Nome do usuário *");
+		tbCreateAccountPassword.setLabel("Senha *");
+		tbCreateAccountPassword.setPasswordMode(true);
+
 		buttonCreateAccount.setText("Criar conta");
 		buttonCreateAccount.setParam(this);
 		buttonCreateAccount.setOnClick(onClick_createAccount);
 
 		layoutLogin.append(labelLoginTitle);
-		layoutLogin.append(labelUsername);
-		layoutLogin.append(editUsername);
-		layoutLogin.append(labelPassword);
-		layoutLogin.append(editPassword);
+		layoutLogin.append(tbLoginUsername);
+		layoutLogin.append(tbLoginPassword);
 		layoutLogin.append(buttonLogin, Size(SizeTypeMax, SizeTypeAuto));
 
 		layoutCreateAccount.append(labelCreateAccountTitle);
-		layoutCreateAccount.append(labelCreateAccountUsername);
-		layoutCreateAccount.append(editCreateAccountUsername);
-		layoutCreateAccount.append(labelCreateAccountPassword);
-		layoutCreateAccount.append(editCreateAccountPassword);
+		layoutCreateAccount.append(tbCreateAccountUsername);
+		layoutCreateAccount.append(tbCreateAccountPassword);
 		layoutCreateAccount.append(buttonCreateAccount, Size(SizeTypeMax, SizeTypeAuto));
-
-		layoutStartText.append(labelWelcome);
-		layoutStartText.append(labelStartInfo);
 
 		layoutLoginArea.append(layoutLogin, AutoSize, 40);
 		layoutLoginArea.append(layoutCreateAccount);
 
-		layout.append(layoutStartText);
-		layout.append(separator);
+		layout.append(title);
 		layout.append(layoutLoginArea);
 
 		layout.setMargin(10);
@@ -82,8 +73,8 @@ namespace cinetico {
 	}
 
 	void LoginController::login() {
-		string &username = editUsername.text();
-		string &password = editPassword.text();
+		string &username = tbLoginUsername.text();
+		string &password = tbLoginPassword.text();
 
 		Cinetico::CineticoError res = g_cinetico.loginUser(username.data(), password.data());
 		if (res == Cinetico::SUCCESS) {
@@ -93,8 +84,8 @@ namespace cinetico {
 			Message::msg(NULL, str);
 			g_cinetico.goTo(Cinetico::EXERCISES);
 			//
-			editUsername.setText("");
-			editPassword.setText("");
+			tbLoginUsername.setText("");
+			tbLoginPassword.setText("");
 		}
 		else {
 			Message::error(NULL, "Usuário ou senha inválida.");
@@ -102,8 +93,8 @@ namespace cinetico {
 	}
 
 	void LoginController::createAccount() {
-		string &username = editCreateAccountUsername.text();
-		string &password = editCreateAccountPassword.text();
+		string &username = tbCreateAccountUsername.text();
+		string &password = tbCreateAccountPassword.text();
 		
 		//Validação de preenchimento
 		if (username == "")
@@ -125,8 +116,8 @@ namespace cinetico {
 		if (res == Cinetico::SUCCESS) {
 			Message::msg(NULL, "Conta criada com sucesso.");
 
-			editCreateAccountUsername.setText("");
-			editCreateAccountPassword.setText("");
+			tbCreateAccountUsername.setText("");
+			tbCreateAccountPassword.setText("");
 			return;
 		}
 		else if(res == Cinetico::USER_ALREADY_EXISTS) {

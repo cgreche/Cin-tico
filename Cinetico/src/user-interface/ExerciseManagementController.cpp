@@ -9,6 +9,8 @@
 
 namespace cinetico {
 	using namespace cinetico_core;
+	using cinetico::ComboBox;
+
 	extern Cinetico g_cinetico;
 
 	static void buttonBack_onClick(Button &button) {
@@ -56,38 +58,54 @@ namespace cinetico {
 		controller->setEditionMode(0);
 	}
 
-	static void comboActionType_onChange(ComboBox &combo, ComboBoxItem *item) {
+	static void comboActionType_onChange(uilib::ComboBox &combo, ComboBoxItem *item) {
 		ExerciseManagementController *controller = (ExerciseManagementController*)combo.param();
 		controller->m_currentActionTypeSelection = combo.selection();
 	}
 
+	void ExerciseManagementController::fillActionTypeCombo(ComboBox &combo) {
+		combo.appendItem("Posição",Action::Position);
+		combo.appendItem("Movimento",Action::Movement);
+	}
+
+	void ExerciseManagementController::fillOrderTypeCombo(ComboBox &combo) {
+		combo.appendItem("Nova ação",0);
+		combo.appendItem("Última ação",1);
+		combo.appendItem("Todas as ações",2);
+	}
+
 	void ExerciseManagementController::fillBodyPointCombo(ComboBox &combo) {
-		combo.fastinsertItem("Cabeça");
-		combo.fastinsertItem("Ombro");
+		combo.appendItem("Cabeça",0);
+		combo.appendItem("Ombro",1);
 	}
 
 	void ExerciseManagementController::fillSpaceTypeCombo(ComboBox &combo) {
-		combo.fastinsertItem("Mundo");
-		combo.fastinsertItem("Última posição");
-		combo.fastinsertItem("Cabeça");
+		combo.appendItem("Mundo", 0);
+		combo.appendItem("Última posição", 1);
+		combo.appendItem("Cabeça", 1);
+	}
+
+	void ExerciseManagementController::fillMovementTypeCombo(ComboBox &combo) {
+		combo.appendItem("Linear",0);
+		combo.appendItem("Angular",1);
 	}
 
 	bool ExerciseManagementController::validateFields() {
 		bool required = false;
 		bool invalid = false;
 
-		if (comboActionType.selection() == -1
-			|| comboPartOf.selection() == -1
-			|| comboRefPoint.selection() == -1
-			|| editPositionX.text() == ""
-			|| editPositionY.text() == ""
-			|| editPositionZ.text() == ""
+		if (cbActionType.selection() == -1
+			|| cbOrderType.selection() == -1
+			|| cbRefPoint.selection() == -1
+			|| tbPositionX.text() == ""
+			|| tbPositionY.text() == ""
+			|| tbPositionZ.text() == ""
 			) {
 			required = true;
 		}
 
-		if (comboActionType.selection() == 1) {
-			if (comboMovementType.selection() == -1) {
+		if (cbActionType.selection() == 1) {
+			if (cbMovementType.selection() == -1) {
 				required = true;
 			}
 		}
@@ -107,16 +125,16 @@ namespace cinetico {
 		if(!validateFields())
 			return;
 
-		string &name = editName.text();
-		int order = comboPartOf.selection();
-		int type = comboActionType.selection();
-		string &minTimeStr = editMinTime.text();
-		string &maxTimeStr = editMaxTime.text();
-		int bodyPoint = comboBodyPoint.selection();
-		int refPoint = comboRefPoint.selection();
-		string &posXStr = editPositionX.text();
-		string &posYStr = editPositionY.text();
-		string &posZStr = editPositionZ.text();
+		string &name = tbName.text();
+		int order = cbOrderType.selection();
+		int type = cbActionType.selection();
+		string &minTimeStr = tbMinTime.text();
+		string &maxTimeStr = tbMaxTime.text();
+		int bodyPoint = cbBodyPoint.selection();
+		int refPoint = cbRefPoint.selection();
+		string &posXStr = tbPositionX.text();
+		string &posYStr = tbPositionY.text();
+		string &posZStr = tbPositionZ.text();
 		/*
 		string &orientationXStr = editOrientationX.text();
 		string &orientationYStr = editOrientationY.text();
@@ -126,7 +144,7 @@ namespace cinetico {
 		Action *action;
 
 		if ((Action::ActionType)type == Action::Position) {
-			string &minHoldTimeStr = editMinHoldtime.text();
+			string &minHoldTimeStr = tbMinHoldTime.text();
 
 			PositionAction *posAction;
 			if (m_editMode == 1)
@@ -138,9 +156,9 @@ namespace cinetico {
 			action = posAction;
 		}
 		else if ((Action::ActionType)type == Action::Movement) {
-			int movementType = comboMovementType.selection();
-			string &minSpeedStr = editMinSpeed.text();
-			string &maxSpeedStr = editMaxSpeed.text();
+			int movementType = cbMovementType.selection();
+			string &minSpeedStr = tbMinSpeed.text();
+			string &maxSpeedStr = tbMaxSpeed.text();
 
 			MovementAction *movementAction;
 			if (m_editMode == 1)
@@ -230,91 +248,58 @@ namespace cinetico {
 		//Base Action data
 		separatorActionBasicData.setText("Informação básica da ação");
 		separatorActionBasicData.setFont(FontDesc("Arial",12,FONT_BOLD));
-		labelActionType.setText("Tipo *");
-		comboActionType.fastinsertItem("Posição");
-		comboActionType.fastinsertItem("Movimento");
-		comboActionType.setParam(this);
-		comboActionType.setOnSelect(comboActionType_onChange);
-		layoutActionType.append(labelActionType);
-		layoutActionType.append(comboActionType, Size(SizeTypeMax, SizeTypeAuto));
-		labelPartOf.setText("Ordem *");
-		comboPartOf.fastinsertItem("Nova ação");
-		comboPartOf.fastinsertItem("Última ação");
-		comboPartOf.fastinsertItem("Todas as ações");
-		layoutPartOf.append(labelPartOf);
-		layoutPartOf.append(comboPartOf, Size(SizeTypeMax, SizeTypeAuto));
-		labelName.setText("Nome");
-		layoutName.append(labelName);
-		layoutName.append(editName);
-		layoutActionDataRow1.append(layoutActionType, Size(MakePercentType(30), SizeTypeAuto));
-		layoutActionDataRow1.append(layoutPartOf, Size(MakePercentType(30), SizeTypeAuto));
-		layoutActionDataRow1.append(layoutName);
+		cbActionType.setLabel("Tipo *");
+		fillActionTypeCombo(cbActionType);
+		cbActionType.combo.setParam(this);
+		cbActionType.combo.setOnSelect(comboActionType_onChange);
+
+		cbOrderType.setLabel("Ordem *");
+		fillOrderTypeCombo(cbOrderType);
+
+		tbName.setLabel("Nome");
+
+		layoutActionDataRow1.append(cbActionType, Size(SizeTypeMax, SizeTypeAuto));
+		layoutActionDataRow1.append(cbOrderType, Size(SizeTypeMax, SizeTypeAuto));
+		layoutActionDataRow1.append(tbName);
 
 
-		labelBodyPoint.setText("Ponto do corpo *");
-		labelRefPoint.setText("Ponto de referência *");
-		fillBodyPointCombo(comboBodyPoint);
-		fillSpaceTypeCombo(comboRefPoint);
-		layoutBodyPoint.append(labelBodyPoint);
-		layoutBodyPoint.append(comboBodyPoint, Size(SizeTypeMax, SizeTypeAuto));
-		layoutRefPoint.append(labelRefPoint);
-		layoutRefPoint.append(comboRefPoint, Size(SizeTypeMax, SizeTypeAuto));
+		cbBodyPoint.setLabel("Ponto do corpo *");
+		fillBodyPointCombo(cbBodyPoint);
+		cbRefPoint.setLabel("Ponto de referência *");
+		fillSpaceTypeCombo(cbRefPoint);
 
-		labelMinTime.setText("Tempo mínimo para execução (s)");
-		layoutMinTime.append(labelMinTime);
-		layoutMinTime.append(editMinTime);
+		tbMinTime.setLabel("Tempo mínimo para execução (s)");
+		tbMaxTime.setLabel("Tempo máximo para execução (s)");
 
-		labelMaxTime.setText("Tempo máximo para execução (s)");
-		layoutMaxTime.append(labelMaxTime);
-		layoutMaxTime.append(editMaxTime);
-
-		layoutBaseActionData.append(layoutBodyPoint, Size(SizeTypeMax, SizeTypeAuto));
-		layoutBaseActionData.append(layoutRefPoint, Size(SizeTypeMax, SizeTypeAuto));
-		layoutBaseActionData.append(layoutMinTime, Size(SizeTypeMax, SizeTypeAuto));
-		layoutBaseActionData.append(layoutMaxTime, Size(SizeTypeMax, SizeTypeAuto));
+		layoutBaseActionData.append(cbBodyPoint, Size(SizeTypeMax, SizeTypeAuto));
+		layoutBaseActionData.append(cbRefPoint, Size(SizeTypeMax, SizeTypeAuto));
+		layoutBaseActionData.append(tbMinTime, Size(SizeTypeMax, SizeTypeAuto));
+		layoutBaseActionData.append(tbMaxTime, Size(SizeTypeMax, SizeTypeAuto));
 
 
 		labelPosition.setText("Posição *");
-		labelPositionX.setText("X");
-		layoutPositionX.append(labelPositionX);
-		layoutPositionX.append(editPositionX);
-		labelPositionY.setText("Y");
-		layoutPositionY.append(labelPositionY);
-		layoutPositionY.append(editPositionY);
-		labelPositionZ.setText("Z");
-		layoutPositionZ.append(labelPositionZ);
-		layoutPositionZ.append(editPositionZ);
-		layoutPosition.append(layoutPositionX);
-		layoutPosition.append(layoutPositionY);
-		layoutPosition.append(layoutPositionZ);
-
-
+		tbPositionX.setLabel("X");
+		tbPositionY.setLabel("Y");
+		tbPositionZ.setLabel("Z");
+		layoutPosition.append(tbPositionX);
+		layoutPosition.append(tbPositionY);
+		layoutPosition.append(tbPositionZ);
 
 
 		//Position Action
-		labelMinHoldtime.setText("Tempo mínimo para segurar a posição (s)");
-		layoutMinHoldTime.append(labelMinHoldtime);
-		layoutMinHoldTime.append(editMinHoldtime);
-		layoutPositionSpecific.append(layoutMinHoldTime);
+		tbMinHoldTime.setLabel("Tempo mínimo para segurar a posição (s)");
+		layoutPositionSpecific.append(tbMinHoldTime);
 
 		//Movement Action
-		labelMovementType.setText("Tipo de movimento *");
-		comboMovementType.fastinsertItem("Linear");
-		comboMovementType.fastinsertItem("Angular");
-		layoutMovementType.append(labelMovementType);
-		layoutMovementType.append(comboMovementType, Size(SizeTypeMax, SizeTypeAuto));
+		cbMovementType.setLabel("Tipo de movimento *");
+		fillMovementTypeCombo(cbMovementType);
 
-		labelMinSpeed.setText("Velocidade mínima para execução (cm/s²)");
-		layoutMinSpeed.append(labelMinSpeed);
-		layoutMinSpeed.append(editMinSpeed);
+		tbMinSpeed.setLabel("Velocidade mínima para execução (cm/s²)");
+		tbMaxSpeed.setLabel("Velocidade máxima para execução (cm/s²)");
 
-		labelMaxSpeed.setText("Velocidade máxima para execução (cm/s²)");
-		layoutMaxSpeed.append(labelMaxSpeed);
-		layoutMaxSpeed.append(editMaxSpeed);
-
-		layoutMovementAction.append(layoutMovementType, Size(SizeTypeMax, SizeTypeAuto));
-		layoutMovementAction.append(layoutMinSpeed, Size(SizeTypeMax, SizeTypeAuto));
-		layoutMovementAction.append(layoutMaxSpeed, Size(SizeTypeMax, SizeTypeAuto));
+		layoutMovementAction.append(cbMovementType, Size(SizeTypeMax, SizeTypeAuto));
+		layoutMovementAction.append(tbMinSpeed, Size(SizeTypeMax, SizeTypeAuto));
+		layoutMovementAction.append(tbMaxSpeed, Size(SizeTypeMax, SizeTypeAuto));
 		layoutMovementSpecific.append(layoutMovementAction);
 
 		separatorSpecificData.setText("Informação específica para o tipo de ação");
@@ -410,43 +395,43 @@ namespace cinetico {
 		else if (mode == 1 || mode == 2) {
 			layoutContent.append(layoutActionData);
 			//
-			comboActionType.setSelection(-1);
-			comboActionType.setEnabled(mode == 1);
-			comboPartOf.setSelection(-1);
-			editName.setText("");
-			comboBodyPoint.setSelection(-1);
-			comboRefPoint.setSelection(-1);
-			editMinTime.setText("");
-			editMaxTime.setText("");
-			editPositionX.setText("");
-			editPositionY.setText("");
-			editPositionZ.setText("");
+			cbActionType.setSelection(-1);
+			cbActionType.setEnabled(mode == 1);
+			cbOrderType.setSelection(-1);
+			tbName.setText("");
+			cbBodyPoint.setSelection(-1);
+			cbRefPoint.setSelection(-1);
+			tbMinTime.setText("");
+			tbMaxTime.setText("");
+			tbPositionX.setText("");
+			tbPositionY.setText("");
+			tbPositionZ.setText("");
 			//
-			editMinHoldtime.setText("");
+			tbMinHoldTime.setText("");
 			//
-			comboMovementType.setSelection(-1);
-			editMinSpeed.setText("");
-			editMaxSpeed.setText("");
+			cbMovementType.setSelection(-1);
+			tbMinSpeed.setText("");
+			tbMaxSpeed.setText("");
 			if (mode == 2) {
 				Action *action = m_currentAction;
-				comboActionType.setSelection(action->type());
-				comboPartOf.setSelection(action->order());
-				editName.setText(action->name().c_str());
-				comboBodyPoint.setSelection(action->bodyPoint());
-				comboRefPoint.setSelection(action->refPoint());
-				editMinTime.setText(string::fromFloat(action->minTime()));
-				editMaxTime.setText(string::fromFloat(action->maxTime()));
-				editPositionX.setText(string::fromFloat(action->position().x()));
-				editPositionY.setText(string::fromFloat(action->position().y()));
-				editPositionZ.setText(string::fromFloat(action->position().z()));
+				cbActionType.setSelection(action->type());
+				cbOrderType.setSelection(action->order());
+				tbName.setText(action->name().c_str());
+				cbBodyPoint.setSelection(action->bodyPoint());
+				cbRefPoint.setSelection(action->refPoint());
+				tbMinTime.setText(string::fromFloat(action->minTime()).data());
+				tbMaxTime.setText(string::fromFloat(action->maxTime()).data());
+				tbPositionX.setText(string::fromFloat(action->position().x()).data());
+				tbPositionY.setText(string::fromFloat(action->position().y()).data());
+				tbPositionZ.setText(string::fromFloat(action->position().z()).data());
 
 				if (action->type() == Action::Position) {
-					editMinHoldtime.setText(string::fromFloat(((PositionAction*)action)->minHoldTime()));
+					tbMinHoldTime.setText(string::fromFloat(((PositionAction*)action)->minHoldTime()).data());
 				}
 				else if (action->type() == Action::Movement) {
-					comboMovementType.setSelection(((MovementAction*)action)->movementType());
-					editMinSpeed.setText(string::fromFloat(((MovementAction*)action)->minSpeed()));
-					editMinSpeed.setText(string::fromFloat(((MovementAction*)action)->maxSpeed()));
+					cbMovementType.setSelection(((MovementAction*)action)->movementType());
+					tbMinSpeed.setText(string::fromFloat(((MovementAction*)action)->minSpeed()).data());
+					tbMinSpeed.setText(string::fromFloat(((MovementAction*)action)->maxSpeed()).data());
 				}
 
 			}

@@ -5,10 +5,13 @@
 #include "Controller.h"
 #include "uilib/ui/uibase.h"
 #include "components/PageTitle.h"
+#include "components/TextBox.h"
+#include "components/ComboBox.h"
 
 namespace cinetico {
 
 	using namespace uilib;
+	using cinetico::ComboBox;
 
 	class ExerciseManagementController : public Controller
 	{
@@ -18,78 +21,54 @@ namespace cinetico {
 			HorizontalLayout layoutActionButtons;
 				Button buttonAdd;
 				Button buttonBack;
+
 			Separator separatorContent;
 
 			VerticalLayout layoutContent;
 
-			HorizontalLayout layoutContentList;
-				GridView gridActions;
-				VerticalLayout layoutGridActions;
-					Button buttonEdit;
-					Button buttonDelete;
+			//
+				HorizontalLayout layoutContentList;
+					GridView gridActions;
+					VerticalLayout layoutGridActions;
+						Button buttonEdit;
+						Button buttonDelete;
 
-			VerticalLayout layoutActionData;
-				HorizontalLayout layoutActionDataActionButtons;
-					Button buttonSaveAction;
-					Button buttonCancelAction;
+			//
+				VerticalLayout layoutActionData;
+					HorizontalLayout layoutActionDataActionButtons;
+						Button buttonSaveAction;
+						Button buttonCancelAction;
 
-				Separator separatorActionBasicData;
-				HorizontalLayout layoutActionDataRow1;
-					VerticalLayout layoutActionType;
-						Label labelActionType;
-						ComboBox comboActionType;
-					VerticalLayout layoutPartOf;
-						Label labelPartOf;
-						ComboBox comboPartOf;
-					VerticalLayout layoutName;
-						Label labelName;
-						EditBox editName;
-				HorizontalLayout layoutBaseActionData;
-					VerticalLayout layoutBodyPoint;
-						Label labelBodyPoint;
-						ComboBox comboBodyPoint;
-					VerticalLayout layoutRefPoint;
-						Label labelRefPoint;
-						ComboBox comboRefPoint;
-					VerticalLayout layoutMinTime;
-						Label labelMinTime;
-						EditBox editMinTime;
-					VerticalLayout layoutMaxTime;
-						Label labelMaxTime;
-						EditBox editMaxTime;
+					Separator separatorActionBasicData;
+					HorizontalLayout layoutActionDataRow1;
+						ComboBox cbActionType;
+						ComboBox cbOrderType;
+						TextBox tbName;
+					HorizontalLayout layoutBaseActionData;
+						ComboBox cbBodyPoint;
+						ComboBox cbRefPoint;
+						TextBox tbMinTime;
+						TextBox tbMaxTime;
 
-				Label labelPosition;
-				HorizontalLayout layoutPosition;
-					VerticalLayout layoutPositionX;
-						Label labelPositionX;
-						EditBox editPositionX;
-					VerticalLayout layoutPositionY;
-						Label labelPositionY;
-						EditBox editPositionY;
-					VerticalLayout layoutPositionZ;
-						Label labelPositionZ;
-						EditBox editPositionZ;
+					Label labelPosition;
+					HorizontalLayout layoutPosition;
+						TextBox tbPositionX;
+						TextBox tbPositionY;
+						TextBox tbPositionZ;
 
-				VerticalLayout layoutSpecific;
-					Separator separatorSpecificData;
-				//Position action
-					VerticalLayout layoutPositionSpecific;
-						VerticalLayout layoutMinHoldTime;
-							Label labelMinHoldtime;
-							EditBox editMinHoldtime;
+					VerticalLayout layoutSpecific;
+						Separator separatorSpecificData;
 
-				//Movement action
-					VerticalLayout layoutMovementSpecific;
-						HorizontalLayout layoutMovementAction;
-							VerticalLayout layoutMovementType;
-								Label labelMovementType;
-								ComboBox comboMovementType;
-							VerticalLayout layoutMinSpeed;
-								Label labelMinSpeed;
-								EditBox editMinSpeed;
-							VerticalLayout layoutMaxSpeed;
-								Label labelMaxSpeed;
-								EditBox editMaxSpeed;
+						//Position action
+							VerticalLayout layoutPositionSpecific;
+								TextBox tbMinHoldTime;
+
+						//Movement action
+							VerticalLayout layoutMovementSpecific;
+								HorizontalLayout layoutMovementAction;
+									ComboBox cbMovementType;
+									TextBox tbMinSpeed;
+									TextBox tbMaxSpeed;
 
 		Exercise *m_currentExercise;
 		int m_editMode;
@@ -102,8 +81,11 @@ namespace cinetico {
 		void setEditionMode(int mode);
 		void updateActionList();
 
+		void fillActionTypeCombo(ComboBox &combo);
+		void fillOrderTypeCombo(ComboBox &combo);
 		void fillBodyPointCombo(ComboBox &combo);
 		void fillSpaceTypeCombo(ComboBox &combo);
+		void fillMovementTypeCombo(ComboBox &combo);
 		bool validateFields();
 		void saveCurrentAction();
 
