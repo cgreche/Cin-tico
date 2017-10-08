@@ -7,13 +7,13 @@ namespace cinetico {
 	
 	using namespace uilib;
 
-	class TextBox : public VerticalLayout {
+	class cTextBox : public VerticalLayout {
 
 	public:
 		Label label;
 		EditBox edit;
 
-		TextBox() {
+		cTextBox() {
 			append(label);
 			append(edit);
 		}

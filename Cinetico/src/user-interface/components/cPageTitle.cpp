@@ -1,9 +1,9 @@
 
-#include "PageTitle.h"
+#include "cPageTitle.h"
 
 namespace cinetico {
 	
-	PageTitle::PageTitle(const char *title, const char *descr) {
+	cPageTitle::cPageTitle(const char *title, const char *descr) {
 
 		FontDesc titleFont = FontDesc("Arial", 46, FONT_BOLD);
 		FontDesc descFont = FontDesc("Arial", 10, FONT_BOLD);

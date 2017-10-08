@@ -7,13 +7,13 @@ namespace cinetico {
 	
 	using namespace uilib;
 
-	class ComboBox : public VerticalLayout {
+	class cComboBox : public VerticalLayout {
 
 	public:
 		Label label;
 		uilib::ComboBox combo;
 
-		ComboBox() {
+		cComboBox() {
 			append(label);
 			append(combo,Size(SizeTypeMax,SizeTypeAuto));
 		}

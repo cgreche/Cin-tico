@@ -7,14 +7,14 @@ namespace cinetico {
 	
 	using namespace uilib;
 
-	class PageTitle : public VerticalLayout {
+	class cPageTitle : public VerticalLayout {
 
 	public:
 		Label labelTitle;
 		Label labelDescr;
 		Separator separator;
 
-		PageTitle(const char *title, const char *desc);
+		cPageTitle(const char *title, const char *desc);
 
 	};
 
