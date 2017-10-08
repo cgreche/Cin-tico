@@ -16,18 +16,10 @@ namespace render3d {
 		};
 
 		int quadIndices[] = { 0,1,2,2,1,3 };
-
-		Color colors[] = {
-			Color(255,255,255,255),
-			Color(255,255,255,100),
-			Color(255,255,255,255),
-			Color(255,255,255,100)
-		};
-
-		return m_renderEngine.newResource(4, quad, 8, quadIndices, colors);
+		return m_renderEngine.newResource(4, quad, 8, quadIndices);
 	}
 
-	int RenderEngineHelper::createCircle(float radius, unsigned int numPoints, Color *colors) {
+	int RenderEngineHelper::createCircle(float radius, unsigned int numPoints) {
 		const float PI = 3.14159f;
 
 		unsigned int i;
@@ -68,13 +60,13 @@ namespace render3d {
 		indices[j + 1] = i;
 		indices[j + 2] = 0;
 
-		int retId = m_renderEngine.newResource(numPoints, circle, numPoints * 3, indices, colors);
+		int retId = m_renderEngine.newResource(numPoints, circle, numPoints * 3, indices);
 		delete[] circle;
 		delete[] indices;
 		return retId;
 	}
 
-	int RenderEngineHelper::createRectangularPrism(float width, float height, float length, Color *colors)
+	int RenderEngineHelper::createRectangularPrism(float width, float height, float length)
 	{
 		float hw = width / 2.f;
 		float hh = height / 2.f;
@@ -128,8 +120,8 @@ namespace render3d {
 			{ -1, 0, 0 },{ -1, 0, 0 },
 
 			//Right-Face
-			{ 0, 0, 1 },{ 0, 0, 1 },
-			{ 0, 0, 1 },{ 0, 0, 1 }
+			{ 1, 0, 0 },{ 1, 0, 0 },
+			{ 1, 0, 0 },{ 1, 0, 0 }
 		};
 
 		int indices[] = {
@@ -147,7 +139,11 @@ namespace render3d {
 			20,21,22,22,23,20
 		};
 
-		return m_renderEngine.newResource(24, vertices, 36, indices, colors);
+		int resId = m_renderEngine.newResource(24, vertices, 36, indices);
+		ResourceData* data = m_renderEngine.resourceData(resId);
+		data->setNormals(normals);
+
+		return resId;
 	}
 
 	int RenderEngineHelper::generateTerrain(float squareSize, int terrainGridWidth, int terrainGridHeight)
@@ -243,7 +239,7 @@ namespace render3d {
 		}
 		*/
 
-		int resId = m_renderEngine.newResource(vertexCount, vertices, indexCount, indices, terrainColors);
+		int resId = m_renderEngine.newResource(vertexCount, vertices, indexCount, indices);
 		delete[] vertices;
 		delete[] indices;
 		delete[] terrainColors;

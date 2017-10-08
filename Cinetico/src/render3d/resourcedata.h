@@ -13,12 +13,15 @@ namespace render3d {
 
 	class ResourceData : public RenderObject
 	{
+	public:
 		enum DirtyFlags {
-			VERTEX_DIRTY = 0x01,
-			INDEX_DIRTY = 0x02,
+			VERTICES_DIRTY = 0x01,
+			INDICES_DIRTY = 0x02,
 			NORMALS_DIRTY = 0x04,
-			COLOR_DIRTY = 0x08
+			COLORS_DIRTY = 0x08
 		};
+
+	private:
 
 		int m_vertexCount;
 		Vector3 *m_vertices;

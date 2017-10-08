@@ -8,12 +8,11 @@ namespace render3d {
 		m_currentFont = NULL;
 	}
 
-	int RenderEngine::newResource(unsigned int vertexCount, Vector3 *vertices, unsigned int indexCount, int *indices, Color *colors) {
+	int RenderEngine::newResource(unsigned int vertexCount, Vector3 *vertices, unsigned int indexCount, int *indices) {
 		int curId = m_resources.size();
 		ResourceData *resData = new ResourceData(this, curId);
 		resData->setVertices(vertexCount, vertices);
 		resData->setIndices(indexCount, indices);
-		resData->setColors(colors);
 		void *internalData = newInternalResource(resData);
 		resData->m_internalData = internalData;
 		m_resources.push_back(resData);

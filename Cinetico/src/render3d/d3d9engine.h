@@ -16,6 +16,7 @@ namespace render3d {
 		LPDIRECT3DDEVICE9 m_device;
 		LPD3DXFONT m_currentFont;
 
+		void updateResourceData(ResourceData *data);
 		void updateResourceInstanceData(ResourceInstance *instance);
 		void updateCamera(Camera *camera);
 

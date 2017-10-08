@@ -40,9 +40,10 @@ namespace render3d {
 		virtual void endScene() = 0;
 
 		//Resource allocation
-		virtual int newResource(unsigned int vertexCount, Vector3 *vertices, unsigned int indexCount = 0, int *indices = NULL, Color *colors = NULL);
+		virtual int newResource(unsigned int vertexCount, Vector3 *vertices, unsigned int indexCount = 0, int *indices = NULL);
 		virtual int newCamera(const Vector3 &pos, const Vector3 &rot, float zoom = 1.f);
 		virtual int newViewport(int x, int y, int width, int height);
+		virtual int newLight(const Vector3 &position, const Vector3 &direction, const Color &color) { return 1; }
 		virtual int newResourceInstance(int resDataId);
 		virtual int newFontResource(const char *face, int width, int height, unsigned long flags);
 		virtual int newTextResource(int x, int y, int width, int height);
@@ -50,6 +51,7 @@ namespace render3d {
 		virtual void drawResource(int resInstanceId);
 		virtual void setCurrentCamera(int cameraId);
 		virtual void setCurrentViewport(int viewportId);
+		virtual void addLight(int lightId) { }
 		virtual void setCurrentFont(int fontId);
 		virtual void drawText(const char *text, int x, int y, const Color &color);
 		virtual void clear(const Color &clearColor) = 0;

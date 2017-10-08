@@ -122,6 +122,58 @@ namespace render3d {
 			1.0f, 0);
 	}
 
+	void D3D9Engine::updateResourceData(ResourceData *resData) {
+		HRESULT hr;
+		LPDIRECT3DVERTEXBUFFER9 vertexBuffer;
+		LPDIRECT3DINDEXBUFFER9 indexBuffer;
+
+		int dirtyFlags = resData->dirtyFlags();
+
+		if (dirtyFlags == 0)
+			return;
+			
+		int vertexCount = resData->vertexCount();
+		Vector3 *vertices = resData->vertices();
+		Vector3 *normals = resData->normals();
+		Color *colors = resData->colors();
+		int indexCount = resData->indexCount();
+		D3D9ResData *internalData = (D3D9ResData*)resData->internalData();
+
+		BYTE *pData;
+		if (dirtyFlags & (ResourceData::VERTICES_DIRTY | ResourceData::NORMALS_DIRTY | ResourceData::COLORS_DIRTY)) {	
+			internalData->vertexBuffer->Release();
+			hr = m_device->CreateVertexBuffer(vertexCount * internalData->stride, 0, 0, D3DPOOL_MANAGED, &vertexBuffer, NULL);
+
+			vertexBuffer->Lock(0, 0, (void**)&pData, 0);
+			for (int i = 0; i < vertexCount; ++i) {
+				memcpy(pData, &vertices[i], sizeof(Vector3));
+				pData += sizeof(Vector3);
+
+				*(D3DVECTOR*)pData = D3DVECTOR({ 0.f, -1.f, 0.f });
+				memcpy(pData, &normals[i], sizeof(Vector3));
+				pData += sizeof(Vector3);
+
+				*(D3DCOLOR*)pData = D3DCOLOR_ARGB(colors[i].a(), colors[i].r(), colors[i].g(), colors[i].b());
+				pData += sizeof(D3DCOLOR);
+			}
+			vertexBuffer->Unlock();
+			internalData->vertexBuffer = vertexBuffer;
+		}
+			
+		if (dirtyFlags & ResourceData::INDICES_DIRTY) {
+			internalData->indexBuffer->Release();
+			hr = m_device->CreateIndexBuffer(indexCount * 4, 0, D3DFMT_INDEX32, D3DPOOL_MANAGED, &indexBuffer, NULL);
+
+			if (indexCount > 0) {
+				indexBuffer->Lock(0, 0, (void**)&pData, 0);
+				memcpy(pData, resData->indices(), indexCount * sizeof(int));
+				indexBuffer->Unlock();
+			}
+			internalData->indexBuffer = indexBuffer;
+		}
+		resData->setDirtyFlags(0);
+	}
+
 	void D3D9Engine::updateResourceInstanceData(ResourceInstance *resData) {
 		unsigned long dirty = resData->dirtyFlags();
 		D3D9ResInstanceData *data = (D3D9ResInstanceData *)resData->internalData();
@@ -196,24 +248,27 @@ namespace render3d {
 		int vertexCount = resData->vertexCount();
 		Vector3 *vertices = resData->vertices();
 		int indexCount = resData->indexCount();
+		Vector3 *normals = resData->normals();
 		Color *colors = resData->colors();
-		unsigned int stride = sizeof(Vector3) + sizeof(D3DCOLOR);
+		unsigned int stride = sizeof(Vector3) + sizeof(Vector3) + sizeof(D3DCOLOR);
 		hr = m_device->CreateVertexBuffer(vertexCount * stride, 0, 0, D3DPOOL_MANAGED, &vertexBuffer, NULL);
 		hr = m_device->CreateIndexBuffer(indexCount * 4, 0, D3DFMT_INDEX32, D3DPOOL_MANAGED, &indexBuffer, NULL);
 		BYTE *pData;
-		vertexBuffer->Lock(0, 0, (void**)&pData, 0);
+		vertexBuffer->Lock(0, 0, (void**)&pData, 0);/*
 		for (int i = 0; i < vertexCount; ++i) {
 			memcpy(pData, &vertices[i], sizeof(Vector3));
 			pData += sizeof(Vector3);
-			D3DCOLOR d3dColor;
-			if (!colors)
-				d3dColor = D3DCOLOR_ARGB(255, 128, 128, 128);
-			else
-				d3dColor = D3DCOLOR_ARGB(colors[i].a(), colors[i].r(), colors[i].g(), colors[i].b());
-			*(D3DCOLOR*)pData = d3dColor;
+
+			*(D3DVECTOR*)pData = D3DVECTOR({ 0.f, 1.f, 0.f });
+			//memcpy(pData, &normals[i], sizeof(Vector3));
+			pData += sizeof(Vector3);
+
+			*(D3DCOLOR*)pData = D3DCOLOR_ARGB(colors[i].a(), colors[i].r(), colors[i].g(), colors[i].b());
 			pData += sizeof(D3DCOLOR);
 		}
+		*/
 		vertexBuffer->Unlock();
+
 		if (indexCount > 0) {
 			indexBuffer->Lock(0, 0, (void**)&pData, 0);
 			memcpy(pData, resData->indices(), indexCount * sizeof(int));
@@ -223,7 +278,8 @@ namespace render3d {
 		D3DVERTEXELEMENT9 custom_vertex[] =
 		{
 		  { 0,  0, D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
-		  { 0, 12, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR,    0 },
+		  { 0, 12, D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,   0 },
+		  { 0, 24, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR,    0 },
 		  D3DDECL_END()
 		};
 		static LPDIRECT3DVERTEXDECLARATION9 vertexDeclaration = NULL;
@@ -233,7 +289,6 @@ namespace render3d {
 		internalData->indexBuffer = indexBuffer;
 		internalData->vertexDeclaration = vertexDeclaration;
 		internalData->stride = stride;
-
 		return internalData;
 	}
 
@@ -405,8 +460,42 @@ namespace render3d {
 
 	void D3D9Engine::drawInternalResource(ResourceInstance *instance) {
 		HRESULT hr;
+		static bool first = false;
+		if (!first) {
+			D3DLIGHT9 light;
+			D3DMATERIAL9 material;
+
+			ZeroMemory(&light, sizeof(D3DMATERIAL9));
+			ZeroMemory(&material, sizeof(D3DMATERIAL9));
+
+			//light.Type = D3DLIGHT_POINT;
+			//light.Position = D3DVECTOR({ 0.f, 5.f, 0.f });
+			//light.Direction = D3DVECTOR({ 0.f,-1.f,0.f });
+			light.Type = D3DLIGHT_DIRECTIONAL;
+			light.Direction = D3DXVECTOR3(0, -1.f, 0.f);
+			light.Range = 100.0f;
+			light.Diffuse.r = 1.f;
+			light.Diffuse.g = 1.f;
+			light.Diffuse.b = 1.f;
+
+			light.Ambient.r = 0.2f;
+			light.Ambient.g = 0.2f;
+			light.Ambient.b = 0.2f;
+
+			material.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			//material.Ambient = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			m_device->SetMaterial(&material);
+
+			m_device->SetLight(0, &light);
+			m_device->LightEnable(0, TRUE);
+			first = true;
+		}
 
 		ResourceData *resData = this->resourceData(instance->resDataId());
+		if (resData->dirtyFlags() != 0) {
+			updateResourceData(resData);
+		}
+
 		if (instance->dirtyFlags() != 0) {
 			if (resData->dirtyFlags())
 				int a = 1; //do something
@@ -418,7 +507,7 @@ namespace render3d {
 
 		m_device->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
 		m_device->SetRenderState(D3DRS_ZWRITEENABLE, D3DZB_TRUE);
-		m_device->SetRenderState(D3DRS_LIGHTING, FALSE);
+		//m_device->SetRenderState(D3DRS_LIGHTING, FALSE);
 		m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 		m_device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 		m_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
