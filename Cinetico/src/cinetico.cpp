@@ -10,6 +10,7 @@
 #include "user-interface/ExercisesController.h"
 #include "user-interface/ExerciseManagementController.h"
 #include "user-interface/ExerciseRealizationController.h"
+#include "user-interface/UserProfileController.h"
 #include "utils/crypter.h"
 
 #define INITIAL_VIEW Cinetico::LOGIN
@@ -31,6 +32,7 @@ namespace cinetico {
 	{
 		//Setup views
 		registerView(LOGIN, "Login", new LoginController());
+		registerView(USER_PROFILE, "User Profile", new UserProfileController());
 		registerView(EXERCISES, "Exercises", new ExercisesController());
 		registerView(EXERCISE_MANAGEMENT, "Exercise Management", new ExerciseManagementController());
 		registerView(EXERCISE_REALIZATION, "Exercise Realization", new ExerciseRealizationController());
@@ -86,7 +88,7 @@ namespace cinetico {
 
 		//Account creation
 		std::string cryptPW = Crypter::SimpleHash(password);
-		user = new UserProfile(username, cryptPW);
+		user = new UserProfile(username, cryptPW, "");
 		cineticoDB()->userProfileDAO()->create(*user);
 
 		return SUCCESS;

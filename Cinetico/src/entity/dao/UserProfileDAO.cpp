@@ -11,11 +11,11 @@ namespace cinetico {
 	}
 
 	void UserProfileDAO::create(UserProfile &user) {
-		const char *sql = "INSERT INTO USER_PROFILE(login_name,password,creation_time) VALUES(?,?,?);";
+		const char *sql = "INSERT INTO USER_PROFILE(login_name,password,user_name,creation_time) VALUES(?,?,?);";
 
 		SQLStatement *stmt;
 		stmt = m_db.prepare(sql);
-		stmt->bind(1, user.username()); //safer to use the created user properties
+		stmt->bind(1, user.loginName()); //safer to use the created user properties
 		stmt->bind(2, user.password());
 		stmt->bind(3, (int)user.creationDate());
 		int rc = stmt->execute();
@@ -27,12 +27,12 @@ namespace cinetico {
 
 
 	void UserProfileDAO::update(UserProfile &user) {
-		const char *sql = "UPDATE USER_PROFILE SET login_name = ?, password = ?, creation_time = ?;";
+		const char *sql = "UPDATE USER_PROFILE SET login_name = ?, password = ?, user_name = ?;";
 		SQLStatement *stmt;
 		stmt = m_db.prepare(sql);
-		stmt->bind(1, user.username());
+		stmt->bind(1, user.loginName());
 		stmt->bind(2, user.password());
-		stmt->bind(3, (int)user.creationDate());
+		stmt->bind(3, user.name());
 		int rc = stmt->execute();
 		if (rc != 0) {
 			//todo
@@ -48,7 +48,7 @@ namespace cinetico {
 		ResultSet *rs = stmt->query();
 		if (rs) {
 			while (rs->next()) {
-				UserProfile *user = new UserProfile(rs->getString(1), rs->getString(2), rs->getInt(3), rs->getInt(0));
+				UserProfile *user = new UserProfile(rs->getString(1), rs->getString(2), rs->getString(3), rs->getInt(4), rs->getInt(0));
 				userList.push_back(user);
 			}
 			rs->close();
@@ -65,7 +65,7 @@ namespace cinetico {
 		ResultSet *rs = stmt->query();
 		if (rs) {
 			if (rs->next())
-				user = new UserProfile(rs->getString(1), rs->getString(2), rs->getInt(3), rs->getInt(0));
+				user = new UserProfile(rs->getString(1), rs->getString(2), rs->getString(3), rs->getInt(4), rs->getInt(0));
 		}
 		stmt->close();
 		return user;
@@ -75,7 +75,7 @@ namespace cinetico {
 		const char *sql = "DELETE FROM USER_PROFILE WHERE login_name = ?;";
 		SQLStatement *stmt;
 		stmt = m_db.prepare(sql);
-		stmt->bind(1, user.username());
+		stmt->bind(1, user.loginName());
 		int rc = stmt->execute();
 		if (rc != 0) {
 			//todo

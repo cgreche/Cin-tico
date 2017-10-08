@@ -48,18 +48,14 @@ namespace cinetico {
 	int line1;
 	int line2;
 
-	int resTriangle;
 	int resCube;
-	int resTriangleType2;
 	int resCircle;
 	int resTerrain;
 	int resPrism;
 
 	int instanceQuad1;
 	int instanceQuad2;
-	int instanceTriangle;
 	int instanceCube;
-	int instanceTriangleType2;
 	int instanceCircle;
 	int instanceCircle2;
 	int instanceTerrain;
@@ -96,11 +92,11 @@ namespace cinetico {
 	int resFontVerdana;
 
 
-#define HEAD_SIZE 4.f/10.f
-#define FOOT_SIZE HEAD_SIZE/2.f
-#define HAND_SIZE HEAD_SIZE/2.f
-#define ELBOW_SIZE HEAD_SIZE/6.f
-#define KNEE_SIZE HEAD_SIZE/6.f
+#define HEAD_SIZE (4.f/10.f)
+#define FOOT_SIZE HEAD_SIZE/(2.f)
+#define HAND_SIZE HEAD_SIZE/(2.f)
+#define ELBOW_SIZE HEAD_SIZE/(6.f)
+#define KNEE_SIZE HEAD_SIZE/(6.f)
 
 
 	struct BodyResourceIds {
@@ -172,12 +168,12 @@ namespace cinetico {
 			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
 		};
 
-		resId.head = renderEngineHelper->createCube(HEAD_SIZE, bodyColors);
-		resId.spine = renderEngineHelper->createRectangularPrism(HEAD_SIZE / 3.5f, HEAD_SIZE * 1.5, HEAD_SIZE / 3.5f, bodyColors);
-		resId.elbow = renderEngineHelper->createCube(ELBOW_SIZE, bodyColors);
-		resId.hand = renderEngineHelper->createCube(HAND_SIZE, bodyColors);
-		resId.knee = renderEngineHelper->createCube(KNEE_SIZE, bodyColors);
-		resId.foot = renderEngineHelper->createCube(FOOT_SIZE, bodyColors);
+		resId.head = renderEngineHelper->createCube(HEAD_SIZE);
+		resId.spine = renderEngineHelper->createRectangularPrism(HEAD_SIZE / 3.5f, HEAD_SIZE * 1.5, HEAD_SIZE / 3.5f);
+		resId.elbow = renderEngineHelper->createCube(ELBOW_SIZE);
+		resId.hand = renderEngineHelper->createCube(HAND_SIZE);
+		resId.knee = renderEngineHelper->createCube(KNEE_SIZE);
+		resId.foot = renderEngineHelper->createCube(FOOT_SIZE);
 
 		instId.head = renderEngine->newResourceInstance(resId.head);
 		instId.spine = renderEngine->newResourceInstance(resId.spine);
@@ -368,39 +364,6 @@ namespace cinetico {
 		::srand((unsigned int)::time(0));
 		setupBody();
 
-		render3d::Vector3 triangle1[] = {
-			{ 0.3f, 0.0f, 1 },
-			{ 0.5f, 0.0f, 1 },
-			{ 0, -0.5f, 1 },
-		};
-
-		render3d::Vector3 triangle3[] = {
-			{ -1, 1, 0 },
-			{ 1, 1, 0 },
-			{ -1, -1, 0 }
-		};
-
-		int indicesTriangle1[] = {
-			0,1,2
-		};
-
-		Color triangle1Colors[3] = {
-			Color(255,0,0),
-			Color(255,0,0),
-			Color(255,0,0)
-		};
-
-		int indicesTriangle3[] = {
-			0,1,2
-		};
-
-		Color triangle3Colors[3] = {
-			Color(255,0,0),
-			Color(255,0,0),
-			Color(255,0,0)
-		};
-
-
 		const int numPoints = 30;
 		Color circleColors[numPoints + 1];
 		for (int i = 0; i < numPoints + 1; ++i) {
@@ -409,59 +372,92 @@ namespace cinetico {
 
 		resQuad1 = renderEngineHelper->createQuad(10, 0.25);
 		resQuad2 = renderEngineHelper->createQuad(100, 200);
-		resTriangle = renderEngine->newResource(sizeof(triangle1) / sizeof(triangle1[0]), triangle1, 3, indicesTriangle1, triangle1Colors);
 
 		Color cubeColors[] =
 		{
+			//Front
 			Color(255,0,0),
 			Color(255,0,0),
 			Color(255,0,0),
 			Color(255,0,0),
+
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
 
 			//Back
-			Color(255,0,0),
-			Color(255,0,0),
-			Color(255,0,0),
-			Color(255,0,0),
+			Color(0,255,0),
+			Color(0,255,0),
+			Color(0,255,0),
+			Color(0,255,0),
 
 			//Top
-			Color(0,0,0),
-			Color(0,0,0),
-			Color(0,0,0),
-			Color(0,0,0),
+			Color(255,255,255),
+			Color(255,255,255),
+			Color(255,255,255),
+			Color(255,255,255),
 
 			//Bottom
-			Color(255,255,0),
-			Color(255,255,0),
-			Color(255,255,0),
-			Color(255,255,0),
+			Color(0,0,0),
+			Color(0,0,0),
+			Color(0,0,0),
+			Color(0,0,0),
 
 			//Left
-			Color(255,255,255),
-			Color(255,255,255),
-			Color(255,255,255),
-			Color(255,255,255),
+			Color(0,0,255),
+			Color(0,0,255),
+			Color(0,0,255),
+			Color(0,0,255),
 
 			//Right
-			Color(0,0,255),
-			Color(0,0,255),
-			Color(0,0,255),
-			Color(0,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
+			Color(255,0,255),
 		};
 
-		resCube = renderEngineHelper->createCube(2, cubeColors);
-		resTriangleType2 = renderEngine->newResource(sizeof(triangle3) / sizeof(triangle3[0]), triangle3, 3, indicesTriangle3, triangle3Colors);
-		resCircle = renderEngineHelper->createCircle(0.3f, numPoints + 1, circleColors);
-		resPrism = renderEngineHelper->createRectangularPrism(0.3f, 2.f, 0.5f,cubeColors);
+		resCube = renderEngineHelper->createCube(2);
+		renderEngine->resourceData(resCube)->setColors(cubeColors);
+		resCircle = renderEngineHelper->createCircle(0.3f, numPoints + 1);
+		renderEngine->resourceData(resCircle)->setColors(circleColors);
+		resPrism = renderEngineHelper->createRectangularPrism(0.3f, 2.f, 0.5f);
+		renderEngine->resourceData(resPrism)->setColors(cubeColors);
 
 		instanceQuad1 = renderEngine->newResourceInstance(resQuad1);
 		renderEngine->resourceInstance(instanceQuad1)->setPos(render3d::Vector3(10, 10, 0));
 		instanceQuad2 = renderEngine->newResourceInstance(resQuad2);
 		renderEngine->resourceInstance(instanceQuad2)->setPos(render3d::Vector3(120, 10, 0));
-		instanceTriangle = renderEngine->newResourceInstance(resTriangle);
 		instanceCube = renderEngine->newResourceInstance(resCube);
 		renderEngine->resourceInstance(resCube)->setPos(render3d::Vector3(0.f, 1.f, 0.f));
-		instanceTriangleType2 = renderEngine->newResourceInstance(resTriangleType2);
 		instanceCircle = renderEngine->newResourceInstance(resCircle);
 		instanceCircle2 = renderEngine->newResourceInstance(resCircle);
 		instancePrism = renderEngine->newResourceInstance(resPrism);
@@ -615,6 +611,13 @@ namespace cinetico {
 		::UpdateWindow(g_world3DWindow);
 	}
 
+	void Cinetico3D::startPlayground() {
+		m_playingExercise = NULL;
+		//m_bodyTracker->setTrackableBodyPoints(exercise.trackableBodyPoints());
+		::ShowWindow(g_world3DWindow, SW_SHOWNORMAL);
+		::UpdateWindow(g_world3DWindow);
+	}
+
 	void Cinetico3D::update() {
 
 		bool leftDown = keyStates['A'];
@@ -643,14 +646,16 @@ namespace cinetico {
 		float d = 0.1f;
 
 		updateBody();
-		//Update quads (billboarding)
-		processCamera();
-		Camera *cam = renderEngine->camera(cam1);
-		render3d::Vector3 faceCam = render3d::Vector3(-cam->rot().x(), -cam->rot().y(), -cam->rot().z());
-		renderEngine->resourceInstance(instanceQuad1)->setRot(faceCam);
-		renderEngine->resourceInstance(instanceQuad2)->setRot(faceCam);
 
-		return;
+		if (!shiftDown) {
+			//Update quads (billboarding)
+			processCamera();
+			Camera *cam = renderEngine->camera(cam1);
+			render3d::Vector3 faceCam = render3d::Vector3(-cam->rot().x(), -cam->rot().y(), -cam->rot().z());
+			renderEngine->resourceInstance(instanceQuad1)->setRot(faceCam);
+			renderEngine->resourceInstance(instanceQuad2)->setRot(faceCam);
+		}
+
 
 		ResourceInstance *instance = renderEngine->resourceInstance(instanceCube);
 		render3d::Vector3 newPos = instance->pos();
@@ -658,7 +663,12 @@ namespace cinetico {
 		
 		if (leftDown) {
 			if (shiftDown) {
-				newRot.setY(newRot.y() + d);
+				if (ctrlDown) {
+					newRot.setZ(newRot.z() + d);
+				}
+				else {
+					newRot.setY(newRot.y() + d);
+				}
 			}
 			else {
 				newPos.setX(newPos.x() - d);
@@ -667,7 +677,12 @@ namespace cinetico {
 
 		if (rightDown) {
 			if (shiftDown) {
-				newRot.setY(newRot.y() - d);
+				if (ctrlDown) {
+					newRot.setZ(newRot.z() - d);
+				}
+				else {
+					newRot.setY(newRot.y() - d);
+				}
 			}
 			else {
 				newPos.setX(newPos.x() + d);
@@ -727,18 +742,17 @@ namespace cinetico {
 			renderEngine->drawResource(instanceQuad1);
 		*/
 		//renderEngine->drawResource(instanceWall);
-		/*
-		renderEngine->drawResource(instanceTriangle);
+		
+		//renderEngine->drawResource(instanceTriangle);
 		renderEngine->drawResource(instanceCube);
-		renderEngine->drawResource(instanceTriangleType2);
-		renderEngine->drawResource(instanceCircle);
-		renderEngine->drawResource(instanceCircle2);
-		renderEngine->drawResource(instancePrism);
-
+		//renderEngine->drawResource(instanceTriangleType2);
+		//renderEngine->drawResource(instanceCircle);
+		//renderEngine->drawResource(instanceCircle2);
+		//renderEngine->drawResource(instancePrism);
+		
 		for(int i = 0; i < NUM_CUBES; ++i) {
 	//		d3d9.drawResource(instancedCubes[i]);
 		}
-		*/
 
 
 		if (m_playingExercise) {

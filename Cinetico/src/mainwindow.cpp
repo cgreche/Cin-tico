@@ -5,6 +5,11 @@ using namespace cinetico;
 
 namespace cinetico {
 
+	static void linkUserLoginName_onClick(TextLink &link) {
+		MainWindow* mainWindow = (MainWindow *)link.param();
+		mainWindow->onClickUserLoginName();
+	}
+
 	static void buttonLogoff_onClick(Button &button) {
 		MainWindow* mainWindow = (MainWindow *)button.param();
 		mainWindow->onClickLogoff();
@@ -16,12 +21,18 @@ namespace cinetico {
 		labelAppname.setAlignment(Label::VCenter);
 		labelAppname.setFont(FontDesc("Arial", 16, FONT_BOLD));
 
+		labelUsername.setText("Usuário: ");
 		labelUsername.setTextColor(Color(255, 255, 255));
+		linkUsername.setTextColor(Color(255, 255, 255));
+		linkUsername.setHoverColor(Color(200, 0, 0));
+		linkUsername.setParam(this);
+		linkUsername.setOnClick(linkUserLoginName_onClick);
 		buttonLogoff.setText("Sair");
 		buttonLogoff.setParam(this);
 		buttonLogoff.setOnClick(buttonLogoff_onClick);
 
 		layoutLoginInfo2.append(labelUsername);
+		layoutLoginInfo2.append(linkUsername);
 		layoutLoginInfo2.append(buttonLogoff);
 		layoutLoginInfo2.setAlignment(Layout::center_align);
 		layoutLoginInfo.append(layoutLoginInfo2);
@@ -78,10 +89,7 @@ namespace cinetico {
 		UserProfile *currentUser = m_cinetico.currentUser();
 		if (lastUserProfile != currentUser) {
 			if (currentUser) {
-				uilib::string userStr;
-				userStr = "Usuário: ";
-				userStr += currentUser->username().c_str();
-				labelUsername.setText(userStr);
+				linkUsername.setText(currentUser->loginName().c_str());
 				layoutLoginInfo.setVisible(true);
 				layoutHeader.setSize(layoutHeader.size());
 			}
@@ -90,6 +98,12 @@ namespace cinetico {
 			}
 			lastUserProfile = currentUser;
 		}
+	}
+
+	void MainWindow::onClickUserLoginName() {
+		Controller::ViewParams params;
+		params["user"] = m_cinetico.currentUser();
+		m_cinetico.goTo(Cinetico::USER_PROFILE,&params);
 	}
 
 	void MainWindow::onClickLogoff() {

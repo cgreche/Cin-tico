@@ -30,6 +30,7 @@ namespace cinetico {
 		Cinetico3D(Cinetico &cinetico);
 		~Cinetico3D();
 		void startExercise(cinetico_core::Exercise &exercise);
+		void startPlayground();
 		void update();
 		void render();
 	};

@@ -63,29 +63,29 @@ namespace cinetico {
 		controller->m_currentActionTypeSelection = combo.selection();
 	}
 
-	void ExerciseManagementController::fillActionTypeCombo(ComboBox &combo) {
+	void ExerciseManagementController::fillActionTypeCombo(cComboBox &combo) {
 		combo.appendItem("Posição",Action::Position);
 		combo.appendItem("Movimento",Action::Movement);
 	}
 
-	void ExerciseManagementController::fillOrderTypeCombo(ComboBox &combo) {
+	void ExerciseManagementController::fillOrderTypeCombo(cComboBox &combo) {
 		combo.appendItem("Nova ação",0);
 		combo.appendItem("Última ação",1);
 		combo.appendItem("Todas as ações",2);
 	}
 
-	void ExerciseManagementController::fillBodyPointCombo(ComboBox &combo) {
+	void ExerciseManagementController::fillBodyPointCombo(cComboBox &combo) {
 		combo.appendItem("Cabeça",0);
 		combo.appendItem("Ombro",1);
 	}
 
-	void ExerciseManagementController::fillSpaceTypeCombo(ComboBox &combo) {
+	void ExerciseManagementController::fillSpaceTypeCombo(cComboBox &combo) {
 		combo.appendItem("Mundo", 0);
 		combo.appendItem("Última posição", 1);
 		combo.appendItem("Cabeça", 1);
 	}
 
-	void ExerciseManagementController::fillMovementTypeCombo(ComboBox &combo) {
+	void ExerciseManagementController::fillMovementTypeCombo(cComboBox &combo) {
 		combo.appendItem("Linear",0);
 		combo.appendItem("Angular",1);
 	}
@@ -247,7 +247,6 @@ namespace cinetico {
 
 		//Base Action data
 		separatorActionBasicData.setText("Informação básica da ação");
-		separatorActionBasicData.setFont(FontDesc("Arial",12,FONT_BOLD));
 		cbActionType.setLabel("Tipo *");
 		fillActionTypeCombo(cbActionType);
 		cbActionType.combo.setParam(this);
@@ -303,7 +302,6 @@ namespace cinetico {
 		layoutMovementSpecific.append(layoutMovementAction);
 
 		separatorSpecificData.setText("Informação específica para o tipo de ação");
-		separatorSpecificData.setFont(FontDesc("Arial", 12, FONT_BOLD));
 		layoutSpecific.append(separatorSpecificData);
 
 		layoutActionData.append(layoutActionDataActionButtons, AutoSize, 10);

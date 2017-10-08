@@ -5,7 +5,8 @@
 #include "Controller.h"
 #include "entity/core/exercise.h"
 #include "uilib/ui/uibase.h"
-#include "components/PageTitle.h"
+#include "components/cPageTitle.h"
+#include "components/cSeparator.h"
 #include <list>
 
 namespace cinetico {
@@ -16,7 +17,7 @@ namespace cinetico {
 	{
 	public:
 		VerticalLayout layout;
-			PageTitle title;
+			cPageTitle title;
 			HorizontalLayout layoutActionButtons;
 				Button buttonCreateExercise;
 				Button buttonManageActions;
@@ -38,7 +39,7 @@ namespace cinetico {
 							EditBox editExerciseName;
 							CheckBox checkPublic;
 
-					Separator separatorChecks;
+					cSeparator separatorChecks;
 					std::vector<HorizontalLayout> layoutCheckBodyPointList;
 					std::vector<CheckBox> checkBodyPointList;
 

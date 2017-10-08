@@ -129,15 +129,17 @@
     <ClInclude Include="src\uilib\ui\uiobj.h" />
     <ClInclude Include="src\uilib\ui\uitools.h" />
     <ClInclude Include="src\uilib\ui\window.h" />
-    <ClInclude Include="src\user-interface\components\ComboBox.h" />
-    <ClInclude Include="src\user-interface\components\PageTitle.h" />
-    <ClInclude Include="src\user-interface\components\TextBox.h" />
+    <ClInclude Include="src\user-interface\components\cComboBox.h" />
+    <ClInclude Include="src\user-interface\components\cPageTitle.h" />
+    <ClInclude Include="src\user-interface\components\cSeparator.h" />
+    <ClInclude Include="src\user-interface\components\cTextBox.h" />
     <ClInclude Include="src\user-interface\Controller.h" />
     <ClInclude Include="src\user-interface\ExerciseManagementController.h" />
     <ClInclude Include="src\user-interface\ExerciseRealizationController.h" />
     <ClInclude Include="src\user-interface\ExercisesController.h" />
     <ClInclude Include="src\user-interface\LoginController.h" />
     <ClInclude Include="src\user-interface\template.h" />
+    <ClInclude Include="src\user-interface\UserProfileController.h" />
     <ClInclude Include="src\utils\crypter.h" />
   </ItemGroup>
   <ItemGroup>
@@ -230,13 +232,15 @@
     <ClCompile Include="src\uilib\ui\uiobj.cpp" />
     <ClCompile Include="src\uilib\ui\uitools.cpp" />
     <ClCompile Include="src\uilib\ui\window.cpp" />
-    <ClCompile Include="src\user-interface\components\ComboBox.cpp" />
-    <ClCompile Include="src\user-interface\components\PageTitle.cpp" />
-    <ClCompile Include="src\user-interface\components\TextBox.cpp" />
+    <ClCompile Include="src\user-interface\components\cComboBox.cpp" />
+    <ClCompile Include="src\user-interface\components\cPageTitle.cpp" />
+    <ClCompile Include="src\user-interface\components\cSeparator.cpp" />
+    <ClCompile Include="src\user-interface\components\cTextBox.cpp" />
     <ClCompile Include="src\user-interface\ExerciseManagementController.cpp" />
     <ClCompile Include="src\user-interface\ExerciseRealizationController.cpp" />
     <ClCompile Include="src\user-interface\ExercisesController.cpp" />
     <ClCompile Include="src\user-interface\LoginController.cpp" />
+    <ClCompile Include="src\user-interface\UserProfileController.cpp" />
     <ClCompile Include="src\utils\crypter.cpp" />
     <ClCompile Include="src\cinetico3d.cpp" />
   </ItemGroup>

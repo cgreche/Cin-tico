@@ -4,9 +4,10 @@
 
 #include "Controller.h"
 #include "uilib/ui/uibase.h"
-#include "components/PageTitle.h"
-#include "components/TextBox.h"
-#include "components/ComboBox.h"
+#include "components/cPageTitle.h"
+#include "components/cTextBox.h"
+#include "components/cComboBox.h"
+#include "components/cSeparator.h"
 
 namespace cinetico {
 
@@ -17,7 +18,7 @@ namespace cinetico {
 	{
 	public:
 		VerticalLayout layout;
-			PageTitle title;
+			cPageTitle title;
 			HorizontalLayout layoutActionButtons;
 				Button buttonAdd;
 				Button buttonBack;
@@ -39,36 +40,36 @@ namespace cinetico {
 						Button buttonSaveAction;
 						Button buttonCancelAction;
 
-					Separator separatorActionBasicData;
+					cSeparator separatorActionBasicData;
 					HorizontalLayout layoutActionDataRow1;
-						ComboBox cbActionType;
-						ComboBox cbOrderType;
-						TextBox tbName;
+						cComboBox cbActionType;
+						cComboBox cbOrderType;
+						cTextBox tbName;
 					HorizontalLayout layoutBaseActionData;
-						ComboBox cbBodyPoint;
-						ComboBox cbRefPoint;
-						TextBox tbMinTime;
-						TextBox tbMaxTime;
+						cComboBox cbBodyPoint;
+						cComboBox cbRefPoint;
+						cTextBox tbMinTime;
+						cTextBox tbMaxTime;
 
 					Label labelPosition;
 					HorizontalLayout layoutPosition;
-						TextBox tbPositionX;
-						TextBox tbPositionY;
-						TextBox tbPositionZ;
+						cTextBox tbPositionX;
+						cTextBox tbPositionY;
+						cTextBox tbPositionZ;
 
 					VerticalLayout layoutSpecific;
-						Separator separatorSpecificData;
+						cSeparator separatorSpecificData;
 
 						//Position action
-							VerticalLayout layoutPositionSpecific;
-								TextBox tbMinHoldTime;
+						VerticalLayout layoutPositionSpecific;
+							cTextBox tbMinHoldTime;
 
 						//Movement action
-							VerticalLayout layoutMovementSpecific;
-								HorizontalLayout layoutMovementAction;
-									ComboBox cbMovementType;
-									TextBox tbMinSpeed;
-									TextBox tbMaxSpeed;
+						VerticalLayout layoutMovementSpecific;
+							HorizontalLayout layoutMovementAction;
+								cComboBox cbMovementType;
+								cTextBox tbMinSpeed;
+								cTextBox tbMaxSpeed;
 
 		Exercise *m_currentExercise;
 		int m_editMode;
@@ -81,11 +82,11 @@ namespace cinetico {
 		void setEditionMode(int mode);
 		void updateActionList();
 
-		void fillActionTypeCombo(ComboBox &combo);
-		void fillOrderTypeCombo(ComboBox &combo);
-		void fillBodyPointCombo(ComboBox &combo);
-		void fillSpaceTypeCombo(ComboBox &combo);
-		void fillMovementTypeCombo(ComboBox &combo);
+		void fillActionTypeCombo(cComboBox &combo);
+		void fillOrderTypeCombo(cComboBox &combo);
+		void fillBodyPointCombo(cComboBox &combo);
+		void fillSpaceTypeCombo(cComboBox &combo);
+		void fillMovementTypeCombo(cComboBox &combo);
 		bool validateFields();
 		void saveCurrentAction();
 
@@ -98,8 +99,6 @@ namespace cinetico {
 		void onViewEnter(ViewParams *params);
 		void onViewTick();
 		void onViewQuit();
-
-
 	};
 
 }

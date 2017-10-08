@@ -33,6 +33,7 @@ namespace cinetico {
 		enum ViewID {
 			INVALID = -1,
 			LOGIN,
+			USER_PROFILE,
 			EXERCISES,
 			EXERCISE_MANAGEMENT,
 			EXERCISE_REALIZATION

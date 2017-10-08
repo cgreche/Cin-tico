@@ -17,7 +17,17 @@ namespace cinetico {
 
 	void ExerciseRealizationController::onViewEnter(ViewParams *params) {
 		g_cinetico.mainWindow()->setVisible(false);
-		g_cinetico.cinetico3D()->startExercise(*(Exercise*)(*params)["exercise"]);
+
+		Exercise *exercise = NULL;
+		if(params)
+			exercise = (Exercise*)(*params)["exercise"];
+
+		if (exercise) {
+			g_cinetico.cinetico3D()->startExercise(*exercise);
+		}
+		else {
+			g_cinetico.cinetico3D()->startPlayground();
+		}
 	}
 
 	void ExerciseRealizationController::onViewTick() {

@@ -173,7 +173,6 @@ namespace cinetico {
 		labelExerciseName.setText("Nome do exercício");
 		checkPublic.setText("Público");
 		separatorChecks.setText("Partes do corpo que serão utilizadas");
-		separatorChecks.setFont(FontDesc("Arial", 12, FONT_BOLD));
 
 		/*Preenchendo os layouts e checkBoxes do corpo*/
 		std::vector<BodyPointConfig*> bpConfig = g_cinetico.getAllBodyPointsCaps();
@@ -285,7 +284,7 @@ namespace cinetico {
 			}
 		}
 
-		std::string authorName = g_cinetico.currentUser()->username();
+		std::string authorName = g_cinetico.currentUser()->loginName();
 		unsigned long bpFlags = 0;
 		bool isPublic = checkPublic.checked();
 		for (size_t i = 0; i < checkBodyPointList.size(); ++i) {

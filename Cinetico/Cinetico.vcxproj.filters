@@ -432,13 +432,19 @@
     <ClInclude Include="src\entity\dao\ActionDAO.h">
       <Filter>Arquivos de Origem\entity\dao</Filter>
     </ClInclude>
-    <ClInclude Include="src\user-interface\components\PageTitle.h">
+    <ClInclude Include="src\user-interface\UserProfileController.h">
+      <Filter>Arquivos de Origem\user-interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\components\cSeparator.h">
       <Filter>Arquivos de Origem\user-interface\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\user-interface\components\TextBox.h">
+    <ClInclude Include="src\user-interface\components\cTextBox.h">
       <Filter>Arquivos de Origem\user-interface\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\user-interface\components\ComboBox.h">
+    <ClInclude Include="src\user-interface\components\cPageTitle.h">
+      <Filter>Arquivos de Origem\user-interface\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\components\cComboBox.h">
       <Filter>Arquivos de Origem\user-interface\components</Filter>
     </ClInclude>
   </ItemGroup>
@@ -728,13 +734,19 @@
     <ClCompile Include="src\entity\dao\ActionDAO.cpp">
       <Filter>Arquivos de Origem\entity\dao</Filter>
     </ClCompile>
-    <ClCompile Include="src\user-interface\components\PageTitle.cpp">
+    <ClCompile Include="src\user-interface\UserProfileController.cpp">
+      <Filter>Arquivos de Origem\user-interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\components\cSeparator.cpp">
       <Filter>Arquivos de Origem\user-interface\components</Filter>
     </ClCompile>
-    <ClCompile Include="src\user-interface\components\TextBox.cpp">
+    <ClCompile Include="src\user-interface\components\cTextBox.cpp">
       <Filter>Arquivos de Origem\user-interface\components</Filter>
     </ClCompile>
-    <ClCompile Include="src\user-interface\components\ComboBox.cpp">
+    <ClCompile Include="src\user-interface\components\cPageTitle.cpp">
+      <Filter>Arquivos de Origem\user-interface\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\components\cComboBox.cpp">
       <Filter>Arquivos de Origem\user-interface\components</Filter>
     </ClCompile>
   </ItemGroup>
