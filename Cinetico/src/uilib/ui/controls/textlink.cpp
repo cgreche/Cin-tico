@@ -8,10 +8,11 @@
 
 namespace uilib {
 
-	TextLink::TextLink() :Label(*new OSDTextLink(*this))
+	TextLink::TextLink()
+		: Label(*new OSDTextLink(*this))
 	{
 		m_visitcount = 0;
-		m_props = TextLink::Simple;
+		m_properties = (Properties)(Hover | Pushed);
 		m_onClick = NULL;
 
 		m_overColor = m_visitedColor = m_pushedColor = m_textColor;
@@ -49,10 +50,10 @@ namespace uilib {
 		osdRef().setVisitedFont(fd);
 	}
 
-	void TextLink::setProperties(TextLink::Properties props)
+	void TextLink::setProperties(TextLink::Properties properties)
 	{
-		m_props = props;
-		osdRef().setProperties(props);
+		m_properties = properties;
+		osdRef().setProperties(properties);
 	}
 
 }

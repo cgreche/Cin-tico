@@ -1,7 +1,7 @@
 
 //TextLink
 // File: textlink.h
-// Last Edit: 30/06/2017 00:59 (UTC-3)
+// Last Edit: 08/10/2017 08:15 (UTC-3)
 // Author: CGR
 
 #ifndef __UILIB_TEXTLINK_H__
@@ -39,7 +39,7 @@ namespace uilib {
 
 		u32 m_visitcount;
 
-		Properties m_props;
+		Properties m_properties;
 
 		TextLinkFunc m_onClick;
 
@@ -61,7 +61,7 @@ namespace uilib {
 		Font& visitedFont() { return m_visitedFont; }
 		Color pushedColor() const { return m_pushedColor; }
 		Font& pushedFont() { return m_pushedFont; }
-		TextLink::Properties properties() const { return m_props; }
+		TextLink::Properties properties() const { return m_properties; }
 
 		void increaseVisits() { ++m_visitcount; }
 		bool visited() { return m_visitcount > 0; }

@@ -453,13 +453,13 @@ namespace uilib {
 		MSG_HANDLER(OnKillFocus) //0x0008
 			MSG_HANDLER(OnSetCursor) //0x0020
 			MSG_HANDLER(OnNCHitTest) //0x0084
-			virtual LRESULT OnLButtonDown(WPARAM wParam, LPARAM lParam);
-		virtual LRESULT OnLButtonUp(WPARAM wParam, LPARAM lParam);
 
 	protected:
 		virtual void onPaintEvent(PaintEvent &event);
 		virtual void onMouseMoveEvent(MouseEvent &event);
 		virtual void onMouseLeaveEvent(MouseEvent &event);
+		virtual void onMousePressEvent(MouseEvent &event);
+		virtual void onMouseReleaseEvent(MouseEvent &event);
 
 	public:
 		friend class TextLink;

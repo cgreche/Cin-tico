@@ -1,7 +1,7 @@
 
 //OSDLabel
 // File: osdlabel.cpp
-// Last edit: 30/06/2017 20:30 (UTC-3)
+// Last edit: 08/10/2017 08:13 (UTC-3)
 // Author: CGR
 
 #include "..\\..\\uibase.h"
@@ -343,7 +343,7 @@ namespace uilib {
 
 	void OSDTextLink::setProperties(TextLink::Properties props)
 	{
-		if (ref().m_props != props)
+		if (ref().m_properties != props)
 			::InvalidateRect(m_hwnd, NULL, FALSE);
 	}
 
@@ -376,7 +376,7 @@ namespace uilib {
 		Color bgcolor;
 
 		Font *font;
-		if (props & TextLink::Hover && link.osdRef().m_bHover)
+		if (props & TextLink::Hover && m_bHover)
 		{
 			if (props & TextLink::Pushed && m_bClick)
 			{
@@ -491,25 +491,17 @@ namespace uilib {
 		::InvalidateRect(m_hwnd, NULL, TRUE);
 	}
 
-
-	LRESULT OSDTextLink::OnLButtonDown(WPARAM wParam, LPARAM lParam)
-	{
+	void OSDTextLink::onMousePressEvent(MouseEvent &event) {
 		::SetFocus(m_hwnd);
 		::SetCapture(m_hwnd);
 		::InvalidateRect(m_hwnd, NULL, TRUE);
 
 		m_bClick = true;
-
-		/*Return Value
-		If an application processes this message, it should return zero. */
-		return 0;
 	}
 
-
-	LRESULT OSDTextLink::OnLButtonUp(WPARAM wParam, LPARAM lParam)
-	{
+	void OSDTextLink::onMouseReleaseEvent(MouseEvent &event) {
 		if (!m_bClick)
-			return 0;
+			return;
 
 		::ReleaseCapture();
 		RECT rc = { 0,0,0,0 };
@@ -528,10 +520,6 @@ namespace uilib {
 		}
 
 		m_bClick = false;
-
-		/*Return Value
-		If an application processes this message, it should return zero. */
-		return 0;
 	}
 
 }
