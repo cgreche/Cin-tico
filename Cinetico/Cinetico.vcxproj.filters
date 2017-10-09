@@ -447,6 +447,9 @@
     <ClInclude Include="src\user-interface\components\cComboBox.h">
       <Filter>Arquivos de Origem\user-interface\components</Filter>
     </ClInclude>
+    <ClInclude Include="src\entity\core\quaternion.h">
+      <Filter>Arquivos de Origem\entity\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">

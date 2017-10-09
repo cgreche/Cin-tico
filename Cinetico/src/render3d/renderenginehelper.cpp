@@ -153,6 +153,7 @@ namespace render3d {
 		int indexCount = squareCount * 6;
 		int vertexPerRow = terrainGridWidth * 4;
 		Vector3 *vertices = new Vector3[vertexCount];
+		Vector3 *normals = new Vector3[vertexCount];
 		int *indices = new int[indexCount];
 		int i, j;
 		int p;
@@ -169,10 +170,14 @@ namespace render3d {
 			x = xOrigin;
 			z = zOrigin - i * squareSize - 1;
 			for (j = 0; j < terrainGridWidth; ++j) {
-				vertices[p++] = Vector3(x, y, z);
-				vertices[p++] = Vector3(x + squareSize, y, z);
-				vertices[p++] = Vector3(x + squareSize, y, z - (squareSize));
-				vertices[p++] = Vector3(x, y, z - (squareSize));
+				vertices[p] = Vector3(x, y, z);
+				normals[p++] = Vector3(0, 1, 0);
+				vertices[p] = Vector3(x + squareSize, y, z);
+				normals[p++] = Vector3(0, 1, 0);
+				vertices[p] = Vector3(x + squareSize, y, z - (squareSize));
+				normals[p++] = Vector3(0, 1, 0);
+				vertices[p] = Vector3(x, y, z - (squareSize));				
+				normals[p++] = Vector3(0, 1, 0);
 				x += squareSize;
 			}
 		}
@@ -240,7 +245,10 @@ namespace render3d {
 		*/
 
 		int resId = m_renderEngine.newResource(vertexCount, vertices, indexCount, indices);
+		m_renderEngine.resourceData(resId)->setNormals(normals);
+		m_renderEngine.resourceData(resId)->setColors(terrainColors);
 		delete[] vertices;
+		delete[] normals;
 		delete[] indices;
 		delete[] terrainColors;
 		return resId;

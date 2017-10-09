@@ -1,8 +1,8 @@
 
 #include "bodytracker.h"
-
 #ifdef _WIN32
 #include "kinectsensor.h"
+#include "entity/core/quaternion.h"
 #endif
 
 namespace cinetico_core {
@@ -24,7 +24,8 @@ do { \
 		Joint joint = sensor.joint(identifiedBody, kj); \
 		JointOrientation jointOrientation = sensor.jointOrientation(identifiedBody, kj); \
 		Vector3 position = Vector3(-joint.Position.X, joint.Position.Y, joint.Position.Z); \
-		Vector3 orientation = Vector3(jointOrientation.Orientation.x, jointOrientation.Orientation.y, jointOrientation.Orientation.z); \
+		Quaternion quat(jointOrientation.Orientation.x,jointOrientation.Orientation.y,jointOrientation.Orientation.z,jointOrientation.Orientation.w); \
+		Vector3 orientation = quat.toEuler(); \
 		if(p->trackable()) { \
 			p->m_position = position; \
 			p->m_orientation = orientation; \

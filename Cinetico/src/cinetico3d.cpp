@@ -14,6 +14,86 @@ HWND g_world3DWindow = NULL;
 
 #define GRAY_COLOR 80
 
+/*
+Color bodyColors[] =
+{
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+
+	//Back
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+
+	//Top
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+
+	//Bottom
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+
+	//Left
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+
+	//Right
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
+};
+*/
+
+Color bodyColors[] =
+{
+	//Front
+	Color(255,0,0),
+	Color(255,0,0),
+	Color(255,0,0),
+	Color(255,0,0),
+
+	//Back
+	Color(0,255,0),
+	Color(0,255,0),
+	Color(0,255,0),
+	Color(0,255,0),
+
+	//Top
+	Color(255,255,255),
+	Color(255,255,255),
+	Color(255,255,255),
+	Color(255,255,255),
+
+	//Bottom
+	Color(0,0,0),
+	Color(0,0,0),
+	Color(0,0,0),
+	Color(0,0,0),
+
+	//Left
+	Color(0,0,255),
+	Color(0,0,255),
+	Color(0,0,255),
+	Color(0,0,255),
+
+	//Right
+	Color(255,0,255),
+	Color(255,0,255),
+	Color(255,0,255),
+	Color(255,0,255),
+};
+
+
 namespace cinetico {
 
 	Cinetico3D::Cinetico3D(Cinetico &cinetico)
@@ -92,7 +172,7 @@ namespace cinetico {
 	int resFontVerdana;
 
 
-#define HEAD_SIZE (4.f/10.f)
+#define HEAD_SIZE (4.f/8.f)
 #define FOOT_SIZE HEAD_SIZE/(2.f)
 #define HAND_SIZE HEAD_SIZE/(2.f)
 #define ELBOW_SIZE HEAD_SIZE/(6.f)
@@ -130,50 +210,18 @@ namespace cinetico {
 		BodyResourceIds &resId = g_bodyResourceIds;
 		BodyInstanceIds &instId = g_bodyInstanceIds;
 
-		Color bodyColors[] =
-		{
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-
-			//Back
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-
-			//Top
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-
-			//Bottom
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-
-			//Left
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-
-			//Right
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-			Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-		};
-
 		resId.head = renderEngineHelper->createCube(HEAD_SIZE);
+		renderEngine->resourceData(resId.head)->setColors(bodyColors);
 		resId.spine = renderEngineHelper->createRectangularPrism(HEAD_SIZE / 3.5f, HEAD_SIZE * 1.5, HEAD_SIZE / 3.5f);
+		renderEngine->resourceData(resId.spine)->setColors(bodyColors);
 		resId.elbow = renderEngineHelper->createCube(ELBOW_SIZE);
+		renderEngine->resourceData(resId.elbow)->setColors(bodyColors);
 		resId.hand = renderEngineHelper->createCube(HAND_SIZE);
+		renderEngine->resourceData(resId.hand)->setColors(bodyColors);
 		resId.knee = renderEngineHelper->createCube(KNEE_SIZE);
+		renderEngine->resourceData(resId.knee)->setColors(bodyColors);
 		resId.foot = renderEngineHelper->createCube(FOOT_SIZE);
+		renderEngine->resourceData(resId.foot)->setColors(bodyColors);
 
 		instId.head = renderEngine->newResourceInstance(resId.head);
 		instId.spine = renderEngine->newResourceInstance(resId.spine);
@@ -194,7 +242,9 @@ namespace cinetico {
 			return;
 		instance = renderEngine->resourceInstance(instId);
 		cinetico_core::Vector3 pos = body->bodyPoint(bodyPoint)->position();
+		cinetico_core::Vector3 rot = body->bodyPoint(bodyPoint)->orientation();
 		instance->setPos(render3d::Vector3(pos.x()*2, pos.y()*2, pos.z()*2));
+		instance->setRot(render3d::Vector3(rot.x(), rot.y(), rot.z()));
 	}
 
 	void Cinetico3D::updateBody() {
@@ -380,39 +430,6 @@ namespace cinetico {
 			Color(255,0,0),
 			Color(255,0,0),
 			Color(255,0,0),
-
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
 
 			//Back
 			Color(0,255,0),
@@ -744,7 +761,7 @@ namespace cinetico {
 		//renderEngine->drawResource(instanceWall);
 		
 		//renderEngine->drawResource(instanceTriangle);
-		renderEngine->drawResource(instanceCube);
+		//renderEngine->drawResource(instanceCube);
 		//renderEngine->drawResource(instanceTriangleType2);
 		//renderEngine->drawResource(instanceCircle);
 		//renderEngine->drawResource(instanceCircle2);

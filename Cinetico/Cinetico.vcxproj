@@ -37,6 +37,7 @@
     <ClInclude Include="src\entity\core\HandHandler.h" />
     <ClInclude Include="src\entity\core\MovementAction.h" />
     <ClInclude Include="src\entity\core\PositionAction.h" />
+    <ClInclude Include="src\entity\core\quaternion.h" />
     <ClInclude Include="src\entity\core\vector3.h" />
     <ClInclude Include="src\entity\dao\ActionDAO.h" />
     <ClInclude Include="src\entity\dao\ExerciseDAO.h" />
