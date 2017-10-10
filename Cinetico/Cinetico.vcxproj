@@ -23,6 +23,7 @@
     <ClInclude Include="src\cinetico.h" />
     <ClInclude Include="src\cinetico3d.h" />
     <ClInclude Include="src\cineticodb.h" />
+    <ClInclude Include="src\colladaparser.h" />
     <ClInclude Include="src\database\database.h" />
     <ClInclude Include="src\database\resultset.h" />
     <ClInclude Include="src\database\sqlite\sqlitedatabase.h" />
@@ -54,6 +55,53 @@
     <ClInclude Include="src\lib\d3dx9shape.h" />
     <ClInclude Include="src\lib\d3dx9tex.h" />
     <ClInclude Include="src\lib\d3dx9xof.h" />
+    <ClInclude Include="src\lib\libxml\c14n.h" />
+    <ClInclude Include="src\lib\libxml\catalog.h" />
+    <ClInclude Include="src\lib\libxml\chvalid.h" />
+    <ClInclude Include="src\lib\libxml\debugXML.h" />
+    <ClInclude Include="src\lib\libxml\dict.h" />
+    <ClInclude Include="src\lib\libxml\DOCBparser.h" />
+    <ClInclude Include="src\lib\libxml\encoding.h" />
+    <ClInclude Include="src\lib\libxml\entities.h" />
+    <ClInclude Include="src\lib\libxml\globals.h" />
+    <ClInclude Include="src\lib\libxml\hash.h" />
+    <ClInclude Include="src\lib\libxml\HTMLparser.h" />
+    <ClInclude Include="src\lib\libxml\HTMLtree.h" />
+    <ClInclude Include="src\lib\libxml\list.h" />
+    <ClInclude Include="src\lib\libxml\nanoftp.h" />
+    <ClInclude Include="src\lib\libxml\nanohttp.h" />
+    <ClInclude Include="src\lib\libxml\parser.h" />
+    <ClInclude Include="src\lib\libxml\parserInternals.h" />
+    <ClInclude Include="src\lib\libxml\pattern.h" />
+    <ClInclude Include="src\lib\libxml\relaxng.h" />
+    <ClInclude Include="src\lib\libxml\SAX.h" />
+    <ClInclude Include="src\lib\libxml\SAX2.h" />
+    <ClInclude Include="src\lib\libxml\schemasInternals.h" />
+    <ClInclude Include="src\lib\libxml\schematron.h" />
+    <ClInclude Include="src\lib\libxml\threads.h" />
+    <ClInclude Include="src\lib\libxml\tree.h" />
+    <ClInclude Include="src\lib\libxml\uri.h" />
+    <ClInclude Include="src\lib\libxml\valid.h" />
+    <ClInclude Include="src\lib\libxml\xinclude.h" />
+    <ClInclude Include="src\lib\libxml\xlink.h" />
+    <ClInclude Include="src\lib\libxml\xmlautomata.h" />
+    <ClInclude Include="src\lib\libxml\xmlerror.h" />
+    <ClInclude Include="src\lib\libxml\xmlexports.h" />
+    <ClInclude Include="src\lib\libxml\xmlIO.h" />
+    <ClInclude Include="src\lib\libxml\xmlmemory.h" />
+    <ClInclude Include="src\lib\libxml\xmlmodule.h" />
+    <ClInclude Include="src\lib\libxml\xmlreader.h" />
+    <ClInclude Include="src\lib\libxml\xmlregexp.h" />
+    <ClInclude Include="src\lib\libxml\xmlsave.h" />
+    <ClInclude Include="src\lib\libxml\xmlschemas.h" />
+    <ClInclude Include="src\lib\libxml\xmlschemastypes.h" />
+    <ClInclude Include="src\lib\libxml\xmlstring.h" />
+    <ClInclude Include="src\lib\libxml\xmlunicode.h" />
+    <ClInclude Include="src\lib\libxml\xmlversion.h" />
+    <ClInclude Include="src\lib\libxml\xmlwriter.h" />
+    <ClInclude Include="src\lib\libxml\xpath.h" />
+    <ClInclude Include="src\lib\libxml\xpathInternals.h" />
+    <ClInclude Include="src\lib\libxml\xpointer.h" />
     <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3.h" />
     <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3ext.h" />
     <ClInclude Include="src\mainwindow.h" />
@@ -146,6 +194,7 @@
   <ItemGroup>
     <ClCompile Include="src\bodytracker.cpp" />
     <ClCompile Include="src\cineticodb.cpp" />
+    <ClCompile Include="src\colladaparser.cpp" />
     <ClCompile Include="src\database\sqlite\sqlitedatabase.cpp" />
     <ClCompile Include="src\database\sqlite\sqliteresultset.cpp" />
     <ClCompile Include="src\database\sqlite\sqlitestatement.cpp" />
@@ -162,6 +211,7 @@
     <ClCompile Include="src\entity\dao\UserProfileDAO.cpp" />
     <ClCompile Include="src\entity\user\UserProfile.cpp" />
     <ClCompile Include="src\kinectsensor.cpp" />
+    <ClCompile Include="src\lib\sqlite-amalgamation-3200100\shell.c" />
     <ClCompile Include="src\lib\sqlite-amalgamation-3200100\sqlite3.c" />
     <ClCompile Include="src\mainwindow.cpp" />
     <ClCompile Include="src\render3d\d3d9engine.cpp" />
@@ -246,10 +296,10 @@
     <ClCompile Include="src\cinetico3d.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\lib\d3dx9math.inl" />
+    <Manifest Include="src\uilib\ui\osd\windows\rfuia.Manifest" />
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="src\uilib\ui\osd\windows\rfuia.Manifest" />
+    <None Include="src\lib\d3dx9math.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -304,11 +354,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)src;$(KINECTSDK20_DIR)inc;$(ProjectDir)src\lib\sqlite-amalgamation-3200100;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)src;$(ProjectDir)src\lib;$(ProjectDir)src\lib\libxml;$(KINECTSDK20_DIR)inc;$(ProjectDir)src\lib\sqlite-amalgamation-3200100;$(IncludePath)</IncludePath>
     <LibraryPath>$(MSBuildProgramFiles32)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(KINECTSDK20_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)src;$(ProjectDir)src\lib\sqlite-amalgamation-3200100;$(KINECTSDK20_DIR)inc;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)src;$(ProjectDir)src\lib;$(ProjectDir)src\lib\libxml;$(ProjectDir)src\lib\sqlite-amalgamation-3200100;$(KINECTSDK20_DIR)inc;$(IncludePath)</IncludePath>
     <LibraryPath>$(MSBuildProgramFiles32)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(KINECTSDK20_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

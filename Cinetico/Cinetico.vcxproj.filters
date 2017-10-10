@@ -79,6 +79,12 @@
     <Filter Include="Arquivos de Origem\user-interface\components">
       <UniqueIdentifier>{34cda9e9-215c-479c-ac80-5eacab16b4b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Arquivos de Origem\lib\sqlite-amalgamation-3200100">
+      <UniqueIdentifier>{14c57f5a-6369-4491-9660-d42f9baa55af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\lib\libxml">
+      <UniqueIdentifier>{7a7ad390-ab54-41d9-b3c7-4508f602e2ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\render\camera.h">
@@ -123,12 +129,6 @@
     <ClInclude Include="src\database\sqlstatement.h">
       <Filter>Arquivos de Origem\database</Filter>
     </ClInclude>
-    <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3.h">
-      <Filter>Arquivos de Origem\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3ext.h">
-      <Filter>Arquivos de Origem\lib</Filter>
-    </ClInclude>
     <ClInclude Include="src\render3d\camera.h">
       <Filter>Arquivos de Origem\render3d</Filter>
     </ClInclude>
@@ -158,36 +158,6 @@
     </ClInclude>
     <ClInclude Include="src\render3d\vector3.h">
       <Filter>Arquivos de Origem\render3d</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\d3dx9.h">
-      <Filter>Arquivos de Origem\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\d3dx9anim.h">
-      <Filter>Arquivos de Origem\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\d3dx9core.h">
-      <Filter>Arquivos de Origem\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\d3dx9effect.h">
-      <Filter>Arquivos de Origem\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\d3dx9math.h">
-      <Filter>Arquivos de Origem\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\d3dx9mesh.h">
-      <Filter>Arquivos de Origem\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\d3dx9shader.h">
-      <Filter>Arquivos de Origem\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\d3dx9shape.h">
-      <Filter>Arquivos de Origem\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\d3dx9tex.h">
-      <Filter>Arquivos de Origem\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\d3dx9xof.h">
-      <Filter>Arquivos de Origem\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\database\resultset.h">
       <Filter>Arquivos de Origem\database</Filter>
@@ -450,13 +420,190 @@
     <ClInclude Include="src\entity\core\quaternion.h">
       <Filter>Arquivos de Origem\entity\core</Filter>
     </ClInclude>
+    <ClInclude Include="src\colladaparser.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9anim.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9core.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9effect.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9math.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9mesh.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9shader.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9shape.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9tex.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\d3dx9xof.h">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3.h">
+      <Filter>Arquivos de Origem\lib\sqlite-amalgamation-3200100</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3ext.h">
+      <Filter>Arquivos de Origem\lib\sqlite-amalgamation-3200100</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\c14n.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\catalog.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\chvalid.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\debugXML.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\dict.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\DOCBparser.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\encoding.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\entities.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\globals.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\hash.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\HTMLparser.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\HTMLtree.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\list.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\nanoftp.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\nanohttp.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\parser.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\parserInternals.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\pattern.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\relaxng.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\SAX.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\SAX2.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\schemasInternals.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\schematron.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\threads.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\tree.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\uri.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\valid.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xinclude.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xlink.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlautomata.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlerror.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlexports.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlIO.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlmemory.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlmodule.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlreader.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlregexp.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlsave.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlschemas.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlschemastypes.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlstring.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlunicode.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlversion.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xmlwriter.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xpath.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xpathInternals.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\xpointer.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
       <Filter>Arquivos de Origem\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\sqlite-amalgamation-3200100\sqlite3.c">
-      <Filter>Arquivos de Origem\lib</Filter>
     </ClCompile>
     <ClCompile Include="src\render3d\d3d9engine.cpp">
       <Filter>Arquivos de Origem\render3d</Filter>
@@ -752,15 +899,24 @@
     <ClCompile Include="src\user-interface\components\cComboBox.cpp">
       <Filter>Arquivos de Origem\user-interface\components</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\lib\d3dx9math.inl">
-      <Filter>Arquivos de Origem\lib</Filter>
-    </None>
+    <ClCompile Include="src\colladaparser.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lib\sqlite-amalgamation-3200100\shell.c">
+      <Filter>Arquivos de Origem\lib\sqlite-amalgamation-3200100</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lib\sqlite-amalgamation-3200100\sqlite3.c">
+      <Filter>Arquivos de Origem\lib\sqlite-amalgamation-3200100</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="src\uilib\ui\osd\windows\rfuia.Manifest">
       <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
     </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\lib\d3dx9math.inl">
+      <Filter>Arquivos de Origem\lib</Filter>
+    </None>
   </ItemGroup>
 </Project>
