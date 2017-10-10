@@ -67,6 +67,7 @@
     <ClInclude Include="src\lib\libxml\hash.h" />
     <ClInclude Include="src\lib\libxml\HTMLparser.h" />
     <ClInclude Include="src\lib\libxml\HTMLtree.h" />
+    <ClInclude Include="src\lib\libxml\iconv.h" />
     <ClInclude Include="src\lib\libxml\list.h" />
     <ClInclude Include="src\lib\libxml\nanoftp.h" />
     <ClInclude Include="src\lib\libxml\nanohttp.h" />
@@ -355,11 +356,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(ProjectDir)src;$(ProjectDir)src\lib;$(ProjectDir)src\lib\libxml;$(KINECTSDK20_DIR)inc;$(ProjectDir)src\lib\sqlite-amalgamation-3200100;$(IncludePath)</IncludePath>
-    <LibraryPath>$(MSBuildProgramFiles32)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(KINECTSDK20_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(MSBuildProgramFiles32)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(KINECTSDK20_DIR)Lib\x86;$(ProjectDir)src\lib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)src;$(ProjectDir)src\lib;$(ProjectDir)src\lib\libxml;$(ProjectDir)src\lib\sqlite-amalgamation-3200100;$(KINECTSDK20_DIR)inc;$(IncludePath)</IncludePath>
-    <LibraryPath>$(MSBuildProgramFiles32)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(KINECTSDK20_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(MSBuildProgramFiles32)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(KINECTSDK20_DIR)Lib\x86;$(ProjectDir)src\lib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -376,6 +377,8 @@
     <Link>
       <StackCommitSize>
       </StackCommitSize>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>iconv.lib;libxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -399,6 +402,8 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>iconv.lib;libxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

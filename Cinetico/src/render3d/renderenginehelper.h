@@ -27,6 +27,8 @@ namespace render3d {
 		int loadSprite();
 		int createText(const char *text);
 		int createText(const char *text, int x, int y, int width, int height);
+
+		int loadModel(const char* fileName);
 	};
 
 }

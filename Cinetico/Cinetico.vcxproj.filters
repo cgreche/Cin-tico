@@ -85,6 +85,9 @@
     <Filter Include="Arquivos de Origem\lib\libxml">
       <UniqueIdentifier>{7a7ad390-ab54-41d9-b3c7-4508f602e2ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Arquivos de Origem\lib\lib">
+      <UniqueIdentifier>{de0ef2b0-0548-4819-92c7-71a6ed8d3afd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\render\camera.h">
@@ -598,6 +601,9 @@
       <Filter>Arquivos de Origem\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xpointer.h">
+      <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\libxml\iconv.h">
       <Filter>Arquivos de Origem\lib\libxml</Filter>
     </ClInclude>
   </ItemGroup>

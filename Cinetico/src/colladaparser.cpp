@@ -67,38 +67,48 @@ namespace cinetico {
 		return NULL;
 	}
 
+	void ColladaParser::parseFloat3Array(xmlNodePtr curNode) {
+		xmlChar *content = curNode->content;
+	}
+
 
 	void ColladaParser::readGeometry(xmlNodePtr rootNode) {
 		xmlNodePtr node;
 
-		node = getFirstChildNode(node,"library_geometries");
+		node = getFirstChildNode(rootNode,"library_geometries");
 		if (node) {
 			node = getFirstChildNode(node, "geometry");
 			do {
 				xmlNodePtr meshNode = getFirstChildNode(node, "mesh");
 				if (meshNode) {
-					xmlNodePtr child = getFirstChildNode(node, "vertices");
+					xmlNodePtr child = getFirstChildNode(meshNode, "vertices");
 					if (child) {
-						xmlChar *prop = xmlGetProp(child, "source");
-						if (prop) {
-							child = getFirstChildNode(node, "source");
-							while (child) {
-								xmlChar *prop2 = xmlGetProp(child, "id");
-								if (prop2) {
-									if (strcmp(XMLCHAR2CHAR(prop), XMLCHAR2CHAR(prop2)) == 0) {
-										child = getFirstChildNode(node, "float_array");
-										if (child) {
-
+						child = getFirstChildNode(child, "input");
+						if (child) {
+							xmlChar *prop = xmlGetProp(child, XMLCHAR("source"));
+							if (prop) {
+								child = getFirstChildNode(meshNode, "source");
+								while (child) {
+									xmlChar *prop2 = xmlGetProp(child, XMLCHAR("id"));
+									if (prop2) {
+										if (strcmp(XMLCHAR2CHAR(&prop[1]), XMLCHAR2CHAR(prop2)) == 0) {
+											child = getFirstChildNode(child, "float_array");
+											if (child) {
+												child = child->children;
+												if (child->type == XML_TEXT_NODE) {
+													parseFloat3Array();
+												}
+											}
 										}
+
+										xmlFree(prop2);
+										break;
 									}
 
-									xmlFree(prop2);
-									break;
+									child = getNextNode(node, "source");
 								}
-
-								child = getNextNode(node, "source");
+								xmlFree(prop);
 							}
-							xmlFree(prop);
 						}
 					}
 				}
@@ -113,14 +123,12 @@ namespace cinetico {
 		xmlDocPtr doc = NULL;
 		xmlNodePtr rootElement = NULL;
 
-		/*parse the file and get the DOM */
 		doc = xmlReadFile(fileName, NULL, 0);
 		if (doc == NULL) {
 			//	printf("Error: could not parse file %s\n", fullXMLFilePath);
 			return;
 		}
 
-		/*Get the root element node */
 		rootElement = xmlDocGetRootElement(doc);
 		if (rootElement == NULL) {
 			printf("%s File is empty.\n", fileName);
@@ -138,5 +146,4 @@ namespace cinetico {
 
 		return;
 	}
-
 }

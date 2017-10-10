@@ -233,6 +233,8 @@ namespace cinetico {
 		instId.rightKnee = renderEngine->newResourceInstance(resId.knee);
 		instId.leftFoot = renderEngine->newResourceInstance(resId.foot);
 		instId.rightFoot = renderEngine->newResourceInstance(resId.foot);
+		
+		renderEngineHelper->loadModel("F:\\old\\MODEL.dae");
 	}
 
 	void Cinetico3D::mapBodyPointToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint) {

@@ -4,6 +4,8 @@
 #include "renderengine.h"
 #include "renderenginehelper.h"
 
+#include "colladaparser.h"
+
 namespace render3d {
 
 	int RenderEngineHelper::createQuad(float width, float length) {
@@ -254,4 +256,9 @@ namespace render3d {
 		return resId;
 	}
 
+	int RenderEngineHelper::loadModel(const char *fileName) {
+		cinetico::ColladaParser parser;
+		parser.parse(fileName);
+		return 0;
+	}
 }
