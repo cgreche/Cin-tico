@@ -182,14 +182,14 @@ namespace cinetico {
 				xmlFree(propId);
 			}
 
-			child = getNextNode(child, "source");
+child = getNextNode(child, "source");
 		}
 	}
 
 	void ColladaParser::readColors(xmlNodePtr meshNode, const char *id, ParsingModel* model) {
 		if (!meshNode)
 			return;
-		
+
 		xmlNodePtr child = getFirstChildNode(meshNode, "source");
 		while (child) {
 			xmlChar *propId = xmlGetProp(child, XMLCHAR("id"));
@@ -220,12 +220,18 @@ namespace cinetico {
 		std::string texCoordId;
 		std::string colorId;
 
+
 		node = getFirstChildNode(rootNode, "library_geometries");
 		if (node) {
 			node = getFirstChildNode(node, "geometry");
 			if (node) {
 				do {
 					ParsingModel *model = new ParsingModel();
+					int vertexOffset = 0;
+					int normalOffset = -1;
+					int texCoordOffset = -1;
+					int colorOffset = -1;
+					int inputCount = 1; //VERTEX already counted
 					xmlNodePtr meshNode = getFirstChildNode(node, "mesh");
 					if (meshNode) {
 						xmlNodePtr triangleChild = getFirstChildNode(meshNode, "triangles");
@@ -235,18 +241,28 @@ namespace cinetico {
 								xmlChar *prop = xmlGetProp(child, XMLCHAR("semantic"));
 								if (prop) {
 									xmlChar *propSource = xmlGetProp(child, XMLCHAR("source"));
-									if (propSource) {
+									xmlChar *propOffset = xmlGetProp(child, XMLCHAR("offset"));
+									if (propSource && propOffset) {
+										int offs;
+										sscanf(XMLCHAR2CHAR(propOffset), "%d", &offs);
 										if (strcmp(XMLCHAR2CHAR(prop), "NORMAL") == 0) {
 											normalId = XMLCHAR2CHAR(&propSource[1]);
+											normalOffset = offs;
+											++inputCount;
 										}
-										else if (strcmp(XMLCHAR2CHAR(prop), "TEXCOORD")) {
+										else if (strcmp(XMLCHAR2CHAR(prop), "TEXCOORD") == 0) {
 											texCoordId = XMLCHAR2CHAR(&propSource[1]);
+											texCoordOffset = offs;
+											++inputCount;
 										}
 										else if (strcmp(XMLCHAR2CHAR(prop), "COLOR") == 0) {
 											colorId = XMLCHAR2CHAR(&propSource[1]);
+											colorOffset = offs;
+											++inputCount;
 										}
 
-										xmlFree(propSource);
+										XMLCHAR_SAFEFREE(propSource);
+										XMLCHAR_SAFEFREE(propOffset);
 									}
 
 									xmlFree(prop);
@@ -262,7 +278,12 @@ namespace cinetico {
 							}
 						}
 
-						readVertices(meshNode,model);
+						model->vertexOffset = vertexOffset;
+						model->normalOffset = normalOffset;
+						model->texCoordOffset = texCoordOffset;
+						model->colorOffset = colorOffset;
+						model->inputCount = inputCount;
+						readVertices(meshNode, model);
 						if (*normalId.c_str())
 							readNormals(meshNode, normalId.c_str(), model);
 						if (*texCoordId.c_str(), model)
@@ -277,8 +298,138 @@ namespace cinetico {
 		}
 	}
 
-	ResourceData *ColladaParser::assembleModel() {
+	int findDuplicateVertex(std::vector<Vector3> &vertices, Vector3 vertex) {
+		for (unsigned int i = 0; i < vertices.size(); ++i) {
+			if (vertices[i] == vertex)
+				return i;
+		}
+		return -1;
+	}
+
+	int ColladaParser::assembleModel() {
 		ParsingModel *model = m_models[2];
+
+		std::vector<Vector3> vertices;
+		std::vector<int> indices;
+		std::vector<Vector3> normals;
+		std::vector<bool> bools;
+
+		unsigned int i;
+
+		int count = model->dataIndex.size() / model->inputCount;
+		int vertOffs = model->vertexOffset;
+		int normalOffs = model->normalOffset;
+		int texCoordOffs = model->texCoordOffset;
+		int colorOffs = model->colorOffset;
+
+		if (vertOffs >= 0) {
+			for (i = 0; i < model->vertices.size()/3; ++i) {
+				Vector3 vertex;
+				vertex.setX(model->vertices[i * 3 + 0]);
+				vertex.setY(model->vertices[i * 3 + 2]);
+				vertex.setZ(-model->vertices[i * 3 + 1]);
+				bools.push_back(false);
+				vertices.push_back(vertex);
+				normals.push_back(Vector3(0, 0, 0));
+			}
+
+			for (i = 0; i < count; ++i) {
+
+				if (i*model->inputCount + vertOffs >= model->dataIndex.size())
+					int a = 1;
+
+				if (i*model->inputCount + normalOffs >= model->dataIndex.size())
+					int a = 1;
+
+				int vertIndex = model->dataIndex[i*model->inputCount + vertOffs];
+				int normalIndex = model->dataIndex[i*model->inputCount + normalOffs];
+				//int texCoordIndex = model->dataIndex[i*model->inputCount + texCoordOffs];
+				//int colorIndex = model->dataIndex[i*model->inputCount + colorOffs];
+				
+
+				if (vertIndex * 3 >= model->vertices.size()) {
+					int a = 1;
+				}
+
+				if (normalIndex * 3 >= model->normals.size()) {
+					int a = 1;
+				}
+
+				float vertX = model->vertices[vertIndex * 3];
+				float vertY = model->vertices[vertIndex * 3 + 2];
+				float vertZ = -model->vertices[vertIndex * 3 + 1];
+
+				float normalX = model->normals[normalIndex * 3];
+				float normalY = model->normals[normalIndex * 3 + 1];
+				float normalZ = model->normals[normalIndex * 3 + 2];
+
+				Vector3 vertex = Vector3(vertX, vertY, vertZ);
+				Vector3 normal = Vector3(normalX, normalY, normalZ);
+				
+				if (!bools[vertIndex]) {
+					normals[vertIndex] = normal;
+					indices.push_back(vertIndex);
+					bools[vertIndex] = true;
+				}
+				else {
+					if (normals[vertIndex] == normal) {
+						indices.push_back(vertIndex);
+					}
+					else {
+						vertices.push_back(vertex);
+						normals.push_back(normal);
+						bools.push_back(true);
+						indices.push_back(vertices.size()-1);
+					}
+				}
+				
+				
+				/*
+				int duplicateIndex = findDuplicateVertex(vertices,vertex);
+				if(duplicateIndex < 0) {
+					//different vertex/normal/texcoord
+					vertices.push_back(vertex);
+					normals.push_back(normal);
+					indices.push_back(vertIndex);
+				}
+				else {
+					if (normals[duplicateIndex] == normal) {
+						indices.push_back(duplicateIndex);
+					}
+					else {
+						vertices.push_back(vertex);
+						normals.push_back(normal);
+						indices.push_back(vertices.size()-1);
+					}
+				}
+				*/
+				
+			}
+		}
+
+		int indicesCount = indices.size();
+
+		
+		Vector3 *outVertices = new Vector3[vertices.size()];
+		Vector3 *outNormals = new Vector3[vertices.size()];
+		int *outIndices = new int[indices.size()];
+		for (i = 0; i < vertices.size(); ++i) {
+			outVertices[i] = vertices[i];
+			outNormals[i] = normals[i];
+		}
+		for (i = 0; i < indices.size(); ++i) {
+			outIndices[i] = indices[i];
+		}
+
+		int resId = m_engine.newResource(vertices.size(), outVertices, indices.size(), outIndices);
+		ResourceData *data = m_engine.resourceData(resId);
+		data->setNormals(outNormals);
+
+		delete[] outVertices;
+		delete[] outNormals;
+		delete[] outIndices;
+
+		return resId;
 	}
 
 
@@ -286,8 +437,11 @@ namespace cinetico {
 		: m_engine(engine) {
 
 	}
-	void ColladaParser::parse(const char *fileName)
+
+	int ColladaParser::parse(const char *fileName)
 	{
+		int resId = -1;
+
 		//init
 		xmlDocPtr doc = NULL;
 		xmlNodePtr rootElement = NULL;
@@ -295,7 +449,7 @@ namespace cinetico {
 		doc = xmlReadFile(fileName, NULL, 0);
 		if (doc == NULL) {
 			//	printf("Error: could not parse file %s\n", fullXMLFilePath);
-			return;
+			return -1;
 		}
 
 		rootElement = xmlDocGetRootElement(doc);
@@ -305,14 +459,15 @@ namespace cinetico {
 		else {
 			if (rootElement->type != XML_ELEMENT_NODE || xmlStrcmp(rootElement->name, XMLCHAR("COLLADA")) != 0) {
 				//invalid file
-				return;
+				return -1;
 			}
 
 			readModel(rootElement);
+			resId = assembleModel();
 
 			xmlFreeDoc(doc);
 		}
 
-		return;
+		return resId;
 	}
 }

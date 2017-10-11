@@ -132,6 +132,10 @@ namespace cinetico {
 	int resCircle;
 	int resTerrain;
 	int resPrism;
+	int resModel;
+
+
+	int instanceModel;
 
 	int instanceQuad1;
 	int instanceQuad2;
@@ -162,6 +166,7 @@ namespace cinetico {
 	int currentCameraId = cam1;
 
 	int terrainId;
+
 
 #define NUM_CUBES 1000
 
@@ -233,8 +238,6 @@ namespace cinetico {
 		instId.rightKnee = renderEngine->newResourceInstance(resId.knee);
 		instId.leftFoot = renderEngine->newResourceInstance(resId.foot);
 		instId.rightFoot = renderEngine->newResourceInstance(resId.foot);
-		
-		renderEngineHelper->loadModel("MODEL.dae");
 	}
 
 	void Cinetico3D::mapBodyPointToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint) {
@@ -470,6 +473,9 @@ namespace cinetico {
 		renderEngine->resourceData(resCircle)->setColors(circleColors);
 		resPrism = renderEngineHelper->createRectangularPrism(0.3f, 2.f, 0.5f);
 		renderEngine->resourceData(resPrism)->setColors(cubeColors);
+
+		resModel = renderEngineHelper->loadModel("MODEL.dae");
+		instanceModel = renderEngine->newResourceInstance(resModel);
 
 		instanceQuad1 = renderEngine->newResourceInstance(resQuad1);
 		renderEngine->resourceInstance(instanceQuad1)->setPos(render3d::Vector3(10, 10, 0));
@@ -772,6 +778,8 @@ namespace cinetico {
 		for(int i = 0; i < NUM_CUBES; ++i) {
 	//		d3d9.drawResource(instancedCubes[i]);
 		}
+
+		renderEngine->drawResource(instanceModel);
 
 
 		if (m_playingExercise) {

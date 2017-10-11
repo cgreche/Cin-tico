@@ -16,10 +16,13 @@ namespace cinetico {
 			std::vector<float> texCoords;
 			std::vector<float> colors;
 			std::vector<int> dataIndex;
-			int vertexIndex;
-			int normalIndex;
-			int texCoordIndex;
-			int colorIndex;
+
+			//offsets in dataIndex
+			int vertexOffset;
+			int normalOffset;
+			int texCoordOffset;
+			int colorOffset;
+			int inputCount;
 		};
 
 		RenderEngine &m_engine;
@@ -39,11 +42,11 @@ namespace cinetico {
 		void readTextureCoords(xmlNodePtr meshNode, const char *id, ParsingModel* model);
 		void readColors(xmlNodePtr meshNode, const char *id, ParsingModel* model);
 
-		ResourceData *assembleModel();
+		int assembleModel();
 
 		public:
 			ColladaParser(RenderEngine &engine);
-			void parse(const char *fileName);
+			int parse(const char *fileName);
 	};
 
 }

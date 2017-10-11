@@ -33,6 +33,11 @@ namespace render3d {
 		float x() const { return m_x; }
 		float y() const { return m_y; }
 		float z() const { return m_z; }
+
+
+		bool operator==(Vector3& right) {
+			return right.m_x == m_x && right.m_y == m_y && right.m_z == m_z;
+		}
 	};
 
 }

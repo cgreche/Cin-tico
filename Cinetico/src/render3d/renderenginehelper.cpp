@@ -257,8 +257,8 @@ namespace render3d {
 	}
 
 	int RenderEngineHelper::loadModel(const char *fileName) {
-		cinetico::ColladaParser parser;
-		parser.parse(fileName);
-		return 0;
+		cinetico::ColladaParser parser(m_renderEngine);
+		int resId = parser.parse(fileName);
+		return resId;
 	}
 }
