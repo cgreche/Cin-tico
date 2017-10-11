@@ -11,13 +11,14 @@ namespace cinetico {
 	}
 
 	void UserProfileDAO::create(UserProfile &user) {
-		const char *sql = "INSERT INTO USER_PROFILE(login_name,password,user_name,creation_time) VALUES(?,?,?);";
+		const char *sql = "INSERT INTO USER_PROFILE(login_name,password,user_name,creation_date) VALUES(?,?,?,?);";
 
 		SQLStatement *stmt;
 		stmt = m_db.prepare(sql);
 		stmt->bind(1, user.loginName()); //safer to use the created user properties
 		stmt->bind(2, user.password());
-		stmt->bind(3, (int)user.creationDate());
+		stmt->bind(3, user.name());
+		stmt->bind(4, (int)user.creationDate());
 		int rc = stmt->execute();
 		if (rc != 0) {
 			//todo
@@ -41,7 +42,7 @@ namespace cinetico {
 	}
 
 	std::vector<UserProfile *> UserProfileDAO::getAllUsers() {
-		const char *sql = "SELECT * FROM USER_PROFILE;";
+		const char *sql = "SELECT * FROM USER_PROFILE WHERE activated = 1;";
 		SQLStatement *stmt;
 		std::vector<UserProfile *> userList;
 		stmt = m_db.prepare(sql);
@@ -58,7 +59,7 @@ namespace cinetico {
 	}
 
 	UserProfile *UserProfileDAO::getByLoginName(const char *loginName) {
-		const char *sql = "SELECT * FROM USER_PROFILE WHERE login_name = ?;";
+		const char *sql = "SELECT * FROM USER_PROFILE WHERE login_name = ? AND activated = 1;";
 		UserProfile *user = NULL;
 		SQLStatement *stmt = m_db.prepare(sql);
 		stmt->bind(1, loginName);
@@ -72,7 +73,7 @@ namespace cinetico {
 	}
 
 	void UserProfileDAO::exclude(UserProfile &user) {
-		const char *sql = "DELETE FROM USER_PROFILE WHERE login_name = ?;";
+		const char *sql = "UPDATE USER_PROFILE SET activated = 0 WHERE login_name = ?;";
 		SQLStatement *stmt;
 		stmt = m_db.prepare(sql);
 		stmt->bind(1, user.loginName());
@@ -84,7 +85,7 @@ namespace cinetico {
 	}
 
 	void UserProfileDAO::exclude(const char *loginName) {
-		const char *sql = "DELETE FROM USER_PROFILE WHERE login_name = ?;";
+		const char *sql = "UPDATE USER_PROFILE SET activated = 0 WHERE login_name = ?;";
 		SQLStatement *stmt;
 		stmt = m_db.prepare(sql);
 		stmt->bind(1, loginName);

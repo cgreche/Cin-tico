@@ -86,10 +86,23 @@ namespace cinetico {
 
 	void MainWindow::update() {
 		static UserProfile *lastUserProfile = NULL;
+		static std::string username = "";
+		std::string usernameMessage;
+
 		UserProfile *currentUser = m_cinetico.currentUser();
 		if (lastUserProfile != currentUser) {
 			if (currentUser) {
-				linkUsername.setText(currentUser->loginName().c_str());
+				username = currentUser->name();
+				if (*username.c_str()) {
+					usernameMessage = username;
+					usernameMessage += " (";
+					usernameMessage += currentUser->loginName();
+					usernameMessage += ")";
+				}
+				else {
+					usernameMessage = currentUser->loginName().c_str();
+				}
+				linkUsername.setText(usernameMessage.c_str());
 				layoutLoginInfo.setVisible(true);
 				layoutHeader.setSize(layoutHeader.size());
 			}
@@ -97,6 +110,24 @@ namespace cinetico {
 				layoutLoginInfo.setVisible(false);
 			}
 			lastUserProfile = currentUser;
+		}
+		else {
+			if (currentUser) {
+				if (username != currentUser->name()) {
+					username = currentUser->name();
+					if (*username.c_str()) {
+						usernameMessage = username;
+						usernameMessage += " (";
+						usernameMessage += currentUser->loginName();
+						usernameMessage += ")";
+					}
+					else {
+						usernameMessage = currentUser->loginName().c_str();
+					}
+					linkUsername.setText(usernameMessage.c_str());
+					layoutHeader.setSize(layoutHeader.size());
+				}
+			}
 		}
 	}
 

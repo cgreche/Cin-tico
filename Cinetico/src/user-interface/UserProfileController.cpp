@@ -22,6 +22,17 @@ namespace cinetico {
 		controller->onChangePassword();
 	}
 
+	static void buttonDeactivateUser_onClick(Button &button) {
+		UserProfileController *controller = (UserProfileController*)button.param();
+		
+		Message::message_result result = Message::question(NULL, "Você tem certeza que deseja desativar seu perfil de usuário?\nEsta operação não poderá ser desfeita.");
+		if (result == Message::yes) {
+			g_cinetico.logoffCurrentUser();
+			g_cinetico.goTo(Cinetico::LOGIN);
+			g_cinetico.cineticoDB()->userProfileDAO()->exclude(*controller->m_currentUser);
+		}
+	}
+
 	UserProfileController::UserProfileController()
 		: title("Perfil de usuário", "Altere informações de ou exclua seu perfil de usuário.")
 	{
@@ -66,11 +77,19 @@ namespace cinetico {
 		layoutPasswordSection.append(layoutPassword);
 		layoutPasswordSection.append(buttonChangePassword);
 
+		separatorDeactivateUser.setText("Desativar perfil");
+		buttonDeactivateUser.setText("Desativar");
+		buttonDeactivateUser.setParam(this);
+		buttonDeactivateUser.setOnClick(buttonDeactivateUser_onClick);
+		layoutDeactivateUser.append(separatorDeactivateUser);
+		layoutDeactivateUser.append(buttonDeactivateUser);
+
 		layout.append(title);
 		layout.append(layoutActions);
 		layout.append(separatorActions);
 		layout.append(layoutUserDetailsSection);
 		layout.append(layoutPasswordSection);
+		layout.append(layoutDeactivateUser);
 		layout.setMargin(10);
 	}
 
@@ -90,7 +109,7 @@ namespace cinetico {
 		labelUser.setText(m_currentUser->loginName().c_str());
 		layout.setSize(layout.size());
 
-		tbUsername.setText("");
+		tbUsername.setText(m_currentUser->name().c_str());
 		tbOldPassword.setText("");
 		tbNewPassword.setText("");
 		tbNewPasswordConfirmation.setText("");
@@ -107,6 +126,7 @@ namespace cinetico {
 		string name = tbUsername.text();
 		m_currentUser->setName(name.data());
 		g_cinetico.cineticoDB()->userProfileDAO()->update(*m_currentUser);
+		Message::msg(NULL, "Nome do usuário alterado com sucesso.");
 	}
 
 	void UserProfileController::onChangePassword() {

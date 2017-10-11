@@ -40,6 +40,10 @@ namespace cinetico {
 					cTextBox tbNewPasswordConfirmation;
 				Button buttonChangePassword;
 
+			VerticalLayout layoutDeactivateUser;
+				cSeparator separatorDeactivateUser;
+				Button buttonDeactivateUser;
+
 			//
 
 		UserProfile *m_currentUser;
