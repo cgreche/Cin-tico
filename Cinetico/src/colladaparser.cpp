@@ -182,7 +182,7 @@ namespace cinetico {
 				xmlFree(propId);
 			}
 
-child = getNextNode(child, "source");
+			child = getNextNode(child, "source");
 		}
 	}
 
@@ -360,8 +360,8 @@ child = getNextNode(child, "source");
 				float vertZ = -model->vertices[vertIndex * 3 + 1];
 
 				float normalX = model->normals[normalIndex * 3];
-				float normalY = model->normals[normalIndex * 3 + 1];
-				float normalZ = model->normals[normalIndex * 3 + 2];
+				float normalY = model->normals[normalIndex * 3 + 2];
+				float normalZ = model->normals[normalIndex * 3 + 1];
 
 				Vector3 vertex = Vector3(vertX, vertY, vertZ);
 				Vector3 normal = Vector3(normalX, normalY, normalZ);
@@ -408,7 +408,6 @@ child = getNextNode(child, "source");
 		}
 
 		int indicesCount = indices.size();
-
 		
 		Vector3 *outVertices = new Vector3[vertices.size()];
 		Vector3 *outNormals = new Vector3[vertices.size()];

@@ -475,7 +475,16 @@ namespace cinetico {
 		renderEngine->resourceData(resPrism)->setColors(cubeColors);
 
 		resModel = renderEngineHelper->loadModel("MODEL.dae");
+		ResourceData *model = renderEngine->resourceData(resModel);
+		Color *modelColors = new Color[model->vertexCount()];
+		for (int i = 0; i < model->vertexCount(); ++i)
+			modelColors[i] = Color(GRAY_COLOR, GRAY_COLOR, GRAY_COLOR);
+		model->setColors(modelColors);
+		delete[] modelColors;
 		instanceModel = renderEngine->newResourceInstance(resModel);
+		ResourceInstance *modelInstance = renderEngine->resourceInstance(instanceModel);
+		modelInstance->setScale(0.25);
+		modelInstance->setPos(render3d::Vector3(0, 5, 0));
 
 		instanceQuad1 = renderEngine->newResourceInstance(resQuad1);
 		renderEngine->resourceInstance(instanceQuad1)->setPos(render3d::Vector3(10, 10, 0));
@@ -769,7 +778,6 @@ namespace cinetico {
 		//renderEngine->drawResource(instanceWall);
 		
 		//renderEngine->drawResource(instanceTriangle);
-		//renderEngine->drawResource(instanceCube);
 		//renderEngine->drawResource(instanceTriangleType2);
 		//renderEngine->drawResource(instanceCircle);
 		//renderEngine->drawResource(instanceCircle2);
@@ -779,6 +787,7 @@ namespace cinetico {
 	//		d3d9.drawResource(instancedCubes[i]);
 		}
 
+		renderEngine->drawResource(instanceCube);
 		renderEngine->drawResource(instanceModel);
 
 
