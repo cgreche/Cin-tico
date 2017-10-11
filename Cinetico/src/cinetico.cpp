@@ -13,7 +13,7 @@
 #include "user-interface/UserProfileController.h"
 #include "utils/crypter.h"
 
-#define INITIAL_VIEW Cinetico::EXERCISE_REALIZATION
+#define INITIAL_VIEW Cinetico::LOGIN
 
 namespace cinetico {
 
@@ -137,7 +137,7 @@ namespace cinetico {
 		m_currentView = viewId;
 		controller->onViewEnter(params);
 
-		m_mainWindow->setSize(Size(1024, 768));
+		m_mainWindow->setSize(Size(1024, 800));
 	}
 }
 

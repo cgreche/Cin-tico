@@ -484,13 +484,14 @@ namespace cinetico {
 		instanceModel = renderEngine->newResourceInstance(resModel);
 		ResourceInstance *modelInstance = renderEngine->resourceInstance(instanceModel);
 		modelInstance->setScale(0.25);
-		modelInstance->setPos(render3d::Vector3(0, 5, 0));
+		modelInstance->setPos(render3d::Vector3(0, 5, 2));
 
 		instanceQuad1 = renderEngine->newResourceInstance(resQuad1);
 		renderEngine->resourceInstance(instanceQuad1)->setPos(render3d::Vector3(10, 10, 0));
 		instanceQuad2 = renderEngine->newResourceInstance(resQuad2);
 		renderEngine->resourceInstance(instanceQuad2)->setPos(render3d::Vector3(120, 10, 0));
 		instanceCube = renderEngine->newResourceInstance(resCube);
+		renderEngine->resourceInstance(instanceCube)->setPos(render3d::Vector3(-2.5, 0., 0.));
 		renderEngine->resourceInstance(resCube)->setPos(render3d::Vector3(0.f, 1.f, 0.f));
 		instanceCircle = renderEngine->newResourceInstance(resCircle);
 		instanceCircle2 = renderEngine->newResourceInstance(resCircle);
@@ -764,6 +765,9 @@ namespace cinetico {
 		renderEngine->clear(Color(30, 30, 30));
 
 		renderEngine->drawResource(instanceTerrain);
+
+		renderEngine->drawResource(instanceCube);
+		renderEngine->drawResource(instanceModel);
 		renderBody();
 
 		
@@ -786,9 +790,6 @@ namespace cinetico {
 		for(int i = 0; i < NUM_CUBES; ++i) {
 	//		d3d9.drawResource(instancedCubes[i]);
 		}
-
-		renderEngine->drawResource(instanceCube);
-		renderEngine->drawResource(instanceModel);
 
 
 		if (m_playingExercise) {
