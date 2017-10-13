@@ -13,46 +13,7 @@ using namespace render3d;
 HWND g_world3DWindow = NULL;
 
 #define GRAY_COLOR 80
-
-/*
-Color bodyColors[] =
-{
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-
-	//Back
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-
-	//Top
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-
-	//Bottom
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-
-	//Left
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-
-	//Right
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-	Color(GRAY_COLOR,GRAY_COLOR,GRAY_COLOR),
-};
-*/
+#define CM2W 2
 
 Color bodyColors[] =
 {
@@ -96,18 +57,8 @@ Color bodyColors[] =
 
 namespace cinetico {
 
-	Cinetico3D::Cinetico3D(Cinetico &cinetico)
-	: m_application(cinetico) {
-		m_playingExercise = NULL;
-		setup();
-	}
-
-	Cinetico3D::~Cinetico3D() {
-		cleanUp();
-	}
-
-	KinectSensor kinectSensor;
-	BodyTracker *m_bodyTracker;
+	Sensor *g_sensor;
+	BodyTracker *g_bodyTracker;
 
 	float aspectRatio43 = 1.33334f; //4:3
 	float aspectRatio51 = 1.25; //5:4
@@ -132,10 +83,6 @@ namespace cinetico {
 	int resCircle;
 	int resTerrain;
 	int resPrism;
-	int resModel;
-
-
-	int instanceModel;
 
 	int instanceQuad1;
 	int instanceQuad2;
@@ -193,28 +140,127 @@ namespace cinetico {
 		int foot;
 	};
 
+	BodyResourceIds g_bodyResourceIds;
 
-	struct BodyInstanceIds {
-		int head;
-		int spine;
-		int leftElbow;
-		int rightElbow;
-		int leftHand;
-		int rightHand;
-		int leftKnee;
-		int rightKnee;
-		int leftFoot;
-		int rightFoot;
+	class SensorFactory
+	{
+	public:
+		static Sensor *getSystemSensor() {
+#ifdef WIN32
+			return new KinectSensor();
+#endif
+		}
 	};
 
-	BodyResourceIds g_bodyResourceIds;
-	BodyInstanceIds g_bodyInstanceIds;
+
+	class CineticoResources
+	{
+	public:
+		static std::vector<int> ResIdModelMan;
+		static std::vector<int> ResIdModelWoman;
+		static render3d::Color *CharacterBodyColors;
+	};
+
+ 	std::vector<int> CineticoResources::ResIdModelMan = std::vector<int>();
+	std::vector<int> CineticoResources::ResIdModelWoman = std::vector<int>();
+	render3d::Color* CineticoResources::CharacterBodyColors = NULL;
+
+	DummyCharacter::DummyCharacter() {
+		unsigned int i;
+		for (i = 0; i < CineticoResources::ResIdModelWoman.size(); ++i) {
+			m_instanceIds.push_back(renderEngine->newResourceInstance(CineticoResources::ResIdModelWoman[i]));
+			ResourceInstance *modelInstance = renderEngine->resourceInstance(m_instanceIds[i]);
+			modelInstance->setScale(0.25);
+			modelInstance->setPos(render3d::Vector3(0, 5, 2));
+		}
+	}
+
+	void DummyCharacter::update() {
+
+	}
+
+	void DummyCharacter::render() {
+		for (unsigned int i = 0; i < m_instanceIds.size(); ++i)
+			renderEngine->drawResource(m_instanceIds[i]);
+	}
+
+	void HumanCharacter::mapBodyPointToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint) {
+		ResourceInstance *instance;
+		Body *body = m_body;
+		instance = renderEngine->resourceInstance(instId);
+		cinetico_core::Vector3 pos = body->bodyPoint(bodyPoint)->position();
+		cinetico_core::Vector3 rot = body->bodyPoint(bodyPoint)->orientation();
+		instance->setPos(render3d::Vector3(pos.x() * CM2W, pos.y() * CM2W, pos.z() * CM2W));
+		instance->setRot(render3d::Vector3(rot.x(), rot.y(), rot.z()));
+	}
+
+	HumanCharacter::HumanCharacter() {
+		BodyResourceIds &resId = g_bodyResourceIds;
+
+		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.head));
+		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.spine));
+		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.elbow));
+		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.elbow));
+		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.hand));
+		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.hand));
+		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.knee));
+		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.knee));
+		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.foot));
+		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.foot));
+	}
+
+	void HumanCharacter::update() {
+		Body *m_body = g_bodyTracker->body();
+		if (m_body) {
+			mapBodyPointToWorldPoint(m_instanceIds[0], BodyPoint::Head);
+			mapBodyPointToWorldPoint(m_instanceIds[1], BodyPoint::Spine);
+			mapBodyPointToWorldPoint(m_instanceIds[2], BodyPoint::LeftElbow);
+			mapBodyPointToWorldPoint(m_instanceIds[3], BodyPoint::RightElbow);
+			mapBodyPointToWorldPoint(m_instanceIds[4], BodyPoint::LeftPalm);
+			mapBodyPointToWorldPoint(m_instanceIds[5], BodyPoint::RightPalm);
+			mapBodyPointToWorldPoint(m_instanceIds[6], BodyPoint::LeftKnee);
+			mapBodyPointToWorldPoint(m_instanceIds[7], BodyPoint::RightKnee);
+			mapBodyPointToWorldPoint(m_instanceIds[8], BodyPoint::LeftFoot);
+			mapBodyPointToWorldPoint(m_instanceIds[9], BodyPoint::RightFoot);
+		}
+	}
+
+	void HumanCharacter::render() {
+		if (!m_body || m_body->identifiedBodyPointCount() == 0) return;
+		for (unsigned int i = 0; i < m_instanceIds.size(); ++i)
+			renderEngine->drawResource(m_instanceIds[i]);
+	}
+
+
+	Cinetico3D::Cinetico3D(Cinetico &cinetico)
+		: m_application(cinetico) {
+		m_playingMode = NOT_PLAYING;
+		m_playingExercise = NULL;
+		m_globalFrameCount = 0;
+		m_exerciseFrameCount = 0;
+		setup();
+	}
+
+	Cinetico3D::~Cinetico3D() {
+		cleanUp();
+	}
+
+
 
 
 	void Cinetico3D::setupBody() {
-		BodyResourceIds &resId = g_bodyResourceIds;
-		BodyInstanceIds &instId = g_bodyInstanceIds;
 
+		CineticoResources::ResIdModelWoman = renderEngineHelper->loadModel("MODEL.dae");
+		for (unsigned int i = 0; i < CineticoResources::ResIdModelWoman.size(); ++i) {
+			ResourceData *model = renderEngine->resourceData(CineticoResources::ResIdModelWoman[i]);
+			Color *modelColors = new Color[model->vertexCount()];
+			for (int i = 0; i < model->vertexCount(); ++i)
+				modelColors[i] = Color(GRAY_COLOR, GRAY_COLOR, GRAY_COLOR);
+			model->setColors(modelColors);
+			delete[] modelColors;
+		}
+
+		BodyResourceIds &resId = g_bodyResourceIds;
 		resId.head = renderEngineHelper->createCube(HEAD_SIZE);
 		renderEngine->resourceData(resId.head)->setColors(bodyColors);
 		resId.spine = renderEngineHelper->createRectangularPrism(HEAD_SIZE / 3.5f, HEAD_SIZE * 1.5, HEAD_SIZE / 3.5f);
@@ -227,67 +273,7 @@ namespace cinetico {
 		renderEngine->resourceData(resId.knee)->setColors(bodyColors);
 		resId.foot = renderEngineHelper->createCube(FOOT_SIZE);
 		renderEngine->resourceData(resId.foot)->setColors(bodyColors);
-
-		instId.head = renderEngine->newResourceInstance(resId.head);
-		instId.spine = renderEngine->newResourceInstance(resId.spine);
-		instId.leftElbow = renderEngine->newResourceInstance(resId.elbow);
-		instId.rightElbow = renderEngine->newResourceInstance(resId.elbow);
-		instId.leftHand = renderEngine->newResourceInstance(resId.hand);
-		instId.rightHand = renderEngine->newResourceInstance(resId.hand);
-		instId.leftKnee = renderEngine->newResourceInstance(resId.knee);
-		instId.rightKnee = renderEngine->newResourceInstance(resId.knee);
-		instId.leftFoot = renderEngine->newResourceInstance(resId.foot);
-		instId.rightFoot = renderEngine->newResourceInstance(resId.foot);
 	}
-
-	void Cinetico3D::mapBodyPointToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint) {
-		ResourceInstance *instance;
-		Body *body = m_bodyTracker->body();
-		if (!body)
-			return;
-		instance = renderEngine->resourceInstance(instId);
-		cinetico_core::Vector3 pos = body->bodyPoint(bodyPoint)->position();
-		cinetico_core::Vector3 rot = body->bodyPoint(bodyPoint)->orientation();
-		instance->setPos(render3d::Vector3(pos.x()*2, pos.y()*2, pos.z()*2));
-		instance->setRot(render3d::Vector3(rot.x(), rot.y(), rot.z()));
-	}
-
-	void Cinetico3D::updateBody() {
-		m_bodyTracker->track();
-		BodyInstanceIds &instId = g_bodyInstanceIds;
-
-		mapBodyPointToWorldPoint(instId.head, BodyPoint::Head);
-		mapBodyPointToWorldPoint(instId.spine, BodyPoint::Spine);
-		mapBodyPointToWorldPoint(instId.leftElbow, BodyPoint::LeftElbow);
-		mapBodyPointToWorldPoint(instId.rightElbow, BodyPoint::RightElbow);
-		mapBodyPointToWorldPoint(instId.leftHand, BodyPoint::LeftPalm);
-		mapBodyPointToWorldPoint(instId.rightHand, BodyPoint::RightPalm);
-		mapBodyPointToWorldPoint(instId.leftKnee, BodyPoint::LeftKnee);
-		mapBodyPointToWorldPoint(instId.rightKnee, BodyPoint::RightKnee);
-		mapBodyPointToWorldPoint(instId.leftFoot, BodyPoint::LeftFoot);
-		mapBodyPointToWorldPoint(instId.rightFoot, BodyPoint::RightFoot);
-	}
-
-	void Cinetico3D::renderBody() {
-		BodyInstanceIds &instId = g_bodyInstanceIds;
-
-		Body *body = m_bodyTracker->body();
-
-		if (!body || body->identifiedBodyPointCount() == 0)
-			return;
-
-		renderEngine->drawResource(instId.head);
-		renderEngine->drawResource(instId.spine);
-		renderEngine->drawResource(instId.leftElbow);
-		renderEngine->drawResource(instId.rightElbow);
-		renderEngine->drawResource(instId.leftHand);
-		renderEngine->drawResource(instId.rightHand);
-		renderEngine->drawResource(instId.leftKnee);
-		renderEngine->drawResource(instId.rightKnee);
-		renderEngine->drawResource(instId.leftFoot);
-		renderEngine->drawResource(instId.rightFoot);
-	}
-
 
 	LRESULT CALLBACK world3D_MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
@@ -403,9 +389,6 @@ namespace cinetico {
 		g_world3DWindow = hwnd;
 	}
 
-
-
-
 	void Cinetico3D::setupRenderEngine()
 	{
 		renderEngine = new D3D9Engine();
@@ -474,25 +457,12 @@ namespace cinetico {
 		resPrism = renderEngineHelper->createRectangularPrism(0.3f, 2.f, 0.5f);
 		renderEngine->resourceData(resPrism)->setColors(cubeColors);
 
-		resModel = renderEngineHelper->loadModel("MODEL.dae");
-		ResourceData *model = renderEngine->resourceData(resModel);
-		Color *modelColors = new Color[model->vertexCount()];
-		for (int i = 0; i < model->vertexCount(); ++i)
-			modelColors[i] = Color(GRAY_COLOR, GRAY_COLOR, GRAY_COLOR);
-		model->setColors(modelColors);
-		delete[] modelColors;
-		instanceModel = renderEngine->newResourceInstance(resModel);
-		ResourceInstance *modelInstance = renderEngine->resourceInstance(instanceModel);
-		modelInstance->setScale(0.25);
-		modelInstance->setPos(render3d::Vector3(0, 5, 2));
-
 		instanceQuad1 = renderEngine->newResourceInstance(resQuad1);
 		renderEngine->resourceInstance(instanceQuad1)->setPos(render3d::Vector3(10, 10, 0));
 		instanceQuad2 = renderEngine->newResourceInstance(resQuad2);
 		renderEngine->resourceInstance(instanceQuad2)->setPos(render3d::Vector3(120, 10, 0));
 		instanceCube = renderEngine->newResourceInstance(resCube);
 		renderEngine->resourceInstance(instanceCube)->setPos(render3d::Vector3(-2.5, 0., 0.));
-		renderEngine->resourceInstance(resCube)->setPos(render3d::Vector3(0.f, 1.f, 0.f));
 		instanceCircle = renderEngine->newResourceInstance(resCircle);
 		instanceCircle2 = renderEngine->newResourceInstance(resCircle);
 		instancePrism = renderEngine->newResourceInstance(resPrism);
@@ -536,6 +506,9 @@ namespace cinetico {
 
 		resFontArial = renderEngine->newFontResource("Arial", 15, 30, FontResource::BOLD);
 		resFontVerdana = renderEngine->newFontResource("Verdana", 20, 200, FontResource::ITALIC);
+
+		m_dummyChar = new DummyCharacter();
+		m_humanChar = new HumanCharacter();
 	}
 
 	void Cinetico3D::setupCameras() {
@@ -550,8 +523,9 @@ namespace cinetico {
 	}
 
 	void Cinetico3D::setup() {
-		kinectSensor.initialize();
-		m_bodyTracker = new BodyTracker(kinectSensor);
+		g_sensor = SensorFactory::getSystemSensor();
+		g_sensor->initialize();
+		g_bodyTracker = new BodyTracker(*g_sensor);
 		setupWindow();
 		setupRenderEngine();
 		setupDrawables();
@@ -560,9 +534,13 @@ namespace cinetico {
 	}
 
 	void Cinetico3D::cleanUp() {
-		if (m_bodyTracker)
-			delete m_bodyTracker;
-		kinectSensor.finalize();
+		if (g_bodyTracker)
+			delete g_bodyTracker;
+
+		if (g_sensor) {
+			g_sensor->finalize();
+			delete g_sensor;
+		}
 	}
 
 	void Cinetico3D::processCamera() {
@@ -641,13 +619,17 @@ namespace cinetico {
 
 	void Cinetico3D::startExercise(Exercise &exercise) {
 		m_playingExercise = &exercise;
-		m_bodyTracker->setTrackableBodyPoints(exercise.trackableBodyPoints());
+		m_exerciseFrameCount = 0;
+
+		g_bodyTracker->setTrackableBodyPoints(exercise.trackableBodyPoints());
 		::ShowWindow(g_world3DWindow, SW_SHOWNORMAL);
 		::UpdateWindow(g_world3DWindow);
 	}
 
 	void Cinetico3D::startPlayground() {
 		m_playingExercise = NULL;
+		m_exerciseFrameCount = 0;
+
 		//m_bodyTracker->setTrackableBodyPoints(exercise.trackableBodyPoints());
 		::ShowWindow(g_world3DWindow, SW_SHOWNORMAL);
 		::UpdateWindow(g_world3DWindow);
@@ -680,8 +662,10 @@ namespace cinetico {
 
 		float d = 0.1f;
 
-		updateBody();
-
+		if (m_playingMode == Cinetico3D::EXERCISE_MODE || m_playingMode == Cinetico3D::FREE_MODE) {
+			g_bodyTracker->track();
+			m_humanChar->update();
+		}
 		if (!shiftDown) {
 			//Update quads (billboarding)
 			processCamera();
@@ -753,61 +737,73 @@ namespace cinetico {
 	}
 
 
-	void Cinetico3D::render() {
-		g_frameCount++;
-
-		renderEngine->beginScene();
-
-		ResourceInstance *instance = renderEngine->resourceInstance(instanceCube);
-
+	void Cinetico3D::renderExerciseMode() {
 		renderEngine->setCurrentCamera(currentCameraId);
 		renderEngine->setCurrentViewport(viewport1);
 		renderEngine->clear(Color(30, 30, 30));
 
+		renderEngine->drawResource(instanceCube);
+
+		if (m_dummyChar)
+			m_dummyChar->render();
+		if (m_humanChar)
+			m_humanChar->render();
+
 		renderEngine->drawResource(instanceTerrain);
 
-		renderEngine->drawResource(instanceCube);
-		renderEngine->drawResource(instanceModel);
-		renderBody();
+		renderEngine->setCurrentFont(resFontArial);
+		std::string str = "Exercício selecionado: ";
+		str += m_playingExercise->name();
+		renderEngine->drawText(str.c_str(), 500, 10, Color(255, 255, 255, 100));
+		renderEngine->setCurrentFont(resFontVerdana);
 
-		
+		renderEngine->setCurrentCamera(cam2);
+		renderEngine->setCurrentViewport(viewport2);
+		renderEngine->clear(Color(0, 40, 100));
+	}
+
+	void Cinetico3D::renderFreeMode() {
+		renderEngine->setCurrentCamera(currentCameraId);
+		renderEngine->setCurrentViewport(viewport1);
+		renderEngine->clear(Color(30, 30, 30));
+		renderEngine->drawResource(instanceTerrain);
+	}
+
+	void Cinetico3D::renderDebugMode() {
+		ResourceInstance *instance = renderEngine->resourceInstance(instanceCube);
+
 		/*
 		renderEngine->drawResource(instanceQuad2);
 		static int state = 1;
 		if (g_frameCount % 30 == 0)
-			state ^= 1;
+		state ^= 1;
 		if (state == 1)
-			renderEngine->drawResource(instanceQuad1);
+		renderEngine->drawResource(instanceQuad1);
 		*/
 		//renderEngine->drawResource(instanceWall);
-		
+
 		//renderEngine->drawResource(instanceTriangle);
 		//renderEngine->drawResource(instanceTriangleType2);
 		//renderEngine->drawResource(instanceCircle);
 		//renderEngine->drawResource(instanceCircle2);
 		//renderEngine->drawResource(instancePrism);
-		
-		for(int i = 0; i < NUM_CUBES; ++i) {
-	//		d3d9.drawResource(instancedCubes[i]);
+
+		for (int i = 0; i < NUM_CUBES; ++i) {
+			//		d3d9.drawResource(instancedCubes[i]);
 		}
+	}
 
+	void Cinetico3D::render() {
+		g_frameCount++;
 
-		if (m_playingExercise) {
-			renderEngine->setCurrentFont(resFontArial);
-			std::string str = "Exercício selecionado: ";
-			str += m_playingExercise->name();
-			renderEngine->drawText(str.c_str(), 500, 10, Color(255, 255, 255, 100));
-			renderEngine->setCurrentFont(resFontVerdana);
-		}
+		renderEngine->beginScene();
 
+		if (m_playingMode == Cinetico3D::EXERCISE_MODE)
+			renderExerciseMode();
+		else if (m_playingMode == Cinetico3D::FREE_MODE)
+			renderFreeMode();
 
 		//
-		renderEngine->setCurrentCamera(cam2);
-		renderEngine->setCurrentViewport(viewport2);
-		renderEngine->clear(Color(0, 40, 100));
-		instance->setScale(0.5f);
-		renderEngine->drawResource(instanceCube);
-
 		renderEngine->endScene();
 	}
 

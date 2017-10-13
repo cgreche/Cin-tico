@@ -1,13 +1,11 @@
-#ifndef __CINETICO_COLLADA_PARSER_H__
-#define __CINETICO_COLLADA_PARSER_H__
+#ifndef __RENDER3D_COLLADA_PARSER_H__
+#define __RENDER3D_COLLADA_PARSER_H__
 
 #include <libxml/tree.h>
 #include <vector>
 #include "render3d/renderengine.h"
 
-namespace cinetico {
-
-	using namespace render3d;
+namespace render3d {
 
 	class ColladaParser {
 		struct ParsingModel {
@@ -42,11 +40,11 @@ namespace cinetico {
 		void readTextureCoords(xmlNodePtr meshNode, const char *id, ParsingModel* model);
 		void readColors(xmlNodePtr meshNode, const char *id, ParsingModel* model);
 
-		int assembleModel();
+		int assembleModel(ParsingModel *model);
 
 		public:
 			ColladaParser(RenderEngine &engine);
-			int parse(const char *fileName);
+			std::vector<int> parse(const char *fileName);
 	};
 
 }

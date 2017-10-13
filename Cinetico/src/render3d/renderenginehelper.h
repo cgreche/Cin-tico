@@ -28,7 +28,7 @@ namespace render3d {
 		int createText(const char *text);
 		int createText(const char *text, int x, int y, int width, int height);
 
-		int loadModel(const char* fileName);
+		std::vector<int> loadModel(const char* fileName);
 	};
 
 }

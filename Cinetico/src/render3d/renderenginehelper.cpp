@@ -236,16 +236,6 @@ namespace render3d {
 			}
 		}
 
-		/*
-		for(i = 0; i < squareCount; ++i) {
-			Color color = i%4 == 0 ? color1 : color2;
-			terrainColors[i*4+0] = color;
-			terrainColors[i*4+1] = color;
-			terrainColors[i*4+2] = color;
-			terrainColors[i*4+3] = color;
-		}
-		*/
-
 		int resId = m_renderEngine.newResource(vertexCount, vertices, indexCount, indices);
 		m_renderEngine.resourceData(resId)->setNormals(normals);
 		m_renderEngine.resourceData(resId)->setColors(terrainColors);
@@ -256,9 +246,9 @@ namespace render3d {
 		return resId;
 	}
 
-	int RenderEngineHelper::loadModel(const char *fileName) {
-		cinetico::ColladaParser parser(m_renderEngine);
-		int resId = parser.parse(fileName);
+	std::vector<int> RenderEngineHelper::loadModel(const char *fileName) {
+		ColladaParser parser(m_renderEngine);
+		std::vector<int> resId = parser.parse(fileName);
 		return resId;
 	}
 }

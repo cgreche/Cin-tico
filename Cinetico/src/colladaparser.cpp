@@ -5,15 +5,11 @@
 #include <sstream>
 #include <cstring>
 
-
 #define XMLCHAR(x) ((const xmlChar*)x)
 #define XMLCHAR2CHAR(x) ((const char*)x)
 #define XMLCHAR_SAFEFREE(x) if(x) xmlFree(x)
 
-
-
-namespace cinetico {
-	using namespace render3d;
+namespace render3d {
 	
 	xmlNodePtr ColladaParser::getFirstChildNode(xmlNodePtr currentNode)
 	{
@@ -306,8 +302,7 @@ namespace cinetico {
 		return -1;
 	}
 
-	int ColladaParser::assembleModel() {
-		ParsingModel *model = m_models[2];
+	int ColladaParser::assembleModel(ParsingModel *model) {
 
 		std::vector<Vector3> vertices;
 		std::vector<int> indices;
@@ -437,9 +432,9 @@ namespace cinetico {
 
 	}
 
-	int ColladaParser::parse(const char *fileName)
+	std::vector<int> ColladaParser::parse(const char *fileName)
 	{
-		int resId = -1;
+		std::vector<int> resIds;
 
 		//init
 		xmlDocPtr doc = NULL;
@@ -448,7 +443,7 @@ namespace cinetico {
 		doc = xmlReadFile(fileName, NULL, 0);
 		if (doc == NULL) {
 			//	printf("Error: could not parse file %s\n", fullXMLFilePath);
-			return -1;
+			return std::vector<int>();
 		}
 
 		rootElement = xmlDocGetRootElement(doc);
@@ -458,15 +453,17 @@ namespace cinetico {
 		else {
 			if (rootElement->type != XML_ELEMENT_NODE || xmlStrcmp(rootElement->name, XMLCHAR("COLLADA")) != 0) {
 				//invalid file
-				return -1;
+				return std::vector<int>();
 			}
 
 			readModel(rootElement);
-			resId = assembleModel();
+
+			for (unsigned int i = 0; i < m_models.size(); ++i)
+				resIds.push_back(assembleModel(m_models[i]));
 
 			xmlFreeDoc(doc);
 		}
 
-		return resId;
+		return resIds;
 	}
 }
