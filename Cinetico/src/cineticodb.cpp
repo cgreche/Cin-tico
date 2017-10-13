@@ -42,7 +42,8 @@ const char *Table_MovementAction = "CREATE TABLE MOVEMENT_ACTION(id INTEGER PRIM
 	}
 
 	CineticoDB::~CineticoDB() {
-
+		if (m_db)
+			delete m_db;
 	}
 
 	void CineticoDB::setup() {

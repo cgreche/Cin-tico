@@ -17,7 +17,6 @@ int SQLiteDatabase::open() {
 int SQLiteDatabase::close() {
 	int rc = sqlite3_close(m_internalDB);
 	m_isOpen = false;
-	delete this;
 	return rc;
 }
 

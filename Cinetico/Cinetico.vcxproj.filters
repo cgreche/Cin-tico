@@ -570,6 +570,15 @@
     <ClInclude Include="src\user-interface\viewtemplate.h">
       <Filter>Arquivos de Origem\user-interface</Filter>
     </ClInclude>
+    <ClInclude Include="src\character.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dummycharacter.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\humancharacter.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -880,6 +889,15 @@
     </ClCompile>
     <ClCompile Include="src\user-interface\viewtemplate.cpp">
       <Filter>Arquivos de Origem\user-interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\character.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dummycharacter.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\humancharacter.cpp">
+      <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

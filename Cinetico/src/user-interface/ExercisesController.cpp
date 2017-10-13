@@ -118,7 +118,7 @@ namespace cinetico {
 
 			int actionCount = g_cinetico.cineticoDB()->actionDAO()->getActionCountByExercise(*exercise);
 
-			gridExercises.setItem(lastRow, 0, new ListViewItem(exercise->name().c_str(), Color(0, 0, 0), FontDesc("Arial", 10, 0), exerciseList[i]));
+			gridExercises.setItem(lastRow, 0, new ListViewItem(exercise->name().c_str(), uilib::Color(0, 0, 0), FontDesc("Arial", 10, 0), exerciseList[i]));
 			gridExercises.setItem(lastRow, 1, new ListViewItem(exercise->author().c_str()));
 			gridExercises.setItem(lastRow, 2, new ListViewItem(uilib::string::fromInteger(actionCount).data()));
 			gridExercises.setItem(lastRow, 3, new ListViewItem(exercise->isPublic() ? "Sim" : "Não"));

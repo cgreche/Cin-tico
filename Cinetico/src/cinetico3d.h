@@ -2,45 +2,21 @@
 #define __CINETICO_3D_H__
 
 #include "entity/core/Exercise.h"
+#include "render3d/renderengine.h"
+#include "render3d/renderenginehelper.h"
+#include "bodytracker.h"
 
 namespace cinetico {
 
 	class Cinetico;
+	class DummyCharacter;
+	class HumanCharacter;
 
-	class Character {
-	protected:
-		std::vector<int> m_instanceIds;
-		cinetico_core::Vector3 m_position;
+	using namespace cinetico_core;
+	using namespace render3d;
 
-	public:
-		Character() { };
-
-		virtual void setPosition(const cinetico_core::Vector3 &position) { m_position = position; }
-
-		virtual void update() = 0;
-		virtual void render() = 0;
-	};
-
-	class DummyCharacter : public Character {
-
-
-	public:
-		DummyCharacter();
-
-		virtual void update();
-		virtual void render();
-	};
-
-	class HumanCharacter : public Character {
-		Body *m_body;
-
-		void mapBodyPointToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint);
-	public:
-		HumanCharacter();
-
-		virtual void update();
-		virtual void render();
-	};
+	class render3d::RenderEngine;
+	class render3d::RenderEngineHelper;
 
 	class Cinetico3D {
 
@@ -72,6 +48,11 @@ namespace cinetico {
 		void renderReplayMode();
 		void renderDebugMode();
 
+		Sensor *m_sensor;
+		BodyTracker *m_bodyTracker;
+		RenderEngine *m_renderEngine;
+		RenderEngineHelper *m_renderEngineHelper;
+
 		PlayingMode m_playingMode;
 		unsigned int m_globalFrameCount;
 		unsigned int m_exerciseFrameCount;
@@ -86,6 +67,11 @@ namespace cinetico {
 		void startPlayground();
 		void update();
 		void render();
+
+		Sensor *sensor() const { return m_sensor; }
+		BodyTracker *bodyTracker() const { return m_bodyTracker; }
+		RenderEngine *renderEngine() const { return m_renderEngine; }
+		RenderEngineHelper *renderEngineHelper() const { return m_renderEngineHelper; }
 	};
 
 }

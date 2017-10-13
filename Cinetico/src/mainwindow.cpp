@@ -25,7 +25,7 @@ namespace cinetico {
 		labelUsername.setText("Usuário: ");
 		labelUsername.setTextColor(ViewTemplate::LoggedUserInfoColor);
 		linkUsername.setTextColor(ViewTemplate::LoggedUserInfoColor);
-		linkUsername.setHoverColor(Color(200, 0, 0));
+		linkUsername.setHoverColor(ViewTemplate::LoggedUserInfoHoverColor);
 		linkUsername.setParam(this);
 		linkUsername.setOnClick(linkUserLoginName_onClick);
 		buttonLogoff.setText("Sair");

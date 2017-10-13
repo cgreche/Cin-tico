@@ -11,6 +11,12 @@ namespace cinetico_core {
 		: m_sensor(sensor) {
 		m_trackableBodyPoints = 0;
 		m_identifiedBodyCount = 0;
+		m_body = NULL;
+	}
+
+	BodyTracker::~BodyTracker() {
+		if (m_body)
+			delete m_body;
 	}
 
 	bool BodyTracker::track() {

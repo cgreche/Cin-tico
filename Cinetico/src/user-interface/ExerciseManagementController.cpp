@@ -182,9 +182,7 @@ namespace cinetico {
 		action->setMaxTime(string_op::decimal(maxTimeStr.data()));
 		action->setBodyPoint((BodyPoint::BodyPart)bodyPoint);
 		action->setRefPoint(refPoint);
-		action->setPosition(Vector3(string_op::decimal(posXStr.data()), string_op::decimal(posYStr.data()), string_op::decimal(posZStr.data())));
-
-		
+		action->setPosition(cinetico_core::Vector3(string_op::decimal(posXStr.data()), string_op::decimal(posYStr.data()), string_op::decimal(posZStr.data())));
 
 		if (m_editMode == 1) {
 			g_cinetico.cineticoDB()->actionDAO()->create(*action);
@@ -447,7 +445,7 @@ namespace cinetico {
 			Action *action = actionList[i];
 			gridActions.insertRow();
 			int lastRow = gridActions.rowCount() - 1;
-			gridActions.setItem(lastRow, 0, new ListViewItem(action->type() == Action::Position ? "Posição" : "Movimento", Color(0, 0, 0), FontDesc("Arial", 10, 0), action));
+			gridActions.setItem(lastRow, 0, new ListViewItem(action->type() == Action::Position ? "Posição" : "Movimento", uilib::Color(0, 0, 0), FontDesc("Arial", 10, 0), action));
 			gridActions.setItem(lastRow, 1, new ListViewItem(action->name().c_str()));
 
 			std::ostringstream ss;
