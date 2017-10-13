@@ -86,7 +86,7 @@ namespace cinetico {
 			tbLoginPassword.setText("");
 		}
 		else {
-			Message::error(NULL, "Usuário ou senha inválida.");
+			Message::error(NULL, "Usuário ou senha inválidos.");
 		}
 	}
 
