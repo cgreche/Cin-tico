@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Arquivos de Cabeçalho\render">
-      <UniqueIdentifier>{0ee73e96-c9df-4ce3-aae8-51cab83c51ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Arquivos de Origem\database">
       <UniqueIdentifier>{600c2e31-78ee-47ee-bc78-ca0eb4b69b02}</UniqueIdentifier>
     </Filter>
@@ -90,39 +87,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\render\camera.h">
-      <Filter>Arquivos de Cabeçalho\render</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\color.h">
-      <Filter>Arquivos de Cabeçalho\render</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\d3dx12.h">
-      <Filter>Arquivos de Cabeçalho\render</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\renderengine.h">
-      <Filter>Arquivos de Cabeçalho\render</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\renderenginehelper.h">
-      <Filter>Arquivos de Cabeçalho\render</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\renderobject.h">
-      <Filter>Arquivos de Cabeçalho\render</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\resourcedata.h">
-      <Filter>Arquivos de Cabeçalho\render</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\resourceinstance.h">
-      <Filter>Arquivos de Cabeçalho\render</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\vector3.h">
-      <Filter>Arquivos de Cabeçalho\render</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\vertex3.h">
-      <Filter>Arquivos de Cabeçalho\render</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\d3d9engine.h">
-      <Filter>Arquivos de Cabeçalho\render</Filter>
-    </ClInclude>
     <ClInclude Include="src\utils\crypter.h">
       <Filter>Arquivos de Origem\utils</Filter>
     </ClInclude>
@@ -390,9 +354,6 @@
     <ClInclude Include="src\render3d\fontresource.h">
       <Filter>Arquivos de Origem\render3d</Filter>
     </ClInclude>
-    <ClInclude Include="src\user-interface\template.h">
-      <Filter>Arquivos de Origem\user-interface</Filter>
-    </ClInclude>
     <ClInclude Include="src\entity\dao\ExerciseDAO.h">
       <Filter>Arquivos de Origem\entity\dao</Filter>
     </ClInclude>
@@ -605,6 +566,9 @@
     </ClInclude>
     <ClInclude Include="src\lib\libxml\iconv.h">
       <Filter>Arquivos de Origem\lib\libxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\viewtemplate.h">
+      <Filter>Arquivos de Origem\user-interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -913,6 +877,9 @@
     </ClCompile>
     <ClCompile Include="src\lib\sqlite-amalgamation-3200100\sqlite3.c">
       <Filter>Arquivos de Origem\lib\sqlite-amalgamation-3200100</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\viewtemplate.cpp">
+      <Filter>Arquivos de Origem\user-interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

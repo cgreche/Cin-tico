@@ -120,17 +120,6 @@
     <ClInclude Include="src\render3d\textresource.h" />
     <ClInclude Include="src\render3d\vector3.h" />
     <ClInclude Include="src\render3d\viewport.h" />
-    <ClInclude Include="src\render\camera.h" />
-    <ClInclude Include="src\render\color.h" />
-    <ClInclude Include="src\render\d3d9engine.h" />
-    <ClInclude Include="src\render\d3dx12.h" />
-    <ClInclude Include="src\render\renderengine.h" />
-    <ClInclude Include="src\render\renderenginehelper.h" />
-    <ClInclude Include="src\render\renderobject.h" />
-    <ClInclude Include="src\render\resourcedata.h" />
-    <ClInclude Include="src\render\resourceinstance.h" />
-    <ClInclude Include="src\render\vector3.h" />
-    <ClInclude Include="src\render\vertex3.h" />
     <ClInclude Include="src\sensor.h" />
     <ClInclude Include="src\uilib\lib\dir.h" />
     <ClInclude Include="src\uilib\lib\file.h" />
@@ -188,7 +177,7 @@
     <ClInclude Include="src\user-interface\ExerciseRealizationController.h" />
     <ClInclude Include="src\user-interface\ExercisesController.h" />
     <ClInclude Include="src\user-interface\LoginController.h" />
-    <ClInclude Include="src\user-interface\template.h" />
+    <ClInclude Include="src\user-interface\viewtemplate.h" />
     <ClInclude Include="src\user-interface\UserProfileController.h" />
     <ClInclude Include="src\utils\crypter.h" />
   </ItemGroup>
@@ -292,6 +281,7 @@
     <ClCompile Include="src\user-interface\ExerciseRealizationController.cpp" />
     <ClCompile Include="src\user-interface\ExercisesController.cpp" />
     <ClCompile Include="src\user-interface\LoginController.cpp" />
+    <ClCompile Include="src\user-interface\viewtemplate.cpp" />
     <ClCompile Include="src\user-interface\UserProfileController.cpp" />
     <ClCompile Include="src\utils\crypter.cpp" />
     <ClCompile Include="src\cinetico3d.cpp" />

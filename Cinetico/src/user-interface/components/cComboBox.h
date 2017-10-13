@@ -13,10 +13,7 @@ namespace cinetico {
 		Label label;
 		uilib::ComboBox combo;
 
-		cComboBox() {
-			append(label);
-			append(combo,Size(SizeTypeMax,SizeTypeAuto));
-		}
+		cComboBox();
 
 		void setLabel(const char *text) { label.setText(text); }
 		void sort() { combo.sort(); }

@@ -13,10 +13,7 @@ namespace cinetico {
 		Label label;
 		EditBox edit;
 
-		cTextBox() {
-			append(label);
-			append(edit);
-		}
+		cTextBox();
 
 		void setLabel(const char *text) { label.setText(text); }
 		void setText(const char *text) { edit.setText(text); }

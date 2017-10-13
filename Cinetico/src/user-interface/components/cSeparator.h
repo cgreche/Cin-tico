@@ -11,10 +11,7 @@ namespace cinetico {
 
 	public:
 		uilib::Separator separator;
-
-		cSeparator() {
-			setFont(FontDesc("Arial", 12, FONT_BOLD));
-		}
+		cSeparator();
 	};
 
 }

@@ -22,8 +22,7 @@ namespace cinetico {
 		: title("Bem-vindo!", "Para começar, selecione ou crie um Perfil de usuário")
 	{
 
-		labelLoginTitle.setText("Entrar com Perfil de usuário");
-		labelLoginTitle.setFont(FontDesc("Arial", 18, FONT_BOLD));
+		separatorLogin.setText("Entrar com Perfil de usuário");
 		tbLoginUsername.setLabel("Nome do usuário *");
 		tbLoginPassword.setLabel("Senha *");
 		tbLoginPassword.setPasswordMode(true);
@@ -31,8 +30,7 @@ namespace cinetico {
 		buttonLogin.setParam(this);
 		buttonLogin.setOnClick(onClick_login);
 
-		labelCreateAccountTitle.setText("Criar Perfil de usuário");
-		labelCreateAccountTitle.setFont(FontDesc("Arial", 18, FONT_BOLD));
+		separatorCreateAccount.setText("Criar Perfil de usuário");
 		tbCreateAccountUsername.setLabel("Nome do usuário *");
 		tbCreateAccountPassword.setLabel("Senha *");
 		tbCreateAccountPassword.setPasswordMode(true);
@@ -41,12 +39,12 @@ namespace cinetico {
 		buttonCreateAccount.setParam(this);
 		buttonCreateAccount.setOnClick(onClick_createAccount);
 
-		layoutLogin.append(labelLoginTitle);
+		layoutLogin.append(separatorLogin);
 		layoutLogin.append(tbLoginUsername);
 		layoutLogin.append(tbLoginPassword);
 		layoutLogin.append(buttonLogin, Size(SizeTypeMax, SizeTypeAuto));
 
-		layoutCreateAccount.append(labelCreateAccountTitle);
+		layoutCreateAccount.append(separatorCreateAccount);
 		layoutCreateAccount.append(tbCreateAccountUsername);
 		layoutCreateAccount.append(tbCreateAccountPassword);
 		layoutCreateAccount.append(buttonCreateAccount, Size(SizeTypeMax, SizeTypeAuto));

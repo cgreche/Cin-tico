@@ -1,17 +1,22 @@
 
 #include "cPageTitle.h"
+#include "../viewtemplate.h"
 
 namespace cinetico {
 	
 	cPageTitle::cPageTitle(const char *title, const char *descr) {
 
-		FontDesc titleFont = FontDesc("Arial", 46, FONT_BOLD);
-		FontDesc descFont = FontDesc("Arial", 10, FONT_BOLD);
+		FontDesc &titleFont = ViewTemplate::TitleFont;
+		Color &titleColor = ViewTemplate::TitleColor;
+		FontDesc &descFont = ViewTemplate::DescFont;
+		Color &descColor = ViewTemplate::DescColor;
 
 		labelTitle.setText(title);
 		labelTitle.setFont(titleFont);
+		labelTitle.setTextColor(titleColor);
 		labelDescr.setText(descr);
 		labelDescr.setFont(descFont);
+		labelDescr.setTextColor(descColor);
 
 		append(labelTitle);
 		append(labelDescr);

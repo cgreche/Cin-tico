@@ -1,5 +1,6 @@
 
 #include "mainwindow.h"
+#include "user-interface/viewtemplate.h"
 
 using namespace cinetico;
 
@@ -17,13 +18,13 @@ namespace cinetico {
 
 	void MainWindow::buildHeaderLayout() {
 		labelAppname.setText("Cinético");
-		labelAppname.setTextColor(Color(0x80, 0x80, 0x80));
+		labelAppname.setTextColor(ViewTemplate::AppTitleColor);
 		labelAppname.setAlignment(Label::VCenter);
-		labelAppname.setFont(FontDesc("Arial", 16, FONT_BOLD));
+		labelAppname.setFont(ViewTemplate::AppTitleFont);
 
 		labelUsername.setText("Usuário: ");
-		labelUsername.setTextColor(Color(255, 255, 255));
-		linkUsername.setTextColor(Color(255, 255, 255));
+		labelUsername.setTextColor(ViewTemplate::LoggedUserInfoColor);
+		linkUsername.setTextColor(ViewTemplate::LoggedUserInfoColor);
 		linkUsername.setHoverColor(Color(200, 0, 0));
 		linkUsername.setParam(this);
 		linkUsername.setOnClick(linkUserLoginName_onClick);
@@ -44,7 +45,7 @@ namespace cinetico {
 		layoutAppState.setAlignment(Layout::center_align);
 		layoutAppState.setMargin(10);
 
-		bgBlack.setBackgroundColor(Color(0, 0, 0));
+		bgBlack.setBackgroundColor(ViewTemplate::AppHeaderBgColor);
 		bgBlack.setTransparent(false);
 		bgBlack.setLayout(&layoutAppState);
 		layoutHeader.append(bgBlack, Size(SizeTypeMax, SizeTypeMax));
@@ -52,7 +53,8 @@ namespace cinetico {
 
 	void MainWindow::buildFooterLayout() {
 		labelAuthor.setText("2017 César Reche");
-		labelAuthor.setTransparent(false);
+		labelAuthor.setFont(ViewTemplate::FooterInfoFont);
+		labelAuthor.setTextColor(ViewTemplate::FooterInfoColor);
 		layoutFooter.append(labelAuthor);
 	}
 

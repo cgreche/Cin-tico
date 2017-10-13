@@ -15,7 +15,6 @@ namespace cinetico {
 		Separator separator;
 
 		cPageTitle(const char *title, const char *desc);
-
 	};
 
 }

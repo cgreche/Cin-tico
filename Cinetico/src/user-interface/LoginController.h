@@ -4,6 +4,7 @@
 
 #include "Controller.h"
 #include "components/cPageTitle.h"
+#include "components/cSeparator.h"
 #include "components/cTextBox.h"
 
 namespace cinetico {
@@ -18,12 +19,12 @@ namespace cinetico {
 			cPageTitle title;
 			HorizontalLayout layoutLoginArea;
 				VerticalLayout layoutLogin;
-					Label labelLoginTitle;
+					cSeparator separatorLogin;
 					cTextBox tbLoginUsername;
 					cTextBox tbLoginPassword;
 					Button buttonLogin;
 				VerticalLayout layoutCreateAccount;
-					Label labelCreateAccountTitle;
+					cSeparator separatorCreateAccount;
 					cTextBox tbCreateAccountUsername;
 					cTextBox tbCreateAccountPassword;
 					Button buttonCreateAccount;
