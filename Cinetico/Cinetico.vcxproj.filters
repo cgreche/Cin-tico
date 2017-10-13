@@ -579,6 +579,9 @@
     <ClInclude Include="src\humancharacter.h">
       <Filter>Arquivos de Origem</Filter>
     </ClInclude>
+    <ClInclude Include="src\dictionary.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -897,6 +900,9 @@
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="src\humancharacter.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dictionary.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>

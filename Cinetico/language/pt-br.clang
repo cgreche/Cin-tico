@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<language id="pt_br">
+	<!-- -->
+	<string id="ActionLogoff">Sair</string>
+	<!-- -->
+	<string id="DefaultActionAdd">Adicionar</string>
+	<string id="DefaultActionEdit">Editar</string>
+	<string id="DefaultActionDelete">Excluir</string>
+	<string id="DefaultActionSave">Salvar</string>
+	<string id="DefaultActionCancel">Cancelar</string>
+	<string id="DefaultActionYes">Sim</string>
+	<string id="DefaultActionNo">Não</string>
+	<!-- -->
+	<string id="DefaultActionQuestionDelete">Deseja excluir este registro?
+	Esta operação não poderá ser desfeita.</string>
+	<!-- -->
+	<!--Entity-->
+	<string id="EntityUserProfile">Perfil de Usuário</string>
+	<string id="EntityExercise">Exercício</string>
+	<string id="EntityAction">Ação</string>
+	<!-- -->
+	<!--Entitiy attributes-->
+	<string id="ExerciseName">Nome</string>
+	<string id="ExerciseAuthor">Autor</string>
+	<string id="ExercisePublic">Público</string>
+	<!-- -->
+	<!--Views-->
+	<string id="ViewDefaultErrorRequiredFields">Os campos com '*' devem ser preenchidos obrigatoriamente.</string>
+	<!-- -->
+	<!--Login-->
+	<string id="LoginViewTitle">Bem-vindo!</string>
+	<string id="LoginViewDesc">Para começar, selecione ou crie um Perfil de usuário</string>
+	<string id="LoginViewSectionLogin">Entrar com Perfil de usuário</string>
+	<string id="LoginViewSectionCreateUserProfile">Criar Perfil de usuário</string>
+	<string id="LoginViewUsername">Nome do usuário *</string>
+	<string id="LoginViewPassword">Senha *</string>
+	<string id="LoginViewConfirmPassword">Confirmar Senha *</string>
+	<string id="LoginViewActionLogin">Entrar</string>
+	<string id="LoginViewActionCreateUserProfile">Criar perfil</string>
+	<!-- -->
+	<string id="LoginViewErrorUserProfileCreatedSuccessfully">Perfil criado com sucesso.</string>
+	<string id="LoginViewErrorUserLoggedSucessfully">Sucesso! Usuário logado como %s.</string>
+	<string id="LoginViewErrorInvalidCredentials">Usuário ou senha inválidos.</string>
+	<string id="LoginViewErrorUsernameAlreadyExists">Nome de usuário já existente.</string>
+	<!-- -->
+	<!--Exercises-->
+	<string id="ExercisesViewTitle">Exercícios</string>
+	<string id="ExercisesViewDesc">Crie, altere, grave ou realize um exercício.</string>
+	<string id="ExercisesViewActionCreate">Criar Exercício</string>
+	<string id="ExercisesViewActionManageActions">Gerenciar ações</string>
+	<string id="ExercisesViewActionDoExercise">Realizar Exercício</string>
+	<string id="ExercisesViewGridColumnActionCount">Número de ações</string>
+	<string id="ExercisesViewExerciseName">Nome do exercício</string>
+	<string id="ExercisesViewSectionBodyPoints">Pontos do corpo que serão utilizados</string>
+	<!-- -->
+	<string id="ExercisesViewErrorExerciseAlreadyExists">Já há um exercício criado com o nome escolhido. Por favor, escolha outro nome para o exercício.</string>
+	<string id="ExercisesViewErrorExerciseHasNoActions">Para realizar um exercício, este deve conter pelo menos uma ação.</string>
+	<!-- -->
+	<!--Action-->
+	<string id="ActionsViewTitle"></string>
+	<string id="ActionsViewDesc"></string>
+	<string id="UserProfileViewTitle"></string>
+	<string id="UserProfileViewDesc"></string>
+</language>
+
+
+
+

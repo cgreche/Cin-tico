@@ -30,16 +30,17 @@ namespace cinetico {
 
 	void Cinetico::setup()
 	{
+		m_cineticoDB = new CineticoDB(*this);
+		m_cinetico3D = new Cinetico3D(*this);
+		m_mainWindow = new MainWindow(*this);
+		m_dictionary = new Dictionary(*this);
+
 		//Setup views
 		registerView(LOGIN, "Login", new LoginController());
 		registerView(USER_PROFILE, "User Profile", new UserProfileController());
 		registerView(EXERCISES, "Exercises", new ExercisesController());
 		registerView(EXERCISE_MANAGEMENT, "Exercise Management", new ExerciseManagementController());
 		registerView(EXERCISE_REALIZATION, "Exercise Realization", new ExerciseRealizationController());
-		
-		m_cineticoDB = new CineticoDB(*this);
-		m_cinetico3D = new Cinetico3D(*this);
-		m_mainWindow = new MainWindow(*this);
 
 #if 1
 		goTo(INITIAL_VIEW);
@@ -60,7 +61,6 @@ namespace cinetico {
 		}
 	}
 
-
 	void Cinetico::render()
 	{
 	}
@@ -76,6 +76,8 @@ namespace cinetico {
 			delete m_cinetico3D;
 		if(m_cineticoDB)
 			delete m_cineticoDB;
+		if (m_dictionary)
+			delete m_dictionary;
 	}
 
 	Cinetico::CineticoError Cinetico::createAccount(const char *username, const char *password) {

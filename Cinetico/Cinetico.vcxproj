@@ -32,6 +32,7 @@
     <ClInclude Include="src\database\sqlite\sqlitestatement.h" />
     <ClInclude Include="src\database\sqlstatement.h" />
     <ClInclude Include="src\defs.h" />
+    <ClInclude Include="src\dictionary.h" />
     <ClInclude Include="src\dummycharacter.h" />
     <ClInclude Include="src\entity\core\Action.h" />
     <ClInclude Include="src\entity\core\Body.h" />
@@ -193,6 +194,7 @@
     <ClCompile Include="src\database\sqlite\sqliteresultset.cpp" />
     <ClCompile Include="src\database\sqlite\sqlitestatement.cpp" />
     <ClCompile Include="src\cinetico.cpp" />
+    <ClCompile Include="src\dictionary.cpp" />
     <ClCompile Include="src\dummycharacter.cpp" />
     <ClCompile Include="src\entity\core\Action.cpp" />
     <ClCompile Include="src\entity\core\Body.cpp" />

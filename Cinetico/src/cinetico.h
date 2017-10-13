@@ -4,6 +4,7 @@
 
 #include "cineticodb.h"
 #include "cinetico3d.h"
+#include "dictionary.h"
 #include "user-interface/controller.h"
 #include <vector>
 #include <list>
@@ -49,6 +50,7 @@ namespace cinetico {
 		CineticoDB *m_cineticoDB;
 		Cinetico3D *m_cinetico3D;
 		MainWindow *m_mainWindow;
+		Dictionary *m_dictionary;
 
 		std::vector<View> m_views;
 		bool m_onWorld3D;
@@ -74,6 +76,7 @@ namespace cinetico {
 		MainWindow *mainWindow() const { return m_mainWindow; }
 		CineticoDB *cineticoDB() const { return m_cineticoDB; }
 		Cinetico3D *cinetico3D() const { return m_cinetico3D; }
+		Dictionary *dictionary() const { return m_dictionary; }
 
 		UserProfile *currentUser() const { return m_currentUser; }
 
