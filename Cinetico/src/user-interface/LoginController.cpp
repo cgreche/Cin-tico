@@ -6,8 +6,6 @@
 
 namespace cinetico {
 
-	extern Cinetico g_cinetico;
-
 	void onClick_login(Button &button) {
 		LoginController *controller = (LoginController*)button.param();
 		controller->login();
@@ -18,25 +16,29 @@ namespace cinetico {
 		controller->createAccount();
 	}
 
-	LoginController::LoginController()
-		: title(g_cinetico.dictionary()->getString(Dictionary::LoginViewTitle).c_str(),
-			g_cinetico.dictionary()->getString(Dictionary::LoginViewDesc).c_str())
+	void LoginController::onViewUpdate() {
+		title.setTitle(m_dictionary.getString(Dictionary::LoginViewTitle));
+		title.setDesc(m_dictionary.getString(Dictionary::LoginViewDesc));
+		separatorLogin.setText(m_dictionary.getString(Dictionary::LoginViewSectionLogin));
+		tbLoginUsername.setLabel(m_dictionary.getString(Dictionary::LoginViewUsername));
+		tbLoginPassword.setLabel(m_dictionary.getString(Dictionary::LoginViewPassword));
+		
+		buttonLogin.setText(m_dictionary.getString(Dictionary::LoginViewActionLogin));
+		separatorCreateAccount.setText(m_dictionary.getString(Dictionary::LoginViewSectionCreateUserProfile));
+		tbCreateAccountUsername.setLabel(m_dictionary.getString(Dictionary::LoginViewUsername));
+		tbCreateAccountPassword.setLabel(m_dictionary.getString(Dictionary::LoginViewPassword));
+
+		buttonCreateAccount.setText(m_dictionary.getString(Dictionary::LoginViewActionCreateUserProfile));
+	}
+
+	LoginController::LoginController(Cinetico &cinetico)
+		: Controller(cinetico)
 	{
-		Dictionary *dictionary = g_cinetico.dictionary();
-		separatorLogin.setText(dictionary->getString(Dictionary::LoginViewSectionLogin).c_str());
-		tbLoginUsername.setLabel(dictionary->getString(Dictionary::LoginViewUsername).c_str());
-		tbLoginPassword.setLabel(dictionary->getString(Dictionary::LoginViewPassword).c_str());
 		tbLoginPassword.setPasswordMode(true);
-		buttonLogin.setText(dictionary->getString(Dictionary::LoginViewActionLogin).c_str());
 		buttonLogin.setParam(this);
 		buttonLogin.setOnClick(onClick_login);
 
-		separatorCreateAccount.setText(dictionary->getString(Dictionary::LoginViewSectionCreateUserProfile).c_str());
-		tbCreateAccountUsername.setLabel(dictionary->getString(Dictionary::LoginViewUsername).c_str());
-		tbCreateAccountPassword.setLabel(dictionary->getString(Dictionary::LoginViewPassword).c_str());
 		tbCreateAccountPassword.setPasswordMode(true);
-
-		buttonCreateAccount.setText(dictionary->getString(Dictionary::LoginViewActionCreateUserProfile).c_str());
 		buttonCreateAccount.setParam(this);
 		buttonCreateAccount.setOnClick(onClick_createAccount);
 
@@ -55,7 +57,6 @@ namespace cinetico {
 
 		layout.append(title);
 		layout.append(layoutLoginArea);
-
 		layout.setMargin(10);
 	}
 
@@ -64,7 +65,7 @@ namespace cinetico {
 	}
 
 	void LoginController::onViewEnter(ViewParams *params) {
-		m_userProfileDAO = g_cinetico.cineticoDB()->userProfileDAO();
+		m_userProfileDAO = m_cinetico.cineticoDB()->userProfileDAO();
 	}
 
 	void LoginController::onViewQuit() {
@@ -75,17 +76,17 @@ namespace cinetico {
 		string &username = tbLoginUsername.text();
 		string &password = tbLoginPassword.text();
 
-		Cinetico::CineticoError res = g_cinetico.loginUser(username.data(), password.data());
+		Cinetico::CineticoError res = m_cinetico.loginUser(username.data(), password.data());
 		if (res == Cinetico::SUCCESS) {
-			string str = g_cinetico.dictionary()->getString(Dictionary::LoginViewErrorUserLoggedSucessfully, username).c_str();
+			string str = m_dictionary.getString(Dictionary::LoginViewErrorUserLoggedSucessfully, username);
 			Message::msg(NULL, str);
-			g_cinetico.goTo(Cinetico::EXERCISES);
+			m_cinetico.goTo(Cinetico::EXERCISES);
 			//
 			tbLoginUsername.setText("");
 			tbLoginPassword.setText("");
 		}
 		else {
-			Message::error(NULL, g_cinetico.dictionary()->getString(Dictionary::LoginViewErrorInvalidCredentials, username).c_str());
+			Message::error(NULL, m_dictionary.getString(Dictionary::LoginViewErrorInvalidCredentials, username));
 		}
 	}
 
@@ -109,16 +110,16 @@ namespace cinetico {
 			return;
 		//
 
-		Cinetico::CineticoError res = g_cinetico.createAccount(username.data(), password.data());
+		Cinetico::CineticoError res = m_cinetico.createAccount(username.data(), password.data());
 		if (res == Cinetico::SUCCESS) {
-			Message::msg(NULL, g_cinetico.dictionary()->getString(Dictionary::LoginViewErrorUserProfileCreatedSuccessfully, username).c_str());
+			Message::msg(NULL, m_cinetico.dictionary()->getString(Dictionary::LoginViewErrorUserProfileCreatedSuccessfully, username.data()));
 
 			tbCreateAccountUsername.setText("");
 			tbCreateAccountPassword.setText("");
 			return;
 		}
 		else if(res == Cinetico::USER_ALREADY_EXISTS) {
-			Message::warning(NULL, g_cinetico.dictionary()->getString(Dictionary::LoginViewErrorUsernameAlreadyExists, username).c_str());
+			Message::warning(NULL, m_cinetico.dictionary()->getString(Dictionary::LoginViewErrorUsernameAlreadyExists, username.data()));
 			return;
 		}
 	}

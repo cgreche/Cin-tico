@@ -15,12 +15,12 @@ namespace cinetico {
 
 		cTextBox();
 
-		void setLabel(const char *text) { label.setText(text); }
-		void setText(const char *text) { edit.setText(text); }
+		void setLabel(const string &text) { label.setText(text); }
+		void setText(const string &text) { edit.setText(text); }
+		void setEnabled(bool enabled) { edit.setEnabled(enabled); }
 		void setPasswordMode(bool passwordMode) { edit.setPasswordMode(passwordMode); }
 		string &text() { return edit.text(); }
 		bool passwordMode() const { return edit.passwordMode(); }
-
 	};
 
 }

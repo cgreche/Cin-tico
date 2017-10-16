@@ -8,7 +8,7 @@
 #include "mainwindow.h"
 #include "user-interface/LoginController.h"
 #include "user-interface/ExercisesController.h"
-#include "user-interface/ExerciseManagementController.h"
+#include "user-interface/ActionsController.h"
 #include "user-interface/ExerciseRealizationController.h"
 #include "user-interface/UserProfileController.h"
 #include "utils/crypter.h"
@@ -30,17 +30,17 @@ namespace cinetico {
 
 	void Cinetico::setup()
 	{
+		m_mainWindow = new MainWindow(*this);
 		m_cineticoDB = new CineticoDB(*this);
 		m_cinetico3D = new Cinetico3D(*this);
-		m_mainWindow = new MainWindow(*this);
 		m_dictionary = new Dictionary(*this);
 
 		//Setup views
-		registerView(LOGIN, "Login", new LoginController());
-		registerView(USER_PROFILE, "User Profile", new UserProfileController());
-		registerView(EXERCISES, "Exercises", new ExercisesController());
-		registerView(EXERCISE_MANAGEMENT, "Exercise Management", new ExerciseManagementController());
-		registerView(EXERCISE_REALIZATION, "Exercise Realization", new ExerciseRealizationController());
+		registerView(LOGIN, m_dictionary->getString(Dictionary::LoginViewTitle).data(), new LoginController(*this));
+		registerView(USER_PROFILE, m_dictionary->getString(Dictionary::UserProfileViewTitle).data(), new UserProfileController(*this));
+		registerView(EXERCISES, m_dictionary->getString(Dictionary::ExercisesViewTitle).data(), new ExercisesController(*this));
+		registerView(ACTIONS, m_dictionary->getString(Dictionary::ActionsViewTitle).data(), new ActionsController(*this));
+		registerView(EXERCISE_REALIZATION, "Exercise Realization", new ExerciseRealizationController(*this));
 
 #if 1
 		goTo(INITIAL_VIEW);
@@ -135,6 +135,7 @@ namespace cinetico {
 		}
 
 		Controller *controller = m_views[viewId].controller;
+		controller->onViewUpdate();
 		m_mainWindow->setContentLayout(controller->viewDefinition());
 		m_currentView = viewId;
 		controller->onViewEnter(params);

@@ -14,7 +14,9 @@ namespace cinetico {
 		Label labelDescr;
 		Separator separator;
 
-		cPageTitle(const char *title, const char *desc);
+		cPageTitle();
+		void setTitle(const string &title);
+		void setDesc(const string &desc);
 	};
 
 }

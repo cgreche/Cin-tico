@@ -54,11 +54,14 @@ namespace cinetico {
 		friend void buttonBack_onClick(Button& button);
 		friend void buttonChangeUserDetails_onClick(Button& button);
 		friend void buttonChangePassword_onClick(Button& button);
+		friend void buttonDeactivateUser_onClick(Button &button);
+
 	public:
-		UserProfileController();
+		UserProfileController(Cinetico &cinetico);
 
 		Layout *viewDefinition();
 		void onViewEnter(ViewParams *params);
+		void onViewUpdate();
 		void onViewTick();
 		void onViewQuit();
 	};

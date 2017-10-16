@@ -1,5 +1,52 @@
 <?xml version="1.0"?>
 <language id="pt_br">
+	<!-- General data -->
+	<string id="X">X</string>
+	<string id="Y">Y</string>
+	<string id="Z">Z</string>
+
+	<!-- Body Points -->
+	<string id="BodyPointHead">Cabeça</string>
+	<string id="BodyPointCervical">Cervical</string>
+	<string id="BodyPointSpine">Espinha</string>
+	<string id="BodyPointSpineBase">Base da espinha</string>
+	<string id="BodyPointLeftShoulder">Ombro esquerdo</string>
+	<string id="BodyPointLeftElbow">Cotovelo esquerdo</string>
+	<string id="BodyPointLeftWrist">Pulso esquerdo</string>
+	<string id="BodyPointLeftPalm">Palma esquerda</string>
+	<string id="BodyPointLeftPinky">Dedo mínimo esquerdo</string>
+	<string id="BodyPointLeftRingFinger">Dedo anular esquerdo</string>
+	<string id="BodyPointLeftMiddleFinger">Dedo médio esquerdo</string>
+	<string id="BodyPointLeftIndexFinger">Dedo indicador esquerdo</string>
+	<string id="BodyPointLeftThumb">Dedo polegar esquerdo</string>
+	<string id="BodyPointLeftHip">Quadril esquerdo</string>
+	<string id="BodyPointLeftKnee">Joelho esquerdo</string>
+	<string id="BodyPointLeftAnkle">Tornozelo esquerdo</string>
+	<string id="BodyPointLeftFoot">Pé esquerdo</string>
+	<string id="BodyPointRightShoulder">Ombro direito</string>
+	<string id="BodyPointRightElbow">Cotovelo direito</string>
+	<string id="BodyPointRightWrist">Pulso direito</string>
+	<string id="BodyPointRightPalm">Palma direita</string>
+	<string id="BodyPointRightPinky">Dedo mínimo direito</string>
+	<string id="BodyPointRightRingFinger">Dedo anular direito</string>
+	<string id="BodyPointRightMiddleFinger">Dedo médio direito</string>
+	<string id="BodyPointRightIndexFinger">Dedo indicador direito</string>
+	<string id="BodyPointRightThumb">Dedo polegar direito</string>
+	<string id="BodyPointRightHip">Quadril direito</string>
+	<string id="BodyPointRightKnee">Joelho direito</string>
+	<string id="BodyPointRightAnkle">Tornozelo direito</string>
+	<string id="BodyPointRightFoot">Pé direito</string>
+	
+	<!-- Action Enums -->
+	<string id="ActionTypePosition">Posição</string>
+	<string id="ActionTypeMovement">Movimento></string>
+	
+	<string id="ActionRefPointWorld">Mundo</string>
+	<string id="ActionRefPointLastPos">Última posição</string>
+	
+	<string id="MovementTypeLinear">Linear</string>
+	<string id="MovementTypeAngular">Angular</string>
+	
 	<!-- -->
 	<string id="ActionLogoff">Sair</string>
 	<!-- -->
@@ -10,19 +57,46 @@
 	<string id="DefaultActionCancel">Cancelar</string>
 	<string id="DefaultActionYes">Sim</string>
 	<string id="DefaultActionNo">Não</string>
+	<string id="DefaultActionBack">Voltar</string>
 	<!-- -->
 	<string id="DefaultActionQuestionDelete">Deseja excluir este registro?
 	Esta operação não poderá ser desfeita.</string>
+	
+	
 	<!-- -->
+	
+	
 	<!--Entity-->
 	<string id="EntityUserProfile">Perfil de Usuário</string>
 	<string id="EntityExercise">Exercício</string>
 	<string id="EntityAction">Ação</string>
 	<!-- -->
 	<!--Entitiy attributes-->
+	<string id="UserProfileLoginName">Usuário</string>
+	<string id="UserProfileUserName">Nome do usuário</string>
+	<string id="UserProfilePassword">Senha</string>
+	<string id="UserProfileCreationDate">Data de criação</string>
+	
 	<string id="ExerciseName">Nome</string>
 	<string id="ExerciseAuthor">Autor</string>
 	<string id="ExercisePublic">Público</string>
+	
+	<string id="ActionType">Tipo</string>
+	<string id="ActionOrder">Ordem</string>
+	<string id="ActionName">Nome</string>
+	<string id="ActionMinTime">Tempo mínimo para execução</string>
+	<string id="ActionMaxTime">Tempo máximo para execução</string>
+	<string id="ActionBodyPoint">Ponto do corpo</string>
+	<string id="ActionRefPoint">Ponto de referência</string>
+	<string id="ActionFinalPosition">Posição final (cm)</string>
+	<string id="ActionFinalOrientation">Direação final</string>
+	
+	<string id="PositionActionMinHoldTime">Tempo mínimo para segurar a posição (s)</string>
+	<string id="MovementActionType">Tipo de movimento</string>
+	<string id="MovementActionMinSpeed">Velocidade mínima para execução (cm/s²)</string>
+	<string id="MovementActionMaxSpeed">Velocidade máxima para execução (cm/s²)</string>
+	
+	
 	<!-- -->
 	<!--Views-->
 	<string id="ViewDefaultErrorRequiredFields">Os campos com '*' devem ser preenchidos obrigatoriamente.</string>
@@ -43,6 +117,25 @@
 	<string id="LoginViewErrorInvalidCredentials">Usuário ou senha inválidos.</string>
 	<string id="LoginViewErrorUsernameAlreadyExists">Nome de usuário já existente.</string>
 	<!-- -->
+	
+	<!--UserProfile-->
+	<string id="UserProfileViewTitle">Perfil de usuário</string>
+	<string id="UserProfileViewDesc">Altere informações de ou exclua seu perfil de usuário.</string>
+	<string id="UserProfileViewSectionUserDetails">Detalhes do usuário</string>
+	<string id="UserProfileViewSectionChangePassword">Alterar senha</string>
+	<string id="UserProfileViewCurrentPassword">Senha atual</string>
+	<string id="UserProfileViewNewPassword">Nova senha</string>
+	<string id="UserProfileViewNewPasswordConfirmation">Confirme a nova senha</string>
+	<string id="UserProfileViewSectionDeactivateUser">Desativar perfil</string>
+	<string id="UserProfileViewDeactivateUser">Desativar</string>
+	<!-- -->
+	<string id="UserProfileViewErrorUserNameChangedSucessfully">Nome do usuário alterado com sucesso.</string>
+	<string id="UserProfileViewErrorPasswordChangedSucessfully">Senha alterada com sucesso.</string>
+	<string id="UserProfileViewErrorPasswordWrongCurrentPassword">Senha atual incorreta.</string>
+	<string id="UserProfileViewErrorPasswordConfirmationNotEqual">Confirmação de nova senha não confere.</string>
+	<string id="UserProfileViewQuestionDeactivateConfirmation">Você tem certeza que deseja desativar seu perfil de usuário?\nEsta operação não poderá ser desfeita.</string>
+	
+	<!-- -->
 	<!--Exercises-->
 	<string id="ExercisesViewTitle">Exercícios</string>
 	<string id="ExercisesViewDesc">Crie, altere, grave ou realize um exercício.</string>
@@ -57,10 +150,11 @@
 	<string id="ExercisesViewErrorExerciseHasNoActions">Para realizar um exercício, este deve conter pelo menos uma ação.</string>
 	<!-- -->
 	<!--Action-->
-	<string id="ActionsViewTitle"></string>
-	<string id="ActionsViewDesc"></string>
-	<string id="UserProfileViewTitle"></string>
-	<string id="UserProfileViewDesc"></string>
+	<string id="ActionsViewTitle">Ações</string>
+	<string id="ActionsViewDesc">Adicione ou altere ações para o exercício.</string>
+	<string id="ActionsViewSectionBasicData">Informação básica da ação.</string>
+	<string id="ActionsViewSectionSpecificData">Informação específica para o tipo de ação.</string>
+	
 </language>
 
 

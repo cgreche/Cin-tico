@@ -10,6 +10,7 @@
 namespace cinetico {
 
 	using namespace uilib;
+	class Cinetico;
 
 	class MainWindow : public Window
 	{

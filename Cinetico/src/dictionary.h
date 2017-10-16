@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#include "uilib/lib/string.h"
+
 namespace cinetico {
 
 	class Cinetico;
@@ -19,70 +21,156 @@ namespace cinetico {
 		};
 
 		enum StringID {
+			//General Data
+			  X
+			, Y
+			, Z
+
+			//Body Points
+			, BodyPointHead
+			, BodyPointCervical
+			, BodyPointSpine
+			, BodyPointSpineBase
+			, BodyPointLeftShoulder
+			, BodyPointLeftElbow
+			, BodyPointLeftWrist
+			, BodyPointLeftPalm
+			, BodyPointLeftPinky
+			, BodyPointLeftRingFinger
+			, BodyPointLeftMiddleFinger
+			, BodyPointLeftIndexFinger
+			, BodyPointLeftThumb
+			, BodyPointLeftHip
+			, BodyPointLeftKnee
+			, BodyPointLeftAnkle
+			, BodyPointLeftFoot
+			, BodyPointRightShoulder
+			, BodyPointRightElbow
+			, BodyPointRightWrist
+			, BodyPointRightPalm
+			, BodyPointRightPinky
+			, BodyPointRightRingFinger
+			, BodyPointRightMiddleFinger
+			, BodyPointRightIndexFinger
+			, BodyPointRightThumb
+			, BodyPointRightHip
+			, BodyPointRightKnee
+			, BodyPointRightAnkle
+			, BodyPointRightFoot
+
+			//Action Enums
+			, ActionTypePosition
+			, ActionTypeMovement
+
+			, ActionRefPointWorld
+			, ActionRefPointLastPos
+
+			, MovementTypeLinear
+			, MovementTypeAngular
+
 			//
-			ActionLogoff,
+			, ActionLogoff
 
-			DefaultActionAdd,
-			DefaultActionEdit,
-			DefaultActionDelete,
-			DefaultActionSave,
-			DefaultActionCancel,
-			DefaultActionYes,
-			DefaultActionNo,
+			, DefaultActionAdd
+			, DefaultActionEdit
+			, DefaultActionDelete
+			, DefaultActionSave
+			, DefaultActionCancel
+			, DefaultActionYes
+			, DefaultActionNo
+			, DefaultActionBack
 
-			DefaultActionQuestionDelete,
+			, DefaultActionQuestionDelete
 
 			//Entity
-			EntityUserProfile,
-			EntityExercise,
-			EntityAction,
+			, EntityUserProfile
+			, EntityExercise
+			, EntityAction
 
 			//Entitiy attributes
-			ExerciseName,
-			ExerciseAuthor,
-			ExercisePublic,
+			, UserProfileLoginName
+			, UserProfileUserName
+			, UserProfilePassword
+			, UserProfileCreationDate
+
+			, ExerciseName
+			, ExerciseAuthor
+			, ExercisePublic
+
+			, ActionType
+			, ActionOrder
+			, ActionName
+			, ActionMinTime
+			, ActionMaxTime
+			, ActionBodyPoint
+			, ActionRefPoint
+			, ActionFinalPosition
+			, ActionFinalOrientation
+
+			, PositionActionMinHoldTime
+			, MovementActionType
+			, MovementActionMinSpeed
+			, MovementActionMaxSpeed
 
 			//Views
-
-			ViewDefaultErrorRequiredFields,
+			, ViewDefaultErrorRequiredFields
 
 			//Login
-			LoginViewTitle,
-			LoginViewDesc,
-			LoginViewSectionLogin,
-			LoginViewSectionCreateUserProfile,
-			LoginViewUsername,
-			LoginViewPassword,
-			LoginViewConfirmPassword,
-			LoginViewActionLogin,
-			LoginViewActionCreateUserProfile,
+			, LoginViewTitle
+			, LoginViewDesc
+			, LoginViewSectionLogin
+			, LoginViewSectionCreateUserProfile
+			, LoginViewUsername
+			, LoginViewPassword
+			, LoginViewConfirmPassword
+			, LoginViewActionLogin
+			, LoginViewActionCreateUserProfile
 
-			LoginViewErrorUserProfileCreatedSuccessfully,
-			LoginViewErrorUserLoggedSucessfully,
-			LoginViewErrorInvalidCredentials,
-			LoginViewErrorUsernameAlreadyExists,
+			, LoginViewErrorUserProfileCreatedSuccessfully
+			, LoginViewErrorUserLoggedSucessfully
+			, LoginViewErrorInvalidCredentials
+			, LoginViewErrorUsernameAlreadyExists
+
+			//UserProfile
+			, UserProfileViewTitle
+			, UserProfileViewDesc
+			, UserProfileViewSectionUserDetails
+			, UserProfileViewSectionChangePassword
+			, UserProfileViewCurrentPassword
+			, UserProfileViewNewPassword
+			, UserProfileViewNewPasswordConfirmation
+			, UserProfileViewSectionDeactivateUser
+			, UserProfileViewDeactivateUser
+
+			, UserProfileViewErrorUserNameChangedSucessfully
+			, UserProfileViewErrorPasswordChangedSucessfully
+			, UserProfileViewErrorPasswordWrongCurrentPassword
+			, UserProfileViewErrorPasswordConfirmationNotEqual
+			, UserProfileViewQuestionDeactivateConfirmation
+
 
 			//Exercises
-			ExercisesViewTitle,
-			ExercisesViewDesc,
-			ExercisesViewActionCreate,
-			ExercisesViewActionManageActions,
-			ExercisesViewActionDoExercise,
-			ExercisesViewGridColumnActionCount,
-			ExercisesViewExerciseName,
-			ExercisesViewSectionBodyPoints,
+			, ExercisesViewTitle
+			, ExercisesViewDesc
+			, ExercisesViewActionCreate
+			, ExercisesViewActionManageActions
+			, ExercisesViewActionDoExercise
+			, ExercisesViewGridColumnActionCount
+			, ExercisesViewExerciseName
+			, ExercisesViewSectionBodyPoints
 
-			ExercisesViewErrorExerciseAlreadyExists,
-			ExercisesViewErrorExerciseHasNoActions,
+			, ExercisesViewErrorExerciseAlreadyExists
+			, ExercisesViewErrorExerciseHasNoActions
 
 			//Action
-			ActionsViewTitle,
-			ActionsViewDesc,
-			UserProfileViewTitle,
-			UserProfileViewDesc,
+			, ActionsViewTitle
+			, ActionsViewDesc
+			, ActionsViewSectionBasicData
+			, ActionsViewSectionSpecificData
 
-			StringIDCount,
-			InvalidStringID = -1
+			//
+			, StringIDCount
+			, InvalidStringID = -1
 		};
 
 	private:
@@ -93,7 +181,7 @@ namespace cinetico {
 		void loadAllLanguages();
 
 		Cinetico &m_cinetico;
-		std::vector<std::vector<std::string>> m_languages;
+		std::vector<std::vector<uilib::string>> m_languages;
 
 		LanguageID m_languageId;
 
@@ -102,7 +190,7 @@ namespace cinetico {
 
 		bool setLanguage(LanguageID id);
 
-		std::string getString(StringID id, ...);
+		uilib::string getString(StringID id, ...);
 	};
 
 }

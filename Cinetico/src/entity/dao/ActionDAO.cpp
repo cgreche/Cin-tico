@@ -15,8 +15,8 @@ namespace cinetico {
 			"exercise_id,type,order_type"
 			",name,min_time,max_time"
 			",body_point,ref_point"
-			",position_x,position_y,position_z"
-			",orientation_x,orientation_y,orientation_z)"
+			",final_position_x,final_position_y,final_position_z"
+			",final_orientation_x,final_orientation_y,final_orientation_z)"
 			" VALUES(?,?,?,?, ?,?, ?,?, ?,?,?, ?,?,?);";
 
 		SQLStatement *actionStmt;
@@ -29,12 +29,12 @@ namespace cinetico {
 		actionStmt->bind(6, action.maxTime());
 		actionStmt->bind(7, (int)action.bodyPoint());
 		actionStmt->bind(8, (int)action.refPoint());
-		actionStmt->bind(9, action.position().x());
-		actionStmt->bind(10, action.position().y());
-		actionStmt->bind(11, action.position().z());
-		actionStmt->bind(12, action.orientation().x());
-		actionStmt->bind(13, action.orientation().y());
-		actionStmt->bind(14, action.orientation().z());
+		actionStmt->bind(9, action.finalPosition().x());
+		actionStmt->bind(10, action.finalPosition().y());
+		actionStmt->bind(11, action.finalPosition().z());
+		actionStmt->bind(12, action.finalOrientation().x());
+		actionStmt->bind(13, action.finalOrientation().y());
+		actionStmt->bind(14, action.finalOrientation().z());
 		int rc = actionStmt->execute();
 		actionStmt->close();
 
@@ -70,8 +70,8 @@ namespace cinetico {
 		const char *actionSql = "UPDATE ACTION SET type = ?, order_type = ?, "
 			"name = ?, min_time = ?, max_time = ?, "
 			"body_point = ?, ref_point = ?, "
-			"position_x = ?, position_y = ?, position_z = ?, "
-			"orientation_x = ?, orientation_y = ?, orientation_z = ? WHERE id = ?;";
+			"final_position_x = ?, final_position_y = ?, final_position_z = ?, "
+			"final_orientation_x = ?, final_orientation_y = ?, final_orientation_z = ? WHERE id = ?;";
 
 		SQLStatement *actionStmt;
 		actionStmt = m_db.prepare(actionSql);
@@ -82,12 +82,12 @@ namespace cinetico {
 		actionStmt->bind(5, action.maxTime());
 		actionStmt->bind(6, (int)action.bodyPoint());
 		actionStmt->bind(7, (int)action.refPoint());
-		actionStmt->bind(8, action.position().x());
-		actionStmt->bind(9, action.position().y());
-		actionStmt->bind(10, action.position().z());
-		actionStmt->bind(11, action.orientation().x());
-		actionStmt->bind(12, action.orientation().y());
-		actionStmt->bind(13, action.orientation().z());
+		actionStmt->bind(8, action.finalPosition().x());
+		actionStmt->bind(9, action.finalPosition().y());
+		actionStmt->bind(10, action.finalPosition().z());
+		actionStmt->bind(11, action.finalOrientation().x());
+		actionStmt->bind(12, action.finalOrientation().y());
+		actionStmt->bind(13, action.finalOrientation().z());
 		actionStmt->bind(14, action.id());
 		int rc = actionStmt->execute();
 		actionStmt->close();
@@ -140,8 +140,8 @@ namespace cinetico {
 						"a.id,a.exercise_id,a.type,a.order_type"
 						",a.name,a.min_time,a.max_time"
 						",a.body_point,a.ref_point"
-						",a.position_x,a.position_y,a.position_z"
-						",a.orientation_x,a.orientation_y,a.orientation_z"
+						",a.final_position_x,a.final_position_y,a.final_position_z"
+						",a.final_orientation_x,a.final_orientation_y,a.final_orientation_z"
 
 						",p.min_hold_time"
 						" FROM ACTION AS a, POSITION_ACTION AS p WHERE a.id = ? AND p.action_id = ?;";
@@ -169,8 +169,8 @@ action = positionAction;
 						"a.id,a.exercise_id,a.type,a.order_type"
 						",a.name,a.min_time,a.max_time"
 						",a.body_point,a.ref_point"
-						",a.position_x,a.position_y,a.position_z"
-						",a.orientation_x,a.orientation_y,a.orientation_z"
+						",a.final_position_x,a.final_position_y,a.final_position_z"
+						",a.final_orientation_x,a.final_orientation_y,a.final_orientation_z"
 
 						",m.movement_type,m.min_speed,m.max_speed"
 						" FROM ACTION AS a, MOVEMENT_ACTION AS m WHERE a.id = ? AND m.action_id = ?;";
@@ -203,8 +203,8 @@ action = positionAction;
 				action->setMaxTime(pRS->getFloat(6));
 				action->setBodyPoint((BodyPoint::BodyPart)pRS->getInt(7));
 				action->setRefPoint(pRS->getInt(8));
-				action->setPosition(Vector3(pRS->getFloat(9), pRS->getFloat(10), pRS->getFloat(11)));
-				action->setOrientation(Vector3(pRS->getFloat(12), pRS->getFloat(13), pRS->getFloat(14)));
+				action->setFinalPosition(Vector3(pRS->getFloat(9), pRS->getFloat(10), pRS->getFloat(11)));
+				action->setFinalOrientation(Vector3(pRS->getFloat(12), pRS->getFloat(13), pRS->getFloat(14)));
 				actionList.push_back(action);
 				pRS->close();
 				pStmt->close();

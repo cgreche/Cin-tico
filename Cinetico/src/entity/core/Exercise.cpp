@@ -19,4 +19,8 @@ namespace cinetico_core {
 		m_actions.push_back(action);
 	}
 
+	void Exercise::setActionList(std::vector<Action*> actionList) {
+		m_actions = actionList;
+	}
+
 }

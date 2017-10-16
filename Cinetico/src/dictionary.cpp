@@ -17,16 +17,65 @@ namespace cinetico {
 #define MAP_LANG(id) g_langIdStr[id] = #id
 #define MAP_STR(id) g_stringIdStr[id] = #id
 
+
+
 	void Dictionary::__fillMaps() {
 		if (!g_mapsFilled) {
 			MAP_LANG(PT_BR);
 			MAP_LANG(EN_US);
 
-			//
 
+			//String mapping
+			//General Data
+			MAP_STR(X);
+			MAP_STR(Y);
+			MAP_STR(Z);
+
+			//Body Points
+			MAP_STR(BodyPointHead);
+			MAP_STR(BodyPointCervical);
+			MAP_STR(BodyPointSpine);
+			MAP_STR(BodyPointSpineBase);
+			MAP_STR(BodyPointLeftShoulder);
+			MAP_STR(BodyPointLeftElbow);
+			MAP_STR(BodyPointLeftWrist);
+			MAP_STR(BodyPointLeftPalm);
+			MAP_STR(BodyPointLeftPinky);
+			MAP_STR(BodyPointLeftRingFinger);
+			MAP_STR(BodyPointLeftMiddleFinger);
+			MAP_STR(BodyPointLeftIndexFinger);
+			MAP_STR(BodyPointLeftThumb);
+			MAP_STR(BodyPointLeftHip);
+			MAP_STR(BodyPointLeftKnee);
+			MAP_STR(BodyPointLeftAnkle);
+			MAP_STR(BodyPointLeftFoot);
+			MAP_STR(BodyPointRightShoulder);
+			MAP_STR(BodyPointRightElbow);
+			MAP_STR(BodyPointRightWrist);
+			MAP_STR(BodyPointRightPalm);
+			MAP_STR(BodyPointRightPinky);
+			MAP_STR(BodyPointRightRingFinger);
+			MAP_STR(BodyPointRightMiddleFinger);
+			MAP_STR(BodyPointRightIndexFinger);
+			MAP_STR(BodyPointRightThumb);
+			MAP_STR(BodyPointRightHip);
+			MAP_STR(BodyPointRightKnee);
+			MAP_STR(BodyPointRightAnkle);
+			MAP_STR(BodyPointRightFoot);
+
+			//Action Enums
+			MAP_STR(ActionTypePosition);
+			MAP_STR(ActionTypeMovement);
+
+			MAP_STR(ActionRefPointWorld);
+			MAP_STR(ActionRefPointLastPos);
+
+			MAP_STR(MovementTypeLinear);
+			MAP_STR(MovementTypeAngular);
+
+			//
 			MAP_STR(ActionLogoff);
 
-			//Default actions
 			MAP_STR(DefaultActionAdd);
 			MAP_STR(DefaultActionEdit);
 			MAP_STR(DefaultActionDelete);
@@ -34,6 +83,7 @@ namespace cinetico {
 			MAP_STR(DefaultActionCancel);
 			MAP_STR(DefaultActionYes);
 			MAP_STR(DefaultActionNo);
+			MAP_STR(DefaultActionBack);
 
 			MAP_STR(DefaultActionQuestionDelete);
 
@@ -43,10 +93,30 @@ namespace cinetico {
 			MAP_STR(EntityAction);
 
 			//Entitiy attributes
+			MAP_STR(UserProfileLoginName);
+			MAP_STR(UserProfileUserName);
+			MAP_STR(UserProfilePassword);
+			MAP_STR(UserProfileCreationDate);
+
 			MAP_STR(ExerciseName);
 			MAP_STR(ExerciseAuthor);
 			MAP_STR(ExercisePublic);
-			
+
+			MAP_STR(ActionType);
+			MAP_STR(ActionOrder);
+			MAP_STR(ActionName);
+			MAP_STR(ActionMinTime);
+			MAP_STR(ActionMaxTime);
+			MAP_STR(ActionBodyPoint);
+			MAP_STR(ActionRefPoint);
+			MAP_STR(ActionFinalPosition);
+			MAP_STR(ActionFinalOrientation);
+
+			MAP_STR(PositionActionMinHoldTime);
+			MAP_STR(MovementActionType);
+			MAP_STR(MovementActionMinSpeed);
+			MAP_STR(MovementActionMaxSpeed);
+
 			//Views
 			MAP_STR(ViewDefaultErrorRequiredFields);
 
@@ -66,6 +136,23 @@ namespace cinetico {
 			MAP_STR(LoginViewErrorInvalidCredentials);
 			MAP_STR(LoginViewErrorUsernameAlreadyExists);
 
+			//UserProfile
+			MAP_STR(UserProfileViewTitle);
+			MAP_STR(UserProfileViewDesc);
+			MAP_STR(UserProfileViewSectionUserDetails);
+			MAP_STR(UserProfileViewSectionChangePassword);
+			MAP_STR(UserProfileViewCurrentPassword);
+			MAP_STR(UserProfileViewNewPassword);
+			MAP_STR(UserProfileViewNewPasswordConfirmation);
+			MAP_STR(UserProfileViewSectionDeactivateUser);
+			MAP_STR(UserProfileViewDeactivateUser);
+
+			MAP_STR(UserProfileViewErrorUserNameChangedSucessfully);
+			MAP_STR(UserProfileViewErrorPasswordChangedSucessfully);
+			MAP_STR(UserProfileViewErrorPasswordWrongCurrentPassword);
+			MAP_STR(UserProfileViewErrorPasswordConfirmationNotEqual);
+			MAP_STR(UserProfileViewQuestionDeactivateConfirmation);
+
 			//Exercises
 			MAP_STR(ExercisesViewTitle);
 			MAP_STR(ExercisesViewDesc);
@@ -79,11 +166,11 @@ namespace cinetico {
 			MAP_STR(ExercisesViewErrorExerciseAlreadyExists);
 			MAP_STR(ExercisesViewErrorExerciseHasNoActions);
 
-			//Action
+			//Actions
 			MAP_STR(ActionsViewTitle);
 			MAP_STR(ActionsViewDesc);
-			MAP_STR(UserProfileViewTitle);
-			MAP_STR(UserProfileViewDesc);
+			MAP_STR(ActionsViewSectionBasicData);
+			MAP_STR(ActionsViewSectionSpecificData);
 
 			g_mapsFilled = true;
 		}
@@ -197,7 +284,7 @@ namespace cinetico {
 		return true;
 	}
 
-	std::string Dictionary::getString(StringID id, ...) {
+	uilib::string Dictionary::getString(StringID id, ...) {
 		if (id >= StringIDCount)
 			return "";
 

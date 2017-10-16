@@ -14,7 +14,7 @@ namespace cinetico {
 		VerticalLayout layout;
 
 	public:
-		ExerciseRealizationController();
+		ExerciseRealizationController(Cinetico &cinetico);
 
 		Layout *viewDefinition();
 		void onViewEnter(ViewParams *params);

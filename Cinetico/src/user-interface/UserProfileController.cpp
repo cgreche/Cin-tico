@@ -25,7 +25,7 @@ namespace cinetico {
 	static void buttonDeactivateUser_onClick(Button &button) {
 		UserProfileController *controller = (UserProfileController*)button.param();
 		
-		Message::message_result result = Message::question(NULL, "Você tem certeza que deseja desativar seu perfil de usuário?\nEsta operação não poderá ser desfeita.");
+		Message::message_result result = Message::question(NULL, controller->m_dictionary.getString(Dictionary::UserProfileViewQuestionDeactivateConfirmation));
 		if (result == Message::yes) {
 			g_cinetico.logoffCurrentUser();
 			g_cinetico.goTo(Cinetico::LOGIN);
@@ -33,25 +33,43 @@ namespace cinetico {
 		}
 	}
 
-	UserProfileController::UserProfileController()
-		: title("Perfil de usuário", "Altere informações de ou exclua seu perfil de usuário.")
+	void UserProfileController::onViewUpdate() {
+		title.setTitle(m_dictionary.getString(Dictionary::UserProfileViewTitle));
+		title.setDesc(m_dictionary.getString(Dictionary::UserProfileViewDesc));
+		buttonBack.setText(m_dictionary.getString(Dictionary::DefaultActionBack));
+
+		separatorUserDetails.setText(m_dictionary.getString(Dictionary::UserProfileViewSectionUserDetails));
+		labelCreationDateDescr.setText(m_dictionary.getString(Dictionary::UserProfileCreationDate));
+
+		labelUserDescr.setText(m_dictionary.getString(Dictionary::UserProfileLoginName));
+
+		tbUsername.setLabel(m_dictionary.getString(Dictionary::UserProfileUserName));
+		buttonChangeUserDetails.setText(m_dictionary.getString(Dictionary::DefaultActionEdit));
+
+		separatorPassword.setText(m_dictionary.getString(Dictionary::UserProfileViewSectionChangePassword));
+		tbOldPassword.setLabel(m_dictionary.getString(Dictionary::UserProfileViewCurrentPassword));
+		tbNewPassword.setLabel(m_dictionary.getString(Dictionary::UserProfileViewNewPassword));
+		tbNewPasswordConfirmation.setLabel(m_dictionary.getString(Dictionary::UserProfileViewNewPasswordConfirmation));
+		buttonChangePassword.setText(m_dictionary.getString(Dictionary::DefaultActionEdit));
+
+		separatorDeactivateUser.setText(m_dictionary.getString(Dictionary::UserProfileViewSectionDeactivateUser));
+		buttonDeactivateUser.setText(m_dictionary.getString(Dictionary::UserProfileViewDeactivateUser));
+	}
+
+	UserProfileController::UserProfileController(Cinetico &cinetico)
+		: Controller(cinetico)
 	{
-		buttonBack.setText("Voltar");
+		
 		buttonBack.setParam(this);
 		buttonBack.setOnClick(buttonBack_onClick);
 		layoutActions.append(buttonBack);
 
-		separatorUserDetails.setText("Detalhes do usuário");
-		labelCreationDateDescr.setText("Data de criação:");
 		layoutCreationDate.append(labelCreationDateDescr);
 		layoutCreationDate.append(labelCreationDate);
 		
-		labelUserDescr.setText("Usuário:");
 		layoutUser.append(labelUserDescr);
 		layoutUser.append(labelUser);
 
-		tbUsername.setLabel("Nome do usuário");
-		buttonChangeUserDetails.setText("Alterar");
 		buttonChangeUserDetails.setParam(this);
 		buttonChangeUserDetails.setOnClick(buttonChangeUserDetails_onClick);
 
@@ -61,11 +79,6 @@ namespace cinetico {
 		layoutUserDetailsSection.append(tbUsername);
 		layoutUserDetailsSection.append(buttonChangeUserDetails);
 
-		separatorPassword.setText("Mudar senha");
-		tbOldPassword.setLabel("Senha atual");
-		tbNewPassword.setLabel("Nova senha");
-		tbNewPasswordConfirmation.setLabel("Confirme a nova senha");
-		buttonChangePassword.setText("Alterar");
 		buttonChangePassword.setParam(this);
 		buttonChangePassword.setOnClick(buttonChangePassword_onClick);
 
@@ -77,8 +90,6 @@ namespace cinetico {
 		layoutPasswordSection.append(layoutPassword);
 		layoutPasswordSection.append(buttonChangePassword);
 
-		separatorDeactivateUser.setText("Desativar perfil");
-		buttonDeactivateUser.setText("Desativar");
 		buttonDeactivateUser.setParam(this);
 		buttonDeactivateUser.setOnClick(buttonDeactivateUser_onClick);
 		layoutDeactivateUser.append(separatorDeactivateUser);
@@ -126,7 +137,7 @@ namespace cinetico {
 		string name = tbUsername.text();
 		m_currentUser->setName(name.data());
 		g_cinetico.cineticoDB()->userProfileDAO()->update(*m_currentUser);
-		Message::msg(NULL, "Nome do usuário alterado com sucesso.");
+		Message::msg(NULL, m_dictionary.getString(Dictionary::UserProfileViewErrorUserNameChangedSucessfully));
 	}
 
 	void UserProfileController::onChangePassword() {
@@ -135,19 +146,19 @@ namespace cinetico {
 		string newPwConfirm = tbNewPasswordConfirmation.text();
 
 		if (newPw != newPwConfirm) {
-			Message::error(NULL, "Confirmação de nova senha não confere.");
+			Message::error(NULL, m_dictionary.getString(Dictionary::UserProfileViewErrorPasswordConfirmationNotEqual));
 			return;
 		}
 
 		std::string cryptCurPw = Crypter::SimpleHash(curPw.data());
 		std::string crypTNewPw = Crypter::SimpleHash(newPw.data());
 		if(!m_currentUser->changePassword(cryptCurPw, crypTNewPw)) {
-			Message::error(NULL, "Senha atual incorreta.");
+			Message::error(NULL, m_dictionary.getString(Dictionary::UserProfileViewErrorPasswordWrongCurrentPassword));
 			return;
 		}
 
 		g_cinetico.cineticoDB()->userProfileDAO()->update(*m_currentUser);
-		Message::msg(NULL,"Senha alterada com sucesso.");
+		Message::msg(NULL,m_dictionary.getString(Dictionary::UserProfileViewErrorPasswordChangedSucessfully));
 
 		tbOldPassword.setText("");
 		tbNewPassword.setText("");

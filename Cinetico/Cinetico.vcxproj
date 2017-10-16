@@ -177,7 +177,7 @@
     <ClInclude Include="src\user-interface\components\cSeparator.h" />
     <ClInclude Include="src\user-interface\components\cTextBox.h" />
     <ClInclude Include="src\user-interface\Controller.h" />
-    <ClInclude Include="src\user-interface\ExerciseManagementController.h" />
+    <ClInclude Include="src\user-interface\ActionsController.h" />
     <ClInclude Include="src\user-interface\ExerciseRealizationController.h" />
     <ClInclude Include="src\user-interface\ExercisesController.h" />
     <ClInclude Include="src\user-interface\LoginController.h" />
@@ -285,7 +285,8 @@
     <ClCompile Include="src\user-interface\components\cPageTitle.cpp" />
     <ClCompile Include="src\user-interface\components\cSeparator.cpp" />
     <ClCompile Include="src\user-interface\components\cTextBox.cpp" />
-    <ClCompile Include="src\user-interface\ExerciseManagementController.cpp" />
+    <ClCompile Include="src\user-interface\Controller.cpp" />
+    <ClCompile Include="src\user-interface\ActionsController.cpp" />
     <ClCompile Include="src\user-interface\ExerciseRealizationController.cpp" />
     <ClCompile Include="src\user-interface\ExercisesController.cpp" />
     <ClCompile Include="src\user-interface\LoginController.cpp" />

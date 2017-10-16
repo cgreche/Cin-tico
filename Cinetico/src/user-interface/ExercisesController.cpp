@@ -18,7 +18,7 @@ namespace cinetico {
 		if (controller->m_currentExercise) {
 			Controller::ViewParams params;
 			params["exercise"] = controller->m_currentExercise;
-			g_cinetico.goTo(Cinetico::EXERCISE_MANAGEMENT, &params);
+			g_cinetico.goTo(Cinetico::ACTIONS, &params);
 		}
 	}
 
@@ -92,8 +92,8 @@ namespace cinetico {
 			editExerciseName.setText(m_currentExercise->name().c_str());
 			checkPublic.setChecked(m_currentExercise->isPublic());
 			int trackableBodyPoints = m_currentExercise->trackableBodyPoints();
-			for (int i = 0; i < m_checkBodyPointValueList.size(); ++i) {
-				int value = m_checkBodyPointValueList[i];
+			for (int i = 0; i < checkBodyPointList.size(); ++i) {
+				int value = 1 << i;
 				checkBodyPointList[i].setChecked((trackableBodyPoints&value) != 0);
 			}
 			layoutContent.append(layoutContentEditData);
@@ -122,26 +122,51 @@ namespace cinetico {
 			gridExercises.setItem(lastRow, 0, new ListViewItem(exercise->name().c_str(), uilib::Color(0, 0, 0), FontDesc("Arial", 10, 0), exerciseList[i]));
 			gridExercises.setItem(lastRow, 1, new ListViewItem(exercise->author().c_str()));
 			gridExercises.setItem(lastRow, 2, new ListViewItem(uilib::string::fromInteger(actionCount).data()));
-			gridExercises.setItem(lastRow, 3, new ListViewItem(exercise->isPublic() ? g_cinetico.dictionary()->getString(Dictionary::DefaultActionYes).c_str() : g_cinetico.dictionary()->getString(Dictionary::DefaultActionNo).c_str()));
+			gridExercises.setItem(lastRow, 3, new ListViewItem(exercise->isPublic() ? g_cinetico.dictionary()->getString(Dictionary::DefaultActionYes) : g_cinetico.dictionary()->getString(Dictionary::DefaultActionNo)));
 		}
 		m_currentSelection = -1;
 		m_currentExercise = NULL;
 	}
 
-	ExercisesController::ExercisesController()
-		: title(g_cinetico.dictionary()->getString(Dictionary::ExercisesViewTitle).c_str(),
-			g_cinetico.dictionary()->getString(Dictionary::ExercisesViewDesc).c_str())
-	{
+	void ExercisesController::onViewUpdate() {
+		title.setTitle(m_dictionary.getString(Dictionary::ExercisesViewTitle));
+		title.setDesc(m_dictionary.getString(Dictionary::ExercisesViewDesc));
 
-		Dictionary *dictionary = g_cinetico.dictionary();
+		buttonCreateExercise.setText(m_dictionary.getString(Dictionary::ExercisesViewActionCreate));
+		buttonManageActions.setText(m_dictionary.getString(Dictionary::ExercisesViewActionManageActions));
+		buttonDoExercise.setText(m_dictionary.getString(Dictionary::ExercisesViewActionDoExercise));
 
-		buttonCreateExercise.setText(dictionary->getString(Dictionary::ExercisesViewActionCreate).c_str());
+		gridExercises.setHeaderText(0, m_dictionary.getString(Dictionary::ExerciseName));
+		gridExercises.setHeaderText(1, m_dictionary.getString(Dictionary::ExerciseAuthor));
+		gridExercises.setHeaderText(2, m_dictionary.getString(Dictionary::ExercisesViewGridColumnActionCount));
+		gridExercises.setHeaderText(3, m_dictionary.getString(Dictionary::ExercisePublic));
+
+		buttonEdit.setText(m_dictionary.getString(Dictionary::DefaultActionEdit));
+		buttonDelete.setText(m_dictionary.getString(Dictionary::DefaultActionDelete));
+
+		labelExerciseName.setText(g_cinetico.dictionary()->getString(Dictionary::ExercisesViewExerciseName));
+		checkPublic.setText(m_dictionary.getString(Dictionary::ExercisePublic));
+		separatorChecks.setText(m_dictionary.getString(Dictionary::ExercisesViewSectionBodyPoints));
+		std::vector<string> bpNames = g_cinetico.getAllBodyPointNames();
+		for(unsigned int k = 0; k < bpNames.size(); ++k)
+			checkBodyPointList[k].setText(bpNames[k]);
+
+		buttonCreateEdit.setText(m_dictionary.getString(Dictionary::DefaultActionSave));
+
+		buttonCancel.setText(m_dictionary.getString(Dictionary::DefaultActionCancel));
+
+		
+	}
+
+	ExercisesController::ExercisesController(Cinetico &cinetico)
+		: Controller(cinetico)
+	{		
 		buttonCreateExercise.setParam(this);
 		buttonCreateExercise.setOnClick(buttonCreateNew_onClick);
-		buttonManageActions.setText(dictionary->getString(Dictionary::ExercisesViewActionManageActions).c_str());
+		
 		buttonManageActions.setParam(this);
 		buttonManageActions.setOnClick(buttonManageActions_onClick);
-		buttonDoExercise.setText(dictionary->getString(Dictionary::ExercisesViewActionDoExercise).c_str());
+		
 		buttonDoExercise.setParam(this);
 		buttonDoExercise.setOnClick(buttonDoExercise_onClick);
 
@@ -149,16 +174,12 @@ namespace cinetico {
 		gridExercises.setStyle(CS_Border);
 		gridExercises.setColumnCount(4);
 		gridExercises.setHeaderVisible(true);
-		gridExercises.setHeaderText(0, dictionary->getString(Dictionary::ExerciseName).c_str());
-		gridExercises.setHeaderText(1, dictionary->getString(Dictionary::ExerciseAuthor).c_str());
-		gridExercises.setHeaderText(2, dictionary->getString(Dictionary::ExercisesViewGridColumnActionCount).c_str());
-		gridExercises.setHeaderText(3, dictionary->getString(Dictionary::ExercisePublic).c_str());
+
 		gridExercises.setOnItemSelect(gridExercises_onItemSelect);
 
-		buttonEdit.setText(dictionary->getString(Dictionary::DefaultActionEdit).c_str());
 		buttonEdit.setParam(this);
 		buttonEdit.setOnClick(buttonEdit_onClick);
-		buttonDelete.setText(dictionary->getString(Dictionary::DefaultActionDelete).c_str());
+		
 		buttonDelete.setParam(this);
 		buttonDelete.setOnClick(buttonDelete_onClick);
 
@@ -174,40 +195,30 @@ namespace cinetico {
 		layoutContentList.append(layoutExerciseListActions);
 		layoutContent.append(layoutContentList);
 
-		labelExerciseName.setText(g_cinetico.dictionary()->getString(Dictionary::ExercisesViewExerciseName).c_str());
-		checkPublic.setText(dictionary->getString(Dictionary::ExercisePublic).c_str());
-		separatorChecks.setText(dictionary->getString(Dictionary::ExercisesViewSectionBodyPoints).c_str());
-
 		/*Preenchendo os layouts e checkBoxes do corpo*/
-		std::vector<BodyPointConfig*> bpConfig = g_cinetico.getAllBodyPointsCaps();
-		size_t bpConfigCount = bpConfig.size();
-		checkBodyPointList.resize(bpConfigCount);
-		m_checkBodyPointValueList.resize(bpConfigCount);
-		int bpLayoutCount = bpConfigCount / 3;
-		if (bpConfigCount % 3 != 0)
+		size_t bpCount = BodyPoint::BodyPartCount;
+		checkBodyPointList.resize(bpCount);
+		int bpLayoutCount = bpCount / 3;
+		if (bpCount % 3 != 0)
 			bpLayoutCount += 1;
 		layoutCheckBodyPointList.resize(bpLayoutCount);
 
 		size_t i, j = 0, k = 0;;
-		for (i = 0; i < bpConfigCount / 3; ++i) {
+		for (i = 0; i < bpCount / 3; ++i) {
 			for (j = 0; j < 3; ++j) {
-				checkBodyPointList[k].setText(bpConfig[k]->name);
-				m_checkBodyPointValueList[k] = bpConfig[k]->value;
 				layoutCheckBodyPointList[i].append(checkBodyPointList[k], Size(SizeTypeMax, SizeTypeAuto));
 				++k;
 			}
 		}
 
-		for (; k < bpConfigCount; ++k) {
-			checkBodyPointList[k].setText(bpConfig[k]->name);
-			m_checkBodyPointValueList[k] = bpConfig[k]->value;
+		for (; k < bpCount; ++k) {
 			layoutCheckBodyPointList[i].append(checkBodyPointList[k], Size(SizeTypeMax, SizeTypeAuto));
 		}
 
-		buttonCreateEdit.setText(dictionary->getString(Dictionary::DefaultActionSave).c_str());
+		
 		buttonCreateEdit.setParam(this);
 		buttonCreateEdit.setOnClick(onClick_CreateEdit);
-		buttonCancel.setText(dictionary->getString(Dictionary::DefaultActionCancel).c_str());
+		
 		buttonCancel.setParam(this);
 		buttonCancel.setOnClick(onClick_Cancel);
 
@@ -274,7 +285,6 @@ namespace cinetico {
 
 	}
 
-
 	void ExercisesController::saveCurrentExercise() {
 
 		std::string exerciseName = editExerciseName.text().data();
@@ -283,7 +293,7 @@ namespace cinetico {
 
 		if (m_editMode == 1 || (m_editMode == 2 && exerciseName != m_currentExercise->name().c_str())) {
 			if (g_cinetico.cineticoDB()->exerciseDAO()->getUserExerciseByName(exerciseName.c_str(), g_cinetico.currentUser()) != NULL) {
-				Message::error(NULL, g_cinetico.dictionary()->getString(Dictionary::ExercisesViewErrorExerciseAlreadyExists).c_str());
+				Message::error(NULL, g_cinetico.dictionary()->getString(Dictionary::ExercisesViewErrorExerciseAlreadyExists));
 				return;
 			}
 		}
@@ -293,7 +303,7 @@ namespace cinetico {
 		bool isPublic = checkPublic.checked();
 		for (size_t i = 0; i < checkBodyPointList.size(); ++i) {
 			if (checkBodyPointList[i].checked())
-				bpFlags |= m_checkBodyPointValueList[i];
+				bpFlags |= (1<<i);
 		}
 
 		//editAuthorName.setText(authorName);
@@ -323,7 +333,7 @@ namespace cinetico {
 
 	void ExercisesController::deleteSelectedExercise() {
 		if (m_currentExercise) {
-			Message::message_result res = Message::question(NULL, g_cinetico.dictionary()->getString(Dictionary::DefaultActionQuestionDelete).c_str());
+			Message::message_result res = Message::question(NULL, g_cinetico.dictionary()->getString(Dictionary::DefaultActionQuestionDelete));
 			if (res == Message::yes) {
 				g_cinetico.cineticoDB()->exerciseDAO()->exclude(*m_currentExercise);
 				updateExerciseList();
@@ -338,7 +348,7 @@ namespace cinetico {
 
 			std::string str;
 			if (actionList.size() == 0) {
-				Message::warning(NULL, g_cinetico.dictionary()->getString(Dictionary::ExercisesViewErrorExerciseHasNoActions).c_str());
+				Message::warning(NULL, g_cinetico.dictionary()->getString(Dictionary::ExercisesViewErrorExerciseHasNoActions));
 				return;
 			}
 

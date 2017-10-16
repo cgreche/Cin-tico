@@ -30,11 +30,13 @@ namespace cinetico {
 					Button buttonCreateAccount;
 
 		UserProfileDAO *m_userProfileDAO;
+
 	public:
-		LoginController();
+		LoginController(Cinetico &cinetico);
 
 		Layout *viewDefinition();
 		void onViewEnter(ViewParams *params);
+		void onViewUpdate();
 		void onViewQuit();
 		void login();
 		void createAccount();

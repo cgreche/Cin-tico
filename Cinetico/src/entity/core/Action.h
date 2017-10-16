@@ -43,11 +43,12 @@ namespace cinetico_core {
 		BodyPoint::BodyPart m_bodyPoint;
 		int m_refPoint;
 
-		Vector3 m_position;
-		Vector3 m_orientation;
+		Vector3 m_finalPosition;
+		Vector3 m_finalOrientation;
 
 		//State attributes
 		bool m_correct;
+
 	protected:
 		Action(ActionType actionType, Exercise &owner, int id = -1)
 			: m_actionType(actionType), m_owner(owner), m_id(id) {
@@ -64,8 +65,8 @@ namespace cinetico_core {
 		void setMaxTime(float maxTime) { m_minTime = m_maxTime; }
 		void setBodyPoint(BodyPoint::BodyPart bodyPoint) { m_bodyPoint = bodyPoint; }
 		void setRefPoint(int refPoint) { m_refPoint = refPoint; }
-		void setPosition(const Vector3 &position) { m_position = position; }
-		void setOrientation(const Vector3 &orientation) { m_orientation = orientation; }
+		void setFinalPosition(const Vector3 &position) { m_finalPosition = position; }
+		void setFinalOrientation(const Vector3 &orientation) { m_finalOrientation = orientation; }
 
 		Exercise &ownerExercise() const { return m_owner; }
 		int id() const { return m_id; }
@@ -76,8 +77,8 @@ namespace cinetico_core {
 		float maxTime() const { return m_maxTime; }
 		BodyPoint::BodyPart bodyPoint() const { return m_bodyPoint; }
 		int refPoint() const { return m_refPoint; }
-		const Vector3 &position() const { return m_position; }
-		const Vector3 &orientation() const { return m_orientation; }
+		const Vector3 &finalPosition() const { return m_finalPosition; }
+		const Vector3 &finalOrientation() const { return m_finalOrientation; }
 	};
 
 }

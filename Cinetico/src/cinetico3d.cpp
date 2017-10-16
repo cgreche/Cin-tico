@@ -236,51 +236,51 @@ namespace cinetico {
 		setupBody();
 
 		const int numPoints = 30;
-		Color circleColors[numPoints + 1];
+		render3d::Color circleColors[numPoints + 1];
 		for (int i = 0; i < numPoints + 1; ++i) {
-			circleColors[i] = Color(rand() % 255, rand() % 255, rand() % 255, 122);
+			circleColors[i] = render3d::Color(rand() % 255, rand() % 255, rand() % 255, 122);
 		}
 
 		resQuad1 = m_renderEngineHelper->createQuad(10, 0.25);
 		resQuad2 = m_renderEngineHelper->createQuad(100, 200);
 
-		Color cubeColors[] =
+		render3d::Color cubeColors[] =
 		{
 			//Front
-			Color(255,0,0),
-			Color(255,0,0),
-			Color(255,0,0),
-			Color(255,0,0),
+			render3d::Color(255,0,0),
+			render3d::Color(255,0,0),
+			render3d::Color(255,0,0),
+			render3d::Color(255,0,0),
 
 			//Back
-			Color(0,255,0),
-			Color(0,255,0),
-			Color(0,255,0),
-			Color(0,255,0),
+			render3d::Color(0,255,0),
+			render3d::Color(0,255,0),
+			render3d::Color(0,255,0),
+			render3d::Color(0,255,0),
 
 			//Top
-			Color(255,255,255),
-			Color(255,255,255),
-			Color(255,255,255),
-			Color(255,255,255),
+			render3d::Color(255,255,255),
+			render3d::Color(255,255,255),
+			render3d::Color(255,255,255),
+			render3d::Color(255,255,255),
 
 			//Bottom
-			Color(0,0,0),
-			Color(0,0,0),
-			Color(0,0,0),
-			Color(0,0,0),
+			render3d::Color(0,0,0),
+			render3d::Color(0,0,0),
+			render3d::Color(0,0,0),
+			render3d::Color(0,0,0),
 
 			//Left
-			Color(0,0,255),
-			Color(0,0,255),
-			Color(0,0,255),
-			Color(0,0,255),
+			render3d::Color(0,0,255),
+			render3d::Color(0,0,255),
+			render3d::Color(0,0,255),
+			render3d::Color(0,0,255),
 
 			//Right
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
-			Color(255,0,255),
+			render3d::Color(255,0,255),
+			render3d::Color(255,0,255),
+			render3d::Color(255,0,255),
+			render3d::Color(255,0,255),
 		};
 
 		resCube = m_renderEngineHelper->createCube(2);
@@ -580,7 +580,7 @@ namespace cinetico {
 	void Cinetico3D::renderExerciseMode() {
 		m_renderEngine->setCurrentCamera(currentCameraId);
 		m_renderEngine->setCurrentViewport(viewport1);
-		m_renderEngine->clear(Color(30, 30, 30));
+		m_renderEngine->clear(render3d::Color(30, 30, 30));
 
 		m_renderEngine->drawResource(instanceCube);
 
@@ -594,18 +594,18 @@ namespace cinetico {
 		m_renderEngine->setCurrentFont(resFontArial);
 		std::string str = "Exercício selecionado: ";
 		str += m_playingExercise->name();
-		m_renderEngine->drawText(str.c_str(), 500, 10, Color(255, 255, 255, 100));
+		m_renderEngine->drawText(str.c_str(), 500, 10, render3d::Color(255, 255, 255, 100));
 		m_renderEngine->setCurrentFont(resFontVerdana);
 
 		m_renderEngine->setCurrentCamera(cam2);
 		m_renderEngine->setCurrentViewport(viewport2);
-		m_renderEngine->clear(Color(0, 40, 100));
+		m_renderEngine->clear(render3d::Color(0, 40, 100));
 	}
 
 	void Cinetico3D::renderFreeMode() {
 		m_renderEngine->setCurrentCamera(currentCameraId);
 		m_renderEngine->setCurrentViewport(viewport1);
-		m_renderEngine->clear(Color(30, 30, 30));
+		m_renderEngine->clear(render3d::Color(30, 30, 30));
 		m_renderEngine->drawResource(instanceTerrain);
 	}
 

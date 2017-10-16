@@ -19,15 +19,6 @@ namespace cinetico {
 		Controller *controller;
 	};
 
-	struct BodyPointConfig {
-		const char *name;
-		int value;
-
-	public:
-		BodyPointConfig(const char *name, unsigned long value)
-			: name(name), value(value) { }
-	};
-
 	class Cinetico {
 
 	public:
@@ -36,7 +27,7 @@ namespace cinetico {
 			LOGIN,
 			USER_PROFILE,
 			EXERCISES,
-			EXERCISE_MANAGEMENT,
+			ACTIONS,
 			EXERCISE_REALIZATION
 		};
 
@@ -81,70 +72,41 @@ namespace cinetico {
 		UserProfile *currentUser() const { return m_currentUser; }
 
 
-		std::vector<cinetico::BodyPointConfig *> getAllBodyPointsCaps() {
-			std::vector<cinetico::BodyPointConfig *> bodyPointsCaps;
+		std::vector<uilib::string> getAllBodyPointNames() {
+			std::vector<uilib::string> bodyPointNames;
 
-			unsigned long value = 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Cabeça", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Cervical", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Espinha", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Base da espinha", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Ombro esquerdo", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Cotovelo esquerdo", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Pulso esquerdo", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Palma esquerda", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Dedo mínimo esquerdo", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Dedo anular esquerdo", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Dedo médio esquerdo", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Dedo indicador esquerdo", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Dedo polegar esquerdo", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Quadril esquerdo", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Joelho esquerdo", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Tornozelo esquerdo", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Pé esquerdo", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Ombro direito", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Cotovelo direito", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Pulso direito", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Palma direita", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Dedo mínimo direito", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Dedo anular direito", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Dedo médio direito", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Dedo indicador direito", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Dedo polegar direito", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Quadril direito", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Joelho direito", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Tornozelo direito", value));
-			value <<= 1;
-			bodyPointsCaps.push_back(new cinetico::BodyPointConfig("Pé direito", value));
-			return bodyPointsCaps;
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointHead));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointCervical));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointSpine));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointSpineBase));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftShoulder));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftElbow));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftWrist));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftPalm));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftPinky));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftRingFinger));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftMiddleFinger));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftIndexFinger));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftThumb));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftHip));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftKnee));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftAnkle));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftFoot));
+
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightShoulder));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightElbow));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightWrist));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightPalm));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightPinky));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightRingFinger));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightMiddleFinger));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightIndexFinger));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightThumb));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightHip));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightKnee));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightAnkle));
+			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightFoot));
+			return bodyPointNames;
 		}
 
 		struct BodyPointConfig {

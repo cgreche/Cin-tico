@@ -7,7 +7,8 @@ namespace cinetico {
 
 	extern Cinetico g_cinetico;
 
-	ExerciseRealizationController::ExerciseRealizationController() {
+	ExerciseRealizationController::ExerciseRealizationController(Cinetico &cinetico)
+		: Controller(cinetico) {
 
 	}
 

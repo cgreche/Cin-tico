@@ -49,7 +49,6 @@ namespace cinetico {
 
 
 		//todo: set private
-		std::vector<int> m_checkBodyPointValueList;
 		int m_editMode;
 		int m_currentSelection;
 
@@ -57,10 +56,11 @@ namespace cinetico {
 		Exercise *m_currentExercise;
 
 	public:
-		ExercisesController();
+		ExercisesController(Cinetico &cinetico);
 
 		Layout *viewDefinition();
 		void onViewEnter(ViewParams *params);
+		void onViewUpdate();
 		void onViewTick();
 		void onViewQuit();
 

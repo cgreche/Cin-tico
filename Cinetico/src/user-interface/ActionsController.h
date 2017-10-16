@@ -14,7 +14,7 @@ namespace cinetico {
 	using namespace uilib;
 	using cinetico::ComboBox;
 
-	class ExerciseManagementController : public Controller
+	class ActionsController : public Controller
 	{
 	public:
 		VerticalLayout layout;
@@ -91,14 +91,16 @@ namespace cinetico {
 		void saveCurrentAction();
 
 		friend void comboActionType_onChange(ComboBox &combo, ComboBoxItem *item);
+		friend void buttonDelete_onClick(Button &button);
 
 	public:
-		ExerciseManagementController();
+		ActionsController(Cinetico &cinetico);
 
 		Layout *viewDefinition();
-		void onViewEnter(ViewParams *params);
-		void onViewTick();
-		void onViewQuit();
+		virtual void onViewEnter(ViewParams *params);
+		virtual void onViewUpdate();
+		virtual void onViewTick();
+		virtual void onViewQuit();
 	};
 
 }
