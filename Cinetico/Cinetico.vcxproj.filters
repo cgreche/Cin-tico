@@ -1,922 +1,926 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Arquivos de Origem">
+    <Filter Include="related_non_functional_resources">
+      <UniqueIdentifier>{83300f0c-cfec-492c-bb20-32dec92f3571}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Arquivos de Cabeçalho">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Arquivos de Recurso">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Arquivos de Origem\database">
+    <Filter Include="src\database">
       <UniqueIdentifier>{600c2e31-78ee-47ee-bc78-ca0eb4b69b02}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Arquivos de Origem\utils">
-      <UniqueIdentifier>{37287e9b-febc-4ed0-8070-b5ec40391b09}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\lib">
-      <UniqueIdentifier>{c78801d0-8638-4aca-8395-d536b0cc10f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\render3d">
-      <UniqueIdentifier>{77c95dfa-4399-416a-934b-bb7de5b5bf85}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\entity">
-      <UniqueIdentifier>{5ef661f1-0efd-41c5-91b9-89e5b6f49862}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\entity\user">
-      <UniqueIdentifier>{904d23ec-c192-4918-a82e-cfd303c06bfd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\user-interface">
-      <UniqueIdentifier>{8c14587e-4eb9-476b-a87e-8d591bd6b65a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\uilib">
-      <UniqueIdentifier>{89bab52d-9c52-4a55-8bbd-c9bd0fca17f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\uilib\ui">
-      <UniqueIdentifier>{88d0f52d-de47-4b34-b2cd-e87675e56102}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\uilib\ui\controls">
-      <UniqueIdentifier>{961706a7-aa89-42b1-82fc-30667426030a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\uilib\ui\dialogs">
-      <UniqueIdentifier>{7080cd0b-f297-48da-875c-ba4b5d2c05b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\uilib\ui\layout">
-      <UniqueIdentifier>{94ea8b1e-e183-4e64-af6b-2fd134244f17}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\uilib\ui\painting">
-      <UniqueIdentifier>{f159ea82-40f3-4c2e-ae0a-539a2b8dfdce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\uilib\ui\osd">
-      <UniqueIdentifier>{090d9120-092c-4cc1-ae23-d0b9ee6ecd5c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\uilib\ui\osd\windows">
-      <UniqueIdentifier>{0d2403f5-816f-4137-8ad9-cbeb850bb08c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\uilib\lib">
-      <UniqueIdentifier>{da64722c-ecd9-44ac-ae02-eb15b6b80f60}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\uilib\lib\osd">
-      <UniqueIdentifier>{cb294640-3d40-4682-afe2-c99ae49dce88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\database\sqlite">
+    <Filter Include="src\database\sqlite">
       <UniqueIdentifier>{93edbc9f-525c-4952-a39d-d739a585f208}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Arquivos de Origem\entity\core">
-      <UniqueIdentifier>{59e42ef3-6ef6-4f78-af82-341eb11646a1}</UniqueIdentifier>
+    <Filter Include="src\utils">
+      <UniqueIdentifier>{37287e9b-febc-4ed0-8070-b5ec40391b09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Arquivos de Origem\entity\dao">
-      <UniqueIdentifier>{48d08050-1bbb-45fd-a91b-e7cbe0d24bd7}</UniqueIdentifier>
+    <Filter Include="src\lib">
+      <UniqueIdentifier>{c78801d0-8638-4aca-8395-d536b0cc10f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Arquivos de Origem\user-interface\components">
-      <UniqueIdentifier>{34cda9e9-215c-479c-ac80-5eacab16b4b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Arquivos de Origem\lib\sqlite-amalgamation-3200100">
+    <Filter Include="src\lib\sqlite-amalgamation-3200100">
       <UniqueIdentifier>{14c57f5a-6369-4491-9660-d42f9baa55af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Arquivos de Origem\lib\libxml">
+    <Filter Include="src\lib\libxml">
       <UniqueIdentifier>{7a7ad390-ab54-41d9-b3c7-4508f602e2ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Arquivos de Origem\lib\lib">
+    <Filter Include="src\lib\lib">
       <UniqueIdentifier>{de0ef2b0-0548-4819-92c7-71a6ed8d3afd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\render3d">
+      <UniqueIdentifier>{77c95dfa-4399-416a-934b-bb7de5b5bf85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entity">
+      <UniqueIdentifier>{5ef661f1-0efd-41c5-91b9-89e5b6f49862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entity\user">
+      <UniqueIdentifier>{904d23ec-c192-4918-a82e-cfd303c06bfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entity\core">
+      <UniqueIdentifier>{59e42ef3-6ef6-4f78-af82-341eb11646a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entity\dao">
+      <UniqueIdentifier>{48d08050-1bbb-45fd-a91b-e7cbe0d24bd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\user-interface">
+      <UniqueIdentifier>{8c14587e-4eb9-476b-a87e-8d591bd6b65a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\user-interface\components">
+      <UniqueIdentifier>{34cda9e9-215c-479c-ac80-5eacab16b4b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\uilib">
+      <UniqueIdentifier>{89bab52d-9c52-4a55-8bbd-c9bd0fca17f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\uilib\ui">
+      <UniqueIdentifier>{88d0f52d-de47-4b34-b2cd-e87675e56102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\uilib\ui\controls">
+      <UniqueIdentifier>{961706a7-aa89-42b1-82fc-30667426030a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\uilib\ui\dialogs">
+      <UniqueIdentifier>{7080cd0b-f297-48da-875c-ba4b5d2c05b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\uilib\ui\layout">
+      <UniqueIdentifier>{94ea8b1e-e183-4e64-af6b-2fd134244f17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\uilib\ui\painting">
+      <UniqueIdentifier>{f159ea82-40f3-4c2e-ae0a-539a2b8dfdce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\uilib\ui\osd">
+      <UniqueIdentifier>{090d9120-092c-4cc1-ae23-d0b9ee6ecd5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\uilib\ui\osd\windows">
+      <UniqueIdentifier>{0d2403f5-816f-4137-8ad9-cbeb850bb08c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\uilib\lib">
+      <UniqueIdentifier>{da64722c-ecd9-44ac-ae02-eb15b6b80f60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\uilib\lib\osd">
+      <UniqueIdentifier>{cb294640-3d40-4682-afe2-c99ae49dce88}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\utils\crypter.h">
-      <Filter>Arquivos de Origem\utils</Filter>
+      <Filter>src\utils</Filter>
     </ClInclude>
     <ClInclude Include="src\database\database.h">
-      <Filter>Arquivos de Origem\database</Filter>
+      <Filter>src\database</Filter>
     </ClInclude>
     <ClInclude Include="src\database\sqlstatement.h">
-      <Filter>Arquivos de Origem\database</Filter>
+      <Filter>src\database</Filter>
     </ClInclude>
     <ClInclude Include="src\render3d\camera.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClInclude>
     <ClInclude Include="src\render3d\color.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClInclude>
     <ClInclude Include="src\render3d\d3d9engine.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClInclude>
     <ClInclude Include="src\render3d\d3dx12.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClInclude>
     <ClInclude Include="src\render3d\renderengine.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClInclude>
     <ClInclude Include="src\render3d\renderenginehelper.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClInclude>
     <ClInclude Include="src\render3d\renderobject.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClInclude>
     <ClInclude Include="src\render3d\resourcedata.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClInclude>
     <ClInclude Include="src\render3d\resourceinstance.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClInclude>
     <ClInclude Include="src\render3d\vector3.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClInclude>
     <ClInclude Include="src\database\resultset.h">
-      <Filter>Arquivos de Origem\database</Filter>
+      <Filter>src\database</Filter>
     </ClInclude>
     <ClInclude Include="src\user-interface\LoginController.h">
-      <Filter>Arquivos de Origem\user-interface</Filter>
+      <Filter>src\user-interface</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\types.h">
-      <Filter>Arquivos de Origem\uilib</Filter>
+      <Filter>src\uilib</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\control.h">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\event.h">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\font.h">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\menu.h">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\uibase.h">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\uiobj.h">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\uitools.h">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\window.h">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\controls\button.h">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\controls\checkbox.h">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\controls\combobox.h">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\controls\editbox.h">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\controls\gridview.h">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\controls\groupbox.h">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\controls\label.h">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\controls\listview.h">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\controls\radiobutton.h">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\controls\scrollbar.h">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\controls\separator.h">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\controls\statusbar.h">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\controls\textlink.h">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\dialogs\filedialog.h">
-      <Filter>Arquivos de Origem\uilib\ui\dialogs</Filter>
+      <Filter>src\uilib\ui\dialogs</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\layout\horizontallayout.h">
-      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+      <Filter>src\uilib\ui\layout</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\layout\layout.h">
-      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+      <Filter>src\uilib\ui\layout</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\layout\linearlayout.h">
-      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+      <Filter>src\uilib\ui\layout</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\layout\verticallayout.h">
-      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+      <Filter>src\uilib\ui\layout</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\painting\bitmap.h">
-      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+      <Filter>src\uilib\ui\painting</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\painting\color.h">
-      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+      <Filter>src\uilib\ui\painting</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\painting\painter.h">
-      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+      <Filter>src\uilib\ui\painting</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\painting\paintingdevice.h">
-      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+      <Filter>src\uilib\ui\painting</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\painting\palette.h">
-      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+      <Filter>src\uilib\ui\painting</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\painting\rgb.h">
-      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+      <Filter>src\uilib\ui\painting</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\painting\transform.h">
-      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+      <Filter>src\uilib\ui\painting</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\osd\windows\osdbase.h">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\ui\osd\windows\windowscontrols.h">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\lib\dir.h">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\lib\file.h">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\lib\matrix.h">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\lib\pmfile.h">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\lib\point.h">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\lib\rect.h">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\lib\size.h">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\lib\string.h">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\lib\time.h">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\lib\timer.h">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\uilib\lib\osd\osdfile.h">
-      <Filter>Arquivos de Origem\uilib\lib\osd</Filter>
+      <Filter>src\uilib\lib\osd</Filter>
     </ClInclude>
     <ClInclude Include="src\database\sqlite\sqlitestatement.h">
-      <Filter>Arquivos de Origem\database\sqlite</Filter>
+      <Filter>src\database\sqlite</Filter>
     </ClInclude>
     <ClInclude Include="src\database\sqlite\sqliteresultset.h">
-      <Filter>Arquivos de Origem\database\sqlite</Filter>
+      <Filter>src\database\sqlite</Filter>
     </ClInclude>
     <ClInclude Include="src\database\sqlite\sqlitedatabase.h">
-      <Filter>Arquivos de Origem\database\sqlite</Filter>
+      <Filter>src\database\sqlite</Filter>
     </ClInclude>
     <ClInclude Include="src\render3d\viewport.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClInclude>
     <ClInclude Include="src\render3d\textresource.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\user\UserProfile.h">
-      <Filter>Arquivos de Origem\entity\user</Filter>
+      <Filter>src\entity\user</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\core\Exercise.h">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClInclude>
     <ClInclude Include="src\sensor.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\bodytracker.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\core\Action.h">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\core\Body.h">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\core\BodyPoint.h">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\core\MovementAction.h">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\core\PositionAction.h">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClInclude>
     <ClInclude Include="src\kinectsensor.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\core\vector3.h">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\core\HandHandler.h">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClInclude>
     <ClInclude Include="src\defs.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\user-interface\Controller.h">
-      <Filter>Arquivos de Origem\user-interface</Filter>
+      <Filter>src\user-interface</Filter>
     </ClInclude>
     <ClInclude Include="src\user-interface\ExerciseRealizationController.h">
-      <Filter>Arquivos de Origem\user-interface</Filter>
+      <Filter>src\user-interface</Filter>
     </ClInclude>
     <ClInclude Include="src\user-interface\ExercisesController.h">
-      <Filter>Arquivos de Origem\user-interface</Filter>
+      <Filter>src\user-interface</Filter>
     </ClInclude>
     <ClInclude Include="src\cinetico.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\mainwindow.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\cineticodb.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\cinetico3d.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\render3d\fontresource.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\dao\ExerciseDAO.h">
-      <Filter>Arquivos de Origem\entity\dao</Filter>
+      <Filter>src\entity\dao</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\dao\UserProfileDAO.h">
-      <Filter>Arquivos de Origem\entity\dao</Filter>
+      <Filter>src\entity\dao</Filter>
     </ClInclude>
     <ClInclude Include="src\render3d\light.h">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\dao\ActionDAO.h">
-      <Filter>Arquivos de Origem\entity\dao</Filter>
+      <Filter>src\entity\dao</Filter>
     </ClInclude>
     <ClInclude Include="src\user-interface\UserProfileController.h">
-      <Filter>Arquivos de Origem\user-interface</Filter>
+      <Filter>src\user-interface</Filter>
     </ClInclude>
     <ClInclude Include="src\user-interface\components\cSeparator.h">
-      <Filter>Arquivos de Origem\user-interface\components</Filter>
+      <Filter>src\user-interface\components</Filter>
     </ClInclude>
     <ClInclude Include="src\user-interface\components\cTextBox.h">
-      <Filter>Arquivos de Origem\user-interface\components</Filter>
+      <Filter>src\user-interface\components</Filter>
     </ClInclude>
     <ClInclude Include="src\user-interface\components\cPageTitle.h">
-      <Filter>Arquivos de Origem\user-interface\components</Filter>
+      <Filter>src\user-interface\components</Filter>
     </ClInclude>
     <ClInclude Include="src\user-interface\components\cComboBox.h">
-      <Filter>Arquivos de Origem\user-interface\components</Filter>
+      <Filter>src\user-interface\components</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\core\quaternion.h">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClInclude>
     <ClInclude Include="src\colladaparser.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\d3dx9.h">
-      <Filter>Arquivos de Origem\lib</Filter>
+      <Filter>src\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\d3dx9anim.h">
-      <Filter>Arquivos de Origem\lib</Filter>
+      <Filter>src\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\d3dx9core.h">
-      <Filter>Arquivos de Origem\lib</Filter>
+      <Filter>src\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\d3dx9effect.h">
-      <Filter>Arquivos de Origem\lib</Filter>
+      <Filter>src\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\d3dx9math.h">
-      <Filter>Arquivos de Origem\lib</Filter>
+      <Filter>src\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\d3dx9mesh.h">
-      <Filter>Arquivos de Origem\lib</Filter>
+      <Filter>src\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\d3dx9shader.h">
-      <Filter>Arquivos de Origem\lib</Filter>
+      <Filter>src\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\d3dx9shape.h">
-      <Filter>Arquivos de Origem\lib</Filter>
+      <Filter>src\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\d3dx9tex.h">
-      <Filter>Arquivos de Origem\lib</Filter>
+      <Filter>src\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\d3dx9xof.h">
-      <Filter>Arquivos de Origem\lib</Filter>
+      <Filter>src\lib</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3.h">
-      <Filter>Arquivos de Origem\lib\sqlite-amalgamation-3200100</Filter>
+      <Filter>src\lib\sqlite-amalgamation-3200100</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3ext.h">
-      <Filter>Arquivos de Origem\lib\sqlite-amalgamation-3200100</Filter>
+      <Filter>src\lib\sqlite-amalgamation-3200100</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\c14n.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\catalog.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\chvalid.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\debugXML.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\dict.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\DOCBparser.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\encoding.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\entities.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\globals.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\hash.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\HTMLparser.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\HTMLtree.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\list.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\nanoftp.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\nanohttp.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\parser.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\parserInternals.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\pattern.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\relaxng.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\SAX.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\SAX2.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\schemasInternals.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\schematron.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\threads.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\tree.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\uri.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\valid.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xinclude.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xlink.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlautomata.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlerror.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlexports.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlIO.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlmemory.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlmodule.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlreader.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlregexp.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlsave.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlschemas.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlschemastypes.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlstring.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlunicode.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlversion.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xmlwriter.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xpath.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xpathInternals.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\xpointer.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\lib\libxml\iconv.h">
-      <Filter>Arquivos de Origem\lib\libxml</Filter>
+      <Filter>src\lib\libxml</Filter>
     </ClInclude>
     <ClInclude Include="src\user-interface\viewtemplate.h">
-      <Filter>Arquivos de Origem\user-interface</Filter>
+      <Filter>src\user-interface</Filter>
     </ClInclude>
     <ClInclude Include="src\character.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\dummycharacter.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\humancharacter.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\dictionary.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\user-interface\ActionsController.h">
-      <Filter>Arquivos de Origem\user-interface</Filter>
+      <Filter>src\user-interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
-      <Filter>Arquivos de Origem\utils</Filter>
+      <Filter>src\utils</Filter>
     </ClCompile>
     <ClCompile Include="src\render3d\d3d9engine.cpp">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClCompile>
     <ClCompile Include="src\render3d\renderengine.cpp">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClCompile>
     <ClCompile Include="src\render3d\renderenginehelper.cpp">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClCompile>
     <ClCompile Include="src\render3d\resourcedata.cpp">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClCompile>
     <ClCompile Include="src\render3d\resourceinstance.cpp">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClCompile>
     <ClCompile Include="src\render3d\viewport.cpp">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\LoginController.cpp">
-      <Filter>Arquivos de Origem\user-interface</Filter>
+      <Filter>src\user-interface</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\control.cpp">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\font.cpp">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\menu.cpp">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\uibase.cpp">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\uiobj.cpp">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\uitools.cpp">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\window.cpp">
-      <Filter>Arquivos de Origem\uilib\ui</Filter>
+      <Filter>src\uilib\ui</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\controls\button.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\controls\checkbox.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\controls\combobox.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\controls\editbox.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\controls\gridview.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\controls\groupbox.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\controls\label.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\controls\listview.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\controls\radiobutton.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\controls\scrollbar.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\controls\separator.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\controls\statusbar.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\controls\textlink.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\controls</Filter>
+      <Filter>src\uilib\ui\controls</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\dialogs\filedialog.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\dialogs</Filter>
+      <Filter>src\uilib\ui\dialogs</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\layout\horizontallayout.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+      <Filter>src\uilib\ui\layout</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\layout\layout.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+      <Filter>src\uilib\ui\layout</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\layout\linearlayout.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+      <Filter>src\uilib\ui\layout</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\layout\verticallayout.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\layout</Filter>
+      <Filter>src\uilib\ui\layout</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\painting\bitmap.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+      <Filter>src\uilib\ui\painting</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\painting\painter.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+      <Filter>src\uilib\ui\painting</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\painting\paintingdevice.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+      <Filter>src\uilib\ui\painting</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\painting\palette.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+      <Filter>src\uilib\ui\painting</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\painting\transform.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\painting</Filter>
+      <Filter>src\uilib\ui\painting</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdbase.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdbutton.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdcheckbox.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdcombobox.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdcontrol.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdeditbox.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdfiledialog.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdfont.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdgridview.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdgroupbox.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdlabel.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdlistview.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdmenu.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdpaintingdevice.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdradiobutton.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdscrollbar.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdstatusbar.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osduitools.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdwindow.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\uiobject.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\windowscontrols.cpp">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\lib\dir.cpp">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\lib\file.cpp">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\lib\matrix.cpp">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\lib\pmfile.cpp">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\lib\string.cpp">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\lib\timer.cpp">
-      <Filter>Arquivos de Origem\uilib\lib</Filter>
+      <Filter>src\uilib\lib</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\lib\osd\osdfile.cpp">
-      <Filter>Arquivos de Origem\uilib\lib\osd</Filter>
+      <Filter>src\uilib\lib\osd</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\lib\osd\strfuncs.cpp">
-      <Filter>Arquivos de Origem\uilib\lib\osd</Filter>
+      <Filter>src\uilib\lib\osd</Filter>
     </ClCompile>
     <ClCompile Include="src\uilib\lib\osd\time.cpp">
-      <Filter>Arquivos de Origem\uilib\lib\osd</Filter>
+      <Filter>src\uilib\lib\osd</Filter>
     </ClCompile>
     <ClCompile Include="src\database\sqlite\sqlitestatement.cpp">
-      <Filter>Arquivos de Origem\database\sqlite</Filter>
+      <Filter>src\database\sqlite</Filter>
     </ClCompile>
     <ClCompile Include="src\database\sqlite\sqliteresultset.cpp">
-      <Filter>Arquivos de Origem\database\sqlite</Filter>
+      <Filter>src\database\sqlite</Filter>
     </ClCompile>
     <ClCompile Include="src\database\sqlite\sqlitedatabase.cpp">
-      <Filter>Arquivos de Origem\database\sqlite</Filter>
+      <Filter>src\database\sqlite</Filter>
     </ClCompile>
     <ClCompile Include="src\render3d\textresource.cpp">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClCompile>
     <ClCompile Include="src\entity\user\UserProfile.cpp">
-      <Filter>Arquivos de Origem\entity\user</Filter>
+      <Filter>src\entity\user</Filter>
     </ClCompile>
     <ClCompile Include="src\entity\core\Exercise.cpp">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClCompile>
     <ClCompile Include="src\sensor.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\bodytracker.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\entity\core\Action.cpp">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClCompile>
     <ClCompile Include="src\entity\core\Body.cpp">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClCompile>
     <ClCompile Include="src\entity\core\BodyPoint.cpp">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClCompile>
     <ClCompile Include="src\entity\core\MovementAction.cpp">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClCompile>
     <ClCompile Include="src\entity\core\PositionAction.cpp">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClCompile>
     <ClCompile Include="src\kinectsensor.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\entity\core\HandHandler.cpp">
-      <Filter>Arquivos de Origem\entity\core</Filter>
+      <Filter>src\entity\core</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\ExerciseRealizationController.cpp">
-      <Filter>Arquivos de Origem\user-interface</Filter>
+      <Filter>src\user-interface</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\ExercisesController.cpp">
-      <Filter>Arquivos de Origem\user-interface</Filter>
+      <Filter>src\user-interface</Filter>
     </ClCompile>
     <ClCompile Include="src\cinetico.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\mainwindow.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\cineticodb.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\cinetico3d.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\render3d\fontresource.cpp">
-      <Filter>Arquivos de Origem\render3d</Filter>
+      <Filter>src\render3d</Filter>
     </ClCompile>
     <ClCompile Include="src\entity\dao\ExerciseDAO.cpp">
-      <Filter>Arquivos de Origem\entity\dao</Filter>
+      <Filter>src\entity\dao</Filter>
     </ClCompile>
     <ClCompile Include="src\entity\dao\UserProfileDAO.cpp">
-      <Filter>Arquivos de Origem\entity\dao</Filter>
+      <Filter>src\entity\dao</Filter>
     </ClCompile>
     <ClCompile Include="src\entity\dao\ActionDAO.cpp">
-      <Filter>Arquivos de Origem\entity\dao</Filter>
+      <Filter>src\entity\dao</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\UserProfileController.cpp">
-      <Filter>Arquivos de Origem\user-interface</Filter>
+      <Filter>src\user-interface</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\components\cSeparator.cpp">
-      <Filter>Arquivos de Origem\user-interface\components</Filter>
+      <Filter>src\user-interface\components</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\components\cTextBox.cpp">
-      <Filter>Arquivos de Origem\user-interface\components</Filter>
+      <Filter>src\user-interface\components</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\components\cPageTitle.cpp">
-      <Filter>Arquivos de Origem\user-interface\components</Filter>
+      <Filter>src\user-interface\components</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\components\cComboBox.cpp">
-      <Filter>Arquivos de Origem\user-interface\components</Filter>
+      <Filter>src\user-interface\components</Filter>
     </ClCompile>
     <ClCompile Include="src\colladaparser.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\lib\sqlite-amalgamation-3200100\shell.c">
-      <Filter>Arquivos de Origem\lib\sqlite-amalgamation-3200100</Filter>
+      <Filter>src\lib\sqlite-amalgamation-3200100</Filter>
     </ClCompile>
     <ClCompile Include="src\lib\sqlite-amalgamation-3200100\sqlite3.c">
-      <Filter>Arquivos de Origem\lib\sqlite-amalgamation-3200100</Filter>
+      <Filter>src\lib\sqlite-amalgamation-3200100</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\viewtemplate.cpp">
-      <Filter>Arquivos de Origem\user-interface</Filter>
+      <Filter>src\user-interface</Filter>
     </ClCompile>
     <ClCompile Include="src\character.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\dummycharacter.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\humancharacter.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\dictionary.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\Controller.cpp">
-      <Filter>Arquivos de Origem\user-interface</Filter>
+      <Filter>src\user-interface</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\ActionsController.cpp">
-      <Filter>Arquivos de Origem\user-interface</Filter>
+      <Filter>src\user-interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="src\uilib\ui\osd\windows\rfuia.Manifest">
-      <Filter>Arquivos de Origem\uilib\ui\osd\windows</Filter>
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </Manifest>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\lib\d3dx9math.inl">
-      <Filter>Arquivos de Origem\lib</Filter>
+      <Filter>src\lib</Filter>
+    </None>
+    <None Include="related_non_functional_resources\Diagramas.asta">
+      <Filter>related_non_functional_resources</Filter>
+    </None>
+    <None Include="related_non_functional_resources\Product backlog.xlsx">
+      <Filter>related_non_functional_resources</Filter>
+    </None>
+    <None Include="related_non_functional_resources\TCC - Cinético.docx">
+      <Filter>related_non_functional_resources</Filter>
     </None>
   </ItemGroup>
 </Project>

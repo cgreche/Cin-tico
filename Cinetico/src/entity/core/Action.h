@@ -3,19 +3,12 @@
 
 #include <string>
 #include "vector3.h"
-#include "BodyPoint.h"
+#include "Body.h"
 
 namespace cinetico_core {
 
 	class Exercise;
-
-	enum ActionResult {
-		Missed,
-		Bad,
-		Good,
-		Excelent
-	};
-
+	
 	class Action {
 	public:
 		enum ActionType {
@@ -27,6 +20,19 @@ namespace cinetico_core {
 			NewAction,
 			SameLastAction,
 			AllActions
+		};
+
+		enum ActionState {
+			Idle,
+			Running,
+			Finished
+		};
+
+		enum ActionResult {
+			Missed,
+			Bad,
+			Good,
+			Excellent
 		};
 
 	protected:
@@ -47,17 +53,25 @@ namespace cinetico_core {
 		Vector3 m_finalOrientation;
 
 		//State attributes
-		bool m_correct;
+		ActionState m_state;
+		ActionResult m_result;
 
 	protected:
 		Action(ActionType actionType, Exercise &owner, int id = -1)
 			: m_actionType(actionType), m_owner(owner), m_id(id) {
 			m_minTime = m_maxTime = 0.f;
 			m_refPoint = -2;
+			m_state = Idle;
+			m_result = Missed;
 		}
 
+		virtual ActionResult avaliate(Body &body) = 0;
 	public:
-		bool isCorrect() const { return m_correct; }
+		void step(Body &body) {
+			m_result = avaliate(body);
+		}
+
+		bool isCorrect() const { return m_state == Finished && m_result != Missed; }
 
 		void setOrder(ActionOrder order) { m_order = order; }
 		void setName(const char *name) { m_name = name; }
@@ -79,6 +93,9 @@ namespace cinetico_core {
 		int refPoint() const { return m_refPoint; }
 		const Vector3 &finalPosition() const { return m_finalPosition; }
 		const Vector3 &finalOrientation() const { return m_finalOrientation; }
+
+		ActionState state() const { return m_state; }
+		ActionResult result() const { return m_result; }
 	};
 
 }

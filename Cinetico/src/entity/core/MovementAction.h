@@ -17,13 +17,10 @@ namespace cinetico_core {
 		float m_minSpeed;
 		float m_maxSpeed;
 
+		virtual ActionResult avaliate(Body &body);
+
 	public:
-		MovementAction(Exercise &owner, int id = -1)
-			: Action(Action::Movement, owner, id) {
-			m_movementType = Linear;
-			m_minSpeed = 0.f;
-			m_maxSpeed = 0.f;
-		}
+		MovementAction(Exercise &owner, int id = -1);
 
 		void setMovementType(MovementType movementType) { m_movementType = movementType; }
 		void setMinSpeed(float minSpeed) { m_minSpeed = minSpeed; }

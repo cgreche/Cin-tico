@@ -502,7 +502,10 @@ namespace cinetico {
 
 		float d = 0.1f;
 
-		if (m_playingMode == Cinetico3D::EXERCISE_MODE || m_playingMode == Cinetico3D::FREE_MODE) {
+		if (m_playingMode == Cinetico3D::EXERCISE_MODE) {
+			updateExerciseMode();
+		}
+		else if (m_playingMode == Cinetico3D::FREE_MODE) {
 			m_bodyTracker->track();
 			m_humanChar->update();
 		}
@@ -574,6 +577,22 @@ namespace cinetico {
 
 		instance->setPos(newPos);
 		instance->setRot(newRot);
+	}
+
+
+	void Cinetico3D::updateExerciseMode() {
+		m_bodyTracker->track();
+
+		Body *body;
+		body = m_bodyTracker->body();
+		if (body) {
+			if (m_playingExercise->state() == Exercise::Idle)
+				m_playingExercise->start(*body);
+
+			m_humanChar->update();
+			if (m_playingExercise->step() == Exercise::Finished)
+				m_playingExercise->start(*body);
+		}
 	}
 
 

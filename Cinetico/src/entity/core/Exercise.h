@@ -8,6 +8,15 @@
 namespace cinetico_core {
 
 	class Exercise {
+	public:
+		enum ExerciseState {
+			Idle,
+			Running,
+			Finished,
+			Canceled
+		};
+
+	private:
 		unsigned long m_id;
 		std::string m_name;
 		std::string m_author;
@@ -16,11 +25,21 @@ namespace cinetico_core {
 
 		std::vector<Action*> m_actions;
 
+		//State attributes
+		Body *m_body;
+		ExerciseState m_state;
+		int m_currentActionIndex;
+
+		int getNextActionsIndex();
+
 	public:
 		Exercise(unsigned long id = -1);
 		~Exercise();
 
-		void insertAction(Action *action);
+		void start(Body &body);
+		ExerciseState step();
+		void cancel();
+		bool running() const { return m_state == Running; }
 
 		void setName(const char *name) { m_name = name; }
 		void setAuthor(const char *author) { m_author = author; }
@@ -35,6 +54,8 @@ namespace cinetico_core {
 		unsigned long trackableBodyPoints() const { return m_trackableBodyPoints; }
 		Action *action(int index) const { return m_actions[index]; }
 		unsigned int actionCount() const { return m_actions.size(); }
+
+		ExerciseState state() const { return m_state; }
 	};
 
 }

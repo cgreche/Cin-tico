@@ -43,6 +43,7 @@ namespace cinetico {
 		void setupBody();
 		void processCamera();
 
+		void updateExerciseMode();
 		void renderExerciseMode();
 		void renderFreeMode();
 		void renderReplayMode();
