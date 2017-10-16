@@ -39,7 +39,7 @@
 	
 	<!-- Action Enums -->
 	<string id="ActionTypePosition">Posição</string>
-	<string id="ActionTypeMovement">Movimento></string>
+	<string id="ActionTypeMovement">Movimento</string>
 	
 	<string id="ActionRefPointWorld">Mundo</string>
 	<string id="ActionRefPointLastPos">Última posição</string>
