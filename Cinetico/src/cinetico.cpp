@@ -22,6 +22,7 @@ namespace cinetico {
 	Cinetico::Cinetico() {
 		m_currentView = INVALID;
 		m_currentUser = NULL;
+		m_currentLangId = Dictionary::PT_BR;
 	}
 
 	void Cinetico::registerView(int id, const char *name, Controller *controller) {
@@ -126,6 +127,17 @@ namespace cinetico {
 
 		cleanUp();
 		return 0;
+	}
+	
+	void Cinetico::setLanguage(Dictionary::LanguageID langId) {
+		m_currentLangId = langID;
+		if(m_currentView != INVALID) {
+			Controller *controller = m_views[m_currentView].controller;
+			controller->onViewUpdate();
+		}
+		
+		//update Window
+		m_mainWindow->setSize(m_mainWindow->size());
 	}
 
 	void Cinetico::goTo(ViewID viewId, Controller::ViewParams *params) {

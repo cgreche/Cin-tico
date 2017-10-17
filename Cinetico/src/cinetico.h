@@ -38,13 +38,14 @@ namespace cinetico {
 		};
 
 	private:
+		LanguageID m_currentLangId;
+		
 		CineticoDB *m_cineticoDB;
 		Cinetico3D *m_cinetico3D;
 		MainWindow *m_mainWindow;
 		Dictionary *m_dictionary;
 
 		std::vector<View> m_views;
-		bool m_onWorld3D;
 
 		void setup();
 		void update();
@@ -63,6 +64,8 @@ namespace cinetico {
 		CineticoError loginUser(const char *username, const char *password);
 		void logoffCurrentUser();
 		int run();
+		
+		void setLanguage(Dictionary::LanguageID langId);
 
 		MainWindow *mainWindow() const { return m_mainWindow; }
 		CineticoDB *cineticoDB() const { return m_cineticoDB; }
@@ -70,7 +73,6 @@ namespace cinetico {
 		Dictionary *dictionary() const { return m_dictionary; }
 
 		UserProfile *currentUser() const { return m_currentUser; }
-
 
 		std::vector<uilib::string> getAllBodyPointNames() {
 			std::vector<uilib::string> bodyPointNames;
@@ -108,12 +110,6 @@ namespace cinetico {
 			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightFoot));
 			return bodyPointNames;
 		}
-
-		struct BodyPointConfig {
-			const char *name;
-			int value;
-		};
-
 	};
 }
 

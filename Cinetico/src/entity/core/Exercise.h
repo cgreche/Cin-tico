@@ -54,6 +54,7 @@ namespace cinetico_core {
 		unsigned long trackableBodyPoints() const { return m_trackableBodyPoints; }
 		Action *action(int index) const { return m_actions[index]; }
 		unsigned int actionCount() const { return m_actions.size(); }
+		std::vector<Action*> actionList() const { return m_actions; }
 
 		ExerciseState state() const { return m_state; }
 	};

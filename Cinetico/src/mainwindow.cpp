@@ -15,6 +15,16 @@ namespace cinetico {
 		MainWindow* mainWindow = (MainWindow *)button.param();
 		mainWindow->onClickLogoff();
 	}
+	
+	static void linkPortugues_onClick(TextLink &link) {
+		MainWindow* mainWindow = (MainWindow *)button.param();
+		mainWindow->cinetico.setLanguage(Dictionary::PT_BR);		
+	}
+
+	static void linkEnglish_onClick(TextLink &link) {
+		MainWindow* mainWindow = (MainWindow *)button.param();
+		mainWindow->cinetico.setLanguage(Dictionary::EN_US);
+	}
 
 	void MainWindow::buildHeaderLayout() {
 		labelAppname.setText("Cinético");
@@ -55,7 +65,24 @@ namespace cinetico {
 		labelAuthor.setText("2017 César Reche");
 		labelAuthor.setFont(ViewTemplate::FooterInfoFont);
 		labelAuthor.setTextColor(ViewTemplate::FooterInfoColor);
+		
+		linkPortugues.setText("Português");
+		linkPortugues.setColor(ViewTemplate::TextLinkColor);
+		linkPortugues.setHoverColor(ViewTemplate::TextLinkHoverColor);
+		linkPortugues.setParam(this);
+		linkPortugues.setOnClick(linkPortugues_onClick);
+		
+		linkEnglish.setText("English");
+		linkEnglish.setColor(ViewTemplate::TextLinkColor);
+		linkEnglish.setColor(ViewTemplate::TextLinkHoverColor);
+		linkEnglish.setParam(this);
+		linkEnglish.setOnClick(linkEnglish_onClick);
+		
+		layoutLanguages.append(linkPortugues);
+		layoutLanguages.append(linkEnglish);
+		layoutLanguages.setAlignment(Layout::center_align);
 		layoutFooter.append(labelAuthor);
+		layoutFooter.append(layoutLanguages);
 	}
 
 	MainWindow::MainWindow(Cinetico &cinetico)
