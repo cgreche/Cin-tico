@@ -15,6 +15,7 @@ namespace cinetico {
 		enum LanguageID {
 			PT_BR,
 			EN_US,
+			ES_ES,
 
 			LanguageIDCount,
 			InvalidLanguageID = -1
@@ -63,7 +64,7 @@ namespace cinetico {
 			, ActionTypeMovement
 
 			, ActionRefPointWorld
-			, ActionRefPointLastPos
+			, ActionRefPointLastPosition
 
 			, MovementTypeLinear
 			, MovementTypeAngular

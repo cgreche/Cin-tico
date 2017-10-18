@@ -40,13 +40,22 @@ namespace cinetico_core {
 		inline float y() const { return m_y; }
 		inline float z() const { return m_z; }
 
-		inline Vector3 operator-(const Vector3 &vec2) {
+		inline Vector3 operator+(const Vector3 &vec2) {
+			Vector3 ret;
+			ret.m_x = this->m_x + vec2.m_x;
+			ret.m_y = this->m_y + vec2.m_y;
+			ret.m_z = this->m_z + vec2.m_z;
+			return ret;
+		}
+
+		inline Vector3 operator-(const Vector3 &vec2) const {
 			Vector3 ret;
 			ret.m_x = this->m_x - vec2.m_x;
 			ret.m_y = this->m_y - vec2.m_y;
 			ret.m_z = this->m_z - vec2.m_z;
 			return ret;
 		}
+
 	};
 
 }

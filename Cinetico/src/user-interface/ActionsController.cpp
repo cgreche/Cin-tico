@@ -11,11 +11,9 @@ namespace cinetico {
 	using namespace cinetico_core;
 	using cinetico::ComboBox;
 
-	extern Cinetico g_cinetico;
-
 	static void buttonBack_onClick(Button &button) {
 		ActionsController *controller = (ActionsController*)button.param();
-		g_cinetico.goTo(Cinetico::EXERCISES);
+		controller->m_cinetico.goTo(Cinetico::EXERCISES);
 	}
 
 	static void buttonAdd_onClick(Button& button) {
@@ -34,7 +32,7 @@ namespace cinetico {
 		if (controller->m_currentAction) {
 			Message::message_result res = Message::question(NULL, controller->m_dictionary.getString(Dictionary::DefaultActionQuestionDelete));
 			if (res == Message::yes) {
-				g_cinetico.cineticoDB()->actionDAO()->exclude(*controller->m_currentAction);
+				controller->m_cinetico.cineticoDB()->actionDAO()->exclude(*controller->m_currentAction);
 				controller->updateActionList();
 			}
 		}
@@ -75,14 +73,21 @@ namespace cinetico {
 	}
 
 	void ActionsController::fillBodyPointCombo(cComboBox &combo) {
-		combo.appendItem("Cabeça",0);
-		combo.appendItem("Ombro",1);
+		std::vector<uilib::string> bpNames = m_cinetico.getAllBodyPointNames();
+		combo.clear();
+		for (int i = 0; i < bpNames.size(); ++i) {
+			combo.appendItem(bpNames[i], i);
+		}
 	}
 
 	void ActionsController::fillSpaceTypeCombo(cComboBox &combo) {
-		combo.appendItem("Mundo", 0);
-		combo.appendItem("Última posição", 1);
-		combo.appendItem("Cabeça", 1);
+		combo.clear();
+		combo.appendItem(m_dictionary.getString(Dictionary::ActionRefPointWorld), -1);
+		combo.appendItem(m_dictionary.getString(Dictionary::ActionRefPointLastPosition), -2);
+		std::vector<uilib::string> bpNames = m_cinetico.getAllBodyPointNames();
+		for (int i = 0; i < bpNames.size(); ++i) {
+			combo.appendItem(bpNames[i], i);
+		}
 	}
 
 	void ActionsController::fillMovementTypeCombo(cComboBox &combo) {
@@ -131,7 +136,7 @@ namespace cinetico {
 		string &minTimeStr = tbMinTime.text();
 		string &maxTimeStr = tbMaxTime.text();
 		int bodyPoint = cbBodyPoint.selection();
-		int refPoint = cbRefPoint.selection();
+		int refPoint = (int)cbRefPoint.item(cbRefPoint.selection())->data();
 		string &posXStr = tbPositionX.text();
 		string &posYStr = tbPositionY.text();
 		string &posZStr = tbPositionZ.text();
@@ -185,11 +190,11 @@ namespace cinetico {
 		action->setFinalPosition(cinetico_core::Vector3(string_op::decimal(posXStr.data()), string_op::decimal(posYStr.data()), string_op::decimal(posZStr.data())));
 
 		if (m_editMode == 1) {
-			g_cinetico.cineticoDB()->actionDAO()->create(*action);
+			m_cinetico.cineticoDB()->actionDAO()->create(*action);
 			delete action;
 		}
 		else {
-			g_cinetico.cineticoDB()->actionDAO()->update(*action);
+			m_cinetico.cineticoDB()->actionDAO()->update(*action);
 		}
 
 		setEditionMode(0);
@@ -237,6 +242,12 @@ namespace cinetico {
 		tbMaxSpeed.setLabel(m_dictionary.getString(Dictionary::MovementActionMaxSpeed));
 
 		separatorSpecificData.setText(m_dictionary.getString(Dictionary::ActionsViewSectionSpecificData));
+
+		fillActionTypeCombo(cbActionType);
+		fillOrderTypeCombo(cbOrderType);
+		fillBodyPointCombo(cbBodyPoint);
+		fillSpaceTypeCombo(cbRefPoint);
+		fillMovementTypeCombo(cbMovementType);
 	}
 
 	ActionsController::ActionsController(Cinetico &cinetico)
@@ -285,19 +296,12 @@ namespace cinetico {
 		layoutActionDataActionButtons.append(buttonCancelAction);
 
 		//Base Action data
-				
-		fillActionTypeCombo(cbActionType);
 		cbActionType.combo.setParam(this);
 		cbActionType.combo.setOnSelect(comboActionType_onChange);
-
-		fillOrderTypeCombo(cbOrderType);
 
 		layoutActionDataRow1.append(cbActionType, Size(SizeTypeMax, SizeTypeAuto));
 		layoutActionDataRow1.append(cbOrderType, Size(SizeTypeMax, SizeTypeAuto));
 		layoutActionDataRow1.append(tbName);
-
-		fillBodyPointCombo(cbBodyPoint);
-		fillSpaceTypeCombo(cbRefPoint);
 
 		layoutBaseActionData.append(cbBodyPoint, Size(SizeTypeMax, SizeTypeAuto));
 		layoutBaseActionData.append(cbRefPoint, Size(SizeTypeMax, SizeTypeAuto));
@@ -312,9 +316,6 @@ namespace cinetico {
 		layoutPositionSpecific.append(tbMinHoldTime);
 
 		//Movement Action
-		
-		fillMovementTypeCombo(cbMovementType);
-
 		layoutMovementAction.append(cbMovementType, Size(SizeTypeMax, SizeTypeAuto));
 		layoutMovementAction.append(tbMinSpeed, Size(SizeTypeMax, SizeTypeAuto));
 		layoutMovementAction.append(tbMaxSpeed, Size(SizeTypeMax, SizeTypeAuto));
@@ -458,7 +459,7 @@ namespace cinetico {
 	}
 
 	void ActionsController::updateActionList() {
-		std::vector<Action*> actionList = g_cinetico.cineticoDB()->actionDAO()->getAllActionsByExercise(*m_currentExercise);
+		std::vector<Action*> actionList = m_cinetico.cineticoDB()->actionDAO()->getAllActionsByExercise(*m_currentExercise);
 		gridActions.deleteRows();
 		string actionTypePosition = m_dictionary.getString(Dictionary::ActionTypePosition);
 		string actionTypeMovement = m_dictionary.getString(Dictionary::ActionTypeMovement);

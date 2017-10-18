@@ -107,18 +107,17 @@ namespace cinetico {
 
 	void HumanCharacter::mapBodyPointToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint) {
 		ResourceInstance *instance;
-		Body *body = m_cinetico3d.bodyTracker()->body();
-		if (!body)
+		if (!m_body)
 			return;
 		instance = m_cinetico3d.renderEngine()->resourceInstance(instId);
-		cinetico_core::Vector3 pos = body->bodyPoint(bodyPoint)->position();
-		cinetico_core::Vector3 rot = body->bodyPoint(bodyPoint)->orientation();
+		cinetico_core::Vector3 pos = m_body->bodyPoint(bodyPoint)->position();
+		cinetico_core::Vector3 rot = m_body->bodyPoint(bodyPoint)->orientation();
 		instance->setPos(render3d::Vector3(pos.x() * CM2W, pos.y() * CM2W, pos.z() * CM2W));
 		instance->setRot(render3d::Vector3(rot.x(), rot.y(), rot.z()));
 	}
 
 	void HumanCharacter::update() {
-		Body *m_body = m_cinetico3d.bodyTracker()->body();
+		m_body = m_cinetico3d.bodyTracker()->body();
 		if (m_body) {
 			mapBodyPointToWorldPoint(m_instanceIds[0], BodyPoint::Head);
 			mapBodyPointToWorldPoint(m_instanceIds[1], BodyPoint::Spine);

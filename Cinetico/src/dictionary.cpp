@@ -3,6 +3,8 @@
 #include "dictionary.h"
 #include <libxml/tree.h>
 
+#include <windows.h> //for utf-8 to ansi conversion (temporary) todo: remove when it is not needed anymore
+
 #define XMLCHAR(x) ((const xmlChar*)x)
 #define XMLCHAR2CHAR(x) ((const char*)x)
 #define XMLCHAR_SAFEFREE(x) if(x) xmlFree(x)
@@ -16,8 +18,6 @@ namespace cinetico {
 
 #define MAP_LANG(id) g_langIdStr[id] = #id
 #define MAP_STR(id) g_stringIdStr[id] = #id
-
-
 
 	void Dictionary::__fillMaps() {
 		if (!g_mapsFilled) {
@@ -68,7 +68,7 @@ namespace cinetico {
 			MAP_STR(ActionTypeMovement);
 
 			MAP_STR(ActionRefPointWorld);
-			MAP_STR(ActionRefPointLastPos);
+			MAP_STR(ActionRefPointLastPosition);
 
 			MAP_STR(MovementTypeLinear);
 			MAP_STR(MovementTypeAngular);
@@ -248,7 +248,20 @@ namespace cinetico {
 					if (stringId != InvalidStringID) {
 						xmlNodePtr text = node->children;
 						if (text && text->type == XML_TEXT_NODE) {
-							m_languages[langId][stringId] = XMLCHAR2CHAR(text->content);
+							const char *utf8 = XMLCHAR2CHAR(text->content);
+							WCHAR *utf16;
+							unsigned int sizeNeeded;
+							sizeNeeded = ::MultiByteToWideChar(CP_UTF8, 0, utf8, -1, NULL, 0);
+							utf16 = new WCHAR[sizeNeeded];
+							::MultiByteToWideChar(CP_UTF8, 0, utf8, -1, utf16, sizeNeeded);
+
+							char *ansi;
+							sizeNeeded = ::WideCharToMultiByte(CP_ACP, 0, utf16, -1, NULL, 0, NULL, NULL);
+							ansi = new char[sizeNeeded];
+							::WideCharToMultiByte(CP_ACP, 0, utf16, -1, ansi, sizeNeeded, NULL, NULL);
+							m_languages[langId][stringId] = ansi;
+							delete[] ansi;
+							delete[] utf16;
 						}
 					}
 				}

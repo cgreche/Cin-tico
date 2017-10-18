@@ -1,7 +1,7 @@
 
 //String
 // File: string.cpp
-// Last Edit: 13/12/2014 03:45 (UTC-3)
+// Last Edit: 18/10/2017 01:48 (UTC-3)
 // Author: CGR
 
 #include <memory.h>
@@ -243,7 +243,9 @@ namespace uilib {
 	{
 		//todo: fix precision in str
 		char vstr[80];
-		::sprintf(vstr, "%.6f", f);
+		char fmt[80];
+		::sprintf(fmt, "%%.%df", precision);
+		::sprintf(vstr, fmt, f);
 
 		string s;
 		s += vstr;

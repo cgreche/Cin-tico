@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<language id="en_us">
+	<!-- General data -->
+	<string id="X">X</string>
+	<string id="Y">Y</string>
+	<string id="Z">Z</string>
+
+	<!-- Body Points -->
+	<string id="BodyPointHead">Head</string>
+	<string id="BodyPointCervical">Cervical</string>
+	<string id="BodyPointSpine">Spine</string>
+	<string id="BodyPointSpineBase">Spine base</string>
+	<string id="BodyPointLeftShoulder">Left Shoulder</string>
+	<string id="BodyPointLeftElbow">Left Elbow</string>
+	<string id="BodyPointLeftWrist">Left Wrist</string>
+	<string id="BodyPointLeftPalm">Left Palm</string>
+	<string id="BodyPointLeftPinky">Left Pinky finger</string>
+	<string id="BodyPointLeftRingFinger">Left Ring finger</string>
+	<string id="BodyPointLeftMiddleFinger">Left Middle finger</string>
+	<string id="BodyPointLeftIndexFinger">Left Index finger</string>
+	<string id="BodyPointLeftThumb">Left Thumb</string>
+	<string id="BodyPointLeftHip">Left Hip</string>
+	<string id="BodyPointLeftKnee">Left Knee</string>
+	<string id="BodyPointLeftAnkle">Left Ankle</string>
+	<string id="BodyPointLeftFoot">Left Foot</string>
+	<string id="BodyPointRightShoulder">Right Shoulder</string>
+	<string id="BodyPointRightElbow">Right Elbow</string>
+	<string id="BodyPointRightWrist">Right Wrist</string>
+	<string id="BodyPointRightPalm">Right Palm</string>
+	<string id="BodyPointRightPinky">Right Pinky finger</string>
+	<string id="BodyPointRightRingFinger">Right Ring finger</string>
+	<string id="BodyPointRightMiddleFinger">Right Middle finger</string>
+	<string id="BodyPointRightIndexFinger">Right Index finger</string>
+	<string id="BodyPointRightThumb">Right Thumb</string>
+	<string id="BodyPointRightHip">Right Hip</string>
+	<string id="BodyPointRightKnee">Right Knee</string>
+	<string id="BodyPointRightAnkle">Right Ankle</string>
+	<string id="BodyPointRightFoot">Right Foot</string>
+	
+	<!-- Action Enums -->
+	<string id="ActionTypePosition">Position</string>
+	<string id="ActionTypeMovement">Movement</string>
+	
+	<string id="ActionRefPointWorld">World</string>
+	<string id="ActionRefPointLastPosition">Last position</string>
+	
+	<string id="MovementTypeLinear">Linear</string>
+	<string id="MovementTypeAngular">Angular</string>
+	
+	<!-- -->
+	<string id="ActionLogoff">Logoff</string>
+	<!-- -->
+	<string id="DefaultActionAdd">Add</string>
+	<string id="DefaultActionEdit">Edit</string>
+	<string id="DefaultActionDelete">Delete</string>
+	<string id="DefaultActionSave">Save</string>
+	<string id="DefaultActionCancel">Cancel</string>
+	<string id="DefaultActionYes">Yes</string>
+	<string id="DefaultActionNo">No</string>
+	<string id="DefaultActionBack">Back</string>
+	<!-- -->
+	<string id="DefaultActionQuestionDelete">Do you want to delete this register?
+	This operation cannot be undone.</string>
+	
+	
+	<!-- -->
+	
+	
+	<!--Entity-->
+	<string id="EntityUserProfile">User Profile</string>
+	<string id="EntityExercise">Exercise</string>
+	<string id="EntityAction">Action</string>
+	<!-- -->
+	<!--Entitiy attributes-->
+	<string id="UserProfileLoginName">User</string>
+	<string id="UserProfileUserName">User name</string>
+	<string id="UserProfilePassword">Password</string>
+	<string id="UserProfileCreationDate">Creation date</string>
+	
+	<string id="ExerciseName">Name</string>
+	<string id="ExerciseAuthor">Author</string>
+	<string id="ExercisePublic">Public</string>
+	
+	<string id="ActionType">Type</string>
+	<string id="ActionOrder">Order</string>
+	<string id="ActionName">Name</string>
+	<string id="ActionMinTime">Minimum execution time</string>
+	<string id="ActionMaxTime">Maximum execution time</string>
+	<string id="ActionBodyPoint">Body point</string>
+	<string id="ActionRefPoint">Reference point</string>
+	<string id="ActionFinalPosition">Final position (cm)</string>
+	<string id="ActionFinalOrientation">Final orientation</string>
+	
+	<string id="PositionActionMinHoldTime">Minimum time to hold the position (s)</string>
+	<string id="MovementActionType">Movement type</string>
+	<string id="MovementActionMinSpeed">Minimum execution speed (cm/s²)</string>
+	<string id="MovementActionMaxSpeed">Maximum execution speed (cm/s²)</string>
+	
+	
+	<!-- -->
+	<!--Views-->
+	<string id="ViewDefaultErrorRequiredFields">The fields with '*' must be filled.</string>
+	<!-- -->
+	<!--Login-->
+	<string id="LoginViewTitle">Welcome!</string>
+	<string id="LoginViewDesc">To start, enter or create your User profile</string>
+	<string id="LoginViewSectionLogin">Enter with your User profile</string>
+	<string id="LoginViewSectionCreateUserProfile">Create an User profile</string>
+	<string id="LoginViewUsername">Username *</string>
+	<string id="LoginViewPassword">Password *</string>
+	<string id="LoginViewConfirmPassword">Password confirmation *</string>
+	<string id="LoginViewActionLogin">Login</string>
+	<string id="LoginViewActionCreateUserProfile">Create profile</string>
+	<!-- -->
+	<string id="LoginViewErrorUserProfileCreatedSuccessfully">Profile successfully created.</string>
+	<string id="LoginViewErrorUserLoggedSucessfully">Success! User logged as %s.</string>
+	<string id="LoginViewErrorInvalidCredentials">Invalid username or password.</string>
+	<string id="LoginViewErrorUsernameAlreadyExists">The chosen username already exists.</string>
+	<!-- -->
+	
+	<!--UserProfile-->
+	<string id="UserProfileViewTitle">User Profile</string>
+	<string id="UserProfileViewDesc">Edit your information or delete your User profile.</string>
+	<string id="UserProfileViewSectionUserDetails">User details</string>
+	<string id="UserProfileViewSectionChangePassword">Change password</string>
+	<string id="UserProfileViewCurrentPassword">Current password</string>
+	<string id="UserProfileViewNewPassword">New password</string>
+	<string id="UserProfileViewNewPasswordConfirmation">New password confirmation</string>
+	<string id="UserProfileViewSectionDeactivateUser">Disable profile</string>
+	<string id="UserProfileViewDeactivateUser">Disable</string>
+	<!-- -->
+	<string id="UserProfileViewErrorUserNameChangedSucessfully">User name successfully changed.</string>
+	<string id="UserProfileViewErrorPasswordChangedSucessfully">Password successfully changed.</string>
+	<string id="UserProfileViewErrorPasswordWrongCurrentPassword">Incorrect current password.</string>
+	<string id="UserProfileViewErrorPasswordConfirmationNotEqual">Password confirmation is not equal as current password.</string>
+	<string id="UserProfileViewQuestionDeactivateConfirmation">Are you sure you want to disable your User profile?
+	This operation cannot be undone.</string>
+	
+	<!-- -->
+	<!--Exercises-->
+	<string id="ExercisesViewTitle">Exercises</string>
+	<string id="ExercisesViewDesc">Create, edit, record or do an exercício.</string>
+	<string id="ExercisesViewActionCreate">Create Exercise</string>
+	<string id="ExercisesViewActionManageActions">Manage actions</string>
+	<string id="ExercisesViewActionDoExercise">Do selected exercise</string>
+	<string id="ExercisesViewGridColumnActionCount">Action count</string>
+	<string id="ExercisesViewExerciseName">Exerxcise name</string>
+	<string id="ExercisesViewSectionBodyPoints">Useable body points</string>
+	<!-- -->
+	<string id="ExercisesViewErrorExerciseAlreadyExists">There is an exercise with this name already created. Please, choose another name.</string>
+	<string id="ExercisesViewErrorExerciseHasNoActions">To do an exercise, it must contain at least one action.</string>
+	<!-- -->
+	<!--Action-->
+	<string id="ActionsViewTitle">Actions</string>
+	<string id="ActionsViewDesc">Add or edit actions for an Exercise.</string>
+	<string id="ActionsViewSectionBasicData">Base action information.</string>
+	<string id="ActionsViewSectionSpecificData">Specific information for the chosen action type.</string>
+	
+</language>
+
+
+
+

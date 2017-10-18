@@ -338,7 +338,7 @@ namespace cinetico {
 
 
 		resFontArial = m_renderEngine->newFontResource("Arial", 15, 30, FontResource::BOLD);
-		resFontVerdana = m_renderEngine->newFontResource("Verdana", 20, 200, FontResource::ITALIC);
+		resFontVerdana = m_renderEngine->newFontResource("Verdana", 10, 25, FontResource::BOLD);
 
 		m_dummyChar = new DummyCharacter(*this);
 		m_humanChar = new HumanCharacter(*this);
@@ -585,13 +585,14 @@ namespace cinetico {
 
 		Body *body;
 		body = m_bodyTracker->body();
+
 		if (body) {
 			if (m_playingExercise->state() == Exercise::Idle)
 				m_playingExercise->start(*body);
 
 			m_humanChar->update();
 			if (m_playingExercise->step() == Exercise::Finished)
-				m_playingExercise->start(*body);
+				m_playingExercise->reset();
 		}
 	}
 
@@ -615,6 +616,29 @@ namespace cinetico {
 		str += m_playingExercise->name();
 		m_renderEngine->drawText(str.c_str(), 500, 10, render3d::Color(255, 255, 255, 100));
 		m_renderEngine->setCurrentFont(resFontVerdana);
+
+		if (m_playingExercise->state() == Exercise::Running) {
+			std::vector<Action *> actionList = m_playingExercise->actionList();
+			int actionIndex = m_playingExercise->currentActionIndex();
+			int nextActionindex = m_playingExercise->getNextActionsIndex();
+
+
+			m_renderEngine->drawText("Ação atual:", 20, 220, render3d::Color(255, 200, 255));
+
+			int drawIndexX = 36;
+			int drawIndexY = 250;
+			render3d::Color drawColor = render3d::Color(220, 0, 0, 200);
+			for (; actionIndex < nextActionindex; ++actionIndex) {
+				if (actionList[actionIndex]->isCorrect())
+					drawColor = render3d::Color(0, 220, 0, 200);
+				uilib::string curAction = actionList[actionIndex]->name().c_str();
+				curAction += " (";
+				curAction += uilib::string::fromFloat(actionList[actionIndex]->accuracy(), 2);
+				curAction += ")";
+				m_renderEngine->drawText(curAction.data(), drawIndexX, drawIndexY, drawColor);
+				drawIndexY += 30;
+			}
+		}
 
 		m_renderEngine->setCurrentCamera(cam2);
 		m_renderEngine->setCurrentViewport(viewport2);

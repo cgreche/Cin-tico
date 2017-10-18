@@ -90,6 +90,8 @@ namespace cinetico {
 		bool validateFields();
 		void saveCurrentAction();
 
+		friend void buttonBack_onClick(Button &button);
+		friend void buttonDelete_onClick(Button &button);
 		friend void comboActionType_onChange(ComboBox &combo, ComboBoxItem *item);
 		friend void buttonDelete_onClick(Button &button);
 

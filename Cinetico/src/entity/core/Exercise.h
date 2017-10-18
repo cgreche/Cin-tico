@@ -30,8 +30,6 @@ namespace cinetico_core {
 		ExerciseState m_state;
 		int m_currentActionIndex;
 
-		int getNextActionsIndex();
-
 	public:
 		Exercise(unsigned long id = -1);
 		~Exercise();
@@ -39,6 +37,7 @@ namespace cinetico_core {
 		void start(Body &body);
 		ExerciseState step();
 		void cancel();
+		void reset();
 		bool running() const { return m_state == Running; }
 
 		void setName(const char *name) { m_name = name; }
@@ -46,6 +45,8 @@ namespace cinetico_core {
 		void setPublic(bool isPublic) { m_public = isPublic; }
 		void setTrackableBodyPoints(unsigned long trackableBodyPoints) { m_trackableBodyPoints = trackableBodyPoints; }
 		void setActionList(std::vector<Action*> actionList);
+
+		int getNextActionsIndex();
 
 		unsigned long id() const { return m_id; }
 		const std::string& name() const { return m_name; }
@@ -55,6 +56,7 @@ namespace cinetico_core {
 		Action *action(int index) const { return m_actions[index]; }
 		unsigned int actionCount() const { return m_actions.size(); }
 		std::vector<Action*> actionList() const { return m_actions; }
+		int currentActionIndex() const { return m_currentActionIndex; }
 
 		ExerciseState state() const { return m_state; }
 	};

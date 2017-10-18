@@ -42,7 +42,7 @@
 	<string id="ActionTypeMovement">Movimento</string>
 	
 	<string id="ActionRefPointWorld">Mundo</string>
-	<string id="ActionRefPointLastPos">Última posição</string>
+	<string id="ActionRefPointLastPosition">Última posição</string>
 	
 	<string id="MovementTypeLinear">Linear</string>
 	<string id="MovementTypeAngular">Angular</string>

@@ -13,21 +13,45 @@ namespace cinetico_core {
 	Action::ActionResult PositionAction::avaliate(Body &body) {
 		BodyPoint *bodyPoint = body.bodyPoint(m_bodyPoint);
 
-		float comparingRadius = 0.3f;
+		float comparingRadius = 0.03f;
+		float threshold = 0.3f;
 
-		Vector3 diff = m_finalPosition - bodyPoint->position();
+		Vector3 refPos;
+		if (m_refPoint >= 0) {
+			refPos = body.bodyPoint((BodyPoint::BodyPart)m_refPoint)->position();
+		}
+
+		Vector3 finalPosition = m_finalPosition + refPos;
+
+		Vector3 diff = bodyPoint->position() - refPos;
+
+		float accuracyX = 100.f;
+		float accuracyY = 100.f;
+		float accuracyZ = 100.f;
+		if (m_finalPosition.x() != 0.f) {
+			accuracyX = finalPosition.x() / refPos.x() * 100.f;
+		}
+		
+		if (m_finalPosition.y() != 0.f) {
+			accuracyY = finalPosition.y() / refPos.y() * 100.f;
+		}
+		
+		if (m_finalPosition.z() != 0.f) {
+			accuracyZ = finalPosition.z() / refPos.z() * 100.f;
+		}
+
 		float distanceSquared = diff.dotProduct(diff);
 
 		float radiusSquared = comparingRadius*comparingRadius;
 		
-		float percent = distanceSquared / radiusSquared;
-		
+		float accuracy = (accuracyX + accuracyY + accuracyZ) / 3.f;
+		m_accuracy = accuracy;
 		if (m_holdTime >= m_minHoldTime) {
-			if (percent < 0.5f)
+			if (accuracy < 0.5f)
 				return Missed;
-			if (percent < 0.8f)
+			if (accuracy < 0.8f)
 				return Bad;
-			if (percent < 0.9f)
+			if (accuracy < 0.9f)
 				return Good;
 			return Excellent;
 		}

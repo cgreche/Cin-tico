@@ -26,8 +26,12 @@ namespace cinetico {
 						Button buttonLogoff;
 
 		VerticalLayout layoutContent;
-		VerticalLayout layoutFooter;
-		Label labelAuthor;
+		HorizontalLayout layoutFooter;
+			Label labelAuthor;
+			VerticalLayout layoutLanguages;
+				TextLink linkPortugues;
+				TextLink linkEnglish;
+				TextLink linkEspanol;
 
 		Layout *m_currentContentLayout;
 
@@ -38,8 +42,12 @@ namespace cinetico {
 
 		friend void linkUserLoginName_onClick(TextLink &link);
 		friend void buttonLogoff_onClick(Button &button);
+		friend void linkPortugues_onClick(TextLink &link);
+		friend void linkEnglish_onClick(TextLink &link);
+		friend void linkEspanol_onClick(TextLink &link);
 		void onClickUserLoginName();
 		void onClickLogoff();
+		void onLanguageSelect(Dictionary::LanguageID langId);
 
 	public:
 		MainWindow(Cinetico &cinetico);

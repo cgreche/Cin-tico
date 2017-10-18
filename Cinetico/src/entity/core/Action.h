@@ -55,6 +55,7 @@ namespace cinetico_core {
 		//State attributes
 		ActionState m_state;
 		ActionResult m_result;
+		float m_accuracy;
 
 	protected:
 		Action(ActionType actionType, Exercise &owner, int id = -1)
@@ -63,6 +64,7 @@ namespace cinetico_core {
 			m_refPoint = -2;
 			m_state = Idle;
 			m_result = Missed;
+			m_accuracy = 0.f;
 		}
 
 		virtual ActionResult avaliate(Body &body) = 0;
@@ -96,6 +98,7 @@ namespace cinetico_core {
 
 		ActionState state() const { return m_state; }
 		ActionResult result() const { return m_result; }
+		float accuracy() const { return m_accuracy; }
 	};
 
 }

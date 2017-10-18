@@ -37,9 +37,7 @@ namespace cinetico {
 			INVALID_USER_CREDENTIALS,
 		};
 
-	private:
-		LanguageID m_currentLangId;
-		
+	private:		
 		CineticoDB *m_cineticoDB;
 		Cinetico3D *m_cinetico3D;
 		MainWindow *m_mainWindow;
@@ -77,37 +75,39 @@ namespace cinetico {
 		std::vector<uilib::string> getAllBodyPointNames() {
 			std::vector<uilib::string> bodyPointNames;
 
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointHead));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointCervical));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointSpine));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointSpineBase));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftShoulder));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftElbow));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftWrist));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftPalm));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftPinky));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftRingFinger));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftMiddleFinger));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftIndexFinger));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftThumb));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftHip));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftKnee));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftAnkle));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointLeftFoot));
+			bodyPointNames.resize(BodyPoint::BodyPartCount);
 
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightShoulder));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightElbow));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightWrist));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightPalm));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightPinky));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightRingFinger));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightMiddleFinger));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightIndexFinger));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightThumb));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightHip));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightKnee));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightAnkle));
-			bodyPointNames.push_back(m_dictionary->getString(Dictionary::BodyPointRightFoot));
+			bodyPointNames[BodyPoint::Head] = m_dictionary->getString(Dictionary::BodyPointHead);
+			bodyPointNames[BodyPoint::Cervical] = m_dictionary->getString(Dictionary::BodyPointCervical);
+			bodyPointNames[BodyPoint::Spine] = m_dictionary->getString(Dictionary::BodyPointSpine);
+			bodyPointNames[BodyPoint::SpineBase] = m_dictionary->getString(Dictionary::BodyPointSpineBase);
+			bodyPointNames[BodyPoint::LeftShoulder] = m_dictionary->getString(Dictionary::BodyPointLeftShoulder);
+			bodyPointNames[BodyPoint::LeftElbow] = m_dictionary->getString(Dictionary::BodyPointLeftElbow);
+			bodyPointNames[BodyPoint::LeftWrist] = m_dictionary->getString(Dictionary::BodyPointLeftWrist);
+			bodyPointNames[BodyPoint::LeftPalm] = m_dictionary->getString(Dictionary::BodyPointLeftPalm);
+			bodyPointNames[BodyPoint::LeftPinky] = m_dictionary->getString(Dictionary::BodyPointLeftPinky);
+			bodyPointNames[BodyPoint::LeftRingFinger] = m_dictionary->getString(Dictionary::BodyPointLeftRingFinger);
+			bodyPointNames[BodyPoint::LeftMiddleFinger] = m_dictionary->getString(Dictionary::BodyPointLeftMiddleFinger);
+			bodyPointNames[BodyPoint::LeftIndexFinger] = m_dictionary->getString(Dictionary::BodyPointLeftIndexFinger);
+			bodyPointNames[BodyPoint::LeftThumb] = m_dictionary->getString(Dictionary::BodyPointLeftThumb);
+			bodyPointNames[BodyPoint::LeftHip] = m_dictionary->getString(Dictionary::BodyPointLeftHip);
+			bodyPointNames[BodyPoint::LeftKnee] = m_dictionary->getString(Dictionary::BodyPointLeftKnee);
+			bodyPointNames[BodyPoint::LeftAnkle] = m_dictionary->getString(Dictionary::BodyPointLeftAnkle);
+			bodyPointNames[BodyPoint::LeftFoot] = m_dictionary->getString(Dictionary::BodyPointLeftFoot);
+
+			bodyPointNames[BodyPoint::RightShoulder] = m_dictionary->getString(Dictionary::BodyPointRightShoulder);
+			bodyPointNames[BodyPoint::RightElbow] = m_dictionary->getString(Dictionary::BodyPointRightElbow);
+			bodyPointNames[BodyPoint::RightWrist] = m_dictionary->getString(Dictionary::BodyPointRightWrist);
+			bodyPointNames[BodyPoint::RightPalm] = m_dictionary->getString(Dictionary::BodyPointRightPalm);
+			bodyPointNames[BodyPoint::RightPinky] = m_dictionary->getString(Dictionary::BodyPointRightPinky);
+			bodyPointNames[BodyPoint::RightRingFinger] = m_dictionary->getString(Dictionary::BodyPointRightRingFinger);
+			bodyPointNames[BodyPoint::RightMiddleFinger] = m_dictionary->getString(Dictionary::BodyPointRightMiddleFinger);
+			bodyPointNames[BodyPoint::RightIndexFinger] = m_dictionary->getString(Dictionary::BodyPointRightIndexFinger);
+			bodyPointNames[BodyPoint::RightThumb] = m_dictionary->getString(Dictionary::BodyPointRightThumb);
+			bodyPointNames[BodyPoint::RightHip] = m_dictionary->getString(Dictionary::BodyPointRightHip);
+			bodyPointNames[BodyPoint::RightKnee] = m_dictionary->getString(Dictionary::BodyPointRightKnee);
+			bodyPointNames[BodyPoint::RightAnkle] = m_dictionary->getString(Dictionary::BodyPointRightAnkle);
+			bodyPointNames[BodyPoint::RightFoot] = m_dictionary->getString(Dictionary::BodyPointRightFoot);
 			return bodyPointNames;
 		}
 	};

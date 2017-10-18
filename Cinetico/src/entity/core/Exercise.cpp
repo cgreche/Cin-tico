@@ -3,17 +3,6 @@
 
 namespace cinetico_core {
 
-	int Exercise::getNextActionsIndex() {
-		int index = m_currentActionIndex;
-		for (; index < m_actions.size(); ++index) {
-			Action *action = m_actions[index];
-			if (action->order() == Action::NewAction)
-				return index;
-		}
-
-		return index;
-	}
-
 	Exercise::Exercise(unsigned long id) {
 		m_id = id;
 		m_state = Idle;
@@ -47,9 +36,12 @@ namespace cinetico_core {
 			return m_state;
 
 		unsigned int index = m_currentActionIndex;
-		bool actionFinished = true;
-		for (; index < m_actions.size(); ++index) {
-			Action *action = m_actions[index];
+		Action *action = m_actions[m_currentActionIndex];
+		action->step(*m_body);
+		bool actionFinished = action->state() == Action::Finished;
+		++index;
+		for (; index < m_actions.size() && actionFinished; ++index) {
+			action = m_actions[index];
 			if (action->order() != Action::SameLastAction)
 				break;
 			action->step(*m_body);
@@ -58,16 +50,33 @@ namespace cinetico_core {
 		}
 
 		if (actionFinished)
-			m_currentActionIndex = getNextActionsIndex();
+			index = getNextActionsIndex();
 
 		if (index >= m_actions.size())
 			m_state = Finished;
 
+		m_currentActionIndex = index;
 		return m_state;
 	}
 
 	void Exercise::cancel() {
 		m_state = Canceled;
+	}
+
+	void Exercise::reset() {
+		m_currentActionIndex = 0;
+		m_state = Running;
+	}
+
+	int Exercise::getNextActionsIndex() {
+		int index = m_currentActionIndex+1;
+		for (; index < m_actions.size(); ++index) {
+			Action *action = m_actions[index];
+			if (action->order() == Action::NewAction)
+				return index;
+		}
+
+		return index;
 	}
 
 }

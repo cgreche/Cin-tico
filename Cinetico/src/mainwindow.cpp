@@ -17,13 +17,18 @@ namespace cinetico {
 	}
 	
 	static void linkPortugues_onClick(TextLink &link) {
-		MainWindow* mainWindow = (MainWindow *)button.param();
-		mainWindow->cinetico.setLanguage(Dictionary::PT_BR);		
+		MainWindow* mainWindow = (MainWindow *)link.param();
+		mainWindow->onLanguageSelect(Dictionary::PT_BR);
 	}
 
 	static void linkEnglish_onClick(TextLink &link) {
-		MainWindow* mainWindow = (MainWindow *)button.param();
-		mainWindow->cinetico.setLanguage(Dictionary::EN_US);
+		MainWindow* mainWindow = (MainWindow *)link.param();
+		mainWindow->onLanguageSelect(Dictionary::EN_US);
+	}
+
+	static void linkEspanol_onClick(TextLink &link) {
+		MainWindow* mainWindow = (MainWindow *)link.param();
+		mainWindow->onLanguageSelect(Dictionary::ES_ES);
 	}
 
 	void MainWindow::buildHeaderLayout() {
@@ -67,26 +72,35 @@ namespace cinetico {
 		labelAuthor.setTextColor(ViewTemplate::FooterInfoColor);
 		
 		linkPortugues.setText("Português");
-		linkPortugues.setColor(ViewTemplate::TextLinkColor);
+		linkPortugues.setTextColor(ViewTemplate::TextLinkColor);
 		linkPortugues.setHoverColor(ViewTemplate::TextLinkHoverColor);
 		linkPortugues.setParam(this);
 		linkPortugues.setOnClick(linkPortugues_onClick);
 		
 		linkEnglish.setText("English");
-		linkEnglish.setColor(ViewTemplate::TextLinkColor);
-		linkEnglish.setColor(ViewTemplate::TextLinkHoverColor);
+		linkEnglish.setTextColor(ViewTemplate::TextLinkColor);
+		linkEnglish.setHoverColor(ViewTemplate::TextLinkHoverColor);
 		linkEnglish.setParam(this);
 		linkEnglish.setOnClick(linkEnglish_onClick);
-		
+
+		linkEspanol.setText("Español");
+		linkEspanol.setTextColor(ViewTemplate::TextLinkColor);
+		linkEspanol.setHoverColor(ViewTemplate::TextLinkHoverColor);
+		linkEspanol.setParam(this);
+		linkEspanol.setOnClick(linkEspanol_onClick);
+
 		layoutLanguages.append(linkPortugues);
 		layoutLanguages.append(linkEnglish);
-		layoutLanguages.setAlignment(Layout::center_align);
-		layoutFooter.append(labelAuthor);
-		layoutFooter.append(layoutLanguages);
+		layoutLanguages.append(linkEspanol);
+		layoutLanguages.setAlignment(Layout::right_align);
+
+		layoutFooter.setMargin(10);
+		layoutFooter.append(labelAuthor, MaximumSize);
+		layoutFooter.append(layoutLanguages, MaximumSize);
 	}
 
 	MainWindow::MainWindow(Cinetico &cinetico)
-	: m_cinetico(cinetico) {
+		: m_cinetico(cinetico) {
 		m_currentContentLayout = NULL;
 
 		setTitle("Cinético");
@@ -169,6 +183,10 @@ namespace cinetico {
 	void MainWindow::onClickLogoff() {
 		m_cinetico.logoffCurrentUser();
 		m_cinetico.goTo(Cinetico::LOGIN);
+	}
+
+	void MainWindow::onLanguageSelect(Dictionary::LanguageID langId) {
+		m_cinetico.setLanguage(langId);
 	}
 
 	void MainWindow::onCloseEvent() {
