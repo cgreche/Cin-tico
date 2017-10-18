@@ -13,8 +13,7 @@ namespace cinetico_core {
 	Action::ActionResult PositionAction::avaliate(Body &body) {
 		BodyPoint *bodyPoint = body.bodyPoint(m_bodyPoint);
 
-		float comparingRadius = 0.03f;
-		float threshold = 0.3f;
+		float gap = 0.2f;
 
 		Vector3 refPos;
 		if (m_refPoint >= 0) {
@@ -22,39 +21,46 @@ namespace cinetico_core {
 		}
 
 		Vector3 finalPosition = m_finalPosition + refPos;
+		Vector3 diff = bodyPoint->position() - finalPosition;
 
-		Vector3 diff = bodyPoint->position() - refPos;
-
-		float accuracyX = 100.f;
-		float accuracyY = 100.f;
-		float accuracyZ = 100.f;
+		float accuracyX = 0.f;
+		float accuracyY = 0.f;
+		float accuracyZ = 0.f;
+		float weightX = 0.f;
+		float weightY = 0.f;
+		float weightZ = 0.f;
 		if (m_finalPosition.x() != 0.f) {
-			accuracyX = finalPosition.x() / refPos.x() * 100.f;
+			accuracyX = 100.f - fabsf(diff.x())*100.f / gap;
+			if (accuracyX < 0.f)
+				accuracyX = 0.f;
+			weightX = 1.f;
 		}
 		
 		if (m_finalPosition.y() != 0.f) {
-			accuracyY = finalPosition.y() / refPos.y() * 100.f;
+			accuracyY = 100.f - fabsf(diff.y())*100.f / gap;
+			if (accuracyY < 0.f)
+				accuracyY = 0.f;
+			weightY = 1.f;
 		}
 		
 		if (m_finalPosition.z() != 0.f) {
-			accuracyZ = finalPosition.z() / refPos.z() * 100.f;
+			accuracyZ = 100.f - fabsf(diff.z())*100.f / gap;
+			if (accuracyZ < 0.f)
+				accuracyZ = 0.f;
+			weightZ = 1.f;
 		}
-
-		float distanceSquared = diff.dotProduct(diff);
-
-		float radiusSquared = comparingRadius*comparingRadius;
 		
-		float accuracy = (accuracyX + accuracyY + accuracyZ) / 3.f;
+		float accuracy = (accuracyX + accuracyY + accuracyZ) / (weightX + weightY + weightZ);
 		m_accuracy = accuracy;
-		if (m_holdTime >= m_minHoldTime) {
-			if (accuracy < 0.5f)
+//		if (m_holdTime >= m_minHoldTime) {
+			if (accuracy < 50.f)
 				return Missed;
-			if (accuracy < 0.8f)
+			if (accuracy < 80.f)
 				return Bad;
-			if (accuracy < 0.9f)
+			if (accuracy < 90.f)
 				return Good;
 			return Excellent;
-		}
+//		}
 
 		return Missed;
 	}

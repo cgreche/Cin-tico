@@ -634,7 +634,7 @@ namespace cinetico {
 				uilib::string curAction = actionList[actionIndex]->name().c_str();
 				curAction += " (";
 				curAction += uilib::string::fromFloat(actionList[actionIndex]->accuracy(), 2);
-				curAction += ")";
+				curAction += "%)";
 				m_renderEngine->drawText(curAction.data(), drawIndexX, drawIndexY, drawColor);
 				drawIndexY += 30;
 			}

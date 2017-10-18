@@ -187,7 +187,7 @@ namespace cinetico {
 		action->setMaxTime(string_op::decimal(maxTimeStr.data()));
 		action->setBodyPoint((BodyPoint::BodyPart)bodyPoint);
 		action->setRefPoint(refPoint);
-		action->setFinalPosition(cinetico_core::Vector3(string_op::decimal(posXStr.data()), string_op::decimal(posYStr.data()), string_op::decimal(posZStr.data())));
+		action->setFinalPosition(cinetico_core::Vector3(string_op::decimal(posXStr.data())*0.01f, string_op::decimal(posYStr.data())*0.01f, string_op::decimal(posZStr.data())*0.01f));
 
 		if (m_editMode == 1) {
 			m_cinetico.cineticoDB()->actionDAO()->create(*action);
@@ -437,9 +437,9 @@ namespace cinetico {
 				cbRefPoint.setSelection(action->refPoint());
 				tbMinTime.setText(string::fromFloat(action->minTime()).data());
 				tbMaxTime.setText(string::fromFloat(action->maxTime()).data());
-				tbPositionX.setText(string::fromFloat(action->finalPosition().x()).data());
-				tbPositionY.setText(string::fromFloat(action->finalPosition().y()).data());
-				tbPositionZ.setText(string::fromFloat(action->finalPosition().z()).data());
+				tbPositionX.setText(string::fromFloat(action->finalPosition().x()*100).data());
+				tbPositionY.setText(string::fromFloat(action->finalPosition().y()*100).data());
+				tbPositionZ.setText(string::fromFloat(action->finalPosition().z()*100).data());
 
 				if (action->type() == Action::Position) {
 					tbMinHoldTime.setText(string::fromFloat(((PositionAction*)action)->minHoldTime()).data());
