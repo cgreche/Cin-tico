@@ -28,6 +28,7 @@ namespace cinetico {
 
 		if (!dummyCharacterLoaded) {
 			CineticoResources::ResIdModelWoman = cinetico3d.renderEngineHelper()->loadModel("MODEL.dae");
+			/*
 			for (unsigned int i = 0; i < CineticoResources::ResIdModelWoman.size(); ++i) {
 				ResourceData *model = cinetico3d.renderEngine()->resourceData(CineticoResources::ResIdModelWoman[i]);
 				Color *modelColors = new Color[model->vertexCount()];
@@ -36,6 +37,7 @@ namespace cinetico {
 				model->setColors(modelColors);
 				delete[] modelColors;
 			}
+			*/
 
 			dummyCharacterLoaded = true;
 		}

@@ -102,12 +102,6 @@ namespace cinetico {
 		cleanUp();
 	}
 
-	void Cinetico3D::setupBody() {
-
-
-
-	}
-
 	LRESULT CALLBACK world3D_MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 		switch (msg) {
@@ -233,7 +227,6 @@ namespace cinetico {
 
 	void Cinetico3D:: setupDrawables() {
 		::srand((unsigned int)::time(0));
-		setupBody();
 
 		const int numPoints = 30;
 		render3d::Color circleColors[numPoints + 1];

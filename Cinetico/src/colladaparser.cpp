@@ -96,33 +96,29 @@ namespace render3d {
 	void ColladaParser::readVertices(xmlNodePtr meshNode, ParsingModel* model) {
 		if (!meshNode)
 			return;
+
 		xmlNodePtr child = getFirstChildNode(meshNode, "vertices");
 		if (child) {
 			child = getFirstChildNode(child, "input");
 			if (child) {
-				xmlChar *prop = xmlGetProp(child, XMLCHAR("source"));
-				if (prop) {
+				xmlChar *propSource = xmlGetProp(child, XMLCHAR("source"));
+				if (propSource) {
 					child = getFirstChildNode(meshNode, "source");
 					while (child) {
-						xmlChar *prop2 = xmlGetProp(child, XMLCHAR("id"));
-						if (prop2) {
-							if (strcmp(XMLCHAR2CHAR(&prop[1]), XMLCHAR2CHAR(prop2)) == 0) {
-								child = getFirstChildNode(child, "float_array");
-								if (child) {
-									child = child->children;
-									if (child->type == XML_TEXT_NODE) {
-										parseFloatArray(child, model->vertices);
-									}
+						xmlAttrPtr propId = xmlHasProp(child, XMLCHAR("id"));
+						if(propId && propId->children && xmlStrcmp(propId->children->content, &propSource[1])==0) {
+							child = getFirstChildNode(child, "float_array");
+							if (child) {
+								child = child->children;
+								if (child->type == XML_TEXT_NODE) {
+									parseFloatArray(child, model->vertices);
 								}
 							}
-
-							xmlFree(prop2);
 							break;
 						}
-
 						child = getNextNode(child, "source");
 					}
-					xmlFree(prop);
+					xmlFree(propSource);
 				}
 			}
 		}
@@ -134,21 +130,16 @@ namespace render3d {
 
 		xmlNodePtr child = getFirstChildNode(meshNode, "source");
 		while (child) {
-			xmlChar *propId = xmlGetProp(child, XMLCHAR("id"));
-			if (propId) {
-				if (strcmp(id, XMLCHAR2CHAR(propId)) == 0) {
-					child = getFirstChildNode(child, "float_array");
-					if (child) {
-						child = child->children;
-						if (child->type == XML_TEXT_NODE) {
-							parseFloatArray(child, model->normals);
-							xmlFree(propId);
-							return;
-						}
+			xmlAttrPtr attrId = xmlHasProp(child, XMLCHAR("id"));
+			if (attrId && attrId->children && xmlStrcmp(attrId->children->content, XMLCHAR(id)) == 0) {
+				child = getFirstChildNode(child, "float_array");
+				if (child) {
+					child = child->children;
+					if (child->type == XML_TEXT_NODE) {
+						parseFloatArray(child, model->normals);
+						return;
 					}
 				}
-
-				xmlFree(propId);
 			}
 
 			child = getNextNode(child, "source");
@@ -161,21 +152,16 @@ namespace render3d {
 
 		xmlNodePtr child = getFirstChildNode(meshNode, "source");
 		while (child) {
-			xmlChar *propId = xmlGetProp(child, XMLCHAR("id"));
-			if (propId) {
-				if (strcmp(id, XMLCHAR2CHAR(propId)) == 0) {
-					child = getFirstChildNode(child, "float_array");
-					if (child) {
-						child = child->children;
-						if (child->type == XML_TEXT_NODE) {
-							parseFloatArray(child, model->texCoords);
-							xmlFree(propId);
-							return;
-						}
+			xmlAttrPtr attrId = xmlHasProp(child, XMLCHAR("id"));
+			if (attrId && attrId->children && xmlStrcmp(attrId->children->content, XMLCHAR(id)) == 0) {
+				child = getFirstChildNode(child, "float_array");
+				if (child) {
+					child = child->children;
+					if (child->type == XML_TEXT_NODE) {
+						parseFloatArray(child, model->texCoords);
+						return;
 					}
 				}
-
-				xmlFree(propId);
 			}
 
 			child = getNextNode(child, "source");
@@ -188,21 +174,16 @@ namespace render3d {
 
 		xmlNodePtr child = getFirstChildNode(meshNode, "source");
 		while (child) {
-			xmlChar *propId = xmlGetProp(child, XMLCHAR("id"));
-			if (propId) {
-				if (strcmp(id, XMLCHAR2CHAR(propId)) == 0) {
-					child = getFirstChildNode(child, "float_array");
-					if (child) {
-						child = child->children;
-						if (child->type == XML_TEXT_NODE) {
-							parseFloatArray(child, model->colors);
-							xmlFree(propId);
-							return;
-						}
+			xmlAttrPtr attrId = xmlHasProp(child, XMLCHAR("id"));
+			if(attrId && attrId->children && xmlStrcmp(attrId->children->content, XMLCHAR(id))==0) {
+				child = getFirstChildNode(child, "float_array");
+				if (child) {
+					child = child->children;
+					if (child->type == XML_TEXT_NODE) {
+						parseFloatArray(child, model->colors);
+						return;
 					}
 				}
-
-				xmlFree(propId);
 			}
 
 			child = getNextNode(child, "source");
@@ -307,6 +288,7 @@ namespace render3d {
 		std::vector<Vector3> vertices;
 		std::vector<int> indices;
 		std::vector<Vector3> normals;
+		std::vector<Color> colors;
 		std::vector<bool> bools;
 
 		unsigned int i;
@@ -330,55 +312,50 @@ namespace render3d {
 
 			for (i = 0; i < count; ++i) {
 
-				if (i*model->inputCount + vertOffs >= model->dataIndex.size())
-					int a = 1;
-
-				if (i*model->inputCount + normalOffs >= model->dataIndex.size())
-					int a = 1;
-
-				int vertIndex = model->dataIndex[i*model->inputCount + vertOffs];
-				int normalIndex = model->dataIndex[i*model->inputCount + normalOffs];
 				//int texCoordIndex = model->dataIndex[i*model->inputCount + texCoordOffs];
-				//int colorIndex = model->dataIndex[i*model->inputCount + colorOffs];
 				
 
-				if (vertIndex * 3 >= model->vertices.size()) {
-					int a = 1;
-				}
+				if (normalOffs >= 0) {
+					int vertIndex = model->dataIndex[i*model->inputCount + vertOffs];
+					int normalIndex = model->dataIndex[i*model->inputCount + normalOffs];
 
-				if (normalIndex * 3 >= model->normals.size()) {
-					int a = 1;
-				}
+					float vertX = model->vertices[vertIndex * 3];
+					float vertY = model->vertices[vertIndex * 3 + 2];
+					float vertZ = -model->vertices[vertIndex * 3 + 1];
 
-				float vertX = model->vertices[vertIndex * 3];
-				float vertY = model->vertices[vertIndex * 3 + 2];
-				float vertZ = -model->vertices[vertIndex * 3 + 1];
+					float normalX = model->normals[normalIndex * 3];
+					float normalY = model->normals[normalIndex * 3 + 2];
+					float normalZ = model->normals[normalIndex * 3 + 1];
 
-				float normalX = model->normals[normalIndex * 3];
-				float normalY = model->normals[normalIndex * 3 + 2];
-				float normalZ = model->normals[normalIndex * 3 + 1];
+					Vector3 vertex = Vector3(vertX, vertY, vertZ);
+					Vector3 normal = Vector3(normalX, normalY, normalZ);
 
-				Vector3 vertex = Vector3(vertX, vertY, vertZ);
-				Vector3 normal = Vector3(normalX, normalY, normalZ);
-				
-				if (!bools[vertIndex]) {
-					normals[vertIndex] = normal;
-					indices.push_back(vertIndex);
-					bools[vertIndex] = true;
-				}
-				else {
-					if (normals[vertIndex] == normal) {
+					if (!bools[vertIndex]) {
+						normals[vertIndex] = normal;
 						indices.push_back(vertIndex);
+						bools[vertIndex] = true;
 					}
 					else {
-						vertices.push_back(vertex);
-						normals.push_back(normal);
-						bools.push_back(true);
-						indices.push_back(vertices.size()-1);
+						if (normals[vertIndex] == normal) {
+							indices.push_back(vertIndex);
+						}
+						else {
+							vertices.push_back(vertex);
+							normals.push_back(normal);
+							bools.push_back(true);
+							indices.push_back(vertices.size() - 1);
+						}
 					}
 				}
-				
-				
+
+				if (colorOffs >= 0) {
+					int colorIndex = model->dataIndex[i*model->inputCount + colorOffs];
+					float colorR = model->colors[colorIndex * 3];
+					float colorG = model->colors[colorIndex * 3 + 1];
+					float colorB = model->colors[colorIndex * 3 + 2];
+					Color color = Color(colorR, colorG, colorB);
+					colors.push_back(color);
+				}
 				/*
 				int duplicateIndex = findDuplicateVertex(vertices,vertex);
 				if(duplicateIndex < 0) {
@@ -406,6 +383,7 @@ namespace render3d {
 		
 		Vector3 *outVertices = new Vector3[vertices.size()];
 		Vector3 *outNormals = new Vector3[vertices.size()];
+		
 		int *outIndices = new int[indices.size()];
 		for (i = 0; i < vertices.size(); ++i) {
 			outVertices[i] = vertices[i];
@@ -418,10 +396,18 @@ namespace render3d {
 		int resId = m_engine.newResource(vertices.size(), outVertices, indices.size(), outIndices);
 		ResourceData *data = m_engine.resourceData(resId);
 		data->setNormals(outNormals);
+		if (colors.size() > 0) {
+			Color *outColors = new Color[colors.size()];
+			for (i = 0; i < colors.size(); ++i) {
+				outColors[i] = colors[i];
+			}
+			data->setColors(outColors);
+			delete[] outColors;
+		}
 
 		delete[] outVertices;
 		delete[] outNormals;
-		delete[] outIndices;
+		delete[] outIndices;			
 
 		return resId;
 	}

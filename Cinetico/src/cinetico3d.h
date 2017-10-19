@@ -40,7 +40,6 @@ namespace cinetico {
 		void setupCameras();
 		void setupViewports();
 
-		void setupBody();
 		void processCamera();
 
 		void updateExerciseMode();
