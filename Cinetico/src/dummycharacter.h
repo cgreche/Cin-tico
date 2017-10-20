@@ -1,16 +1,16 @@
-#ifndef __CINETICO_3D_DUMMYCHARACTER_H__
-#define __CINETICO_3D_DUMMYCHARACTER_H__
+#ifndef __CINETICO_UI_DUMMYCHARACTER_H__
+#define __CINETICO_UI_DUMMYCHARACTER_H__
 
 #include "character.h"
 
 namespace cinetico {
 
-	class Cinetico3D;
+	class CineticoUI;
 
 	class DummyCharacter : public Character {
 
 	public:
-		DummyCharacter(Cinetico3D &cinetico3d);
+		DummyCharacter(CineticoUI &cineticoUI);
 
 		virtual void update();
 		virtual void render();

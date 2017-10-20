@@ -3,8 +3,6 @@
 #define __CINETICO_MAINWINDOW_H__
 
 #include <vector>
-
-#include "cinetico.h"
 #include "uilib/ui/uibase.h"
 
 namespace cinetico {
@@ -47,12 +45,14 @@ namespace cinetico {
 		friend void linkEspanol_onClick(TextLink &link);
 		void onClickUserLoginName();
 		void onClickLogoff();
-		void onLanguageSelect(Dictionary::LanguageID langId);
+		void onLanguageSelect();
 
 	public:
 		MainWindow(Cinetico &cinetico);
 		void update();
 		void setContentLayout(Layout *layout);
+		void setHeaderVisible(bool visible);
+		void setFooterVisible(bool visible);
 		
 		void onCloseEvent();
 	};

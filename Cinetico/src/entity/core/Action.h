@@ -2,12 +2,13 @@
 #define __CINETICO_CORE_ACTION_H__
 
 #include <string>
-#include "vector3.h"
 #include "Body.h"
+#include "vector3.h"
 
 namespace cinetico_core {
 
 	class Exercise;
+	class Body;
 	
 	class Action {
 	public:

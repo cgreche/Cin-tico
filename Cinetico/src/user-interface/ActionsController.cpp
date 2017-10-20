@@ -1,9 +1,13 @@
 
 #include "cinetico.h"
-#include "ActionsController.h"
+#include "cineticodb.h"
+#include "cineticoui.h"
 
+#include "entity/core/Action.h"
 #include "entity/core/PositionAction.h"
 #include "entity/core/MovementAction.h"
+
+#include "ActionsController.h"
 
 #include <sstream>
 
@@ -13,7 +17,7 @@ namespace cinetico {
 
 	static void buttonBack_onClick(Button &button) {
 		ActionsController *controller = (ActionsController*)button.param();
-		controller->m_cinetico.goTo(Cinetico::EXERCISES);
+		controller->m_cinetico.cineticoUI()->goTo(CineticoUI::EXERCISES);
 	}
 
 	static void buttonAdd_onClick(Button& button) {
@@ -75,7 +79,7 @@ namespace cinetico {
 	void ActionsController::fillBodyPointCombo(cComboBox &combo) {
 		std::vector<uilib::string> bpNames = m_cinetico.getAllBodyPointNames();
 		combo.clear();
-		for (int i = 0; i < bpNames.size(); ++i) {
+		for (unsigned int i = 0; i < bpNames.size(); ++i) {
 			combo.appendItem(bpNames[i], i);
 		}
 	}
@@ -85,7 +89,7 @@ namespace cinetico {
 		combo.appendItem(m_dictionary.getString(Dictionary::ActionRefPointWorld), -1);
 		combo.appendItem(m_dictionary.getString(Dictionary::ActionRefPointLastPosition), -2);
 		std::vector<uilib::string> bpNames = m_cinetico.getAllBodyPointNames();
-		for (int i = 0; i < bpNames.size(); ++i) {
+		for (unsigned int i = 0; i < bpNames.size(); ++i) {
 			combo.appendItem(bpNames[i], i);
 		}
 	}

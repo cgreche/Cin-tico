@@ -8,10 +8,23 @@
 namespace cinetico {
 	using namespace uilib;
 
+	class PlayMode;
+
 	class ExerciseRealizationController : public Controller
 	{
 	public:
 		VerticalLayout layout;
+
+		//
+		DummyCharacter *m_dummyChar;
+		HumanCharacter *m_humanChar;
+
+		void step();
+		void render();
+		RenderEngine *m_renderEngine;
+		RenderEngineHelper *m_renderEngineHelper;
+
+		PlayMode *m_playingMode;
 
 	public:
 		ExerciseRealizationController(Cinetico &cinetico);

@@ -1,10 +1,11 @@
 #ifndef __CINETICO_CORE_BODY_H__
 #define __CINETICO_CORE_BODY_H__
 
-#include "sensor.h"
 #include "BodyPoint.h"
 
 namespace cinetico_core {
+
+	class Sensor;
 
 	class Body {
 		friend class BodyTracker;

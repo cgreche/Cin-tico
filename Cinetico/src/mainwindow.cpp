@@ -1,5 +1,8 @@
 
+#include "cineticoui.h"
 #include "mainwindow.h"
+#include "dictionary.h"
+#include "entity/user/UserProfile.h"
 #include "user-interface/viewtemplate.h"
 
 using namespace cinetico;
@@ -18,17 +21,17 @@ namespace cinetico {
 	
 	static void linkPortugues_onClick(TextLink &link) {
 		MainWindow* mainWindow = (MainWindow *)link.param();
-		mainWindow->onLanguageSelect(Dictionary::PT_BR);
+		mainWindow->m_cinetico.setLanguage(Dictionary::PT_BR);
 	}
 
 	static void linkEnglish_onClick(TextLink &link) {
 		MainWindow* mainWindow = (MainWindow *)link.param();
-		mainWindow->onLanguageSelect(Dictionary::EN_US);
+		mainWindow->m_cinetico.setLanguage(Dictionary::EN_US);
 	}
 
 	static void linkEspanol_onClick(TextLink &link) {
 		MainWindow* mainWindow = (MainWindow *)link.param();
-		mainWindow->onLanguageSelect(Dictionary::ES_ES);
+		mainWindow->m_cinetico.setLanguage(Dictionary::ES_ES);
 	}
 
 	void MainWindow::buildHeaderLayout() {
@@ -174,24 +177,38 @@ namespace cinetico {
 		}
 	}
 
+	void MainWindow::setHeaderVisible(bool visible) {
+		layoutHeader.setVisible(visible);
+		if (!visible)
+			layout.remove(layoutHeader);
+		else
+			layout.insertBefore(layoutContent, layoutHeader);
+	}
+
+	void MainWindow::setFooterVisible(bool visible) {
+		layoutFooter.setVisible(visible);
+		if (!visible)
+			layout.remove(layoutFooter);
+		else
+			layout.insertAfter(layoutContent, layoutFooter);
+	}
+
+
 	void MainWindow::onClickUserLoginName() {
 		Controller::ViewParams params;
 		params["user"] = m_cinetico.currentUser();
-		m_cinetico.goTo(Cinetico::USER_PROFILE,&params);
+		m_cinetico.cineticoUI()->goTo(CineticoUI::USER_PROFILE,&params);
 	}
 
 	void MainWindow::onClickLogoff() {
 		m_cinetico.logoffCurrentUser();
-		m_cinetico.goTo(Cinetico::LOGIN);
-	}
-
-	void MainWindow::onLanguageSelect(Dictionary::LanguageID langId) {
-		m_cinetico.setLanguage(langId);
+		m_cinetico.cineticoUI()->goTo(CineticoUI::LOGIN);
 	}
 
 	void MainWindow::onCloseEvent() {
 		this->setVisible(false);
 		uibase::UIQuit();
 	}
+
 
 }

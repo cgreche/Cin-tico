@@ -1,9 +1,13 @@
 
+#include "cineticoui.h"
+#include "render3d/renderengine.h"
+#include "render3d/renderenginehelper.h"
 #include "humancharacter.h"
 
 namespace cinetico {
 
 	using namespace render3d;
+	using render3d::Color;
 
 #define CM2W 2
 
@@ -13,13 +17,13 @@ namespace cinetico {
 #define ELBOW_SIZE HEAD_SIZE/(6.f)
 #define KNEE_SIZE HEAD_SIZE/(6.f)
 
-	Color bodyColors[] =
+	render3d::Color bodyColors[] =
 	{
 		//Front
-		Color(255,0,0),
-		Color(255,0,0),
-		Color(255,0,0),
-		Color(255,0,0),
+		render3d::Color(255,0,0),
+		render3d::Color(255,0,0),
+		render3d::Color(255,0,0),
+		render3d::Color(255,0,0),
 
 		//Back
 		Color(0,255,0),
@@ -65,13 +69,13 @@ namespace cinetico {
 
 	static bool humanBodyModelLoaded = false;
 
-	HumanCharacter::HumanCharacter(Cinetico3D &cinetico3d)
-		: Character(cinetico3d) {
+	HumanCharacter::HumanCharacter(CineticoUI &cineticoUI)
+		: Character(cineticoUI) {
 
 		if (!humanBodyModelLoaded) {
 
-			RenderEngine *renderEngine = m_cinetico3d.renderEngine();
-			RenderEngineHelper *renderEngineHelper = m_cinetico3d.renderEngineHelper();
+			RenderEngine *renderEngine = m_cineticoUI.renderEngine();
+			RenderEngineHelper *renderEngineHelper = m_cineticoUI.renderEngineHelper();
 
 			BodyResourceIds &resId = g_bodyResourceIds;
 			resId.head = renderEngineHelper->createCube(HEAD_SIZE);
@@ -91,7 +95,7 @@ namespace cinetico {
 		}
 
 		BodyResourceIds &resId = g_bodyResourceIds;
-		RenderEngine *renderEngine = m_cinetico3d.renderEngine();
+		RenderEngine *renderEngine = m_cineticoUI.renderEngine();
 
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.head));
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.spine));
@@ -109,7 +113,7 @@ namespace cinetico {
 		ResourceInstance *instance;
 		if (!m_body)
 			return;
-		instance = m_cinetico3d.renderEngine()->resourceInstance(instId);
+		instance = m_cineticoUI.renderEngine()->resourceInstance(instId);
 		cinetico_core::Vector3 pos = m_body->bodyPoint(bodyPoint)->position();
 		cinetico_core::Vector3 rot = m_body->bodyPoint(bodyPoint)->orientation();
 		instance->setPos(render3d::Vector3(pos.x() * CM2W, pos.y() * CM2W, pos.z() * CM2W));
@@ -117,7 +121,7 @@ namespace cinetico {
 	}
 
 	void HumanCharacter::update() {
-		m_body = m_cinetico3d.bodyTracker()->body();
+		m_body = m_cineticoUI.cinetico().bodyTracker()->body();
 		if (m_body) {
 			mapBodyPointToWorldPoint(m_instanceIds[0], BodyPoint::Head);
 			mapBodyPointToWorldPoint(m_instanceIds[1], BodyPoint::Spine);
@@ -134,7 +138,7 @@ namespace cinetico {
 
 	void HumanCharacter::render() {
 		if (!m_body || m_body->identifiedBodyPointCount() == 0) return;
-		RenderEngine *renderEngine = m_cinetico3d.renderEngine();
+		RenderEngine *renderEngine = m_cineticoUI.renderEngine();
 		for (unsigned int i = 0; i < m_instanceIds.size(); ++i)
 			renderEngine->drawResource(m_instanceIds[i]);
 	}

@@ -80,6 +80,9 @@
     <Filter Include="src\uilib\lib\osd">
       <UniqueIdentifier>{cb294640-3d40-4682-afe2-c99ae49dce88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\user-interface\playmodes">
+      <UniqueIdentifier>{043b9431-b48b-4dc2-9f0d-3dc82eb36b4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\utils\crypter.h">
@@ -340,9 +343,6 @@
     <ClInclude Include="src\cineticodb.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\cinetico3d.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\render3d\fontresource.h">
       <Filter>src\render3d</Filter>
     </ClInclude>
@@ -576,6 +576,24 @@
     </ClInclude>
     <ClInclude Include="src\user-interface\ActionsController.h">
       <Filter>src\user-interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cineticoui.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\playmodes\DebugPlayMode.h">
+      <Filter>src\user-interface\playmodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\playmodes\ExercisePlayMode.h">
+      <Filter>src\user-interface\playmodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\playmodes\FreePlayMode.h">
+      <Filter>src\user-interface\playmodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\playmodes\PlayMode.h">
+      <Filter>src\user-interface\playmodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\playmodes\ReplayPlayMode.h">
+      <Filter>src\user-interface\playmodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -843,9 +861,6 @@
     <ClCompile Include="src\cineticodb.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\cinetico3d.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\render3d\fontresource.cpp">
       <Filter>src\render3d</Filter>
     </ClCompile>
@@ -902,6 +917,24 @@
     </ClCompile>
     <ClCompile Include="src\user-interface\ActionsController.cpp">
       <Filter>src\user-interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cineticoui.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\playmodes\DebugPlayMode.cpp">
+      <Filter>src\user-interface\playmodes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\playmodes\ExercisePlayMode.cpp">
+      <Filter>src\user-interface\playmodes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\playmodes\FreePlayMode.cpp">
+      <Filter>src\user-interface\playmodes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\playmodes\ReplayPlayMode.cpp">
+      <Filter>src\user-interface\playmodes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\playmodes\PlayMode.cpp">
+      <Filter>src\user-interface\playmodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

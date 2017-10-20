@@ -1,5 +1,5 @@
-#ifndef __CINETICO_3D_HUMANCHARACTER_H__
-#define __CINETICO_3D_HUMANCHARACTER_H__
+#ifndef __CINETICO_UI_HUMANCHARACTER_H__
+#define __CINETICO_UI_HUMANCHARACTER_H__
 
 #include "character.h"
 #include "entity/core/Body.h"
@@ -14,7 +14,7 @@ namespace cinetico {
 
 		void mapBodyPointToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint);
 	public:
-		HumanCharacter(Cinetico3D &cinetico);
+		HumanCharacter(CineticoUI &cinetico);
 
 		virtual void update();
 		virtual void render();

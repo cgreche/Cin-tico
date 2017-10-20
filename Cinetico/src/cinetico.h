@@ -2,61 +2,49 @@
 #ifndef __CINETICO_H__
 #define __CINETICO_H__
 
-#include "cineticodb.h"
-#include "cinetico3d.h"
+
 #include "dictionary.h"
 #include "user-interface/controller.h"
+#include "sensor.h"
+#include "bodytracker.h"
 #include <vector>
 #include <list>
 
 namespace cinetico {
 
-	class MainWindow;
-
-	struct View {
-		int id;
-		const char *name;
-		Controller *controller;
-	};
+	using namespace cinetico_core;
+	class CineticoDB;
+	class CineticoUI;
+	class UserProfile;
 
 	class Cinetico {
 
 	public:
-		enum ViewID {
-			INVALID = -1,
-			LOGIN,
-			USER_PROFILE,
-			EXERCISES,
-			ACTIONS,
-			EXERCISE_REALIZATION
-		};
-
 		enum CineticoError {
 			SUCCESS,
 			USER_ALREADY_EXISTS,
 			INVALID_USER_CREDENTIALS,
 		};
 
-	private:		
+	private:
+		Sensor *m_sensor;
+		BodyTracker *m_bodyTracker;
+
 		CineticoDB *m_cineticoDB;
-		Cinetico3D *m_cinetico3D;
-		MainWindow *m_mainWindow;
+		CineticoUI *m_cineticoUI;
+
+		//
 		Dictionary *m_dictionary;
 
-		std::vector<View> m_views;
-
 		void setup();
-		void update();
+		void step();
 		void render();
 		void cleanUp();
 
 		UserProfile *m_currentUser;
-		ViewID m_currentView;
 
 	public:
 		Cinetico();
-		void registerView(int id, const char *name, Controller *controller);
-		void goTo(ViewID viewId, Controller::ViewParams *params = NULL);
 		
 		CineticoError createAccount(const char *username, const char *password);
 		CineticoError loginUser(const char *username, const char *password);
@@ -65,9 +53,10 @@ namespace cinetico {
 		
 		void setLanguage(Dictionary::LanguageID langId);
 
-		MainWindow *mainWindow() const { return m_mainWindow; }
+		Sensor *sensor() const { return m_sensor; }
+		BodyTracker *bodyTracker() const { return m_bodyTracker; }
 		CineticoDB *cineticoDB() const { return m_cineticoDB; }
-		Cinetico3D *cinetico3D() const { return m_cinetico3D; }
+		CineticoUI *cineticoUI() const { return m_cineticoUI; }
 		Dictionary *dictionary() const { return m_dictionary; }
 
 		UserProfile *currentUser() const { return m_currentUser; }

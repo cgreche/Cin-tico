@@ -1,8 +1,10 @@
 
+#include "cinetico.h"
+#include "cineticodb.h"
+#include "cineticoui.h"
 #include "LoginController.h"
 #include "entity/dao/UserProfileDAO.h"
 #include "uilib/ui/uibase.h"
-#include "cinetico.h"
 
 namespace cinetico {
 
@@ -80,7 +82,7 @@ namespace cinetico {
 		if (res == Cinetico::SUCCESS) {
 			string str = m_dictionary.getString(Dictionary::LoginViewErrorUserLoggedSucessfully, username);
 			Message::msg(NULL, str);
-			m_cinetico.goTo(Cinetico::EXERCISES);
+			m_cinetico.cineticoUI()->goTo(CineticoUI::EXERCISES);
 			//
 			tbLoginUsername.setText("");
 			tbLoginPassword.setText("");

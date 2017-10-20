@@ -9,10 +9,17 @@
 #include "components/cComboBox.h"
 #include "components/cSeparator.h"
 
+namespace cinetico_core {
+	class Exercise;
+	class Action;
+}
+
 namespace cinetico {
 
 	using namespace uilib;
 	using cinetico::ComboBox;
+	using namespace cinetico_core;
+
 
 	class ActionsController : public Controller
 	{

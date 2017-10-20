@@ -22,7 +22,7 @@
     <ClInclude Include="src\bodytracker.h" />
     <ClInclude Include="src\character.h" />
     <ClInclude Include="src\cinetico.h" />
-    <ClInclude Include="src\cinetico3d.h" />
+    <ClInclude Include="src\cineticoui.h" />
     <ClInclude Include="src\cineticodb.h" />
     <ClInclude Include="src\colladaparser.h" />
     <ClInclude Include="src\database\database.h" />
@@ -181,6 +181,11 @@
     <ClInclude Include="src\user-interface\ExerciseRealizationController.h" />
     <ClInclude Include="src\user-interface\ExercisesController.h" />
     <ClInclude Include="src\user-interface\LoginController.h" />
+    <ClInclude Include="src\user-interface\playmodes\DebugPlayMode.h" />
+    <ClInclude Include="src\user-interface\playmodes\ExercisePlayMode.h" />
+    <ClInclude Include="src\user-interface\playmodes\FreePlayMode.h" />
+    <ClInclude Include="src\user-interface\playmodes\PlayMode.h" />
+    <ClInclude Include="src\user-interface\playmodes\ReplayPlayMode.h" />
     <ClInclude Include="src\user-interface\viewtemplate.h" />
     <ClInclude Include="src\user-interface\UserProfileController.h" />
     <ClInclude Include="src\utils\crypter.h" />
@@ -290,10 +295,15 @@
     <ClCompile Include="src\user-interface\ExerciseRealizationController.cpp" />
     <ClCompile Include="src\user-interface\ExercisesController.cpp" />
     <ClCompile Include="src\user-interface\LoginController.cpp" />
+    <ClCompile Include="src\user-interface\playmodes\DebugPlayMode.cpp" />
+    <ClCompile Include="src\user-interface\playmodes\ExercisePlayMode.cpp" />
+    <ClCompile Include="src\user-interface\playmodes\FreePlayMode.cpp" />
+    <ClCompile Include="src\user-interface\playmodes\PlayMode.cpp" />
+    <ClCompile Include="src\user-interface\playmodes\ReplayPlayMode.cpp" />
     <ClCompile Include="src\user-interface\viewtemplate.cpp" />
     <ClCompile Include="src\user-interface\UserProfileController.cpp" />
     <ClCompile Include="src\utils\crypter.cpp" />
-    <ClCompile Include="src\cinetico3d.cpp" />
+    <ClCompile Include="src\cineticoui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="src\uilib\ui\osd\windows\rfuia.Manifest" />

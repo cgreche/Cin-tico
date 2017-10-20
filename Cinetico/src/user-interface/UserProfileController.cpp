@@ -1,15 +1,16 @@
 
 #include "cinetico.h"
+#include "cineticodb.h"
+#include "cineticoui.h"
 #include "UserProfileController.h"
 #include "utils/crypter.h"
 #include <time.h>
 
 namespace cinetico {
-	extern Cinetico g_cinetico;
 
 	static void buttonBack_onClick(Button& button) {
 		UserProfileController *controller = (UserProfileController*)button.param();
-		g_cinetico.goTo(Cinetico::EXERCISES);
+		controller->m_cinetico.cineticoUI()->goTo(CineticoUI::EXERCISES);
 	}
 
 	static void buttonChangeUserDetails_onClick(Button& button) {
@@ -27,9 +28,9 @@ namespace cinetico {
 		
 		Message::message_result result = Message::question(NULL, controller->m_dictionary.getString(Dictionary::UserProfileViewQuestionDeactivateConfirmation));
 		if (result == Message::yes) {
-			g_cinetico.logoffCurrentUser();
-			g_cinetico.goTo(Cinetico::LOGIN);
-			g_cinetico.cineticoDB()->userProfileDAO()->exclude(*controller->m_currentUser);
+			controller->m_cinetico.logoffCurrentUser();
+			controller->m_cinetico.cineticoUI()->goTo(CineticoUI::LOGIN);
+			controller->m_cinetico.cineticoDB()->userProfileDAO()->exclude(*controller->m_currentUser);
 		}
 	}
 
@@ -136,7 +137,7 @@ namespace cinetico {
 	void UserProfileController::onChangeUserDetails() {
 		string name = tbUsername.text();
 		m_currentUser->setName(name.data());
-		g_cinetico.cineticoDB()->userProfileDAO()->update(*m_currentUser);
+		m_cinetico.cineticoDB()->userProfileDAO()->update(*m_currentUser);
 		Message::msg(NULL, m_dictionary.getString(Dictionary::UserProfileViewErrorUserNameChangedSucessfully));
 	}
 
@@ -157,7 +158,7 @@ namespace cinetico {
 			return;
 		}
 
-		g_cinetico.cineticoDB()->userProfileDAO()->update(*m_currentUser);
+		m_cinetico.cineticoDB()->userProfileDAO()->update(*m_currentUser);
 		Message::msg(NULL,m_dictionary.getString(Dictionary::UserProfileViewErrorPasswordChangedSucessfully));
 
 		tbOldPassword.setText("");

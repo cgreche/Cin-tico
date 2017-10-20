@@ -1,12 +1,14 @@
 
 #include "cinetico.h"
+#include "cineticodb.h"
+#include "cineticoui.h"
 #include "dictionary.h"
 #include "ExercisesController.h"
+#include "playmodes/PlayMode.h"
 
 namespace cinetico {
 
 	using namespace cinetico_core;
-	extern Cinetico g_cinetico;
 
 	static void buttonCreateNew_onClick(Button &button) {
 		ExercisesController *controller = (ExercisesController*)button.param();
@@ -18,7 +20,7 @@ namespace cinetico {
 		if (controller->m_currentExercise) {
 			Controller::ViewParams params;
 			params["exercise"] = controller->m_currentExercise;
-			g_cinetico.goTo(Cinetico::ACTIONS, &params);
+			controller->m_cinetico.cineticoUI()->goTo(CineticoUI::ACTIONS, &params);
 		}
 	}
 
@@ -79,7 +81,7 @@ namespace cinetico {
 			editExerciseName.setEditable(true);
 			editExerciseName.setText("");
 			checkPublic.setChecked(false);
-			for (int i = 0; i < checkBodyPointList.size(); ++i) {
+			for (unsigned int i = 0; i < checkBodyPointList.size(); ++i) {
 				checkBodyPointList[i].setChecked(true);
 			}
 			layoutContent.append(layoutContentEditData);
@@ -92,7 +94,7 @@ namespace cinetico {
 			editExerciseName.setText(m_currentExercise->name().c_str());
 			checkPublic.setChecked(m_currentExercise->isPublic());
 			int trackableBodyPoints = m_currentExercise->trackableBodyPoints();
-			for (int i = 0; i < checkBodyPointList.size(); ++i) {
+			for (unsigned int i = 0; i < checkBodyPointList.size(); ++i) {
 				int value = 1 << i;
 				checkBodyPointList[i].setChecked((trackableBodyPoints&value) != 0);
 			}
@@ -110,19 +112,19 @@ namespace cinetico {
 	}
 
 	void ExercisesController::updateExerciseList() {
-		std::vector<Exercise*> exerciseList = g_cinetico.cineticoDB()->exerciseDAO()->getAllExercisesByUserProfile(g_cinetico.currentUser());
+		std::vector<Exercise*> exerciseList = m_cinetico.cineticoDB()->exerciseDAO()->getAllExercisesByUserProfile(m_cinetico.currentUser());
 		gridExercises.deleteRows();
 		for (unsigned int i = 0; i < exerciseList.size(); ++i) {
 			Exercise *exercise = exerciseList[i];
 			gridExercises.insertRow();
 			int lastRow = gridExercises.rowCount() - 1;
 
-			int actionCount = g_cinetico.cineticoDB()->actionDAO()->getActionCountByExercise(*exercise);
+			int actionCount = m_cinetico.cineticoDB()->actionDAO()->getActionCountByExercise(*exercise);
 
 			gridExercises.setItem(lastRow, 0, new ListViewItem(exercise->name().c_str(), uilib::Color(0, 0, 0), FontDesc("Arial", 10, 0), exerciseList[i]));
 			gridExercises.setItem(lastRow, 1, new ListViewItem(exercise->author().c_str()));
 			gridExercises.setItem(lastRow, 2, new ListViewItem(uilib::string::fromInteger(actionCount).data()));
-			gridExercises.setItem(lastRow, 3, new ListViewItem(exercise->isPublic() ? g_cinetico.dictionary()->getString(Dictionary::DefaultActionYes) : g_cinetico.dictionary()->getString(Dictionary::DefaultActionNo)));
+			gridExercises.setItem(lastRow, 3, new ListViewItem(exercise->isPublic() ? m_cinetico.dictionary()->getString(Dictionary::DefaultActionYes) : m_cinetico.dictionary()->getString(Dictionary::DefaultActionNo)));
 		}
 		m_currentSelection = -1;
 		m_currentExercise = NULL;
@@ -144,10 +146,10 @@ namespace cinetico {
 		buttonEdit.setText(m_dictionary.getString(Dictionary::DefaultActionEdit));
 		buttonDelete.setText(m_dictionary.getString(Dictionary::DefaultActionDelete));
 
-		labelExerciseName.setText(g_cinetico.dictionary()->getString(Dictionary::ExercisesViewExerciseName));
+		labelExerciseName.setText(m_cinetico.dictionary()->getString(Dictionary::ExercisesViewExerciseName));
 		checkPublic.setText(m_dictionary.getString(Dictionary::ExercisePublic));
 		separatorChecks.setText(m_dictionary.getString(Dictionary::ExercisesViewSectionBodyPoints));
-		std::vector<string> bpNames = g_cinetico.getAllBodyPointNames();
+		std::vector<string> bpNames = m_cinetico.getAllBodyPointNames();
 		for(unsigned int k = 0; k < bpNames.size(); ++k)
 			checkBodyPointList[k].setText(bpNames[k]);
 
@@ -292,13 +294,13 @@ namespace cinetico {
 			return;
 
 		if (m_editMode == 1 || (m_editMode == 2 && exerciseName != m_currentExercise->name().c_str())) {
-			if (g_cinetico.cineticoDB()->exerciseDAO()->getUserExerciseByName(exerciseName.c_str(), g_cinetico.currentUser()) != NULL) {
-				Message::error(NULL, g_cinetico.dictionary()->getString(Dictionary::ExercisesViewErrorExerciseAlreadyExists));
+			if (m_cinetico.cineticoDB()->exerciseDAO()->getUserExerciseByName(exerciseName.c_str(), m_cinetico.currentUser()) != NULL) {
+				Message::error(NULL, m_cinetico.dictionary()->getString(Dictionary::ExercisesViewErrorExerciseAlreadyExists));
 				return;
 			}
 		}
 
-		std::string authorName = g_cinetico.currentUser()->loginName();
+		std::string authorName = m_cinetico.currentUser()->loginName();
 		unsigned long bpFlags = 0;
 		bool isPublic = checkPublic.checked();
 		for (size_t i = 0; i < checkBodyPointList.size(); ++i) {
@@ -316,7 +318,7 @@ namespace cinetico {
 			exercise->setPublic(isPublic);
 			exercise->setTrackableBodyPoints(bpFlags);
 
-			g_cinetico.cineticoDB()->exerciseDAO()->create(*exercise, g_cinetico.currentUser());
+			m_cinetico.cineticoDB()->exerciseDAO()->create(*exercise, m_cinetico.currentUser());
 			delete exercise;
 		}
 		else if (m_editMode == 2) {
@@ -325,7 +327,7 @@ namespace cinetico {
 			exercise->setAuthor(authorName.c_str());
 			exercise->setPublic(isPublic);
 			exercise->setTrackableBodyPoints(bpFlags);
-			g_cinetico.cineticoDB()->exerciseDAO()->update(*exercise);
+			m_cinetico.cineticoDB()->exerciseDAO()->update(*exercise);
 		}
 
 		setEditionMode(0);
@@ -333,9 +335,9 @@ namespace cinetico {
 
 	void ExercisesController::deleteSelectedExercise() {
 		if (m_currentExercise) {
-			Message::message_result res = Message::question(NULL, g_cinetico.dictionary()->getString(Dictionary::DefaultActionQuestionDelete));
+			Message::message_result res = Message::question(NULL, m_cinetico.dictionary()->getString(Dictionary::DefaultActionQuestionDelete));
 			if (res == Message::yes) {
-				g_cinetico.cineticoDB()->exerciseDAO()->exclude(*m_currentExercise);
+				m_cinetico.cineticoDB()->exerciseDAO()->exclude(*m_currentExercise);
 				updateExerciseList();
 			}
 		}
@@ -344,11 +346,11 @@ namespace cinetico {
 	void ExercisesController::doSelectedExercise() {
 		if (m_currentExercise) {
 
-			std::vector<Action*> actionList = g_cinetico.cineticoDB()->actionDAO()->getAllActionsByExercise(*m_currentExercise);
+			std::vector<Action*> actionList = m_cinetico.cineticoDB()->actionDAO()->getAllActionsByExercise(*m_currentExercise);
 
 			std::string str;
 			if (actionList.size() == 0) {
-				Message::warning(NULL, g_cinetico.dictionary()->getString(Dictionary::ExercisesViewErrorExerciseHasNoActions));
+				Message::warning(NULL, m_cinetico.dictionary()->getString(Dictionary::ExercisesViewErrorExerciseHasNoActions));
 				return;
 			}
 
@@ -357,7 +359,8 @@ namespace cinetico {
 			Message::msg(NULL, "Congratulations. Now get into the 3D World.");
 			ViewParams params;
 			params["exercise"] = m_currentExercise;
-			g_cinetico.goTo(Cinetico::EXERCISE_REALIZATION,&params);
+			params["play_mode"] = (void*)(int)PlayMode::EXERCISE_MODE;
+			m_cinetico.cineticoUI()->goTo(CineticoUI::EXERCISE_REALIZATION,&params);
 		}
 	}
 

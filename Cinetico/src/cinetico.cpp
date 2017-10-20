@@ -1,64 +1,53 @@
 #include <windows.h>
 #include <math.h>
 #include <time.h>
-
 #include "cinetico.h"
 #include "cineticodb.h"
-#include "cinetico3d.h"
-#include "mainwindow.h"
-#include "user-interface/LoginController.h"
-#include "user-interface/ExercisesController.h"
-#include "user-interface/ActionsController.h"
-#include "user-interface/ExerciseRealizationController.h"
-#include "user-interface/UserProfileController.h"
+#include "cineticoui.h"
+#include "uilib/ui/uibase.h"
 #include "utils/crypter.h"
 
-#define INITIAL_VIEW Cinetico::LOGIN
+#include "kinectsensor.h"
 
 namespace cinetico {
 
-	Cinetico g_cinetico;
-	
-	Cinetico::Cinetico() {
-		m_currentView = INVALID;
-		m_currentUser = NULL;
-	}
+	using namespace uilib;
 
-	void Cinetico::registerView(int id, const char *name, Controller *controller) {
-		m_views.push_back({ id,name,controller });
+	class SensorFactory
+	{
+	public:
+		static Sensor *getSystemSensor() {
+#ifdef WIN32
+			return new KinectSensor();
+#endif
+		}
+	};
+
+	Cinetico::Cinetico() {
+		m_sensor = NULL;
+		m_bodyTracker = NULL;
+		m_currentUser = NULL;
 	}
 
 	void Cinetico::setup()
 	{
-		m_mainWindow = new MainWindow(*this);
-		m_cineticoDB = new CineticoDB(*this);
-		m_cinetico3D = new Cinetico3D(*this);
+		m_sensor = SensorFactory::getSystemSensor();
+		m_sensor->initialize();
+		m_bodyTracker = new BodyTracker(*m_sensor);
+
 		m_dictionary = new Dictionary(*this);
 
-		//Setup views
-		registerView(LOGIN, m_dictionary->getString(Dictionary::LoginViewTitle).data(), new LoginController(*this));
-		registerView(USER_PROFILE, m_dictionary->getString(Dictionary::UserProfileViewTitle).data(), new UserProfileController(*this));
-		registerView(EXERCISES, m_dictionary->getString(Dictionary::ExercisesViewTitle).data(), new ExercisesController(*this));
-		registerView(ACTIONS, m_dictionary->getString(Dictionary::ActionsViewTitle).data(), new ActionsController(*this));
-		registerView(EXERCISE_REALIZATION, "Exercise Realization", new ExerciseRealizationController(*this));
+		m_cineticoDB = new CineticoDB(*this);
+		m_cineticoUI = new CineticoUI(*this);
+		
 
-#if 1
-		goTo(INITIAL_VIEW);
-#else
-		enter3DWorld();
-#endif
+		m_cineticoUI->goTo(CineticoUI::LOGIN, NULL);
 	}
 
 
-	void Cinetico::update()
+	void Cinetico::step()
 	{
-		m_mainWindow->update();
-		if (m_currentView != INVALID) {
-			Controller *currentController = m_views[m_currentView].controller;
-			if (currentController) {
-				currentController->onViewTick();
-			}
-		}
+		m_cineticoUI->step();
 	}
 
 	void Cinetico::render()
@@ -66,14 +55,17 @@ namespace cinetico {
 	}
 
 	void Cinetico::cleanUp() {
-		for (unsigned int i = 0; i < m_views.size(); ++i) {
-			delete m_views[i].controller;
+
+		if (m_bodyTracker)
+			delete m_bodyTracker;
+
+		if (m_sensor) {
+			m_sensor->finalize();
+			delete m_sensor;
 		}
 
-//		if (m_mainWindow)
-//			delete m_mainWindow;
-		if(m_cinetico3D)
-			delete m_cinetico3D;
+		if(m_cineticoUI)
+			delete m_cineticoUI;
 		if(m_cineticoDB)
 			delete m_cineticoDB;
 		if (m_dictionary)
@@ -120,7 +112,7 @@ namespace cinetico {
 		setup();
 
 		while (uibase::UIProcess()) {
-			update();
+			step();
 			render();
 		}
 
@@ -132,33 +124,13 @@ namespace cinetico {
 		m_dictionary->setLanguage(langId);
 
 		//update view
-		if(m_currentView != INVALID) {
-			Controller *controller = m_views[m_currentView].controller;
-			controller->onViewUpdate();
-		}
-		
-		//update Window
-		m_mainWindow->setSize(m_mainWindow->size());
-	}
-
-	void Cinetico::goTo(ViewID viewId, Controller::ViewParams *params) {
-		if (m_currentView != INVALID) {
-			Controller *currentController = m_views[m_currentView].controller;
-			currentController->onViewQuit();
-		}
-
-		Controller *controller = m_views[viewId].controller;
-		controller->onViewUpdate();
-		m_mainWindow->setContentLayout(controller->viewDefinition());
-		m_currentView = viewId;
-		controller->onViewEnter(params);
-
-		m_mainWindow->setSize(Size(1024, 800));
+		m_cineticoUI->update();
 	}
 }
 
 using namespace cinetico;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-	return g_cinetico.run();
+	Cinetico cinetico;
+	return cinetico.run();
 }

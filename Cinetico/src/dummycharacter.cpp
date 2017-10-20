@@ -1,4 +1,6 @@
 
+#include "cinetico.h"
+#include "cineticoui.h"
 #include "dummycharacter.h"
 
 namespace cinetico {
@@ -22,12 +24,12 @@ namespace cinetico {
 
 	static bool dummyCharacterLoaded = false;
 
-	DummyCharacter::DummyCharacter(Cinetico3D &cinetico3d)
-		: Character(cinetico3d) {
+	DummyCharacter::DummyCharacter(CineticoUI &cineticoUI)
+		: Character(cineticoUI) {
 		unsigned int i;
 
 		if (!dummyCharacterLoaded) {
-			CineticoResources::ResIdModelWoman = cinetico3d.renderEngineHelper()->loadModel("MODEL.dae");
+			CineticoResources::ResIdModelWoman = cineticoUI.renderEngineHelper()->loadModel("MODEL.dae");
 			/*
 			for (unsigned int i = 0; i < CineticoResources::ResIdModelWoman.size(); ++i) {
 				ResourceData *model = cinetico3d.renderEngine()->resourceData(CineticoResources::ResIdModelWoman[i]);
@@ -43,8 +45,8 @@ namespace cinetico {
 		}
 
 		for (i = 0; i < CineticoResources::ResIdModelWoman.size(); ++i) {
-			m_instanceIds.push_back(cinetico3d.renderEngine()->newResourceInstance(CineticoResources::ResIdModelWoman[i]));
-			ResourceInstance *modelInstance = cinetico3d.renderEngine()->resourceInstance(m_instanceIds[i]);
+			m_instanceIds.push_back(cineticoUI.renderEngine()->newResourceInstance(CineticoResources::ResIdModelWoman[i]));
+			ResourceInstance *modelInstance = cineticoUI.renderEngine()->resourceInstance(m_instanceIds[i]);
 			modelInstance->setScale(0.25);
 			modelInstance->setPos(render3d::Vector3(0, 5, 2));
 		}
@@ -56,7 +58,7 @@ namespace cinetico {
 
 	void DummyCharacter::render() {
 		for (unsigned int i = 0; i < m_instanceIds.size(); ++i)
-			m_cinetico3d.renderEngine()->drawResource(m_instanceIds[i]);
+			m_cineticoUI.renderEngine()->drawResource(m_instanceIds[i]);
 	}
 
 }

@@ -101,7 +101,7 @@ namespace render3d {
 	void D3D9Engine::beginScene()
 	{
 		m_device->BeginScene();
-		if (m_currentCamera->dirtyFlags() != 0) {
+		if (m_currentCamera && m_currentCamera->dirtyFlags() != 0) {
 			updateCamera(m_currentCamera);
 			setViewFromCamera(m_currentCamera);
 		}
