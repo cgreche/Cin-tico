@@ -43,7 +43,7 @@ namespace uilib {
 		//	setStyle(ref.m_style);
 		setCellCount(ref().m_rowCount, ref().m_colCount);
 
-		unsigned int row, col;
+		int row, col;
 		//update header text
 		for (col = 0; col < ref().m_colCount; ++col) {
 			setHeaderText(col, ref().m_headerText[col]);

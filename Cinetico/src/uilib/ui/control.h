@@ -1,7 +1,7 @@
 
 //Control
 // File name: control.h
-// Last edit: 30/06/2017 22:19 (UTC-3)
+// Last edit: 20/10/2017 06:57 (UTC-3)
 // Author: CGR
 
 #ifndef __UILIB_CONTROL_H__
@@ -72,8 +72,8 @@ namespace uilib {
 	public:
 		virtual void onCloseEvent();
 		virtual void onPaintEvent(PaintEvent &event);
-		virtual void onKeyPressEvent();
-		virtual void onKeyReleaseEvent();
+		virtual void onKeyPressEvent(KeyEvent &event);
+		virtual void onKeyReleaseEvent(KeyEvent &event);
 		virtual void onMouseMoveEvent(MouseEvent &event);
 		virtual void onMousePressEvent(MouseEvent &event);
 		virtual void onMouseReleaseEvent(MouseEvent &event);

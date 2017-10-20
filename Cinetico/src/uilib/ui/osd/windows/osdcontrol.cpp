@@ -65,8 +65,6 @@ namespace uilib {
 	WIN_MSG_DEF(WM_NCHITTEST, OSDControl, OnNCHitTest) //0x0084
 		WIN_MSG_DEF(WM_NCPAINT, OSDControl, OnNCPaint) //0x0085
 
-		WIN_MSG_DEF(WM_KEYDOWN, OSDControl, OnKeyDown) //0x0100
-		WIN_MSG_DEF(WM_KEYUP, OSDControl, OnKeyUp) //0x0101
 		WIN_MSG_DEF(WM_CHAR, OSDControl, OnChar) //0x0102
 		WIN_MSG(WM_COMMAND, OSDControl, OnCommand) //0x0111
 	{
@@ -179,11 +177,6 @@ namespace uilib {
 	{
 		event.ignore();
 	}
-
-	void OSDControl::onMouseEnterEvent(MouseEvent &event)
-	{
-	}
-
 
 	OSDControl::~OSDControl()
 	{

@@ -1,7 +1,7 @@
 
 //OSD Window
 // File: osdwindow.cpp
-// Last edit: 05/12/2014 22:12 (UTC-3)
+// Last edit: 20/10/2017 06:53 (UTC-3)
 // Author: CGR
 
 #include "..\\..\\uibase.h"
@@ -480,22 +480,6 @@ namespace uilib {
 				return obj.HandleParentMessage(WM_NOTIFY, wParam, lParam);
 			}
 		}
-		return 0;
-	}
-
-	WIN_MSG(WM_KEYDOWN, OSDWindow, OnKeyDown) //0x0100
-	{
-		ref().m_currentKey = wParam;
-		if (ref().m_onKeyDown)
-			ref().m_onKeyDown(ref());
-		return 0;
-	}
-
-	WIN_MSG(WM_KEYUP, OSDWindow, OnKeyUp) //0x0101
-	{
-		ref().m_currentKey = wParam;
-		if (ref().m_onKeyUp)
-			ref().m_onKeyUp(ref());
 		return 0;
 	}
 

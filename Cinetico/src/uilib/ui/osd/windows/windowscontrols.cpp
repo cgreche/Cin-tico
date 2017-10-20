@@ -1,7 +1,7 @@
 
 //WindowsControls
 // File: windowscontrols.cpp
-// Last edit: 03/07/2017 01:15 (UTC-3)
+// Last edit: 20/10/2017 06:56 (UTC-3)
 // Author: CGR
 
 #include "..\\..\\uibase.h"
@@ -114,8 +114,34 @@ namespace uilib {
 				//case WM_NCPAINT: return FALSE;
 				MSG(WM_NCMOUSEMOVE) //0x00A0
 				MSG(BM_SETSTATE) //0x00F3
-				MSG_HANDLE(WM_KEYDOWN, osdControl, OnKeyDown) //0x0100
-				MSG_HANDLE(WM_KEYUP, osdControl, OnKeyUp) //0x0101
+
+		case WM_KEYDOWN: //0x0100
+			{
+				event = new KeyEvent((int)wParam);
+				control->onKeyPressEvent((KeyEvent&)*event);
+				break;
+			}
+
+		case WM_KEYUP: //0x0101
+			{
+				event = new KeyEvent((int)wParam);
+				control->onKeyReleaseEvent((KeyEvent&)*event);
+				break;
+			}
+
+		case WM_SYSKEYDOWN: //0x104
+		{
+			event = new KeyEvent((int)wParam);
+			control->onKeyPressEvent((KeyEvent&)*event);
+			break;
+		}
+
+		case WM_SYSKEYUP: //0x105
+		{
+			event = new KeyEvent((int)wParam);
+			control->onKeyReleaseEvent((KeyEvent&)*event);
+			break;
+		}
 				MSG_HANDLE(WM_CHAR, osdControl, OnChar) //0x0102
 				MSG_HANDLE(WM_COMMAND, osdControl, OnCommand) //0x0111
 				MSG_HANDLE(WM_HSCROLL, osdControl, OnHScroll) //0x0114

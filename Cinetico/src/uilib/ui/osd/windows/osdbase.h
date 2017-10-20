@@ -97,13 +97,13 @@ namespace uilib {
 	protected:
 		virtual void onPaintEvent(PaintEvent &event);
 		virtual void onCloseEvent() { }//event.ignore(); }
-		virtual void onKeyPressEvent() { }
-		virtual void onKeyReleaseEvent() { }
+		virtual void onKeyPressEvent(KeyEvent &event) { }
+		virtual void onKeyReleaseEvent(KeyEvent &event) { }
 		virtual void onMouseMoveEvent(MouseEvent &event) { event.ignore(); }
 		virtual void onMousePressEvent(MouseEvent &event) { event.ignore(); }
 		virtual void onMouseReleaseEvent(MouseEvent &event) { event.ignore(); }
 		virtual void onMouseDoubleClickEvent(MouseEvent &event) { event.ignore(); }
-		virtual void onMouseEnterEvent(MouseEvent &event);
+		virtual void onMouseEnterEvent(MouseEvent &event) { event.ignore(); }
 		virtual void onMouseLeaveEvent(MouseEvent &event) { event.ignore(); }
 		virtual void onScroll(ScrollEvent &event) { event.ignore(); }
 
@@ -167,8 +167,6 @@ namespace uilib {
 			MSG_HANDLER(OnNotify) //0x004E
 			MSG_HANDLER(OnNCHitTest) //0x0084
 			MSG_HANDLER(OnNCPaint) //0x0085
-			MSG_HANDLER(OnKeyDown) //0x0100
-			MSG_HANDLER(OnKeyUp) //0x0101
 			MSG_HANDLER(OnChar) //0x0102
 			MSG_HANDLER(OnCommand) //0x0111
 			MSG_HANDLER(OnHScroll) //0x0114
@@ -253,8 +251,6 @@ namespace uilib {
 			MSG_HANDLER(OnClose)
 			MSG_HANDLER(OnEraseBkgnd) //0x0014
 			MSG_HANDLER(OnNotify) //0x004E
-			MSG_HANDLER(OnKeyDown) //0x0100
-			MSG_HANDLER(OnKeyUp) //0x0101
 			MSG_HANDLER(OnCommand) //0x0111
 			MSG_HANDLER(OnHScroll) //0x0114
 			MSG_HANDLER(OnVScroll) //0x0115

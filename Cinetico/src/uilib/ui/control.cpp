@@ -10,8 +10,8 @@ namespace uilib {
 
 	void Control::onPaintEvent(PaintEvent &event) { osdRef().onPaintEvent(event); }
 	void Control::onCloseEvent() { setVisible(false); }
-	void Control::onKeyPressEvent() { osdRef().onKeyPressEvent(); }
-	void Control::onKeyReleaseEvent() { osdRef().onKeyReleaseEvent(); }
+	void Control::onKeyPressEvent(KeyEvent &event) { osdRef().onKeyPressEvent(event); }
+	void Control::onKeyReleaseEvent(KeyEvent &event) { osdRef().onKeyReleaseEvent(event); }
 	void Control::onMouseMoveEvent(MouseEvent &event) { osdRef().onMouseMoveEvent(event); }
 	void Control::onMousePressEvent(MouseEvent &event) { osdRef().onMousePressEvent(event); }
 	void Control::onMouseReleaseEvent(MouseEvent &event) { osdRef().onMouseReleaseEvent(event); }

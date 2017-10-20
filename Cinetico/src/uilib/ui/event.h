@@ -1,7 +1,7 @@
 
 //Event
 // File: event.h
-// Last edit: 02/07/2017 04:10 (UTC-3)
+// Last edit: 20/10/2017 06:53 (UTC-3)
 // Author: CGR
 
 #ifndef __UILIB_EVENT_H__
@@ -27,6 +27,16 @@ namespace uilib {
 	{
 	public:
 		PaintEvent() { }
+	};
+
+	class KeyEvent : public Event
+	{
+		int m_key;
+	public:
+		KeyEvent(int key)
+			: m_key(key) { }
+
+		int key() const { return m_key; }
 	};
 
 	class MouseEvent : public Event
