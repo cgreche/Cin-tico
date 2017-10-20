@@ -1,10 +1,8 @@
-#include <windows.h>
-#include <math.h>
-#include <time.h>
+
 #include "cinetico.h"
 #include "cineticodb.h"
 #include "cineticoui.h"
-#include "uilib/ui/uibase.h"
+#include "input.h"
 #include "utils/crypter.h"
 
 #include "kinectsensor.h"
@@ -31,6 +29,8 @@ namespace cinetico {
 
 	void Cinetico::setup()
 	{
+		m_input = new Input();
+
 		m_sensor = SensorFactory::getSystemSensor();
 		m_sensor->initialize();
 		m_bodyTracker = new BodyTracker(*m_sensor);
@@ -50,11 +50,10 @@ namespace cinetico {
 		m_cineticoUI->step();
 	}
 
-	void Cinetico::render()
-	{
-	}
-
 	void Cinetico::cleanUp() {
+
+		if (m_input)
+			delete m_input;
 
 		if (m_bodyTracker)
 			delete m_bodyTracker;
@@ -113,7 +112,6 @@ namespace cinetico {
 
 		while (uibase::UIProcess()) {
 			step();
-			render();
 		}
 
 		cleanUp();
@@ -128,6 +126,7 @@ namespace cinetico {
 	}
 }
 
+#include <windows.h>
 using namespace cinetico;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {

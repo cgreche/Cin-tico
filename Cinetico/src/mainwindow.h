@@ -45,16 +45,21 @@ namespace cinetico {
 		friend void linkEspanol_onClick(TextLink &link);
 		void onClickUserLoginName();
 		void onClickLogoff();
-		void onLanguageSelect();
+
+		//
+		virtual void onCloseEvent();
+		virtual void onKeyPressEvent(KeyEvent &event);
+		virtual void onKeyReleaseEvent(KeyEvent &event);
+		virtual void onMouseMoveEvent(MouseEvent &event);
+		virtual void onMousePressEvent(MouseEvent &event);
+		virtual void onMouseReleaseEvent(MouseEvent &event);
 
 	public:
 		MainWindow(Cinetico &cinetico);
-		void update();
+		void step();
 		void setContentLayout(Layout *layout);
 		void setHeaderVisible(bool visible);
 		void setFooterVisible(bool visible);
-		
-		void onCloseEvent();
 	};
 
 }

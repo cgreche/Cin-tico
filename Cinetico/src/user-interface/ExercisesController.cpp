@@ -200,12 +200,12 @@ namespace cinetico {
 		/*Preenchendo os layouts e checkBoxes do corpo*/
 		size_t bpCount = BodyPoint::BodyPartCount;
 		checkBodyPointList.resize(bpCount);
-		int bpLayoutCount = bpCount / 3;
+		size_t bpLayoutCount = bpCount / 3;
 		if (bpCount % 3 != 0)
 			bpLayoutCount += 1;
 		layoutCheckBodyPointList.resize(bpLayoutCount);
 
-		size_t i, j = 0, k = 0;;
+		size_t i, j = 0, k = 0;
 		for (i = 0; i < bpCount / 3; ++i) {
 			for (j = 0; j < 3; ++j) {
 				layoutCheckBodyPointList[i].append(checkBodyPointList[k], Size(SizeTypeMax, SizeTypeAuto));

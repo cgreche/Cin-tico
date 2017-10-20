@@ -33,6 +33,8 @@ namespace cinetico {
 		int m_resFontArial;
 		int m_resFontVerdana;
 
+		void processCamera();
+		void processCube();
 	public:
 		ExercisePlayMode(Cinetico &cinetico, cinetico_core::Exercise &exercise);
 

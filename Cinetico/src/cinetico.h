@@ -13,6 +13,7 @@
 namespace cinetico {
 
 	using namespace cinetico_core;
+	class Input;
 	class CineticoDB;
 	class CineticoUI;
 	class UserProfile;
@@ -27,6 +28,7 @@ namespace cinetico {
 		};
 
 	private:
+		Input *m_input;
 		Sensor *m_sensor;
 		BodyTracker *m_bodyTracker;
 
@@ -38,7 +40,6 @@ namespace cinetico {
 
 		void setup();
 		void step();
-		void render();
 		void cleanUp();
 
 		UserProfile *m_currentUser;
@@ -53,6 +54,7 @@ namespace cinetico {
 		
 		void setLanguage(Dictionary::LanguageID langId);
 
+		Input *input() const { return m_input; }
 		Sensor *sensor() const { return m_sensor; }
 		BodyTracker *bodyTracker() const { return m_bodyTracker; }
 		CineticoDB *cineticoDB() const { return m_cineticoDB; }

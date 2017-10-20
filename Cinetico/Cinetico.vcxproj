@@ -48,6 +48,7 @@
     <ClInclude Include="src\entity\dao\UserProfileDAO.h" />
     <ClInclude Include="src\entity\user\UserProfile.h" />
     <ClInclude Include="src\humancharacter.h" />
+    <ClInclude Include="src\input.h" />
     <ClInclude Include="src\kinectsensor.h" />
     <ClInclude Include="src\lib\d3dx9.h" />
     <ClInclude Include="src\lib\d3dx9anim.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="src\entity\dao\UserProfileDAO.cpp" />
     <ClCompile Include="src\entity\user\UserProfile.cpp" />
     <ClCompile Include="src\humancharacter.cpp" />
+    <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\kinectsensor.cpp" />
     <ClCompile Include="src\lib\sqlite-amalgamation-3200100\shell.c" />
     <ClCompile Include="src\lib\sqlite-amalgamation-3200100\sqlite3.c" />

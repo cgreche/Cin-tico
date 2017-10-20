@@ -1,6 +1,7 @@
 
 #include "cineticoui.h"
 #include "mainwindow.h"
+#include "input.h"
 #include "dictionary.h"
 #include "entity/user/UserProfile.h"
 #include "user-interface/viewtemplate.h"
@@ -102,6 +103,40 @@ namespace cinetico {
 		layoutFooter.append(layoutLanguages, MaximumSize);
 	}
 
+
+	void MainWindow::onKeyPressEvent(KeyEvent &event) {
+		m_cinetico.input()->keyboard.m_keys[event.key()] = true;
+	}
+	
+	void MainWindow::onKeyReleaseEvent(KeyEvent &event) {
+		m_cinetico.input()->keyboard.m_keys[event.key()] = false;
+	}
+
+	void MainWindow::onMouseMoveEvent(MouseEvent &event) {
+		m_cinetico.input()->mouse.m_x = event.position().x();
+		m_cinetico.input()->mouse.m_y = event.position().y();
+	}
+
+	void MainWindow::onMousePressEvent(MouseEvent &event) {
+		uilib::u32 button = event.button();
+		if (button == 1)
+			m_cinetico.input()->mouse.m_buttons[0] = true;
+		else if(button == 2)
+			m_cinetico.input()->mouse.m_buttons[1] = true;
+		else if(button == 4)
+			m_cinetico.input()->mouse.m_buttons[2] = true;
+	}
+
+	void MainWindow::onMouseReleaseEvent(MouseEvent &event) {
+		uilib::u32 button = event.button();
+		if (button == 1)
+			m_cinetico.input()->mouse.m_buttons[0] = false;
+		else if (button == 2)
+			m_cinetico.input()->mouse.m_buttons[1] = false;
+		else if (button == 4)
+			m_cinetico.input()->mouse.m_buttons[2] = false;
+	}
+
 	MainWindow::MainWindow(Cinetico &cinetico)
 		: m_cinetico(cinetico) {
 		m_currentContentLayout = NULL;
@@ -130,7 +165,7 @@ namespace cinetico {
 		m_currentContentLayout = layout;
 	}
 
-	void MainWindow::update() {
+	void MainWindow::step() {
 		static UserProfile *lastUserProfile = NULL;
 		static std::string username = "";
 		std::string usernameMessage;
@@ -182,7 +217,7 @@ namespace cinetico {
 		if (!visible)
 			layout.remove(layoutHeader);
 		else
-			layout.insertBefore(layoutContent, layoutHeader);
+			layout.insertBefore(layoutContent, layoutHeader, Size(SizeTypeMax, MakePercentType(10)), 20);
 	}
 
 	void MainWindow::setFooterVisible(bool visible) {
@@ -190,9 +225,8 @@ namespace cinetico {
 		if (!visible)
 			layout.remove(layoutFooter);
 		else
-			layout.insertAfter(layoutContent, layoutFooter);
+			layout.insertAfter(layoutContent, layoutFooter, Size(SizeTypeMax, MakePercentType(10)));
 	}
-
 
 	void MainWindow::onClickUserLoginName() {
 		Controller::ViewParams params;

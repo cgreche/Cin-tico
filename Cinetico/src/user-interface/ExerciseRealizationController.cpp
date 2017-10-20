@@ -1,7 +1,7 @@
-#include <windows.h>
-#include <time.h>
+
 #include "cinetico.h"
 #include "cineticoui.h"
+#include "input.h"
 #include "ExerciseRealizationController.h"
 #include "dummycharacter.h"
 #include "humancharacter.h"
@@ -43,6 +43,19 @@ namespace cinetico {
 	void ExerciseRealizationController::onViewTick() {
 		step();
 		render();
+
+		bool quit3D = false;
+		static bool lastEsc = m_cinetico.input()->keyboard.key(VK_ESCAPE);
+		if (m_cinetico.input()->keyboard.key(VK_ESCAPE) == 1 && lastEsc == 0) {
+			quit3D = true;
+		}
+
+		lastEsc = m_cinetico.input()->keyboard.key(VK_ESCAPE);
+
+		if (quit3D) {
+			m_cinetico.cineticoUI()->goTo(CineticoUI::EXERCISES);
+			return;
+		}
 	}
 
 	void ExerciseRealizationController::onViewQuit() {
@@ -50,95 +63,6 @@ namespace cinetico {
 		if (m_playingMode)
 			m_playingMode->cleanUp();
 	}
-
-
-
-	/*
-	LRESULT CALLBACK world3D_MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-
-	switch (msg) {
-	case WM_SYSKEYDOWN:
-	keyStates[wParam] = true;
-	break;
-
-	case WM_CHAR:
-	{
-	int c = wParam;
-	break;
-	}
-
-	case WM_KEYDOWN:
-	{
-	keyStates[wParam] = true;
-	break;
-	}
-
-	case WM_KEYUP:
-	{
-	keyStates[wParam] = false;
-	break;
-	}
-
-	case WM_LBUTTONDOWN:
-	{
-	mouse[0] = true;
-	break;
-	}
-	case WM_LBUTTONUP:
-	{
-	mouse[0] = false;
-	break;
-	}
-
-	case WM_RBUTTONDOWN:
-	{
-	mouse[1] = true;
-	break;
-	}
-	case WM_RBUTTONUP:
-	{
-	mouse[1] = false;
-	break;
-	}
-
-	case WM_MBUTTONDOWN:
-	{
-	mouse[2] = true;
-	break;
-	}
-
-	case WM_MBUTTONUP:
-	{
-	mouse[2] = false;
-	break;
-	}
-
-	case WM_MOUSEWHEEL:
-	{
-	mouseZ = (int)(short)HIWORD(wParam);
-	mouseZ /= WHEEL_DELTA;
-	break;
-	}
-
-	case WM_MOUSEMOVE:
-	{
-	mouseX = LOWORD(lParam);
-	mouseY = HIWORD(lParam);
-	break;
-	}
-
-	case WM_CLOSE:
-	::PostQuitMessage(0);
-	break;
-	case WM_DESTROY:
-	int a = 1;
-	break;
-	}
-
-
-	return ::DefWindowProc(hwnd, msg, wParam, lParam);
-	}
-	*/
 
 	void ExerciseRealizationController::step() {
 		if (m_playingMode)

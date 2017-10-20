@@ -1,6 +1,7 @@
 
 #include "cinetico.h"
 #include "cineticoui.h"
+#include "input.h"
 #include "ExercisePlayMode.h"
 #include "entity/core/Exercise.h"
 #include "humancharacter.h"
@@ -64,9 +65,10 @@ namespace cinetico {
 			render3d::Color(255,0,255),
 		};
 
-		m_resCube = m_renderEngineHelper->createCube(2);
+		m_resCube = m_renderEngineHelper->createCube(1);
 		m_renderEngine->resourceData(m_resCube)->setColors(cubeColors);
 		m_instanceCube = m_renderEngine->newResourceInstance(m_resCube);
+		m_renderEngine->resourceInstance(m_instanceCube)->setPos(render3d::Vector3(-2.5f,0,0));
 
 		float quadSize = 3.2f;
 		int quadCountH = 128;
@@ -105,7 +107,12 @@ namespace cinetico {
 			m_humanChar->update();
 			if (m_exercise.step() == Exercise::Finished)
 				m_exercise.reset();
+
 		}
+		if(m_cinetico.input()->keyboard.key(VK_SHIFT))
+			processCube();
+		else
+			processCamera();
 	}
 
 	void ExercisePlayMode::render() {
@@ -157,10 +164,168 @@ namespace cinetico {
 	}
 
 	void ExercisePlayMode::cleanUp() {
-		if(m_humanChar)
+		if (m_humanChar)
 			delete m_humanChar;
 		if(m_dummyChar)
 			delete m_dummyChar;
 	}
 
+	void ExercisePlayMode::processCamera() {
+		Input::Keyboard &kb = m_cinetico.input()->keyboard;
+		Input::Mouse &mouse = m_cinetico.input()->mouse;
+		bool leftDown = kb.key('A');
+		bool rightDown = kb.key('D');
+		bool downDown = kb.key('S');
+		bool upDown = kb.key('W');
+		bool shiftDown = kb.key(VK_SHIFT);
+		bool ctrlDown = kb.key(VK_CONTROL);
+		bool tabDown = kb.key(VK_TAB);
+		bool spaceDown = kb.key(VK_SPACE);
+		bool mouse2Down = mouse.button(1);
+
+		static int lastMouseX = mouse.x();
+		static int lastMouseY = mouse.y();
+		static int lastMouseZ = mouse.z();
+
+		int mouseX = mouse.x();
+		int mouseY = mouse.y();
+		int mouseZ = mouse.z();
+
+		int dx = mouseX - lastMouseX;
+		int dy = mouseY - lastMouseY;
+		int dz = mouseZ - lastMouseZ;
+		lastMouseX = mouseX;
+		lastMouseY = mouseY;
+		lastMouseZ = 0;
+		mouseZ = 0;
+
+		float d = 0.5f;
+		Camera *camera = m_renderEngine->camera(m_currentCameraId);
+		render3d::Vector3 camPos = camera->pos();
+		if (rightDown) {
+			camPos.setX(camPos.x() + d);
+		}
+
+		if (leftDown) {
+			camPos.setX(camPos.x() - d);
+		}
+
+		if (upDown) {
+			if (ctrlDown)
+				camPos.setZ(camPos.z() + d);
+			else
+				camPos.setY(camPos.y() + d);
+		}
+
+		if (downDown) {
+			if (ctrlDown)
+				camPos.setZ(camPos.z() - d);
+			else
+				camPos.setY(camPos.y() - d);
+		}
+
+		camera->setPos(camPos);
+
+		if (spaceDown) {
+			m_currentCameraId = m_cam2;
+		}
+		else {
+			m_currentCameraId = m_cam1;
+		}
+
+		if (mouse2Down) {
+			Camera *camera = m_renderEngine->camera(m_currentCameraId);
+			render3d::Vector3 camRot = camera->rot();
+
+			if (dx != 0) {
+				camRot.setY(camRot.y() - 0.01f*dx);
+			}
+
+			if (dy != 0) {
+				camRot.setX(camRot.x() - 0.01f*dy);
+			}
+
+			if (dz != 0)
+				camera->setZoom(camera->zoom() - dz*0.1f);
+
+			camera->setRot(camRot);
+		}
+		return;
+	}
+
+	void ExercisePlayMode::processCube() {
+		Input::Keyboard &kb = m_cinetico.input()->keyboard;
+		Input::Mouse &mouse = m_cinetico.input()->mouse;
+
+		bool leftDown = kb.key('A');
+		bool rightDown = kb.key('D');
+		bool downDown = kb.key('S');
+		bool upDown = kb.key('W');
+		bool shiftDown = kb.key(VK_SHIFT);
+		bool ctrlDown = kb.key(VK_CONTROL);
+		bool tabDown = kb.key(VK_TAB);
+		bool spaceDown = kb.key(VK_SPACE);
+		bool escDown = kb.key(VK_ESCAPE);
+
+		float d = 0.1f;
+
+		ResourceInstance *instance = m_renderEngine->resourceInstance(m_instanceCube);
+		render3d::Vector3 newPos = instance->pos();
+		render3d::Vector3 newRot = instance->rot();
+
+		if (leftDown) {
+			if (shiftDown) {
+				if (ctrlDown) {
+					newRot.setZ(newRot.z() + d);
+				}
+				else {
+					newRot.setY(newRot.y() + d);
+				}
+			}
+			else {
+				newPos.setX(newPos.x() - d);
+			}
+		}
+
+		if (rightDown) {
+			if (shiftDown) {
+				if (ctrlDown) {
+					newRot.setZ(newRot.z() - d);
+				}
+				else {
+					newRot.setY(newRot.y() - d);
+				}
+			}
+			else {
+				newPos.setX(newPos.x() + d);
+			}
+		}
+
+		if (downDown) {
+			if (shiftDown) {
+				newRot.setX(newRot.x() - d);
+			}
+			else if (ctrlDown) {
+				newPos.setZ(newPos.z() - d);
+			}
+			else {
+				newPos.setY(newPos.y() - d);
+			}
+		}
+
+		if (upDown) {
+			if (shiftDown) {
+				newRot.setX(newRot.x() + d);
+			}
+			else if (ctrlDown) {
+				newPos.setZ(newPos.z() + d);
+			}
+			else {
+				newPos.setY(newPos.y() + d);
+			}
+		}
+
+		instance->setPos(newPos);
+		instance->setRot(newRot);
+	}
 }

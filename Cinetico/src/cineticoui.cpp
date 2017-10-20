@@ -84,7 +84,8 @@ namespace cinetico {
 		m_currentView = viewId;
 		controller->onViewEnter(params);
 
-		m_mainWindow->setSize(Size(1024, 800));
+		m_mainWindow->setSize(m_mainWindow->size());
+		m_mainWindow->redraw();
 	}
 
 	void CineticoUI::cleanUp() {

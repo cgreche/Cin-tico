@@ -595,6 +595,9 @@
     <ClInclude Include="src\user-interface\playmodes\ReplayPlayMode.h">
       <Filter>src\user-interface\playmodes</Filter>
     </ClInclude>
+    <ClInclude Include="src\input.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -935,6 +938,9 @@
     </ClCompile>
     <ClCompile Include="src\user-interface\playmodes\PlayMode.cpp">
       <Filter>src\user-interface\playmodes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
