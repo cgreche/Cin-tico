@@ -106,10 +106,60 @@ namespace uilib {
 
 
 
-
-
-
 	//Layout
+	LayoutItemList::iterator Layout::_find(Control &control) {
+		LayoutItemList::iterator it;
+		for (it = m_childList.begin(); it != m_childList.end(); ++it) {
+			LayoutItem &child = **it;
+			if (child.control() && child.control() == &control) {
+				break;
+			}
+		}
+		return it;
+	}
+
+	LayoutItemList::iterator Layout::_find(Layout &layout) {
+		LayoutItemList::iterator it;
+		for (it = m_childList.begin(); it != m_childList.end(); ++it) {
+			LayoutItem &child = **it;
+			if (child.layout() && child.layout() == &layout) {
+				break;
+			}
+		}
+		return it;
+	}
+
+	LayoutItemList::iterator Layout::_insert(LayoutItemList::iterator position, Control &control, const Size &size, int spacing) {
+		LayoutItemList::iterator itSelf = _find(control);
+		if (itSelf != m_childList.end()) {
+			if (itSelf == position)
+				return position;
+			delete *itSelf;
+			m_childList.erase(itSelf);
+		}
+		else {
+			control.setParent(parentControl());
+			control.m_parentLayout = this; //must be set after setParent()
+		}
+
+		return m_childList.insert(position, new LayoutItemControl(control, size, spacing));
+	}
+
+	LayoutItemList::iterator Layout::_insert(LayoutItemList::iterator position, Layout &layout, const Size &size, int spacing) {
+		LayoutItemList::iterator itSelf = _find(layout);
+		if (itSelf != m_childList.end()) {
+			if (itSelf == position)
+				return position;
+			delete *itSelf;
+			m_childList.erase(itSelf);
+		}
+		else {
+			layout.setParent(parentControl());
+			layout.m_parentLayout = this; //must be set after setParent()
+		}
+
+		return m_childList.insert(position, new LayoutItemLayout(layout, size, spacing));
+	}
 
 	Layout::Layout()
 		: m_topMargin(0), m_leftMargin(0), m_bottomMargin(0), m_rightMargin(0),
@@ -259,79 +309,83 @@ namespace uilib {
 		m_alignment = max(0.0f, min(1.0f, alignment));
 	}
 
-
-	void Layout::append(Control& control)
-	{
-		Size controlSize = control.size();
-		//todo: change the way it is decided to be the AutoSize?
-		if (controlSize == Size(0, 0))
-			controlSize = AutoSize;
-		else
-			controlSize = ItemSize;
-		append(control, controlSize, SizeTypeAuto);
-	}
-
 	void Layout::append(Control& control, const Size &size, int spacing)
 	{
-		LayoutItemList::iterator it;
-		for (it = m_childList.begin(); it != m_childList.end(); ++it) {
-			LayoutItem &child = **it;
-			if (child.control() && child.control() == &control)
-				return;
-		}
-
-		m_childList.push_back(new LayoutItemControl(control, size, spacing));
-		control.setParent(parentControl());
-		control.m_parentLayout = this; //must be set after setParent()
+		_insert(m_childList.end(), control, size, spacing);
 	}
 
 	void Layout::remove(Control &control)
 	{
-		LayoutItemList::iterator it;
-		for (it = m_childList.begin(); it != m_childList.end(); ++it) {
+		LayoutItemList::iterator it = _find(control);
+		if (it != m_childList.end()) {
 			LayoutItem &child = **it;
-			if (child.control() && child.control() == &control) {
-				child.control()->m_parentLayout = NULL; //must be set before setParent()
-				child.control()->setParent(NULL);
-				delete &child;
-				m_childList.erase(it);
-				return;
-			}
+			child.control()->m_parentLayout = NULL; //must be set before setParent()
+			child.control()->setParent(NULL);
+			delete &child;
+			m_childList.erase(it);
 		}
 	}
 
-	void Layout::append(Layout& layout)
-	{
-		append(layout, AutoSize, SizeTypeAuto);
+	void Layout::insertBefore(Control &position, Control &control, const Size &size, int spacing) {
+		LayoutItemList::iterator it = _find(position);
+		_insert(it, control, size, spacing);
+	}
+
+	void Layout::insertBefore(Layout &position, Control &control, const Size &size, int spacing) {
+		LayoutItemList::iterator it = _find(position);
+		_insert(it, control, size, spacing);
+	}
+
+	void Layout::insertAfter(Control &position, Control &control, const Size &size, int spacing) {
+		LayoutItemList::iterator it = _find(position);
+		if (it != m_childList.end())
+			_insert(it + 1, control, size, spacing);
+	}
+
+	void Layout::insertAfter(Layout &position, Control &control, const Size &size, int spacing) {
+		LayoutItemList::iterator it = _find(position);
+		if (it != m_childList.end())
+			_insert(it + 1, control, size, spacing);
 	}
 
 	void Layout::append(Layout& layout, const Size &size, int spacing)
 	{
-		LayoutItemList::iterator it;
-		for (it = m_childList.begin(); it != m_childList.end(); ++it) {
-			LayoutItem &child = **it;
-			if (child.layout() && child.layout() == &layout)
-				return;
-		}
-
-		m_childList.push_back(new LayoutItemLayout(layout, size, spacing));
-		layout.setParent(parentControl());
-		layout.m_parentLayout = this;
+		_insert(m_childList.end(),layout, size, spacing);
 	}
 
 	void Layout::remove(Layout &layout)
 	{
-		LayoutItemList::iterator it;
-		for (it = m_childList.begin(); it != m_childList.end(); ++it) {
+		LayoutItemList::iterator it = _find(layout);
+		if (it != m_childList.end()) {
 			LayoutItem &child = **it;
-			if (child.layout() && child.layout() == &layout) {
-				child.layout()->m_parentLayout = NULL; //must be set before setParent()
-				child.layout()->setParent(NULL);
-				delete &child;
-				m_childList.erase(it);
-				return;
-			}
+			child.layout()->m_parentLayout = NULL; //must be set before setParent()
+			child.layout()->setParent(NULL);
+			delete &child;
+			m_childList.erase(it);
+			return;
 		}
+	}
+
+	void Layout::insertBefore(Control &position, Layout &layout, const Size &size, int spacing) {
+		LayoutItemList::iterator it = _find(position);
+		_insert(it, layout, size, spacing);
+	}
+
+	void Layout::insertBefore(Layout &position, Layout &layout, const Size &size, int spacing) {
+		LayoutItemList::iterator it = _find(position);
+		_insert(it, layout, size, spacing);
+	}
+
+	void Layout::insertAfter(Control &position, Layout &layout, const Size &size, int spacing) {
+		LayoutItemList::iterator it = _find(position);
+		if (it != m_childList.end())
+			_insert(it + 1, layout, size, spacing);
+	}
+	
+	void Layout::insertAfter(Layout &position, Layout &layout, const Size &size, int spacing) {
+		LayoutItemList::iterator it = _find(position);
+		if (it != m_childList.end())
+			_insert(it + 1, layout, size, spacing);
 	}
 
 	Size Layout::getAutoSize()

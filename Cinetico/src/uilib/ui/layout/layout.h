@@ -1,7 +1,7 @@
 
 //Layout
 // File: uibase.h
-// Last edit: 25/09/2017 03:22 (UTC-3)
+// Last edit: 19/10/2017 03:22 (UTC-3)
 // Author: CGR
 
 #ifndef __UIBASE_H__
@@ -141,6 +141,10 @@ namespace uilib {
 
 		string m_tag; //for debugging purposes
 
+		LayoutItemList::iterator _find(Control &control);
+		LayoutItemList::iterator _find(Layout &layout);
+		LayoutItemList::iterator _insert(LayoutItemList::iterator position, Control &control, const Size &size, int spacing = SizeTypeAuto);
+		LayoutItemList::iterator _insert(LayoutItemList::iterator position, Layout &layout, const Size &size, int spacing = SizeTypeAuto);
 	public:
 		static float left_align;
 		static float center_align;
@@ -172,12 +176,18 @@ namespace uilib {
 
 		void getMargins(int *pTopMargin, int *pLeftMargin, int *pBottomMargin, int *pRightMargin);
 
-		void append(Control &control);
-		void append(Control &control, const Size &size, int spacing = SizeTypeAuto);
+		void append(Control &control, const Size &size = AutoSize, int spacing = SizeTypeAuto);
 		void remove(Control &control);
-		void append(Layout &layout);
-		void append(Layout &layout, const Size &size, int spacing = SizeTypeAuto);
+		void insertBefore(Control &position, Control &control, const Size &size = AutoSize, int spacing = SizeTypeAuto);
+		void insertBefore(Layout &position, Control &control, const Size &size = AutoSize, int spacing = SizeTypeAuto);
+		void insertAfter(Control &position, Control &control, const Size &size = AutoSize, int spacing = SizeTypeAuto);
+		void insertAfter(Layout &position, Control &control, const Size &size = AutoSize, int spacing = SizeTypeAuto);
+		void append(Layout &layout, const Size &size = AutoSize, int spacing = SizeTypeAuto);
 		void remove(Layout &layout);
+		void insertBefore(Control &position, Layout &layout, const Size &size = AutoSize, int spacing = SizeTypeAuto);
+		void insertBefore(Layout &position, Layout &layout, const Size &size = AutoSize, int spacing = SizeTypeAuto);
+		void insertAfter(Control &position, Layout &layout, const Size &size = AutoSize, int spacing = SizeTypeAuto);
+		void insertAfter(Layout &position, Layout &layout, const Size &size = AutoSize, int spacing = SizeTypeAuto);
 
 		Control *parentControl() const;
 
