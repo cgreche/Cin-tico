@@ -46,7 +46,7 @@ namespace cinetico {
 		m_oldHeight = frameSize.height();
 		m_oldFullscreen = fullscreen;
 
-		m_cineticoUI.setViewResolution(1280, 800, true);
+		m_cineticoUI.setViewResolution(1280, 768, false);
 	}
 
 	void ExerciseRealizationController::onViewTick() {

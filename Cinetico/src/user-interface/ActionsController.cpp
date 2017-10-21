@@ -66,8 +66,8 @@ namespace cinetico {
 	}
 
 	void ActionsController::fillActionTypeCombo(cComboBox &combo) {
-		combo.appendItem("Posição",Action::Position);
-		combo.appendItem("Movimento",Action::Movement);
+		combo.appendItem(m_dictionary.getString(Dictionary::ActionTypePosition),Action::Position);
+		combo.appendItem(m_dictionary.getString(Dictionary::ActionTypeMovement),Action::Movement);
 	}
 
 	void ActionsController::fillOrderTypeCombo(cComboBox &combo) {
@@ -86,8 +86,8 @@ namespace cinetico {
 
 	void ActionsController::fillSpaceTypeCombo(cComboBox &combo) {
 		combo.clear();
-		combo.appendItem(m_dictionary.getString(Dictionary::ActionRefPointWorld), -1);
-		combo.appendItem(m_dictionary.getString(Dictionary::ActionRefPointLastPosition), -2);
+		combo.appendItem(m_dictionary.getString(Dictionary::ActionRefPointAny), -2);
+		combo.appendItem(m_dictionary.getString(Dictionary::ActionRefPointLastPosition), -1);
 		std::vector<uilib::string> bpNames = m_cinetico.getAllBodyPointNames();
 		for (unsigned int i = 0; i < bpNames.size(); ++i) {
 			combo.appendItem(bpNames[i], i);
@@ -105,7 +105,9 @@ namespace cinetico {
 
 		if (cbActionType.selection() == -1
 			|| cbOrderType.selection() == -1
-			|| cbRefPoint.selection() == -1
+			|| cbRefPointX.selection() == -1
+			|| cbRefPointY.selection() == -1
+			|| cbRefPointZ.selection() == -1
 			|| tbPositionX.text() == ""
 			|| tbPositionY.text() == ""
 			|| tbPositionZ.text() == ""
@@ -140,7 +142,9 @@ namespace cinetico {
 		string &minTimeStr = tbMinTime.text();
 		string &maxTimeStr = tbMaxTime.text();
 		int bodyPoint = cbBodyPoint.selection();
-		int refPoint = (int)cbRefPoint.item(cbRefPoint.selection())->data();
+		int refPointX = (int)cbRefPointX.item(cbRefPointX.selection())->data();
+		int refPointY = (int)cbRefPointY.item(cbRefPointY.selection())->data();
+		int refPointZ = (int)cbRefPointZ.item(cbRefPointZ.selection())->data();
 		string &posXStr = tbPositionX.text();
 		string &posYStr = tbPositionY.text();
 		string &posZStr = tbPositionZ.text();
@@ -190,7 +194,9 @@ namespace cinetico {
 		action->setMinTime(string_op::decimal(minTimeStr.data()));
 		action->setMaxTime(string_op::decimal(maxTimeStr.data()));
 		action->setBodyPoint((BodyPoint::BodyPart)bodyPoint);
-		action->setRefPoint(refPoint);
+		action->setRefPointX(refPointX);
+		action->setRefPointY(refPointY);
+		action->setRefPointZ(refPointZ);
 		action->setFinalPosition(cinetico_core::Vector3(string_op::decimal(posXStr.data())*0.01f, string_op::decimal(posYStr.data())*0.01f, string_op::decimal(posZStr.data())*0.01f));
 
 		if (m_editMode == 1) {
@@ -229,7 +235,9 @@ namespace cinetico {
 		tbName.setLabel(m_dictionary.getString(Dictionary::ActionName));// + "*");
 
 		cbBodyPoint.setLabel(m_dictionary.getString(Dictionary::ActionBodyPoint));// + "*");
-		cbRefPoint.setLabel(m_dictionary.getString(Dictionary::ActionRefPoint));// + "*");
+		cbRefPointX.setLabel(m_dictionary.getString(Dictionary::ActionRefPointX));// + "*");
+		cbRefPointY.setLabel(m_dictionary.getString(Dictionary::ActionRefPointY));// + "*");
+		cbRefPointZ.setLabel(m_dictionary.getString(Dictionary::ActionRefPointZ));// + "*");
 		tbMinTime.setLabel(m_dictionary.getString(Dictionary::ActionMinTime));//
 		tbMaxTime.setLabel(m_dictionary.getString(Dictionary::ActionMaxTime));//
 
@@ -250,7 +258,9 @@ namespace cinetico {
 		fillActionTypeCombo(cbActionType);
 		fillOrderTypeCombo(cbOrderType);
 		fillBodyPointCombo(cbBodyPoint);
-		fillSpaceTypeCombo(cbRefPoint);
+		fillSpaceTypeCombo(cbRefPointX);
+		fillSpaceTypeCombo(cbRefPointY);
+		fillSpaceTypeCombo(cbRefPointZ);
 		fillMovementTypeCombo(cbMovementType);
 	}
 
@@ -308,10 +318,12 @@ namespace cinetico {
 		layoutActionDataRow1.append(tbName);
 
 		layoutBaseActionData.append(cbBodyPoint, Size(SizeTypeMax, SizeTypeAuto));
-		layoutBaseActionData.append(cbRefPoint, Size(SizeTypeMax, SizeTypeAuto));
 		layoutBaseActionData.append(tbMinTime, Size(SizeTypeMax, SizeTypeAuto));
 		layoutBaseActionData.append(tbMaxTime, Size(SizeTypeMax, SizeTypeAuto));
 
+		layoutPosition.append(cbRefPointX, Size(SizeTypeMax, SizeTypeAuto));
+		layoutPosition.append(cbRefPointY, Size(SizeTypeMax, SizeTypeAuto));
+		layoutPosition.append(cbRefPointZ, Size(SizeTypeMax, SizeTypeAuto));
 		layoutPosition.append(tbPositionX);
 		layoutPosition.append(tbPositionY);
 		layoutPosition.append(tbPositionZ);
@@ -420,7 +432,9 @@ namespace cinetico {
 			cbOrderType.setSelection(-1);
 			tbName.setText("");
 			cbBodyPoint.setSelection(-1);
-			cbRefPoint.setSelection(-1);
+			cbRefPointX.setSelection(-1);
+			cbRefPointY.setSelection(-1);
+			cbRefPointZ.setSelection(-1);
 			tbMinTime.setText("");
 			tbMaxTime.setText("");
 			tbPositionX.setText("");
@@ -438,7 +452,9 @@ namespace cinetico {
 				cbOrderType.setSelection(action->order());
 				tbName.setText(action->name().c_str());
 				cbBodyPoint.setSelection(action->bodyPoint());
-				cbRefPoint.setSelection(action->refPoint());
+				cbRefPointX.setSelection(action->refPointX() + 2);
+				cbRefPointY.setSelection(action->refPointY() + 2);
+				cbRefPointZ.setSelection(action->refPointZ() + 2);
 				tbMinTime.setText(string::fromFloat(action->minTime()).data());
 				tbMaxTime.setText(string::fromFloat(action->maxTime()).data());
 				tbPositionX.setText(string::fromFloat(action->finalPosition().x()*100).data());

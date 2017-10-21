@@ -41,7 +41,7 @@
 	<string id="ActionTypePosition">Posição</string>
 	<string id="ActionTypeMovement">Movimento</string>
 	
-	<string id="ActionRefPointWorld">Mundo</string>
+	<string id="ActionRefPointAny">Não usar</string>
 	<string id="ActionRefPointLastPosition">Última posição</string>
 	
 	<string id="MovementTypeLinear">Linear</string>
@@ -87,7 +87,9 @@
 	<string id="ActionMinTime">Tempo mínimo para execução</string>
 	<string id="ActionMaxTime">Tempo máximo para execução</string>
 	<string id="ActionBodyPoint">Ponto do corpo</string>
-	<string id="ActionRefPoint">Ponto de referência</string>
+	<string id="ActionRefPointX">Ponto de referência para X</string>
+	<string id="ActionRefPointY">Ponto de referência para Y</string>
+	<string id="ActionRefPointZ">Ponto de referência para Z</string>
 	<string id="ActionFinalPosition">Posição final (cm)</string>
 	<string id="ActionFinalOrientation">Direação final</string>
 	

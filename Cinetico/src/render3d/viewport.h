@@ -6,11 +6,14 @@
 
 namespace render3d {
 
+	class RenderEngine;
+
 	class Viewport : public RenderObject
 	{
 	public:
 		enum DirtyFlags {
-			CLEAR_DIRTY = 1
+			CLEAR_DIRTY = 1,
+			GEOMETRY_DIRTY = 2
 		};
 
 	private:
@@ -19,24 +22,19 @@ namespace render3d {
 		int m_width;
 		int m_height;
 
+		Viewport(RenderEngine *engine, int id);
+		Viewport(RenderEngine *engine, int id, int x, int y, int width, int height);
+
 	public:
 		friend class RenderEngine;
 
-		Viewport(RenderEngine *engine, int id)
-			: RenderObject(engine, id) {
-			m_x = 0;
-			m_y = 0;
-			m_width = 0;
-			m_height = 0;
-		}
-
-		Viewport(RenderEngine *engine, int id, int x, int y, int width, int height)
-			: RenderObject(engine, id) {
-			m_x = x;
-			m_y = y;
-			m_width = width;
-			m_height = height;
-		}
+		void setGeometry(int x, int y, int width, int height);
+		void setPosition(int x, int y);
+		void setSize(int width, int height);
+		void setX(int x);
+		void setY(int y);
+		void setWidth(int width);
+		void setHeight(int height);
 
 		int x() const { return m_x; }
 		int y() const { return m_y; }

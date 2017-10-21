@@ -13,38 +13,41 @@ namespace cinetico_core {
 	Action::ActionResult PositionAction::avaliate(Body &body) {
 		BodyPoint *bodyPoint = body.bodyPoint(m_bodyPoint);
 
+		//todo: handle refPoint Any or LastPosition
 		float gap = 0.2f;
 
-		Vector3 refPos;
-		if (m_refPoint >= 0) {
-			refPos = body.bodyPoint((BodyPoint::BodyPart)m_refPoint)->position();
-		}
-
-		Vector3 finalPosition = m_finalPosition + refPos;
-		Vector3 diff = bodyPoint->position() - finalPosition;
+		Vector3 position = bodyPoint->position();
 
 		float accuracyX = 0.f;
 		float accuracyY = 0.f;
 		float accuracyZ = 0.f;
-		float weightX = 0.f;
-		float weightY = 0.f;
-		float weightZ = 0.f;
-		if (m_finalPosition.x() != 0.f) {
-			accuracyX = 100.f - fabsf(diff.x())*100.f / gap;
+		float weightX = m_refPointX >= 0 ? 1.f : 0.f;
+		float weightY = m_refPointY >= 0 ? 1.f : 0.f;
+		float weightZ = m_refPointZ >= 0 ? 1.f : 0.f;
+		if (m_refPointX >= 0) {
+			Vector3 refPos = body.bodyPoint((BodyPoint::BodyPart)m_refPointX)->position();
+			float finalPos = m_finalPosition.x() + refPos.x();
+			float diff = position.x() - finalPos;
+			accuracyX = 100.f - fabsf(diff)*100.f / gap;
 			if (accuracyX < 0.f)
 				accuracyX = 0.f;
-			weightX = 1.f;
 		}
 		
-		if (m_finalPosition.y() != 0.f) {
-			accuracyY = 100.f - fabsf(diff.y())*100.f / gap;
+		if (m_refPointY >= 0) {
+			Vector3 refPos = body.bodyPoint((BodyPoint::BodyPart)m_refPointY)->position();
+			float finalPos = m_finalPosition.y() + refPos.y();
+			float diff = position.y() - finalPos;
+			accuracyY = 100.f - fabsf(diff)*100.f / gap;
 			if (accuracyY < 0.f)
 				accuracyY = 0.f;
 			weightY = 1.f;
 		}
 		
-		if (m_finalPosition.z() != 0.f) {
-			accuracyZ = 100.f - fabsf(diff.z())*100.f / gap;
+		if (m_refPointZ >= 0) {
+			Vector3 refPos = body.bodyPoint((BodyPoint::BodyPart)m_refPointZ)->position();
+			float finalPos = m_finalPosition.z() + refPos.z();
+			float diff = position.z() - finalPos;
+			accuracyZ = 100.f - fabsf(diff)*100.f / gap;
 			if (accuracyZ < 0.f)
 				accuracyZ = 0.f;
 			weightZ = 1.f;

@@ -55,7 +55,6 @@ namespace cinetico_core {
 			ret.m_z = this->m_z - vec2.m_z;
 			return ret;
 		}
-
 	};
 
 }

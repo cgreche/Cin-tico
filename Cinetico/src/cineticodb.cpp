@@ -8,7 +8,7 @@ namespace cinetico {
 
 const char *Table_UserProfile = "CREATE TABLE USER_PROFILE(id INTEGER PRIMARY KEY AUTOINCREMENT, login_name TEXT, password TEXT, user_name TEXT, creation_date INTEGER NOT NULL, activated INTEGER NOT NULL DEFAULT 1);";
 const char *Table_Exercise = "CREATE TABLE EXERCISE(id INTEGER PRIMARY KEY, name TEXT, author TEXT, creation_date INTEGER, trackable_body_points INTEGER, is_public INTEGER, owner_id INTEGER REFERENCES USER_PROFILE(id));";
-const char *Table_Action = "CREATE TABLE ACTION(id INTEGER PRIMARY KEY, exercise_id REFERENCES EXERCISE(id), type INTEGER NOT NULL, order_type INTEGER NOT NULL, name TEXT, min_time REAL, max_time REAL, body_point INTEGER NOT NULL, ref_point INTEGER NOT NULL, final_position_x REAL NOT NULL, final_position_y REAL NOT NULL, final_position_z REAL NOT NULL, final_orientation_x REAL, final_orientation_y REAL, final_orientation_z REAL);";
+const char *Table_Action = "CREATE TABLE ACTION(id INTEGER PRIMARY KEY, exercise_id REFERENCES EXERCISE(id), type INTEGER NOT NULL, order_type INTEGER NOT NULL, name TEXT, min_time REAL, max_time REAL, body_point INTEGER NOT NULL, ref_point_x INTEGER NOT NULL, ref_point_y INTEGER NOT NULL, ref_point_z INTEGER NOT NULL, final_position_x REAL NOT NULL, final_position_y REAL NOT NULL, final_position_z REAL NOT NULL, final_orientation_x REAL, final_orientation_y REAL, final_orientation_z REAL);";
 const char *Table_PositionAction = "CREATE TABLE POSITION_ACTION(action_id INTEGER PRIMARY KEY REFERENCES ACTION(id), min_hold_time REAL);";
 const char *Table_MovementAction = "CREATE TABLE MOVEMENT_ACTION(action_id INTEGER PRIMARY KEY REFERENCES ACTION(id), movement_type INTEGER, min_speed REAL, max_speed REAL);";
 

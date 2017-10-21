@@ -63,7 +63,7 @@ namespace cinetico {
 			, ActionTypePosition
 			, ActionTypeMovement
 
-			, ActionRefPointWorld
+			, ActionRefPointAny
 			, ActionRefPointLastPosition
 
 			, MovementTypeLinear
@@ -104,7 +104,9 @@ namespace cinetico {
 			, ActionMinTime
 			, ActionMaxTime
 			, ActionBodyPoint
-			, ActionRefPoint
+			, ActionRefPointX
+			, ActionRefPointY
+			, ActionRefPointZ
 			, ActionFinalPosition
 			, ActionFinalOrientation
 

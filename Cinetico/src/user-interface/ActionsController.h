@@ -54,12 +54,14 @@ namespace cinetico {
 						cTextBox tbName;
 					HorizontalLayout layoutBaseActionData;
 						cComboBox cbBodyPoint;
-						cComboBox cbRefPoint;
 						cTextBox tbMinTime;
 						cTextBox tbMaxTime;
 
 					Label labelPosition;
 					HorizontalLayout layoutPosition;
+						cComboBox cbRefPointX;
+						cComboBox cbRefPointY;
+						cComboBox cbRefPointZ;
 						cTextBox tbPositionX;
 						cTextBox tbPositionY;
 						cTextBox tbPositionZ;

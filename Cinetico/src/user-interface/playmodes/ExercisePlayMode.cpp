@@ -140,12 +140,11 @@ namespace cinetico {
 			int actionIndex = m_exercise.currentActionIndex();
 			int nextActionindex = m_exercise.getNextActionsIndex();
 
-
-			m_renderEngine->drawText("Ação atual:", 20, 220, render3d::Color(255, 200, 255));
+			m_renderEngine->drawText("Ação atual:", 20, 220, render3d::Color(200, 200, 200));
 
 			int drawIndexX = 36;
 			int drawIndexY = 250;
-			render3d::Color drawColor = render3d::Color(220, 0, 0, 200);
+			render3d::Color drawColor = render3d::Color(220, 220, 220, 200);
 			for (; actionIndex < nextActionindex; ++actionIndex) {
 				if (actionList[actionIndex]->isCorrect())
 					drawColor = render3d::Color(0, 220, 0, 200);

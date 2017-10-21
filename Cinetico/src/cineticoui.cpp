@@ -47,6 +47,7 @@ namespace cinetico {
 
 	void CineticoUI::setupWindow() {
 		m_mainWindow = new MainWindow(m_cinetico);
+		m_mainWindow->setFrameSize(Size(winWidth, winHeight));
 	}
 
 	void CineticoUI::setupRenderEngine()
@@ -55,7 +56,7 @@ namespace cinetico {
 		m_renderEngine->configure(m_mainWindow->osdRef().handle());
 		m_renderEngine->init();
 		m_renderEngineHelper = new RenderEngineHelper(*m_renderEngine);
-		m_viewport = m_renderEngine->newViewport(0,0,m_mainWindow->size().width(), m_mainWindow->size().height());
+		m_viewport = m_renderEngine->newViewport(0,0, winWidth, winHeight);
 	}
 
 	void CineticoUI::setup() {
@@ -126,7 +127,7 @@ namespace cinetico {
 
 	void CineticoUI::setViewResolution(int width, int height, bool fullscreen) {
 		Viewport *viewport = m_renderEngine->viewport(m_viewport);
-		viewport->setSize(width, height);
+		//viewport->setSize(width, height);
 		m_mainWindow->setFrameSize(Size(width, height));
 		m_mainWindow->setVisibilityMode(fullscreen ? uilib::Fullscreen : uilib::ShowNormal);
 	}

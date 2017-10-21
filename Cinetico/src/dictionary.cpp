@@ -67,7 +67,7 @@ namespace cinetico {
 			MAP_STR(ActionTypePosition);
 			MAP_STR(ActionTypeMovement);
 
-			MAP_STR(ActionRefPointWorld);
+			MAP_STR(ActionRefPointAny);
 			MAP_STR(ActionRefPointLastPosition);
 
 			MAP_STR(MovementTypeLinear);
@@ -108,7 +108,9 @@ namespace cinetico {
 			MAP_STR(ActionMinTime);
 			MAP_STR(ActionMaxTime);
 			MAP_STR(ActionBodyPoint);
-			MAP_STR(ActionRefPoint);
+			MAP_STR(ActionRefPointX);
+			MAP_STR(ActionRefPointY);
+			MAP_STR(ActionRefPointZ);
 			MAP_STR(ActionFinalPosition);
 			MAP_STR(ActionFinalOrientation);
 

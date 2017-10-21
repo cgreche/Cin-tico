@@ -48,7 +48,9 @@ namespace cinetico_core {
 		float m_maxTime;
 
 		BodyPoint::BodyPart m_bodyPoint;
-		int m_refPoint;
+		int m_refPointX;
+		int m_refPointY;
+		int m_refPointZ;
 
 		Vector3 m_finalPosition;
 		Vector3 m_finalOrientation;
@@ -62,7 +64,9 @@ namespace cinetico_core {
 		Action(ActionType actionType, Exercise &owner, int id = -1)
 			: m_actionType(actionType), m_owner(owner), m_id(id) {
 			m_minTime = m_maxTime = 0.f;
-			m_refPoint = -2;
+			m_refPointX = -2;
+			m_refPointY = -2;
+			m_refPointZ = -2;
 			m_state = Idle;
 			m_result = Missed;
 			m_accuracy = 0.f;
@@ -81,7 +85,9 @@ namespace cinetico_core {
 		void setMinTime(float minTime) { m_minTime = minTime; }
 		void setMaxTime(float maxTime) { m_minTime = m_maxTime; }
 		void setBodyPoint(BodyPoint::BodyPart bodyPoint) { m_bodyPoint = bodyPoint; }
-		void setRefPoint(int refPoint) { m_refPoint = refPoint; }
+		void setRefPointX(int refPointX) { m_refPointX = refPointX; }
+		void setRefPointY(int refPointY) { m_refPointY = refPointY; }
+		void setRefPointZ(int refPointZ) { m_refPointZ = refPointZ; }
 		void setFinalPosition(const Vector3 &position) { m_finalPosition = position; }
 		void setFinalOrientation(const Vector3 &orientation) { m_finalOrientation = orientation; }
 
@@ -93,7 +99,9 @@ namespace cinetico_core {
 		float minTime() const { return m_minTime; }
 		float maxTime() const { return m_maxTime; }
 		BodyPoint::BodyPart bodyPoint() const { return m_bodyPoint; }
-		int refPoint() const { return m_refPoint; }
+		int refPointX() const { return m_refPointX; }
+		int refPointY() const { return m_refPointY; }
+		int refPointZ() const { return m_refPointZ; }
 		const Vector3 &finalPosition() const { return m_finalPosition; }
 		const Vector3 &finalOrientation() const { return m_finalOrientation; }
 

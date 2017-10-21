@@ -29,7 +29,7 @@ do { \
 	if(p->trackable()) { \
 		Joint joint = sensor.joint(identifiedBody, kj); \
 		JointOrientation jointOrientation = sensor.jointOrientation(identifiedBody, kj); \
-		Vector3 position = Vector3(-joint.Position.X, joint.Position.Y, joint.Position.Z); \
+		Vector3 position = Vector3(joint.Position.X, joint.Position.Y, joint.Position.Z); \
 		Quaternion quat(jointOrientation.Orientation.x,jointOrientation.Orientation.y,jointOrientation.Orientation.z,jointOrientation.Orientation.w); \
 		Vector3 orientation = quat.toEuler(); \
 		if(p->trackable()) { \

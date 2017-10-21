@@ -102,7 +102,7 @@ namespace render3d {
 	{
 		m_device->BeginScene();
 		if (m_currentCamera && m_currentCamera->dirtyFlags() != 0) {
-			updateCamera(m_currentCamera);
+			updateInternalCamera(m_currentCamera);
 			setViewFromCamera(m_currentCamera);
 		}
 	}
@@ -122,7 +122,7 @@ namespace render3d {
 			1.0f, 0);
 	}
 
-	void D3D9Engine::updateResourceData(ResourceData *resData) {
+	void D3D9Engine::updateInternalResourceData(ResourceData *resData) {
 		HRESULT hr;
 		LPDIRECT3DVERTEXBUFFER9 vertexBuffer;
 		LPDIRECT3DINDEXBUFFER9 indexBuffer;
@@ -174,7 +174,7 @@ namespace render3d {
 		resData->setDirtyFlags(0);
 	}
 
-	void D3D9Engine::updateResourceInstanceData(ResourceInstance *resData) {
+	void D3D9Engine::updateInternalResourceInstanceData(ResourceInstance *resData) {
 		unsigned long dirty = resData->dirtyFlags();
 		D3D9ResInstanceData *data = (D3D9ResInstanceData *)resData->internalData();
 
@@ -203,7 +203,7 @@ namespace render3d {
 		resData->setDirtyFlags(0);
 	}
 	const float PI = 3.14159f;
-	void D3D9Engine::updateCamera(Camera *camera) {
+	void D3D9Engine::updateInternalCamera(Camera *camera) {
 		D3DXMATRIX temp;
 		if (camera && camera->dirtyFlags() != 0) {
 			unsigned long flags = camera->dirtyFlags();
@@ -233,6 +233,14 @@ namespace render3d {
 			data->viewMatrix = temp;
 			camera->setDirtyFlags(0);
 		}
+	}
+
+	void D3D9Engine::updateInternalViewport(Viewport *viewport) {
+		D3DVIEWPORT9 *data = (D3DVIEWPORT9*)viewport->internalData();
+		data->X = viewport->x();
+		data->Y = viewport->y();
+		data->Width = viewport->width();
+		data->Height = viewport->height();
 	}
 
 	void D3D9Engine::setViewFromCamera(Camera *camera) {
@@ -354,7 +362,7 @@ namespace render3d {
 	{
 		if (camera) {
 			if (camera->dirtyFlags() != 0) {
-				updateCamera(camera);
+				updateInternalCamera(camera);
 			}
 			setViewFromCamera(camera);
 			/*
@@ -382,6 +390,10 @@ namespace render3d {
 	{
 		HRESULT hr;
 		if (viewport) {
+			if (viewport->dirtyFlags() != 0) {
+				updateInternalViewport(viewport);
+			}
+
 			hr = m_device->SetViewport((D3DVIEWPORT9*)viewport->internalData());
 		}
 	}
@@ -472,7 +484,7 @@ namespace render3d {
 			//light.Position = D3DVECTOR({ 0.f, 5.f, 0.f });
 			//light.Direction = D3DVECTOR({ 0.f,-1.f,0.f });
 			light.Type = D3DLIGHT_DIRECTIONAL;
-			light.Direction = D3DXVECTOR3(0, -1.f, 0.f);
+			light.Direction = D3DXVECTOR3(0, -1, 0);
 			light.Range = 100.0f;
 			light.Diffuse.r = 1.f;
 			light.Diffuse.g = 1.f;
@@ -493,13 +505,13 @@ namespace render3d {
 
 		ResourceData *resData = this->resourceData(instance->resDataId());
 		if (resData->dirtyFlags() != 0) {
-			updateResourceData(resData);
+			updateInternalResourceData(resData);
 		}
 
 		if (instance->dirtyFlags() != 0) {
 			if (resData->dirtyFlags())
 				int a = 1; //do something
-			updateResourceInstanceData(instance);
+			updateInternalResourceInstanceData(instance);
 		}
 
 		D3D9ResInstanceData *d3d9InstanceData = (D3D9ResInstanceData*)instance->internalData();

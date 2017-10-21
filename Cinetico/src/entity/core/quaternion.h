@@ -72,7 +72,8 @@ namespace cinetico_core {
 			double siny = +2.0 * (m_w * m_z + m_x * m_y);
 			double cosy = +1.0 - 2.0 * (m_y * m_y + m_z * m_z);
 			float yaw = atan2(siny, cosy);
-			return Vector3(-roll, pitch, yaw);
+			return Vector3(-roll, pitch, -yaw);
+			//return Vector3(yaw, pitch, roll);
 		}
 
 		Matrix4 toRotationMatrix() {
