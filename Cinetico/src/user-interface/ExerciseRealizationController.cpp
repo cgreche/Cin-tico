@@ -11,8 +11,8 @@
 
 namespace cinetico {
 
-	ExerciseRealizationController::ExerciseRealizationController(Cinetico &cinetico)
-		: Controller(cinetico) {
+	ExerciseRealizationController::ExerciseRealizationController(CineticoUI &cineticoUI)
+		: Controller(cineticoUI) {
 		m_playingMode = NULL;
 	}
 
@@ -24,9 +24,9 @@ namespace cinetico {
 
 		PlayMode::PlayModeID playModeId = (PlayMode::PlayModeID)(int)(*params)["play_mode"];
 
-		m_renderEngine = m_cinetico.cineticoUI()->renderEngine();
-		m_renderEngineHelper = m_cinetico.cineticoUI()->renderEngineHelper();
-		m_cinetico.cineticoUI()->setHeaderAndFooterVisible(false);
+		m_renderEngine = m_cineticoUI.renderEngine();
+		m_renderEngineHelper = m_cineticoUI.renderEngineHelper();
+		m_cineticoUI.setHeaderAndFooterVisible(false);
 
 		PlayMode *playMode = NULL;
 
@@ -38,6 +38,15 @@ namespace cinetico {
 		if (playMode)
 			playMode->setup();
 		m_playingMode = playMode;
+
+		//Save screen configuration
+		Size frameSize = m_cineticoUI.mainWindow()->getFrameSize();
+		bool fullscreen = m_cineticoUI.mainWindow()->visibilityMode() == uilib::Fullscreen;
+		m_oldWidth = frameSize.width();
+		m_oldHeight = frameSize.height();
+		m_oldFullscreen = fullscreen;
+
+		m_cineticoUI.setViewResolution(1280, 800, true);
 	}
 
 	void ExerciseRealizationController::onViewTick() {
@@ -53,15 +62,16 @@ namespace cinetico {
 		lastEsc = m_cinetico.input()->keyboard.key(VK_ESCAPE);
 
 		if (quit3D) {
-			m_cinetico.cineticoUI()->goTo(CineticoUI::EXERCISES);
+			m_cineticoUI.goTo(CineticoUI::EXERCISES);
 			return;
 		}
 	}
 
 	void ExerciseRealizationController::onViewQuit() {
-		m_cinetico.cineticoUI()->setHeaderAndFooterVisible(true);
+		m_cineticoUI.setHeaderAndFooterVisible(true);
 		if (m_playingMode)
 			m_playingMode->cleanUp();
+		m_cineticoUI.setViewResolution(m_oldWidth, m_oldHeight, m_oldFullscreen);
 	}
 
 	void ExerciseRealizationController::step() {

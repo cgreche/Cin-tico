@@ -7,10 +7,10 @@
 
 #include "user-interface/Controller.h"
 #include "user-interface/LoginController.h"
+#include "user-interface/UserProfileController.h"
 #include "user-interface/ExercisesController.h"
 #include "user-interface/ActionsController.h"
 #include "user-interface/ExerciseRealizationController.h"
-#include "user-interface/UserProfileController.h"
 
 using namespace cinetico_core;
 using namespace render3d;
@@ -62,11 +62,11 @@ namespace cinetico {
 
 		Dictionary *dictionary = m_cinetico.dictionary();
 		//Setup views
-		registerView(LOGIN, dictionary->getString(Dictionary::LoginViewTitle).data(), new LoginController(m_cinetico));
-		registerView(USER_PROFILE, dictionary->getString(Dictionary::UserProfileViewTitle).data(), new UserProfileController(m_cinetico));
-		registerView(EXERCISES, dictionary->getString(Dictionary::ExercisesViewTitle).data(), new ExercisesController(m_cinetico));
-		registerView(ACTIONS, dictionary->getString(Dictionary::ActionsViewTitle).data(), new ActionsController(m_cinetico));
-		registerView(EXERCISE_REALIZATION, "Exercise Realization", new ExerciseRealizationController(m_cinetico));
+		registerView(LOGIN, dictionary->getString(Dictionary::LoginViewTitle).data(), new LoginController(*this));
+		registerView(USER_PROFILE, dictionary->getString(Dictionary::UserProfileViewTitle).data(), new UserProfileController(*this));
+		registerView(EXERCISES, dictionary->getString(Dictionary::ExercisesViewTitle).data(), new ExercisesController(*this));
+		registerView(ACTIONS, dictionary->getString(Dictionary::ActionsViewTitle).data(), new ActionsController(*this));
+		registerView(PLAYING, "Exercise Realization", new ExerciseRealizationController(*this));
 
 		setupWindow();
 		setupRenderEngine();
@@ -108,18 +108,27 @@ namespace cinetico {
 
 		//update Window
 		m_mainWindow->setSize(m_mainWindow->size());
-
-		//todo: re-set the view port size
+		Size frameSize = m_mainWindow->getFrameSize();
+		Viewport *viewport = m_renderEngine->viewport(m_viewport);
+		viewport->setSize(frameSize.width(), frameSize.height());
 	}
 
 	void CineticoUI::step() {
 		++m_globalFrameCount;
+		m_mainWindow->step();
 		if (m_currentView != INVALID) {
 			Controller *currentController = m_views[m_currentView].controller;
 			if (currentController) {
 				currentController->onViewTick();
 			}
 		}
+	}
+
+	void CineticoUI::setViewResolution(int width, int height, bool fullscreen) {
+		Viewport *viewport = m_renderEngine->viewport(m_viewport);
+		viewport->setSize(width, height);
+		m_mainWindow->setFrameSize(Size(width, height));
+		m_mainWindow->setVisibilityMode(fullscreen ? uilib::Fullscreen : uilib::ShowNormal);
 	}
 
 	void CineticoUI::setHeaderAndFooterVisible(bool visible) {

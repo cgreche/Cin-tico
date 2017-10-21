@@ -33,8 +33,8 @@ namespace cinetico {
 		buttonCreateAccount.setText(m_dictionary.getString(Dictionary::LoginViewActionCreateUserProfile));
 	}
 
-	LoginController::LoginController(Cinetico &cinetico)
-		: Controller(cinetico)
+	LoginController::LoginController(CineticoUI &cineticoUI)
+		: Controller(cineticoUI)
 	{
 		tbLoginPassword.setPasswordMode(true);
 		buttonLogin.setParam(this);
@@ -82,7 +82,7 @@ namespace cinetico {
 		if (res == Cinetico::SUCCESS) {
 			string str = m_dictionary.getString(Dictionary::LoginViewErrorUserLoggedSucessfully, username);
 			Message::msg(NULL, str);
-			m_cinetico.cineticoUI()->goTo(CineticoUI::EXERCISES);
+			m_cineticoUI.goTo(CineticoUI::EXERCISES);
 			//
 			tbLoginUsername.setText("");
 			tbLoginPassword.setText("");

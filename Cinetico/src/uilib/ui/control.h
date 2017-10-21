@@ -1,7 +1,7 @@
 
 //Control
 // File name: control.h
-// Last edit: 20/10/2017 06:57 (UTC-3)
+// Last edit: 21/10/2017 01:26 (UTC-3)
 // Author: CGR
 
 #ifndef __UILIB_CONTROL_H__
@@ -20,7 +20,7 @@ namespace uilib {
 		ShowNormal = 0,
 		Minimized, //to be implemented
 		Maximized, //to be implemented
-		FullScreen //Window Only
+		Fullscreen //Window Only
 	};
 
 	enum ControlStyles

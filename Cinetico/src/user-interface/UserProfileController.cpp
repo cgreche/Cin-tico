@@ -10,7 +10,7 @@ namespace cinetico {
 
 	static void buttonBack_onClick(Button& button) {
 		UserProfileController *controller = (UserProfileController*)button.param();
-		controller->m_cinetico.cineticoUI()->goTo(CineticoUI::EXERCISES);
+		controller->m_cineticoUI.goTo(CineticoUI::EXERCISES);
 	}
 
 	static void buttonChangeUserDetails_onClick(Button& button) {
@@ -29,7 +29,7 @@ namespace cinetico {
 		Message::message_result result = Message::question(NULL, controller->m_dictionary.getString(Dictionary::UserProfileViewQuestionDeactivateConfirmation));
 		if (result == Message::yes) {
 			controller->m_cinetico.logoffCurrentUser();
-			controller->m_cinetico.cineticoUI()->goTo(CineticoUI::LOGIN);
+			controller->m_cineticoUI.goTo(CineticoUI::LOGIN);
 			controller->m_cinetico.cineticoDB()->userProfileDAO()->exclude(*controller->m_currentUser);
 		}
 	}
@@ -57,8 +57,8 @@ namespace cinetico {
 		buttonDeactivateUser.setText(m_dictionary.getString(Dictionary::UserProfileViewDeactivateUser));
 	}
 
-	UserProfileController::UserProfileController(Cinetico &cinetico)
-		: Controller(cinetico)
+	UserProfileController::UserProfileController(CineticoUI &cineticoUI)
+		: Controller(cineticoUI)
 	{
 		
 		buttonBack.setParam(this);

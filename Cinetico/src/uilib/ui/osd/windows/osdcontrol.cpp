@@ -273,7 +273,7 @@ namespace uilib {
 			return;
 
 		//if we are setting fullscreen mode, set some window styles
-		if (visibilityMode == FullScreen) {
+		if (visibilityMode == Fullscreen) {
 			this->setStyle(ref().style() & ~(CS_Caption | CS_Resizable | CS_SysMenu));
 		}
 		else {
@@ -290,7 +290,7 @@ namespace uilib {
 		case ShowNormal: showMode = SW_SHOWNORMAL; break;
 		case Minimized: showMode = SW_SHOWMINIMIZED; break;
 		case Maximized: showMode = SW_SHOWMAXIMIZED; break;
-		case FullScreen: showMode = SW_SHOWMAXIMIZED; break;
+		case Fullscreen: showMode = SW_SHOWMAXIMIZED; break;
 		default:
 			showMode = SW_SHOWNORMAL;
 			break;

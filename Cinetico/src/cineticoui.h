@@ -35,7 +35,7 @@ namespace cinetico {
 			USER_PROFILE,
 			EXERCISES,
 			ACTIONS,
-			EXERCISE_REALIZATION
+			PLAYING
 		};
 
 	private:
@@ -68,15 +68,14 @@ namespace cinetico {
 		void registerView(int id, const char *name, Controller *controller);
 		void goTo(ViewID viewId, Controller::ViewParams *params = NULL);
 
-		void startExercise(cinetico_core::Exercise &exercise);
-		void startPlayground();
 		void update();
 		void step();
 		void render();
 
+		void setViewResolution(int width, int height, bool fullscreen);
 		void setHeaderAndFooterVisible(bool visible);
 
-		const Cinetico &cinetico() const { return m_cinetico; }
+		Cinetico &cinetico() const { return m_cinetico; }
 		MainWindow *mainWindow() const { return m_mainWindow; }
 		RenderEngine *renderEngine() const { return m_renderEngine; }
 		RenderEngineHelper *renderEngineHelper() const { return m_renderEngineHelper; }

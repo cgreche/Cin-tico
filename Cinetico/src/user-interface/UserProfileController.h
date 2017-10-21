@@ -27,8 +27,8 @@ namespace cinetico {
 					Label labelCreationDateDescr;
 					Label labelCreationDate;
 					HorizontalLayout layoutUser;
-					Label labelUserDescr;
-					Label labelUser;
+						Label labelUserDescr;
+						Label labelUser;
 				cTextBox tbUsername;
 				Button buttonChangeUserDetails;
 
@@ -57,7 +57,7 @@ namespace cinetico {
 		friend void buttonDeactivateUser_onClick(Button &button);
 
 	public:
-		UserProfileController(Cinetico &cinetico);
+		UserProfileController(CineticoUI &cineticoUI);
 
 		Layout *viewDefinition();
 		void onViewEnter(ViewParams *params);

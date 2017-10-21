@@ -56,7 +56,7 @@ namespace cinetico {
 		Exercise *m_currentExercise;
 
 	public:
-		ExercisesController(Cinetico &cinetico);
+		ExercisesController(CineticoUI &cineticoUI);
 
 		Layout *viewDefinition();
 		void onViewEnter(ViewParams *params);

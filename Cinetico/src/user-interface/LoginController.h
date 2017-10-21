@@ -32,7 +32,7 @@ namespace cinetico {
 		UserProfileDAO *m_userProfileDAO;
 
 	public:
-		LoginController(Cinetico &cinetico);
+		LoginController(CineticoUI &cineticoUI);
 
 		Layout *viewDefinition();
 		void onViewEnter(ViewParams *params);

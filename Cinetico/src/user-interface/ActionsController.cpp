@@ -17,7 +17,7 @@ namespace cinetico {
 
 	static void buttonBack_onClick(Button &button) {
 		ActionsController *controller = (ActionsController*)button.param();
-		controller->m_cinetico.cineticoUI()->goTo(CineticoUI::EXERCISES);
+		controller->m_cineticoUI.goTo(CineticoUI::EXERCISES);
 	}
 
 	static void buttonAdd_onClick(Button& button) {
@@ -254,8 +254,8 @@ namespace cinetico {
 		fillMovementTypeCombo(cbMovementType);
 	}
 
-	ActionsController::ActionsController(Cinetico &cinetico)
-		: Controller(cinetico)
+	ActionsController::ActionsController(CineticoUI &cineticoUI)
+		: Controller(cineticoUI)
 	{
 		
 		buttonAdd.setParam(this);

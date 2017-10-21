@@ -20,7 +20,7 @@ namespace cinetico {
 		if (controller->m_currentExercise) {
 			Controller::ViewParams params;
 			params["exercise"] = controller->m_currentExercise;
-			controller->m_cinetico.cineticoUI()->goTo(CineticoUI::ACTIONS, &params);
+			controller->m_cineticoUI.goTo(CineticoUI::ACTIONS, &params);
 		}
 	}
 
@@ -160,8 +160,8 @@ namespace cinetico {
 		
 	}
 
-	ExercisesController::ExercisesController(Cinetico &cinetico)
-		: Controller(cinetico)
+	ExercisesController::ExercisesController(CineticoUI &cineticoUI)
+		: Controller(cineticoUI)
 	{		
 		buttonCreateExercise.setParam(this);
 		buttonCreateExercise.setOnClick(buttonCreateNew_onClick);
@@ -360,7 +360,7 @@ namespace cinetico {
 			ViewParams params;
 			params["exercise"] = m_currentExercise;
 			params["play_mode"] = (void*)(int)PlayMode::EXERCISE_MODE;
-			m_cinetico.cineticoUI()->goTo(CineticoUI::EXERCISE_REALIZATION,&params);
+			m_cineticoUI.goTo(CineticoUI::PLAYING,&params);
 		}
 	}
 

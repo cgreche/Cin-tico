@@ -39,6 +39,7 @@ namespace uilib {
 		else if (isSizeTypeAuto(wantedSize.width())) {
 			//Check if size if defined as auto
 			Size autoSize = getAutoSize();
+			
 			if (layout()) {
 				if (layout()->undefinedWidthCount() == 0)
 					retSize.setWidth(autoSize.width());

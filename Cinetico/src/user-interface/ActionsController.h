@@ -103,7 +103,7 @@ namespace cinetico {
 		friend void buttonDelete_onClick(Button &button);
 
 	public:
-		ActionsController(Cinetico &cinetico);
+		ActionsController(CineticoUI &cineticoUI);
 
 		Layout *viewDefinition();
 		virtual void onViewEnter(ViewParams *params);

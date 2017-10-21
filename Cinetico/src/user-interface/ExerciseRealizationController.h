@@ -26,8 +26,11 @@ namespace cinetico {
 
 		PlayMode *m_playingMode;
 
+		int m_oldWidth;
+		int m_oldHeight;
+		bool m_oldFullscreen;
 	public:
-		ExerciseRealizationController(Cinetico &cinetico);
+		ExerciseRealizationController(CineticoUI &cineticoUI);
 
 		Layout *viewDefinition();
 		void onViewEnter(ViewParams *params);
