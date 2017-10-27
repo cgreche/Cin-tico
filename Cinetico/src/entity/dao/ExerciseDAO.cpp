@@ -144,8 +144,13 @@ namespace cinetico {
 	}
 
 	void ExerciseDAO::exclude(Exercise &exercise) {
-		const char *sql = "DELETE FROM EXERCISE WHERE id = ?;";
+		const char *sql = "DELETE FROM ACTION WHERE exercise_id = ?";
 		SQLStatement *stmt;
+		stmt = m_db.prepare(sql);
+		stmt->bind(1, (int)exercise.id());
+		stmt->execute();
+
+		sql = "DELETE FROM EXERCISE WHERE id = ? ; ";
 		stmt = m_db.prepare(sql);
 		stmt->bind(1, (int)exercise.id());
 		int rc = stmt->execute();
