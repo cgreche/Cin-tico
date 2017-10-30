@@ -38,7 +38,7 @@ namespace cinetico_core {
 		unsigned int index = m_currentActionIndex;
 		Action *action = m_actions[m_currentActionIndex];
 		action->step(*m_body);
-		bool actionFinished = action->state() == Action::Finished;
+		bool actionFinished = true;
 		++index;
 		for (; index < m_actions.size() && actionFinished; ++index) {
 			action = m_actions[index];

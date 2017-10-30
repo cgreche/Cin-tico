@@ -1,13 +1,14 @@
 
 #include "PositionAction.h"
 #include "Exercise.h"
+#include <uilib/lib/time.h>
 
 namespace cinetico_core {
 
 	PositionAction::PositionAction(Exercise &owner, int id)
 		: Action(Action::Position, owner, id) {
 		m_minHoldTime = 0.5f;
-		m_holdTime = 0.f;
+		m_holdStartTime = 0.f;
 	}
 
 	Action::ActionResult PositionAction::avaliate(Body &body) {
@@ -15,8 +16,18 @@ namespace cinetico_core {
 
 		//todo: handle refPoint Any or LastPosition
 		float gap = 0.2f;
-
+		m_minHoldTime = 10;
 		Vector3 position = bodyPoint->position();
+
+		Vector3 diff = m_lastPosition - position;
+
+		float curTime = (float)uilib::OSTime::ticks();
+		float tps = (float)uilib::OSTime::ticksPerSecond();
+		float holdTime;
+		if (sqrtf(diff.dotProduct(diff)) >= 0.1) //dotProduct here will square and sum
+			m_holdStartTime = curTime;
+
+		holdTime = (curTime - m_holdStartTime) / tps;
 
 		float accuracyX = 0.f;
 		float accuracyY = 0.f;
@@ -55,7 +66,7 @@ namespace cinetico_core {
 		
 		float accuracy = (accuracyX + accuracyY + accuracyZ) / (weightX + weightY + weightZ);
 		m_accuracy = accuracy;
-//		if (m_holdTime >= m_minHoldTime) {
+		if (holdTime >= m_minHoldTime) {
 			if (accuracy < 50.f)
 				return Missed;
 			if (accuracy < 80.f)
@@ -63,7 +74,9 @@ namespace cinetico_core {
 			if (accuracy < 90.f)
 				return Good;
 			return Excellent;
-//		}
+		}
+
+		m_lastPosition = position;
 
 		return Missed;
 	}

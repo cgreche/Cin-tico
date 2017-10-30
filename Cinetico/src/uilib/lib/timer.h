@@ -25,9 +25,9 @@ namespace uilib {
 
 		bool m_enabled;
 		bool m_periodic;
-		osd_ticks_t m_startTime;
-		osd_ticks_t m_expireTime;
-		osd_ticks_t m_duration; //for periodic times
+		u64 m_startTime;
+		u64 m_expireTime;
+		u64 m_duration; //for periodic times
 
 		TimerFunc m_timerFunc;
 		void *m_param;
@@ -43,35 +43,35 @@ namespace uilib {
 
 	public:
 
-		void start(osd_ticks_t duration, bool periodic = true);
+		void start(u64 duration, bool periodic = true);
 		void reset();
-		void set(osd_ticks_t duration, bool periodic, bool enabled, TimerFunc callback, void *param, int id = 0);
+		void set(u64 duration, bool periodic, bool enabled, TimerFunc callback, void *param, int id = 0);
 		void setEnabled(bool enabled);
-		void setDuration(osd_ticks_t duration, bool periodic, bool update = false);
+		void setDuration(u64 duration, bool periodic, bool update = false);
 		inline void setPeriodic(bool periodic) { m_periodic = periodic; }
 		inline void setParam(void *param) { m_param = param; }
 
 		bool enabled() const { return m_enabled; }
 		bool periodic() const { return m_periodic; }
-		osd_ticks_t startTime() const { return m_startTime; }
-		osd_ticks_t expireTime() const { return m_expireTime; }
-		osd_ticks_t duration() const { return m_duration; }
+		u64 startTime() const { return m_startTime; }
+		u64 expireTime() const { return m_expireTime; }
+		u64 duration() const { return m_duration; }
 
-		osd_ticks_t elapsed() const;
-		osd_ticks_t remaining() const;
+		u64 elapsed() const;
+		u64 remaining() const;
 
-		static inline osd_ticks_t seconds(int s);
-		static inline osd_ticks_t miliseconds(int ms);
+		static inline u64 seconds(int s);
+		static inline u64 miliseconds(int ms);
 	};
 
-	inline osd_ticks_t Timer::seconds(int s) { return s*osd_tps(); }
-	inline osd_ticks_t Timer::miliseconds(int ms) { return ms*osd_tps() / 1000; }
+	inline u64 Timer::seconds(int s) { return s*os_ticksPerSecond(); }
+	inline u64 Timer::miliseconds(int ms) { return ms*os_ticksPerSecond() / 1000; }
 
 	class TimerSystem
 	{
 		friend class Timer;
 
-		osd_ticks_t m_currentTime;
+		u64 m_currentTime;
 
 		Timer *m_firstTimer;
 
@@ -84,12 +84,12 @@ namespace uilib {
 
 		Timer *createTimer(TimerFunc callback, void *param, int id = 0);
 		Timer *createTimer(int id = 0) { return createTimer(NULL, NULL, id); }
-		Timer *createOneShotTimer(osd_ticks_t duration, TimerFunc callback, void *param, int id = 0);
-		Timer *createPeriodicTimer(osd_ticks_t period, TimerFunc callback, void *param, int id = 0);
+		Timer *createOneShotTimer(u64 duration, TimerFunc callback, void *param, int id = 0);
+		Timer *createPeriodicTimer(u64 period, TimerFunc callback, void *param, int id = 0);
 
 		void execute();
 
-		osd_ticks_t currentTime() const;
+		u64 currentTime() const;
 	};
 
 }

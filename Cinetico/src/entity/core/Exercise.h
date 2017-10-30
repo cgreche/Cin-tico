@@ -29,6 +29,7 @@ namespace cinetico_core {
 		Body *m_body;
 		ExerciseState m_state;
 		int m_currentActionIndex;
+		Vector3 m_lastPosition[BodyPoint::BodyPartCount];
 
 	public:
 		Exercise(unsigned long id = -1);

@@ -1,19 +1,26 @@
 
 //Time
 // File: time.h
-// Last Edit: 11/01/2015 14:28 (UTC-3)
+// Last Edit: 27/10/2017 02:40 (UTC-3)
 // Author: CGR
 
 #ifndef __TIME_H__
 #define __TIME_H__
 
+#include <uilib/types.h>
+
 namespace uilib {
 
-	typedef u64 osd_ticks_t;
+	u64 os_ticks();
+	u64 os_ticksPerSecond();
+	void os_sleep(u64 ticksToSleep);
 
-	osd_ticks_t osd_ticks();
-	osd_ticks_t osd_tps();
-	void osd_sleep(osd_ticks_t ticksToSleep);
+	class OSTime {
+	public:
+		static u64 ticks() { return os_ticks(); }
+		static u64 ticksPerSecond() { return os_ticksPerSecond(); }
+		static u64 sleep(u64 ticksToSleep) { os_sleep(ticksToSleep); }
+	};
 
 }
 

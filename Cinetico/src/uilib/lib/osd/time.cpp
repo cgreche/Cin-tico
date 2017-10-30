@@ -1,51 +1,45 @@
 
 //OSDTime
 // File: time.cpp
-// Last Edit: 10/12/2014 03:47 (UTC-3)
+// Last Edit: 27/10/2017 02:36 (UTC-3)
 // Author: CGR
 
 //WINDOWS Timing functions
 
 #include <windows.h>
-#include "..\\..\\types.h"
+#include <uilib/types.h>
 #include "..\\time.h"
 
 namespace uilib {
 
-	static osd_ticks_t g_tps = 0;
+	static u64 g_tps = 0;
 
-
-	osd_ticks_t osd_ticks()
+	u64 os_ticks()
 	{
 		LARGE_INTEGER freq;
-		if (!g_tps) {
-			QueryPerformanceFrequency(&freq);
-			if (freq.QuadPart == 0)
-				return 0;
-			g_tps = freq.QuadPart;
-		}
-
-		QueryPerformanceCounter(&freq);
+		::QueryPerformanceCounter(&freq);
 		return (s64)freq.QuadPart;
 	}
 
-
-
-
-	osd_ticks_t osd_tps() {
+	u64 os_ticksPerSecond() {
+		LARGE_INTEGER freq;
+		if (g_tps)
+			return g_tps;
+		::QueryPerformanceFrequency(&freq);
+		if (freq.QuadPart == 0)
+			return 0;
+		g_tps = freq.QuadPart;
 		return g_tps;
 	}
 
-
-
 	//Copied from MAME
-	void osd_sleep(osd_ticks_t ticksToSleep)
+	void os_sleep(u64 ticksToSleep)
 	{
 		DWORD msec;
 
 		// make sure we've computed ticks_per_second
 		if (g_tps == 0)
-			osd_ticks();
+			os_ticksPerSecond();
 
 		// convert to milliseconds, rounding down
 		msec = (DWORD)(ticksToSleep * 1000 / g_tps);
@@ -65,7 +59,6 @@ namespace uilib {
 			Sleep(msec);
 			SetThreadPriority(current_thread, old_priority);
 		}
-
 	}
 
 }

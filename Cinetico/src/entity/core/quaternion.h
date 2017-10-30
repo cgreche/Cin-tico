@@ -36,44 +36,103 @@ namespace cinetico_core {
 			m_w = w;
 		}
 
-		static Quaternion fromEuler(Vector3 euler) {
+		void normalize() {
+			float mag = sqrtf(m_w * m_w + m_x * m_x + m_y * m_y + m_z * m_z);
+			m_w /= mag;
+			m_x /= mag;
+			m_y /= mag;
+			m_z /= mag;
+		}
+
+		Quaternion normalized() {
+			float mag = sqrtf(m_w * m_w + m_x * m_x + m_y * m_y + m_z * m_z);
+			return Quaternion(m_x / mag, m_y / mag, m_z / mag, m_w / mag);
+		}
+
+		static float dotProduct(const Quaternion &q1, const Quaternion &q2) {
+			return q1.m_w * q2.m_w + q1.m_x * q2.m_x + q1.m_y * q2.m_y + q1.m_z * q2.m_z;
+		}
+
+		static Quaternion nlerp(const Quaternion& q1, const Quaternion& q2, float t) {
+
+			// Handle the easy cases first.
+			if (t <= 0.0f) return q1;
+			if (t >= 1.0f) return q2;
+
+			// Determine the angle between the two quaternions.
+			Quaternion q2b(q2);
+			float dot = Quaternion::dotProduct(q1, q2);
+			if (dot < 0.0f)
+				q2b = -q2b;
+
+			// Perform the linear interpolation.
+			Quaternion qret = (q1 * (1.0f - t) + q2b * t);
+			return qret.normalized();
+		}
+
+		static Quaternion fromEuler(float pitch, float yaw, float roll) {
 			Quaternion q;
 			// Abbreviations for the various angular functions
-			double cy = cos(euler.y() * 0.5);
-			double sy = sin(euler.y() * 0.5);
-			double cr = cos(euler.z() * 0.5);
-			double sr = sin(euler.z() * 0.5);
-			double cp = cos(euler.x() * 0.5);
-			double sp = sin(euler.x() * 0.5);
+			double cy = cos(yaw * 0.5);
+			double sy = sin(yaw * 0.5);
+			double cr = cos(roll * 0.5);
+			double sr = sin(roll * 0.5);
+			double cp = cos(pitch * 0.5);
+			double sp = sin(pitch * 0.5);
 
 			q.m_w = cy * cr * cp + sy * sr * sp;
-			q.m_x = cy * sr * cp - sy * cr * sp;
-			q.m_y = cy * cr * sp + sy * sr * cp;
-			q.m_z = sy * cr * cp - cy * sr * sp;
+			q.m_x = cy * cr * sp + sy * sr * cp;
+			q.m_y = sy * cr * cp - cy * sr * sp;
+			q.m_z = cy * sr * cp - sy * cr * sp;
 			return q;
-
 		}
 
 		Vector3 toEuler() {
-			// roll (x-axis rotation)
-			float sinr = +2.0 * (m_w * m_x + m_y * m_z);
-			float cosr = +1.0 - 2.0 * (m_x * m_x + m_y * m_y);
-			float roll = atan2(sinr, cosr);
+			float pitch, yaw, roll;
 
-			// pitch (y-axis rotation)
-			float sinp = +2.0 * (m_w * m_y - m_z * m_x);
-			float pitch;
-			if (fabs(sinp) >= 1)
-				pitch = copysign(M_PI / 2, sinp); // use 90 degrees if out of range
-			else
-				pitch = asin(sinp);
+			float xx = m_x * m_x;
+			float xy = m_x * m_y;
+			float xz = m_x * m_z;
+			float xw = m_x * m_w;
+			float yy = m_y * m_y;
+			float yz = m_y * m_z;
+			float yw = m_y * m_w;
+			float zz = m_z * m_z;
+			float zw = m_z * m_w;
 
-			// yaw (z-axis rotation)
-			double siny = +2.0 * (m_w * m_z + m_x * m_y);
-			double cosy = +1.0 - 2.0 * (m_y * m_y + m_z * m_z);
-			float yaw = atan2(siny, cosy);
-			return Vector3(-roll, pitch, -yaw);
-			//return Vector3(yaw, pitch, roll);
+			const float lengthSquared = xx + yy + zz + m_w * m_w;
+			if (lengthSquared != 0.f) {
+				xx /= lengthSquared;
+				xy /= lengthSquared; // same as (xp / length) * (yp / length)
+				xz /= lengthSquared;
+				xw /= lengthSquared;
+				yy /= lengthSquared;
+				yz /= lengthSquared;
+				yw /= lengthSquared;
+				zz /= lengthSquared;
+				zw /= lengthSquared;
+			}
+
+
+			pitch = std::asin(-2.0f * (yz - xw));
+			if (pitch < M_PI/2) {
+				if (pitch > -M_PI/2) {
+					yaw = std::atan2(2.0f * (xz + yw), 1.0f - 2.0f * (xx + yy));
+					roll = std::atan2(2.0f * (xy + zw), 1.0f - 2.0f * (xx + zz));
+				}
+				else {
+					// not a unique solution
+					roll = 0.0f;
+					yaw = -std::atan2(-2.0f * (xy - zw), 1.0f - 2.0f * (yy + zz));
+				}
+			}
+			else {
+				// not a unique solution
+				roll = 0.0f;
+				yaw = std::atan2(-2.0f * (xy - zw), 1.0f - 2.0f * (yy + zz));
+			}
+
+			return Vector3(pitch, yaw, roll);
 		}
 
 		Matrix4 toRotationMatrix() {
@@ -139,8 +198,29 @@ namespace cinetico_core {
 			}
 			return Quaternion(x, y, z, w);
 		}
+
+		friend inline const Quaternion operator+(const Quaternion &q1, const Quaternion &q2);
+		friend inline const Quaternion operator-(const Quaternion &q1, const Quaternion &q2);
+		friend inline const Quaternion operator*(const Quaternion &q, float factor);
+		friend inline const Quaternion operator-(const Quaternion &q);
 	};
 
+
+	inline const Quaternion operator+(const Quaternion &q1, const Quaternion &q2) {
+		return Quaternion(q1.m_x + q2.m_x, q1.m_y + q2.m_y, q1.m_z + q2.m_z, q1.m_w + q2.m_w);
+	}
+
+	inline const Quaternion operator-(const Quaternion &q1, const Quaternion &q2) {
+		return Quaternion(q1.m_x - q2.m_x, q1.m_y - q2.m_y, q1.m_z - q2.m_z, q1.m_w - q2.m_w);
+	}
+
+	inline const Quaternion operator*(const Quaternion &q, float factor) {
+		return Quaternion(q.m_x * factor, q.m_y * factor, q.m_z * factor, q.m_w * factor);
+	}
+
+	inline const Quaternion operator-(const Quaternion &q) {
+		return Quaternion(-q.m_x, -q.m_y, -q.m_z, -q.m_w);
+	}
 }
 
 #endif

@@ -9,13 +9,19 @@ namespace cinetico_core {
 		float m_minHoldTime;
 
 		//state attributes
-		float m_holdTime;
+		Vector3 m_lastPosition;
+		float m_holdStartTime;
 
 	public:
 		PositionAction(Exercise &owner, int id = -1);
 		virtual ActionResult avaliate(Body &body);
 
-		void setMinHoldTime(float minHoldTime) { m_minHoldTime = minHoldTime; }
+		void setMinHoldTime(float minHoldTime) { 
+			if (minHoldTime < 0.5f)
+				minHoldTime = 0.5f;
+			m_minHoldTime = minHoldTime;
+		}
+
 		float minHoldTime() const { return m_minHoldTime; }
 	};
 

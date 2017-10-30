@@ -1,7 +1,7 @@
 
 //Timer
 // File: timer.cpp
-// Last Edit: 12/01/2015 20:42 (UTC-3)
+// Last Edit: 27/10/2017 03:23 (UTC-3)
 // Author: CGR
 
 #include "timer.h"
@@ -30,12 +30,12 @@ namespace uilib {
 			m_enabled = false;
 
 		//save information about the current startTime
-		osd_ticks_t oldStart = m_startTime;
+		u64 oldStart = m_startTime;
 
 		if (m_timerFunc)
 			(*m_timerFunc)(m_param, m_id);
 
-		//if the startTime changed, it means, timer was modified during callback
+		//we only need to reschedule if the timer wasn't changed inside the callback
 		if (m_startTime == oldStart) {
 			if (m_periodic) {
 				//re-schedule
@@ -54,13 +54,13 @@ namespace uilib {
 		m_handler.updateTimer(*this);
 	}
 
-	void Timer::start(osd_ticks_t duration, bool periodic)
+	void Timer::start(u64 duration, bool periodic)
 	{
 		m_enabled = true;
 		m_duration = duration;
 		m_periodic = periodic;
 
-		osd_ticks_t time = m_handler.currentTime();
+		u64 time = m_handler.currentTime();
 		m_startTime = time;
 		m_expireTime = time + duration;
 		m_handler.updateTimer(*this);
@@ -71,9 +71,9 @@ namespace uilib {
 		start(m_duration);
 	}
 
-	void Timer::set(osd_ticks_t duration, bool periodic, bool enabled, TimerFunc callback, void *param, int id)
+	void Timer::set(u64 duration, bool periodic, bool enabled, TimerFunc callback, void *param, int id)
 	{
-		osd_ticks_t time = m_handler.currentTime();
+		u64 time = m_handler.currentTime();
 		m_periodic = true;
 		m_duration = duration;
 		m_timerFunc = callback;
@@ -86,7 +86,7 @@ namespace uilib {
 		m_handler.updateTimer(*this);
 	}
 
-	void Timer::setDuration(osd_ticks_t duration, bool periodic, bool update)
+	void Timer::setDuration(u64 duration, bool periodic, bool update)
 	{
 		m_duration = duration;
 		m_periodic = periodic;
@@ -97,14 +97,14 @@ namespace uilib {
 		}
 	}
 
-	osd_ticks_t Timer::elapsed() const
+	u64 Timer::elapsed() const
 	{
 		return m_handler.currentTime() - m_startTime;
 	}
 
-	osd_ticks_t Timer::remaining() const
+	u64 Timer::remaining() const
 	{
-		osd_ticks_t current = m_handler.currentTime();
+		u64 current = m_handler.currentTime();
 		if (current >= m_expireTime)
 			return 0;
 		return m_expireTime - current;
@@ -115,7 +115,7 @@ namespace uilib {
 	TimerSystem::TimerSystem()
 		: m_firstTimer(NULL)
 	{
-		m_currentTime = osd_ticks();
+		m_currentTime = os_ticks();
 	}
 
 	void TimerSystem::insertTimerIntoList(Timer &timer)
@@ -126,7 +126,7 @@ namespace uilib {
 			m_firstTimer = &timer;
 		}
 		else {
-			osd_ticks_t expire = timer.expireTime();
+			u64 expire = timer.expireTime();
 			bool enabled = timer.enabled();
 
 			for (;;) {
@@ -186,7 +186,7 @@ namespace uilib {
 		return timer;
 	}
 
-	Timer *TimerSystem::createOneShotTimer(osd_ticks_t duration, TimerFunc callback, void *param, int id)
+	Timer *TimerSystem::createOneShotTimer(u64 duration, TimerFunc callback, void *param, int id)
 	{
 		Timer *timer = new Timer(*this);
 		timer->set(duration, false, true, callback, param, id);
@@ -195,7 +195,7 @@ namespace uilib {
 		return timer;
 	}
 
-	Timer *TimerSystem::createPeriodicTimer(osd_ticks_t period, TimerFunc callback, void *param, int id)
+	Timer *TimerSystem::createPeriodicTimer(u64 period, TimerFunc callback, void *param, int id)
 	{
 		Timer *timer = new Timer(*this);
 		timer->set(period, true, true, callback, param, id);
@@ -209,7 +209,7 @@ namespace uilib {
 		if (!m_firstTimer)
 			return;
 
-		osd_ticks_t curTime = osd_ticks();
+		u64 curTime = os_ticks();
 		m_currentTime = curTime;
 
 		while (curTime > m_firstTimer->m_expireTime) {
@@ -223,7 +223,7 @@ namespace uilib {
 		}
 	}
 
-	osd_ticks_t TimerSystem::currentTime() const
+	u64 TimerSystem::currentTime() const
 	{
 		return m_currentTime;
 	}
