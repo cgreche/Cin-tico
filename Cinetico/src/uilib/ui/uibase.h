@@ -1,7 +1,7 @@
 
 // UI Base
 // File: uibase.h
-// Last edit: 18/06/2017 00:50
+// Last edit: 25/10/2017 05:51
 // Author: CGR
 
 #ifndef __UIBASE_H__
@@ -32,9 +32,10 @@ namespace uilib {
 #define MOUSE_BUTTON_4_RELEASED 256
 #define MOUSE_BUTTON_5_RELEASED 512
 
-	class uibase
+	class UI
 	{
-		static bool g_uiinit;
+		static bool m_uiinit;
+
 	public:
 		static void UIInit();
 		static int UIProcess();
@@ -68,6 +69,7 @@ namespace uilib {
 	class OSDVerticalScrollBar;
 	class OSDHorizontalScrollBar;
 	class OSDStatusBar;
+	class OSDScrollView;
 
 	class OSDMenuBar;
 	class OSDMenuObject;
@@ -117,9 +119,9 @@ namespace uilib {
 #include "controls/combobox.h"
 #include "controls/groupbox.h"
 #include "controls/statusbar.h"
+#include "controls/scrollview.h"
 #include "uitools.h"
 #include "dialogs/filedialog.h"
-
 
 #ifdef _WIN32
 #include "osd\\windows\\osdbase.h"

@@ -3,10 +3,11 @@
 #include "DebugPlayMode.h"
 #include "cinetico.h"
 #include "cineticoui.h"
+#include "input.h"
+#include "entity/core/quaternion.h"
 
 namespace cinetico {
 
-	bool keyStates[256] = { 0 };
 	bool lastKeyStates[256] = { 0 };
 	bool mouse[3] = { 0 };
 
@@ -41,6 +42,8 @@ namespace cinetico {
 
 	int viewport1;
 	int viewport2;
+
+	int instCubeTest;
 
 
 #define NUM_CUBES 1000
@@ -104,6 +107,8 @@ namespace cinetico {
 		resCube = m_renderEngineHelper->createCube(2);
 		m_renderEngine->resourceData(resCube)->setColors(cubeColors);
 		instanceCube = m_renderEngine->newResourceInstance(resCube);
+		instCubeTest = m_renderEngine->newResourceInstance(resCube);
+		//m_renderEngine->resourceInstance(instCubeTest)->setPos(render3d::Vector3(-2.5f, 1.5f, 0.f));
 
 		resQuad1 = m_renderEngineHelper->createQuad(10, 0.25);
 		resQuad2 = m_renderEngineHelper->createQuad(100, 200);
@@ -171,29 +176,51 @@ namespace cinetico {
 	}
 
 	void DebugPlayMode::step() {
-		bool leftDown = keyStates['A'];
-		bool rightDown = keyStates['D'];
-		bool downDown = keyStates['S'];
-		bool upDown = keyStates['W'];
-		bool shiftDown = keyStates[VK_SHIFT];
-		bool ctrlDown = keyStates[VK_CONTROL];
-		bool tabDown = keyStates[VK_TAB];
-		bool spaceDown = keyStates[VK_SPACE];
-		bool escDown = keyStates[VK_ESCAPE];
-
-		bool quit3D = false;
-		if (keyStates[VK_ESCAPE] == 1 && lastKeyStates[VK_ESCAPE] == 0) {
-			quit3D = true;
-		}
-
-		lastKeyStates[VK_ESCAPE] = keyStates[VK_ESCAPE];
-
-		if (quit3D) {
-			m_cinetico.cineticoUI()->goTo(CineticoUI::EXERCISES);
-			return;
-		}
+		bool leftDown = m_cinetico.input()->keyboard.key('A');
+		bool rightDown = m_cinetico.input()->keyboard.key('D');
+		bool downDown = m_cinetico.input()->keyboard.key('S');
+		bool upDown = m_cinetico.input()->keyboard.key('W');
+		bool shiftDown = m_cinetico.input()->keyboard.key(VK_SHIFT);
+		bool ctrlDown = m_cinetico.input()->keyboard.key(VK_CONTROL);
+		bool tabDown = m_cinetico.input()->keyboard.key(VK_TAB);
+		bool spaceDown = m_cinetico.input()->keyboard.key(VK_SPACE);
+		bool escDown = m_cinetico.input()->keyboard.key(VK_ESCAPE);
 
 		float d = 0.1f;
+		float e = 0.005f;
+		float max = 1.f;
+
+		static float a = 0.f;
+		static bool invert = false;
+
+		cinetico_core::Quaternion q, q2, q3;
+
+		if (invert)
+			a -= e;
+		else
+			a += e;
+
+		if (a > max) {
+			a = max;
+			invert = true;
+		}
+		if (a < 0) {
+			a = 0;
+			invert = false;
+		}
+
+		//a = 0.05;
+		q = Quaternion::fromEuler(0,0,0);
+		q2 = Quaternion::fromEuler(0.7f,0.7f,0);
+		q3 = Quaternion::nlerp(q, q2, a);
+		cinetico_core::Vector3 testRotation = q3.toEuler();
+		//testRotation = cinetico_core::Vector3(a, 0, 0);
+
+		ResourceInstance *instance;
+		instance = m_renderEngine->resourceInstance(instCubeTest);
+		instance->setRot(render3d::Vector3(testRotation.x(), testRotation.y(), testRotation.z()));
+
+
 
 		if (!shiftDown) {
 			//Update quads (billboarding)
@@ -205,7 +232,7 @@ namespace cinetico {
 		}
 
 
-		ResourceInstance *instance = m_renderEngine->resourceInstance(instanceCube);
+		instance = m_renderEngine->resourceInstance(instanceCube);
 		render3d::Vector3 newPos = instance->pos();
 		render3d::Vector3 newRot = instance->rot();
 
@@ -272,6 +299,7 @@ namespace cinetico {
 
 		m_renderEngine->drawResource(instanceTerrain);
 		m_renderEngine->drawResource(instanceCube);
+		m_renderEngine->drawResource(instCubeTest);
 
 		/*
 		m_renderEngine->drawResource(instanceQuad2);
@@ -307,14 +335,15 @@ namespace cinetico {
 
 	void DebugPlayMode::processCamera() {
 
-		bool leftDown = keyStates['A'];
-		bool rightDown = keyStates['D'];
-		bool downDown = keyStates['S'];
-		bool upDown = keyStates['W'];
-		bool shiftDown = keyStates[VK_SHIFT];
-		bool ctrlDown = keyStates[VK_CONTROL];
-		bool tabDown = keyStates[VK_TAB];
-		bool spaceDown = keyStates[VK_SPACE];
+		bool leftDown = m_cinetico.input()->keyboard.key('A');
+		bool rightDown = m_cinetico.input()->keyboard.key('D');
+		bool downDown = m_cinetico.input()->keyboard.key('S');
+		bool upDown = m_cinetico.input()->keyboard.key('W');
+		bool shiftDown = m_cinetico.input()->keyboard.key(VK_SHIFT);
+		bool ctrlDown = m_cinetico.input()->keyboard.key(VK_CONTROL);
+		bool tabDown = m_cinetico.input()->keyboard.key(VK_TAB);
+		bool spaceDown = m_cinetico.input()->keyboard.key(VK_SPACE);
+		bool escDown = m_cinetico.input()->keyboard.key(VK_ESCAPE);
 		bool mouse2Down = mouse[1];
 
 		int dx = mouseX - lastMouseX;

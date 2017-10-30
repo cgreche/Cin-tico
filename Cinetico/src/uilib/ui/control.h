@@ -12,6 +12,7 @@
 namespace uilib {
 
 	class Control;
+	class PaintingDevice;
 
 	typedef std::list<Control*> ControlList;
 

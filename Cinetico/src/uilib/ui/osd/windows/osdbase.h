@@ -843,4 +843,6 @@ namespace uilib {
 
 }
 
+#include "osdscrollview.h"
+
 #endif

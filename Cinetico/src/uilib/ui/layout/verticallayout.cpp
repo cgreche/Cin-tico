@@ -30,6 +30,9 @@ namespace uilib {
 
 		calcMinMaxSize();
 
+		m_definedSize.setWidth(m_definedSize.width() + curSize.width()*(m_definedPercentWidth + 0.5f)/100.f);
+		m_definedSize.setHeight(m_definedSize.height() + curSize.height()*(m_definedPercentHeight + 0.5f)/100.f);
+
 		LayoutItemList::iterator it;
 
 		//Move and size objects
@@ -66,8 +69,16 @@ namespace uilib {
 		Size ret;
 		calcMinMaxSize();
 
-		ret.setWidth(m_maxSize.width() + m_leftMargin + m_rightMargin);
-		ret.setHeight(m_minSize.height() + m_topMargin + m_bottomMargin);
+		if (m_undefinedWidthCount != 0)
+			ret.setWidth(SizeTypeMax);
+		else
+			ret.setWidth(m_maxSize.width() + m_leftMargin + m_rightMargin);
+
+		if (m_undefinedHeightCount != 0)
+			ret.setHeight(SizeTypeMax);
+		else
+			ret.setHeight(m_minSize.height() + m_topMargin + m_bottomMargin);
+
 		return ret;
 	}
 

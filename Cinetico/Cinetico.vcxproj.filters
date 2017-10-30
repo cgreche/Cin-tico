@@ -83,6 +83,9 @@
     <Filter Include="src\user-interface\playmodes">
       <UniqueIdentifier>{043b9431-b48b-4dc2-9f0d-3dc82eb36b4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\uilib\ui\impl">
+      <UniqueIdentifier>{1540d453-e5f8-4f88-bbe9-f5eb1cfa17ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\utils\crypter.h">
@@ -598,6 +601,15 @@
     <ClInclude Include="src\input.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\uilib\ui\controls\scrollview.h">
+      <Filter>src\uilib\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\osd\windows\osdscrollview.h">
+      <Filter>src\uilib\ui\osd\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\impl\scrollviewimpl.h">
+      <Filter>src\uilib\ui\impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -941,6 +953,12 @@
     </ClCompile>
     <ClCompile Include="src\input.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\controls\scrollview.cpp">
+      <Filter>src\uilib\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uilib\ui\osd\windows\osdscrollview.cpp">
+      <Filter>src\uilib\ui\osd\windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

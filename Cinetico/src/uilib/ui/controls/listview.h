@@ -6,10 +6,6 @@
 #ifndef __LISTVIEW_H__
 #define __LISTVIEW_H__
 
-#ifndef __UIBASE_H__
-#error This file must be included only by "uibase.h"
-#endif
-
 namespace uilib {
 
 	class ListView;

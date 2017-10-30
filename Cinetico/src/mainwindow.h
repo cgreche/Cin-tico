@@ -17,6 +17,8 @@ namespace cinetico {
 			Label bgBlack;
 			HorizontalLayout layoutAppState;
 				Label labelAppname;
+
+				//Login Info
 				VerticalLayout layoutLoginInfo;
 					HorizontalLayout layoutLoginInfo2;
 						Label labelUsername;
@@ -26,6 +28,9 @@ namespace cinetico {
 		VerticalLayout layoutContent;
 		HorizontalLayout layoutFooter;
 			Label labelAuthor;
+			VerticalLayout layoutOptions;
+				Button buttonDebugMode;
+
 			VerticalLayout layoutLanguages;
 				TextLink linkPortugues;
 				TextLink linkEnglish;
@@ -43,6 +48,7 @@ namespace cinetico {
 		friend void linkPortugues_onClick(TextLink &link);
 		friend void linkEnglish_onClick(TextLink &link);
 		friend void linkEspanol_onClick(TextLink &link);
+		friend void buttonGoToDebugMode_onClick(Button &button);
 		void onClickUserLoginName();
 		void onClickLogoff();
 
@@ -55,6 +61,7 @@ namespace cinetico {
 		virtual void onMouseReleaseEvent(MouseEvent &event);
 
 	public:
+		//todo: change to CineticoUI
 		MainWindow(Cinetico &cinetico);
 		void step();
 		void setContentLayout(Layout *layout);

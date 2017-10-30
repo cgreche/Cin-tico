@@ -28,6 +28,8 @@ namespace cinetico {
 		};
 
 	private:
+		uilib::u64 m_currentTime;
+
 		Input *m_input;
 		Sensor *m_sensor;
 		BodyTracker *m_bodyTracker;
@@ -53,6 +55,8 @@ namespace cinetico {
 		int run();
 		
 		void setLanguage(Dictionary::LanguageID langId);
+
+		uilib::u64 currentTime() const { return m_currentTime; }
 
 		Input *input() const { return m_input; }
 		Sensor *sensor() const { return m_sensor; }

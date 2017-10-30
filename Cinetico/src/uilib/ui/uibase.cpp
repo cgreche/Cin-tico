@@ -1,7 +1,7 @@
 
 //UIBase
 //File: uibase.cpp
-//Last edit: 27/09/2013 02:15 (UTC3)
+//Last edit: 25/10/2017 05:32 (UTC-3)
 //Author: CGR
 
 #include "uibase.h"
@@ -10,24 +10,22 @@ namespace uilib {
 
 	FontDesc g_pUIdefFontDesc;
 
-	bool uibase::g_uiinit(false);
+	bool UI::m_uiinit(false);
 
-
-	void uibase::UIInit() //static
+	void UI::UIInit() //static
 	{
-		if (g_uiinit) return;
+		if (m_uiinit) return;
 		OSDBase::UIInit();
-		uibase::g_uiinit = true;
+		UI::m_uiinit = true;
 		g_pUIdefFontDesc = FontDesc("Arial", 10, 0);
 	}
 
-
-	int uibase::UIProcess() //static 
+	int UI::UIProcess() //static 
 	{
 		return OSDBase::UIProcess();
 	}
 
-	void uibase::UIQuit() //static
+	void UI::UIQuit() //static
 	{
 		OSDBase::UIQuit();
 	}

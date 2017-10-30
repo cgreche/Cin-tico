@@ -149,18 +149,21 @@
     <ClInclude Include="src\uilib\ui\controls\listview.h" />
     <ClInclude Include="src\uilib\ui\controls\radiobutton.h" />
     <ClInclude Include="src\uilib\ui\controls\scrollbar.h" />
+    <ClInclude Include="src\uilib\ui\controls\scrollview.h" />
     <ClInclude Include="src\uilib\ui\controls\separator.h" />
     <ClInclude Include="src\uilib\ui\controls\statusbar.h" />
     <ClInclude Include="src\uilib\ui\controls\textlink.h" />
     <ClInclude Include="src\uilib\ui\dialogs\filedialog.h" />
     <ClInclude Include="src\uilib\ui\event.h" />
     <ClInclude Include="src\uilib\ui\font.h" />
+    <ClInclude Include="src\uilib\ui\impl\scrollviewimpl.h" />
     <ClInclude Include="src\uilib\ui\layout\horizontallayout.h" />
     <ClInclude Include="src\uilib\ui\layout\layout.h" />
     <ClInclude Include="src\uilib\ui\layout\linearlayout.h" />
     <ClInclude Include="src\uilib\ui\layout\verticallayout.h" />
     <ClInclude Include="src\uilib\ui\menu.h" />
     <ClInclude Include="src\uilib\ui\osd\windows\osdbase.h" />
+    <ClInclude Include="src\uilib\ui\osd\windows\osdscrollview.h" />
     <ClInclude Include="src\uilib\ui\osd\windows\windowscontrols.h" />
     <ClInclude Include="src\uilib\ui\painting\bitmap.h" />
     <ClInclude Include="src\uilib\ui\painting\color.h" />
@@ -248,6 +251,7 @@
     <ClCompile Include="src\uilib\ui\controls\listview.cpp" />
     <ClCompile Include="src\uilib\ui\controls\radiobutton.cpp" />
     <ClCompile Include="src\uilib\ui\controls\scrollbar.cpp" />
+    <ClCompile Include="src\uilib\ui\controls\scrollview.cpp" />
     <ClCompile Include="src\uilib\ui\controls\separator.cpp" />
     <ClCompile Include="src\uilib\ui\controls\statusbar.cpp" />
     <ClCompile Include="src\uilib\ui\controls\textlink.cpp" />
@@ -274,6 +278,7 @@
     <ClCompile Include="src\uilib\ui\osd\windows\osdpaintingdevice.cpp" />
     <ClCompile Include="src\uilib\ui\osd\windows\osdradiobutton.cpp" />
     <ClCompile Include="src\uilib\ui\osd\windows\osdscrollbar.cpp" />
+    <ClCompile Include="src\uilib\ui\osd\windows\osdscrollview.cpp" />
     <ClCompile Include="src\uilib\ui\osd\windows\osdstatusbar.cpp" />
     <ClCompile Include="src\uilib\ui\osd\windows\osduitools.cpp" />
     <ClCompile Include="src\uilib\ui\osd\windows\osdwindow.cpp" />

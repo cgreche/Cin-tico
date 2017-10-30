@@ -17,6 +17,13 @@ namespace uilib {
 	{
 	protected:
 		void calcMinMaxSize();
+		uint m_undefinedWidthCount;
+		uint m_undefinedHeightCount;
+		Size m_definedSize;
+		Size m_minSize;
+		Size m_maxSize;
+		float m_definedPercentWidth;
+		float m_definedPercentHeight;
 
 	public:
 		LinearLayout() { };

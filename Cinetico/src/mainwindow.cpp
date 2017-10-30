@@ -5,6 +5,7 @@
 #include "dictionary.h"
 #include "entity/user/UserProfile.h"
 #include "user-interface/viewtemplate.h"
+#include "user-interface/playmodes/PlayMode.h"
 
 using namespace cinetico;
 
@@ -33,6 +34,13 @@ namespace cinetico {
 	static void linkEspanol_onClick(TextLink &link) {
 		MainWindow* mainWindow = (MainWindow *)link.param();
 		mainWindow->m_cinetico.setLanguage(Dictionary::ES_ES);
+	}
+
+	static void buttonGoToDebugMode_onClick(Button &button) {
+		MainWindow *mainWindow = (MainWindow *)button.param();
+		Controller::ViewParams params;
+		params["play_mode"] = (void*)PlayMode::DEBUG_MODE;
+		mainWindow->m_cinetico.cineticoUI()->goTo(CineticoUI::PLAYING,&params);
 	}
 
 	void MainWindow::buildHeaderLayout() {
@@ -74,6 +82,12 @@ namespace cinetico {
 		labelAuthor.setText("2017 César Reche");
 		labelAuthor.setFont(ViewTemplate::FooterInfoFont);
 		labelAuthor.setTextColor(ViewTemplate::FooterInfoColor);
+
+		buttonDebugMode.setText("Go to debug mode");
+		buttonDebugMode.setParam(this);
+		buttonDebugMode.setOnClick(buttonGoToDebugMode_onClick);
+		layoutOptions.append(buttonDebugMode);
+		layoutOptions.setAlignment(Layout::center_align);
 		
 		linkPortugues.setText("Português");
 		linkPortugues.setTextColor(ViewTemplate::TextLinkColor);
@@ -100,6 +114,7 @@ namespace cinetico {
 
 		layoutFooter.setMargin(10);
 		layoutFooter.append(labelAuthor, MaximumSize);
+		layoutFooter.append(layoutOptions, MaximumSize);
 		layoutFooter.append(layoutLanguages, MaximumSize);
 	}
 
@@ -241,8 +256,7 @@ namespace cinetico {
 
 	void MainWindow::onCloseEvent() {
 		this->setVisible(false);
-		uibase::UIQuit();
+		UI::UIQuit();
 	}
-
 
 }

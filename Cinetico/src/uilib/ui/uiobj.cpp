@@ -1,5 +1,8 @@
 
-// Last edit: 11/10/2013 09:35 (UTC-3)
+//UI OBject
+// File: uiobj.h
+// Last edit: 25/10/2017 06:28 (UTC-3)
+// Author: CGR
 
 #include "uibase.h"
 
@@ -7,13 +10,13 @@ namespace uilib {
 
 	UIObj::UIObj() : m_osdRef(*new OSDUIObj(*this))
 	{
-		uibase::UIInit(); //ensure it is init
+		UI::UIInit(); //ensure it is init
 		osdRef().create();
 	}
 
 	UIObj::UIObj(OSDUIObj& osdRef) : m_osdRef(osdRef)
 	{
-		uibase::UIInit(); //ensure it is init
+		UI::UIInit(); //ensure it is init
 	}
 
 	UIObj::~UIObj()
@@ -26,10 +29,6 @@ namespace uilib {
 	{
 		osdRef().update();
 	}
-
-
-
-
 
 	OSDUIObj& UIObj::osdRef() const
 	{

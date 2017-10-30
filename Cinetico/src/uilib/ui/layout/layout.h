@@ -130,13 +130,7 @@ namespace uilib {
 
 		Point m_position;
 		Size m_currentSize;
-
-		uint m_undefinedWidthCount;
-		uint m_undefinedHeightCount;
-
-		Size m_minSize;
-		Size m_maxSize;
-		Size m_definedSize;
+		
 		Size m_biggestControlSize;
 
 		string m_tag; //for debugging purposes
@@ -155,7 +149,7 @@ namespace uilib {
 
 		virtual void setParent(Control *parent);
 		virtual void setPosition(const Point &position);
-		virtual void setSize(const Size &size);
+		virtual void setSize(const Size &size) = 0;
 		virtual void setVisible(bool visible);
 		virtual void setEnabled(bool enabled);
 		virtual Point position() const;
@@ -192,8 +186,6 @@ namespace uilib {
 		Control *parentControl() const;
 
 		void setLayoutTag(const string &tag) { m_tag = tag; }
-		uint undefinedWidthCount() const { return m_undefinedWidthCount; }
-		uint undefinedHeightCount() const { return m_undefinedHeightCount; }
 	};
 
 }

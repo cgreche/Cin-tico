@@ -8,6 +8,7 @@
 
 #include "playmodes/ExercisePlayMode.h"
 #include "playmodes/FreePlayMode.h"
+#include "playmodes/DebugPlayMode.h"
 
 namespace cinetico {
 
@@ -33,6 +34,9 @@ namespace cinetico {
 		if (playModeId == PlayMode::EXERCISE_MODE) {
 			Exercise *exercise = (Exercise*)(*params)["exercise"];
 			playMode = new ExercisePlayMode(m_cinetico, *exercise);
+		}
+		else if (playModeId == PlayMode::DEBUG_MODE) {
+			playMode = new DebugPlayMode(m_cinetico);
 		}
 
 		if (playMode)

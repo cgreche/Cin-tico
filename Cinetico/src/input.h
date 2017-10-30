@@ -43,7 +43,6 @@ namespace cinetico {
 		friend class MainWindow;
 	};
 
-
 }
 
 #endif

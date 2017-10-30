@@ -10,9 +10,12 @@ namespace uilib {
 
 	void LinearLayout::calcMinMaxSize()
 	{
+		//todo: max size is buggy
 		Size parentSize = parentControl() != NULL ? parentControl()->size() : Size(0, 0);
 		Size definedSize, minSize, biggestChildSize;
 		uint undefinedWidthCount = 0, undefinedHeightCount = 0;
+		float definedPercentWidth = 0;
+		float definedPercentHeight = 0;
 
 		LayoutItemList::iterator it;
 
@@ -33,13 +36,14 @@ namespace uilib {
 
 			Size requiredSize = li.getRequiredSize();
 			Size childSize = requiredSize;
-			if (isSizeTypeMaximum(requiredSize.width()) || isSizeTypePercent(requiredSize.width())) {
+			if (isSizeTypeMaximum(requiredSize.width())) {
 				++undefinedWidthCount;
 				childSize.setWidth(0);
 				//todo: if layout, set minSize
 			}
 			else if (isSizeTypePercent(requiredSize.width())) {
-				childSize.setWidth((parentSize.width()*PercentValue(requiredSize.width())) / 100);
+				childSize.setWidth(0);
+				definedPercentWidth += PercentValue(requiredSize.width());
 			}
 
 			if (isSizeTypeMaximum(requiredSize.height())) {
@@ -48,7 +52,9 @@ namespace uilib {
 				//todo: if layout, set minSize
 			}
 			else if (isSizeTypePercent(requiredSize.height())) {
-				childSize.setHeight((parentSize.height()*PercentValue(requiredSize.height())) / 100);
+				childSize.setHeight(0);
+				float test = PercentValue(requiredSize.height());
+				definedPercentHeight += PercentValue(requiredSize.height());
 			}
 
 			//
@@ -64,6 +70,8 @@ namespace uilib {
 		m_definedSize = definedSize;
 		m_undefinedWidthCount = undefinedWidthCount;
 		m_undefinedHeightCount = undefinedHeightCount;
+		m_definedPercentWidth = definedPercentWidth;
+		m_definedPercentHeight = definedPercentHeight;
 	}
 
 }

@@ -173,7 +173,7 @@ namespace uilib {
 
 
 
-		void OSDControl::onPaintEvent(PaintEvent &event)
+	void OSDControl::onPaintEvent(PaintEvent &event)
 	{
 		event.ignore();
 	}

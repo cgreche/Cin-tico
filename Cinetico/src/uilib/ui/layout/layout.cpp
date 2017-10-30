@@ -39,17 +39,7 @@ namespace uilib {
 		else if (isSizeTypeAuto(wantedSize.width())) {
 			//Check if size if defined as auto
 			Size autoSize = getAutoSize();
-			
-			if (layout()) {
-				if (layout()->undefinedWidthCount() == 0)
-					retSize.setWidth(autoSize.width());
-				else {
-					retSize.setWidth(SizeTypeMax);
-				}
-			}
-			else {
-				retSize.setWidth(autoSize.width());
-			}
+			retSize.setWidth(autoSize.width());
 		}
 		else {
 			retSize.setWidth(wantedSize.width());
@@ -62,16 +52,7 @@ namespace uilib {
 		else if (isSizeTypeAuto(size().height())) {
 			//Check if size if defined as auto
 			Size autoSize = getAutoSize();
-			if (layout()) {
-				if (layout()->undefinedHeightCount() == 0)
-					retSize.setHeight(autoSize.height());
-				else {
-					retSize.setHeight(SizeTypeMax);
-				}
-			}
-			else {
-				retSize.setHeight(autoSize.height());
-			}
+			retSize.setHeight(autoSize.height());
 		}
 		else {
 			retSize.setHeight(wantedSize.height());
@@ -214,10 +195,6 @@ namespace uilib {
 			Point childPos = child.position() + diffPos;
 			child.setPosition(childPos);
 		}
-	}
-
-	void Layout::setSize(const Size &size)
-	{
 	}
 
 	void Layout::setVisible(bool visible)

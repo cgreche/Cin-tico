@@ -4,8 +4,8 @@
 #include "cineticoui.h"
 #include "input.h"
 #include "utils/crypter.h"
-
 #include "kinectsensor.h"
+#include "uilib/lib/time.h"
 
 namespace cinetico {
 
@@ -22,6 +22,7 @@ namespace cinetico {
 	};
 
 	Cinetico::Cinetico() {
+		m_currentTime = 0;
 		m_sensor = NULL;
 		m_bodyTracker = NULL;
 		m_currentUser = NULL;
@@ -47,6 +48,7 @@ namespace cinetico {
 
 	void Cinetico::step()
 	{
+		m_currentTime = OSTime::ticks();
 		m_cineticoUI->step();
 	}
 
@@ -110,7 +112,7 @@ namespace cinetico {
 	int Cinetico::run() {
 		setup();
 
-		while (uibase::UIProcess()) {
+		while (UI::UIProcess()) {
 			step();
 		}
 

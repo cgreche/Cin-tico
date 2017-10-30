@@ -4,10 +4,6 @@
 // Last Edit: 01/08/2014 01:39 (UTC-3)
 // Author: CGR
 
-#ifndef __UIBASE_H__
-#error This file must be included only by "uibase.h"
-#endif
-
 #ifndef __SCROLLBAR_H__
 #define __SCROLLBAR_H__
 
