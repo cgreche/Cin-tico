@@ -130,14 +130,5 @@ using namespace cinetico;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	Cinetico cinetico;
-	uilib::string test = "WOOOOOW";
-	uilib::string test2 = "WOOOOOW";
-	uilib::string test3 = "WOOOOOW";
-
-	test.replace(0, 7, "1234567");
-	test2.replace(1, 5, "1");
-	test3.replace(1, 5, "1234567890");
-
-
 	return cinetico.run();
 }
