@@ -2,6 +2,7 @@
 #include "cinetico.h"
 #include "dictionary.h"
 #include <libxml/tree.h>
+#include "uilib/lib/string.h"
 
 #include <windows.h> //for utf-8 to ansi conversion (temporary) todo: remove when it is not needed anymore
 
@@ -180,14 +181,9 @@ namespace cinetico {
 
 	Dictionary::LanguageID Dictionary::xmlIDAttrToLanguageID(const char *attr) {
 		LanguageID langId = InvalidLanguageID;
-		std::string langIdStr = attr;
-		unsigned int i;
-
-		//toLower()
-		for (i = 0; i < langIdStr.length(); ++i)
-			langIdStr[i] = toupper(langIdStr[i]);
-
-		for (i = 0; i < LanguageIDCount; ++i) {
+		uilib::string langIdStr = attr;
+		langIdStr = langIdStr.toUpper();
+		for (unsigned i = 0; i < LanguageIDCount; ++i) {
 			if (langIdStr == g_langIdStr[i]) {
 				langId = (LanguageID)i;
 				break;
@@ -199,15 +195,13 @@ namespace cinetico {
 
 	Dictionary::StringID Dictionary::xmlIDAttrToStringID(const char *attr) {
 		StringID stringId = InvalidStringID;
-		std::string stringIdStr = attr;
-		unsigned int i;
-		for (i = 0; i < StringIDCount; ++i) {
+		uilib::string stringIdStr = attr;
+		for (unsigned int i = 0; i < StringIDCount; ++i) {
 			if (stringIdStr == g_stringIdStr[i]) {
 				stringId = (StringID)i;
 				break;
 			}
 		}
-
 		return stringId;
 	}
 
@@ -277,8 +271,8 @@ namespace cinetico {
 	}
 
 	void Dictionary::loadAllLanguages() {
-		loadLanguage("language/pt-br.clang");
-		loadLanguage("language/en-us.clang");
+		loadLanguage("languages/pt-br.clang");
+		loadLanguage("languages/en-us.clang");
 	}
 
 	Dictionary::Dictionary(Cinetico &cinetico)
@@ -303,15 +297,43 @@ namespace cinetico {
 		if (id >= StringIDCount)
 			return "";
 
-		/*
+		uilib::string fmtStr = m_languages[m_languageId][id];
+
+		const char *s = fmtStr.data();
+		const char *c = s;
+
 		va_list ap;
 		va_start(ap, id);
-		int max = va_arg(ap, int);
 
+		while (*c) {
+			if (*c == '%') {
+				char argType = *(c + 1);
+				int index = c - s;
+				if (argType == 's') {
+					const char *aStr = va_arg(ap, const char*);
+					fmtStr.replace(index, 2, aStr);
+				}
+				else if (argType == 'd') {
+					int aInt = va_arg(ap, int);
+					fmtStr.replace(index, 2, uilib::string::fromInteger(aInt));
+				}
+				else if (argType == 'f') {
+					float aFloat = va_arg(ap, float);
+					fmtStr.replace(index, 2, uilib::string::fromFloat(aFloat));
+				}
+				else if (argType == '%') {
+					fmtStr.replace(index, 2, "%");
+				}
+				else {
+					continue;
+				}
+				c += 2;
+			}
+			++c;
+		}
 		va_end(ap);
-		*/
 
-		return m_languages[m_languageId][id];
+		return fmtStr;
 	}
 
 }

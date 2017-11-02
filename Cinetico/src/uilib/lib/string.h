@@ -36,6 +36,9 @@ namespace uilib {
 		string();
 		~string();
 
+		bool reserve(uint size);
+		void resize(int size);
+
 		string& insert(int at, const string &str);
 		string& insert(int at, const char *str, int count);
 		string& insert(int at, char ch);
@@ -43,8 +46,17 @@ namespace uilib {
 		string& append(const char *str, int count);
 		string& append(char ch);
 
-		bool reserve(uint size);
-		void resize(int size);
+		string& string::replace(int index, int len, const char *str, int strLen = -1);
+		string& string::replace(int index, int len, const string &str) { return replace(index, len, str.constData()); }
+
+		string toUpper() const;
+		string toLower() const;
+
+		int toInteger() const;
+		float toFloat() const;
+
+		static string fromInteger(int n, int base = 10);
+		static string fromFloat(float f, int precision = 6);
 
 		string& operator=(const string &source);
 		string& operator=(const char *source);
@@ -65,12 +77,6 @@ namespace uilib {
 		inline char *data() { return m_buf; }
 		inline const char* data() const { return (const char*)m_buf; }
 		inline const char* constData() const { return (const char*)m_buf; }
-
-		int toInteger() const;
-		float toFloat() const;
-
-		static string fromInteger(int n, int base = 10);
-		static string fromFloat(float f, int precision = 6);
 	};
 
 	inline const string operator+(const string& s1, const string &s2) {

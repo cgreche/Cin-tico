@@ -5,9 +5,10 @@
 // Author: CGR
 
 #include <memory.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cctype>
 #include "string.h"
 
 #define max(a,b) (a > b ? a : b) //todo: remove
@@ -236,12 +237,64 @@ namespace uilib {
 		return *this;
 	}
 
+	string& string::replace(int index, int len, const char *str, int strLen) {
+
+		if (index < 0 || index > m_len)
+			return *this;
+		if (index + len > m_len)
+			len = m_len - index;
+
+		if (strLen == -1)
+			strLen = ::strlen(str);
+
+		if (len == strLen) {
+			memcpy(&m_buf[index], str, strLen);
+		}
+		else if (strLen < len) {
+			memcpy(&m_buf[index ], str, strLen);
+			memmove(&m_buf[index + strLen], &m_buf[index + len], m_len - (index + len));
+			resize(m_len - (len - strLen));
+		}
+		else {
+			resize(m_len + strLen - len);
+			memmove(&m_buf[index + strLen], &m_buf[index + len], m_len - (index + len));
+			memcpy(&m_buf[index], str, strLen);
+		}
+
+		return *this;
+	}
+
 	string& string::append(char c) {
 		reserve(m_len + 2);
 		m_buf[m_len] = c;
 		m_buf[++m_len] = '\0';
 		return *this;
 	}
+
+	string string::toUpper() const {
+		const char *c = m_buf;
+		string ret;
+		ret.resize(this->size());
+		char *d = ret.m_buf;
+		while (*c) {
+			*d++ = toupper(*c++);
+		}
+		*d = '\0';
+		return ret;
+	}
+
+	string string::toLower() const {
+		const char *c = m_buf;
+		string ret;
+		ret.resize(this->size());
+		char *d = ret.m_buf;
+		while (*c) {
+			*d++ = tolower(*c++);
+		}
+		*d = '\0';
+		return ret;
+	}
+
 
 	string& string::operator=(const char *source)
 	{
