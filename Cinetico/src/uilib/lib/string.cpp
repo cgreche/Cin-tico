@@ -1,7 +1,7 @@
 
 //String
 // File: string.cpp
-// Last Edit: 18/10/2017 01:48 (UTC-3)
+// Last Edit: 02/11/2017 14:23 (UTC-3)
 // Author: CGR
 
 #include <memory.h>
@@ -13,6 +13,97 @@
 #define max(a,b) (a > b ? a : b) //todo: remove
 
 namespace uilib {
+
+	class string_op
+	{
+	public:
+		static int copy(char *dest, const char *src, int count = -1);
+		static int compare(const char *string1, const char *string2, int count = 0xffffffff, bool cs = true);
+		static bool match(const char *string1, const char *string2, bool cs = true);
+		static bool contains(const char *string1, const char *string2, bool cs = true);
+		static uint length(const char *string);
+		static int integer(const char *string);
+		static float decimal(const char *string);
+	};
+
+
+	int string_op::copy(char *dest, const char *src, int count)
+	{
+		if (!dest || !src || count == 0) return 0;
+		if (!*src) {
+			*dest = '\0';
+			return 0;
+		}
+		if (count < 0)
+			count = ::strlen(src) + 1;
+		::strncpy(dest, src, count - 1);
+		dest[count - 1] = '\0';
+		return count;
+	}
+
+
+	int string_op::compare(const char *string1, const char *string2, int count, bool cs)
+	{
+		if (count == 0) return 0;
+		uint len1 = strlen(string1);
+		uint len2 = strlen(string2);
+		uint max = len1 > len2 ? len1 : len2;
+		if (max == 0)
+			return 0;
+
+		if (count < 0) count = max;
+		else if ((uint)count > max) count = max;
+
+		int ret = cs ? strncmp(string1, string2, (size_t)count) : _strnicmp(string1, string2, (size_t)count);
+
+		if (ret == 0) {
+			if (len2 > len1) ret |= 1;
+			else if (len1 > len2) ret |= 2;
+			if (len1 != len2) ret |= 4; //if part of strings contain
+		}
+
+		return ret;
+	}
+
+
+
+	bool string_op::match(const char *string1, const char *string2, bool cs)
+	{
+		return string_op::compare(string1, string2, 0xffffffff, cs) == 0;
+	}
+
+	bool string_op::contains(const char *string1, const char *string2, bool cs)
+	{
+		int res = string_op::compare(string1, string2, cs);
+		return res == 0 || (res & 2);
+	}
+
+	uint string_op::length(const char *string)
+	{
+		return strlen(string);
+	}
+
+	int string_op::integer(const char *string)
+	{
+		int ret = 0;
+		if (string[0] == '0') {
+			if (string[1] == 'x')
+				sscanf(string, "%x", &ret);
+			else {
+			}
+		}
+		else
+			sscanf(string, "%d", &ret);
+		return ret;
+	}
+
+	float string_op::decimal(const char *string)
+	{
+		return (float)atof(string);
+	}
+
+
+
 
 	bool string::reserve(uint size)
 	{
@@ -50,6 +141,11 @@ namespace uilib {
 		m_len(0)
 	{
 		operator=(source.data());
+	}
+
+	string::string(char c)
+	{
+		operator=(c);
 	}
 
 	string::string()
@@ -140,15 +236,30 @@ namespace uilib {
 		return *this;
 	}
 
+	string& string::append(char c) {
+		reserve(m_len + 2);
+		m_buf[m_len] = c;
+		m_buf[++m_len] = '\0';
+		return *this;
+	}
+
 	string& string::operator=(const char *source)
 	{
 		unsigned int len;
 		if (!source) source = "";
-		len = strlen(source);
+		len = ::strlen(source);
 		reserve(len + 1);
-		memcpy(m_buf, source, len);
+		::memcpy(m_buf, source, len);
 		m_buf[len] = '\0';
 		m_len = len;
+		return *this;
+	}
+
+	string& string::operator=(const char c)
+	{
+		reserve(2);
+		m_buf[0] = c;
+		m_buf[1] = '\0';
 		return *this;
 	}
 
@@ -162,23 +273,15 @@ namespace uilib {
 		return operator+=(source.constData());
 	}
 
-
 	string& string::operator+=(const char *source)
 	{
-		uint srcLen = string_op::length(source);
-		reserve(m_len + srcLen + 1);
-		::memcpy(&m_buf[m_len], source, srcLen);
-		m_len += srcLen;
-		m_buf[m_len] = '\0';
-		return *this;
+		string s(source);
+		return append(s);
 	}
 
-	string& string::operator +=(char ch)
+	string& string::operator +=(char c)
 	{
-		reserve(m_len + 2);
-		m_buf[m_len] = ch;
-		m_buf[++m_len] = '\0';
-		return *this;
+		return append(c);
 	}
 
 	bool string::operator ==(const string &source) const
@@ -233,8 +336,7 @@ namespace uilib {
 		else {
 		}
 
-		string s;
-		s = vstr;
+		string s(vstr);
 		return s;
 	}
 
@@ -247,92 +349,8 @@ namespace uilib {
 		::sprintf(fmt, "%%.%df", precision);
 		::sprintf(vstr, fmt, f);
 
-		string s;
-		s += vstr;
+		string s(vstr);
 		return s;
-	}
-
-
-
-
-
-
-
-
-
-	int string_op::copy(char *dest, const char *src, int count)
-	{
-		if (!dest || !src || count == 0) return 0;
-		if (!*src) {
-			*dest = '\0';
-			return 0;
-		}
-		if (count < 0)
-			count = ::strlen(src) + 1;
-		::strncpy(dest, src, count - 1);
-		dest[count - 1] = '\0';
-		return count;
-	}
-
-
-	int string_op::compare(const char *string1, const char *string2, int count, bool cs)
-	{
-		if (count == 0) return 0;
-		uint len1 = strlen(string1);
-		uint len2 = strlen(string2);
-		uint max = len1 > len2 ? len1 : len2;
-		if (max == 0)
-			return 0;
-
-		if (count < 0) count = max;
-		else if ((uint)count > max) count = max;
-
-		int ret = cs ? strncmp(string1, string2, (size_t)count) : _strnicmp(string1, string2, (size_t)count);
-
-		if (ret == 0) {
-			if (len2 > len1) ret |= 1;
-			else if (len1 > len2) ret |= 2;
-			if (len1 != len2) ret |= 4; //if part of strings contain
-		}
-
-		return ret;
-	}
-
-
-
-	bool string_op::match(const char *string1, const char *string2, bool cs)
-	{
-		return string_op::compare(string1, string2, 0xffffffff, cs) == 0;
-	}
-
-	bool string_op::contains(const char *string1, const char *string2, bool cs)
-	{
-		int res = string_op::compare(string1, string2, cs);
-		return res == 0 || (res & 2);
-	}
-
-	uint string_op::length(const char *string)
-	{
-		return strlen(string);
-	}
-
-	int string_op::integer(const char *string)
-	{
-		int ret = 0;
-		if (string[0] == '0') {
-			if (string[1] == 'x')
-				sscanf(string, "%x", &ret);
-			else {
-			}
-		}
-		else
-			sscanf(string, "%d", &ret);
-		return ret;
-	}
-
-	float string_op::decimal(const char *string)
-	{
-		return (float)atof(string);
 	}
 
 }

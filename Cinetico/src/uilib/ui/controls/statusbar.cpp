@@ -12,7 +12,7 @@ namespace uilib {
 	{
 		m_parent = NULL;
 		m_visible = false;
-		m_text = NULL;
+		m_text = "";
 		m_margin = Rect(4, 0, 4, 0);
 		m_color = Color(0, 0, 0);
 		m_format = 0;

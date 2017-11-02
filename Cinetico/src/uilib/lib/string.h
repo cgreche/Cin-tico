@@ -1,7 +1,7 @@
 
 //String
 // File: string.h
-// Last Edit: 13/12/2014 02:31 (UTC-3)
+// Last Edit: 02/11/2017 02:31 (UTC-3)
 // Author: CGR
 
 #ifndef __STRING_H__
@@ -32,6 +32,7 @@ namespace uilib {
 
 		string(const char *source);
 		string(const string &source);
+		string(char c);
 		string();
 		~string();
 
@@ -47,6 +48,7 @@ namespace uilib {
 
 		string& operator=(const string &source);
 		string& operator=(const char *source);
+		string& operator=(char c);
 		string& operator+=(const string &source);
 		string& operator+=(const char *source);
 		string& operator+=(char ch);
@@ -54,6 +56,8 @@ namespace uilib {
 		bool operator==(const char *source) const;
 		bool operator!=(const string& source) const;
 		bool operator!=(const char *source) const;
+		friend const string operator+(const string &s1, const string &s2);
+		friend const string operator+(const string &s1, const char *s2);
 
 		inline uint length() const { return m_len; }
 		inline uint size() const { return m_len + 1; }
@@ -69,21 +73,35 @@ namespace uilib {
 		static string fromFloat(float f, int precision = 6);
 	};
 
+	inline const string operator+(const string& s1, const string &s2) {
+		string ret(s1);
+		ret += s2;
+		return ret;
+	}
 
+	inline const string operator+(const string& s1, const char *s2) {
+		string ret(s1);
+		ret += s2;
+		return ret;
+	}
 
+	inline const string operator+(const char *s1, const string &s2) {
+		string ret(s1);
+		ret += s2;
+		return ret;
+	}
 
-	class string_op
-	{
-	public:
-		static int copy(char *dest, const char *src, int count = -1);
-		static int compare(const char *string1, const char *string2, int count = 0xffffffff, bool cs = true);
-		static bool match(const char *string1, const char *string2, bool cs = true);
-		static bool contains(const char *string1, const char *string2, bool cs = true);
-		static uint length(const char *string);
-		static int integer(const char *string);
-		static float decimal(const char *string);
-	};
+	inline const string operator+(const string& s, char c) {
+		string ret(s);
+		ret += c;
+		return ret;
+	}
 
+	inline const string operator+(char c, const string& s) {
+		string ret(s);
+		ret.insert(0, c);
+		return ret;
+	}
 }
 
 #endif
