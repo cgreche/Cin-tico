@@ -26,9 +26,18 @@ namespace cinetico {
 	int winWidth = 1280;
 	int winHeight = (int)ceil(winWidth / currentAspectRatio);
 
+	class RenderEngineFactory {
+	public:
+		static RenderEngine *getRenderEngine() {
+			return new D3D9Engine();
+		}
+	};
+
+
 	CineticoUI::CineticoUI(Cinetico &cinetico)
 		: m_cinetico(cinetico) {
 		m_currentView = INVALID;
+		m_lastView = INVALID;
 		m_mainWindow = NULL;
 		m_playingExercise = NULL;
 		m_globalFrameCount = 0;
@@ -52,7 +61,7 @@ namespace cinetico {
 
 	void CineticoUI::setupRenderEngine()
 	{
-		m_renderEngine = new D3D9Engine();
+		m_renderEngine = RenderEngineFactory::getRenderEngine();
 		m_renderEngine->configure(m_mainWindow->osdRef().handle());
 		m_renderEngine->init();
 		m_renderEngineHelper = new RenderEngineHelper(*m_renderEngine);
@@ -74,6 +83,7 @@ namespace cinetico {
 	}
 
 	void CineticoUI::goTo(ViewID viewId, Controller::ViewParams *params) {
+		m_lastView = m_currentView;
 		if (m_currentView != INVALID) {
 			Controller *currentController = m_views[m_currentView].controller;
 			currentController->onViewQuit();

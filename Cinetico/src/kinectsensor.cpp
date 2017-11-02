@@ -22,9 +22,7 @@ namespace cinetico_core {
 
 		hr = ::GetDefaultKinectSensor(&m_pKinectSensor);
 		if (FAILED(hr))
-		{
 			return hr;
-		}
 
 		if (m_pKinectSensor)
 		{
@@ -49,6 +47,7 @@ namespace cinetico_core {
 	}
 
 	void KinectSensor::update() {
+		return;
 		if (!m_pBodyFrameReader)
 			return;
 
@@ -84,14 +83,21 @@ namespace cinetico_core {
 	}
 
 	void KinectSensor::finalize() {
-		if(m_pBodyFrameReader)
+		if (m_pBodyFrameReader) {
 			m_pBodyFrameReader->Release();
+			m_pBodyFrameReader = NULL;
+		}
 
-		if(m_pCoordinateMapper)
+		if (m_pCoordinateMapper) {
 			m_pCoordinateMapper->Release();
+			m_pCoordinateMapper = NULL;
+		}
 
-		if(m_pKinectSensor)
+		if (m_pKinectSensor) {
+			m_pKinectSensor->Close();
 			m_pKinectSensor->Release();
+			m_pKinectSensor = NULL;
+		}
 	}
 
 	unsigned long KinectSensor::getCapabilities() {

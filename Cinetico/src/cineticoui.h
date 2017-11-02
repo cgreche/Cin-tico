@@ -9,7 +9,6 @@
 #include "bodytracker.h"
 #include "cinetico.h"
 
-
 namespace cinetico {
 
 	class DummyCharacter;
@@ -57,6 +56,7 @@ namespace cinetico {
 
 		std::vector<View> m_views;
 		ViewID m_currentView;
+		ViewID m_lastView;
 
 		bool m_headerAndFooterVisible;
 
@@ -81,6 +81,8 @@ namespace cinetico {
 		RenderEngine *renderEngine() const { return m_renderEngine; }
 		RenderEngineHelper *renderEngineHelper() const { return m_renderEngineHelper; }
 		int viewport() const { return m_viewport; }
+		ViewID currentView() const { return m_currentView; }
+		ViewID lastView() const { return m_lastView; }
 	};
 
 }

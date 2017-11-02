@@ -43,6 +43,8 @@ namespace cinetico {
 			playMode->setup();
 		m_playingMode = playMode;
 
+		m_cinetico.sensor()->initialize();
+
 		//Save screen configuration
 		Size frameSize = m_cineticoUI.mainWindow()->getFrameSize();
 		bool fullscreen = m_cineticoUI.mainWindow()->visibilityMode() == uilib::Fullscreen;
@@ -66,7 +68,7 @@ namespace cinetico {
 		lastEsc = m_cinetico.input()->keyboard.key(VK_ESCAPE);
 
 		if (quit3D) {
-			m_cineticoUI.goTo(CineticoUI::EXERCISES);
+			m_cineticoUI.goTo(m_cineticoUI.lastView());
 			return;
 		}
 	}
@@ -76,6 +78,7 @@ namespace cinetico {
 		if (m_playingMode)
 			m_playingMode->cleanUp();
 		m_cineticoUI.setViewResolution(m_oldWidth, m_oldHeight, m_oldFullscreen);
+		m_cinetico.sensor()->finalize();
 	}
 
 	void ExerciseRealizationController::step() {
