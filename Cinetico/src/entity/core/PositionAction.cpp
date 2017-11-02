@@ -16,7 +16,7 @@ namespace cinetico_core {
 
 		//todo: handle refPoint Any or LastPosition
 		float gap = 0.2f;
-		m_minHoldTime = 10;
+		m_minHoldTime = 0.5f;
 		Vector3 position = bodyPoint->position();
 
 		Vector3 diff = m_lastPosition - position;

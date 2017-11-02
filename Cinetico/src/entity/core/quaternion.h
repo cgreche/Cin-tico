@@ -73,12 +73,12 @@ namespace cinetico_core {
 		static Quaternion fromEuler(float pitch, float yaw, float roll) {
 			Quaternion q;
 			// Abbreviations for the various angular functions
-			double cy = cos(yaw * 0.5);
-			double sy = sin(yaw * 0.5);
-			double cr = cos(roll * 0.5);
-			double sr = sin(roll * 0.5);
-			double cp = cos(pitch * 0.5);
-			double sp = sin(pitch * 0.5);
+			float cy = cosf(yaw * 0.5f);
+			float sy = sinf(yaw * 0.5f);
+			float cr = cosf(roll * 0.5f);
+			float sr = sinf(roll * 0.5f);
+			float cp = cosf(pitch * 0.5f);
+			float sp = sinf(pitch * 0.5f);
 
 			q.m_w = cy * cr * cp + sy * sr * sp;
 			q.m_x = cy * cr * sp + sy * sr * cp;

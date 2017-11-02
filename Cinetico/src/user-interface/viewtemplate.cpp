@@ -23,6 +23,7 @@ namespace cinetico {
 	FontDesc ViewTemplate::ControlsLabelFont = FontDesc("Arial", 10, 0);
 	Color ViewTemplate::ControlsLabelColor = Color(0,0,0);
 	FontDesc ViewTemplate::TextLinkFont = FontDesc("Arial", 10, 0);
+	FontDesc ViewTemplate::TextLinkHoverFont = FontDesc("Arial", 10, FONT_UNDERLINE);
 	Color ViewTemplate::TextLinkColor = Color(0,0,0);
 	Color ViewTemplate::TextLinkHoverColor = Color(255,120,0);
 }

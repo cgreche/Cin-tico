@@ -4,8 +4,8 @@
 #include "input.h"
 #include "dictionary.h"
 #include "entity/user/UserProfile.h"
-#include "user-interface/viewtemplate.h"
-#include "user-interface/playmodes/PlayMode.h"
+#include "viewtemplate.h"
+#include "playmodes/PlayMode.h"
 
 using namespace cinetico;
 

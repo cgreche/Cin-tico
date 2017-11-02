@@ -4,6 +4,7 @@
 
 #include <vector>
 #include "uilib/ui/uibase.h"
+#include "components/cTextLink.h"
 
 namespace cinetico {
 
@@ -32,9 +33,9 @@ namespace cinetico {
 				Button buttonDebugMode;
 
 			VerticalLayout layoutLanguages;
-				TextLink linkPortugues;
-				TextLink linkEnglish;
-				TextLink linkEspanol;
+				cTextLink linkPortugues;
+				cTextLink linkEnglish;
+				cTextLink linkEspanol;
 
 		Layout *m_currentContentLayout;
 

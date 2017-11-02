@@ -1,10 +1,10 @@
 
 #include "cinetico.h"
 #include "cineticoui.h"
-#include "mainwindow.h"
 #include "entity/core/Exercise.h"
 #include "render3d/d3d9engine.h"
 
+#include "user-interface/mainwindow.h"
 #include "user-interface/Controller.h"
 #include "user-interface/LoginController.h"
 #include "user-interface/UserProfileController.h"

@@ -1,6 +1,6 @@
 
-#ifndef __CINETICO_EXERCISEMANAGEMENTCONTROLLER_H__
-#define __CINETICO_EXERCISEMANAGEMENTCONTROLLER_H__
+#ifndef __CINETICO_ACTIONSCONTROLLER_H__
+#define __CINETICO_ACTIONSCONTROLLER_H__
 
 #include "Controller.h"
 #include "uilib/ui/uibase.h"
@@ -19,7 +19,6 @@ namespace cinetico {
 	using namespace uilib;
 	using cinetico::ComboBox;
 	using namespace cinetico_core;
-
 
 	class ActionsController : public Controller
 	{

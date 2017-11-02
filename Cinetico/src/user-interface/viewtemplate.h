@@ -28,6 +28,7 @@ namespace cinetico {
 		static FontDesc ControlsLabelFont;
 		static uilib::Color ControlsLabelColor;
 		static FontDesc TextLinkFont;
+		static FontDesc TextLinkHoverFont;
 		static uilib::Color TextLinkColor;
 		static uilib::Color TextLinkHoverColor;
 	};

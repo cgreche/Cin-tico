@@ -164,8 +164,8 @@ namespace cinetico {
 				posAction = new PositionAction(*m_currentExercise);
 			else
 				posAction = (PositionAction*)m_currentAction;
-			posAction->setMinHoldTime(string_op::decimal(minHoldTimeStr.data()));
 
+			posAction->setMinHoldTime(minHoldTimeStr.toFloat());
 			action = posAction;
 		}
 		else if ((Action::ActionType)type == Action::Movement) {
@@ -179,8 +179,8 @@ namespace cinetico {
 			else
 				movementAction = (MovementAction*)m_currentAction;
 			movementAction->setMovementType((MovementAction::MovementType)movementType);
-			movementAction->setMinSpeed(string_op::decimal(minSpeedStr.data()));
-			movementAction->setMaxSpeed(string_op::decimal(maxSpeedStr.data()));
+			movementAction->setMinSpeed(minSpeedStr.toFloat());
+			movementAction->setMaxSpeed(maxSpeedStr.toFloat());
 
 			action = movementAction;
 		}
@@ -191,13 +191,13 @@ namespace cinetico {
 
 		action->setName(name.data());
 		action->setOrder((Action::ActionOrder)order);
-		action->setMinTime(string_op::decimal(minTimeStr.data()));
-		action->setMaxTime(string_op::decimal(maxTimeStr.data()));
+		action->setMinTime(minTimeStr.toFloat());
+		action->setMaxTime(maxTimeStr.toFloat());
 		action->setBodyPoint((BodyPoint::BodyPart)bodyPoint);
 		action->setRefPointX(refPointX);
 		action->setRefPointY(refPointY);
 		action->setRefPointZ(refPointZ);
-		action->setFinalPosition(cinetico_core::Vector3(string_op::decimal(posXStr.data())*0.01f, string_op::decimal(posYStr.data())*0.01f, string_op::decimal(posZStr.data())*0.01f));
+		action->setFinalPosition(cinetico_core::Vector3(posXStr.toFloat()*0.01f, posYStr.toFloat()*0.01f, posZStr.toFloat()*0.01f));
 
 		if (m_editMode == 1) {
 			m_cinetico.cineticoDB()->actionDAO()->create(*action);
@@ -230,25 +230,25 @@ namespace cinetico {
 
 		separatorActionBasicData.setText(m_dictionary.getString(Dictionary::ActionsViewSectionBasicData));
 
-		cbActionType.setLabel(m_dictionary.getString(Dictionary::ActionType));//+ "*");
-		cbOrderType.setLabel(m_dictionary.getString(Dictionary::ActionOrder));//+ "*");
-		tbName.setLabel(m_dictionary.getString(Dictionary::ActionName));// + "*");
+		cbActionType.setLabel(m_dictionary.getString(Dictionary::ActionType) + "*");
+		cbOrderType.setLabel(m_dictionary.getString(Dictionary::ActionOrder) + "*");
+		tbName.setLabel(m_dictionary.getString(Dictionary::ActionName) + "*");
 
-		cbBodyPoint.setLabel(m_dictionary.getString(Dictionary::ActionBodyPoint));// + "*");
-		cbRefPointX.setLabel(m_dictionary.getString(Dictionary::ActionRefPointX));// + "*");
-		cbRefPointY.setLabel(m_dictionary.getString(Dictionary::ActionRefPointY));// + "*");
-		cbRefPointZ.setLabel(m_dictionary.getString(Dictionary::ActionRefPointZ));// + "*");
-		tbMinTime.setLabel(m_dictionary.getString(Dictionary::ActionMinTime));//
-		tbMaxTime.setLabel(m_dictionary.getString(Dictionary::ActionMaxTime));//
+		cbBodyPoint.setLabel(m_dictionary.getString(Dictionary::ActionBodyPoint) + "*");
+		cbRefPointX.setLabel(m_dictionary.getString(Dictionary::ActionRefPointX) + "*");
+		cbRefPointY.setLabel(m_dictionary.getString(Dictionary::ActionRefPointY) + "*");
+		cbRefPointZ.setLabel(m_dictionary.getString(Dictionary::ActionRefPointZ) + "*");
+		tbMinTime.setLabel(m_dictionary.getString(Dictionary::ActionMinTime));
+		tbMaxTime.setLabel(m_dictionary.getString(Dictionary::ActionMaxTime));
 
-		labelPosition.setText(m_dictionary.getString(Dictionary::ActionFinalPosition)); //+ "*");
+		labelPosition.setText(m_dictionary.getString(Dictionary::ActionFinalPosition) + "*");
 		tbPositionX.setLabel(m_dictionary.getString(Dictionary::X));
 		tbPositionY.setLabel(m_dictionary.getString(Dictionary::Y));
 		tbPositionZ.setLabel(m_dictionary.getString(Dictionary::Z));
 
 		tbMinHoldTime.setLabel(m_dictionary.getString(Dictionary::PositionActionMinHoldTime));
 
-		cbMovementType.setLabel(m_dictionary.getString(Dictionary::MovementActionType)); //+ "*"
+		cbMovementType.setLabel(m_dictionary.getString(Dictionary::MovementActionType) + "*");
 
 		tbMinSpeed.setLabel(m_dictionary.getString(Dictionary::MovementActionMinSpeed));
 		tbMaxSpeed.setLabel(m_dictionary.getString(Dictionary::MovementActionMaxSpeed));

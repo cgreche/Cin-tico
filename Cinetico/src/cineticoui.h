@@ -1,13 +1,14 @@
 #ifndef __CINETICO_UI_H__
 #define __CINETICO_UI_H__
 
-#include "mainwindow.h"
+#include "user-interface/mainwindow.h"
+#include "user-interface/controller.h"
 #include "entity/core/Exercise.h"
 #include "render3d/renderengine.h"
 #include "render3d/renderenginehelper.h"
 #include "bodytracker.h"
 #include "cinetico.h"
-#include "user-interface/controller.h"
+
 
 namespace cinetico {
 

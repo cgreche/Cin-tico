@@ -260,6 +260,8 @@ namespace cinetico {
 		buttonManageActions.setEnabled(false);
 		buttonDoExercise.setEnabled(false);
 		updateExerciseList();
+
+		m_cinetico.sensor()->initialize();
 	}
 
 	void ExercisesController::onViewTick() {
@@ -284,7 +286,7 @@ namespace cinetico {
 	}
 
 	void ExercisesController::onViewQuit() {
-
+		m_cinetico.sensor()->finalize();
 	}
 
 	void ExercisesController::saveCurrentExercise() {
