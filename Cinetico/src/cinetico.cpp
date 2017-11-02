@@ -33,7 +33,6 @@ namespace cinetico {
 		m_input = new Input();
 
 		m_sensor = SensorFactory::getSystemSensor();
-		m_sensor->initialize();
 		m_bodyTracker = new BodyTracker(*m_sensor);
 
 		m_dictionary = new Dictionary(*this);
@@ -60,10 +59,8 @@ namespace cinetico {
 		if (m_bodyTracker)
 			delete m_bodyTracker;
 
-		if (m_sensor) {
-			m_sensor->finalize();
+		if (m_sensor)
 			delete m_sensor;
-		}
 
 		if(m_cineticoUI)
 			delete m_cineticoUI;

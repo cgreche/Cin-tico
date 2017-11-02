@@ -13,6 +13,10 @@ namespace cinetico_core {
 		m_identifiedBodyCount = 0;
 	}
 
+	KinectSensor::~KinectSensor() {
+		finalize();
+	}
+
 	bool KinectSensor::initialize() {
 		HRESULT hr;
 
@@ -90,8 +94,8 @@ namespace cinetico_core {
 			m_pKinectSensor->Release();
 	}
 
-	long KinectSensor::checkCapabilities(long capabilities) {
-		return 0;
+	unsigned long KinectSensor::getCapabilities() {
+		return Sensor::DEPTH_IMAGE | Sensor::SKELETON_TRACKING;
 	}
 
 	u8 *KinectSensor::getDepthImageData() {

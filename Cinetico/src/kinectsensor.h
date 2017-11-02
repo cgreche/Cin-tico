@@ -26,12 +26,13 @@ namespace cinetico_core {
 
 	public:
 		KinectSensor();
+		~KinectSensor();
 
 		bool initialize();
 		void update();
 		void finalize();
-		long checkCapabilities(long capabilities);
-		u8 *getDepthImageData();
+		unsigned long getCapabilities();
+		unsigned char *getDepthImageData();
 
 		int identifiedBodyCount() const { return m_identifiedBodyCount; }
 		bool bodyIsidentified(int body) const { return m_identifiedBodies[body]; }

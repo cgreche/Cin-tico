@@ -340,9 +340,6 @@
     <ClInclude Include="src\cinetico.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\mainwindow.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\cineticodb.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -610,6 +607,12 @@
     <ClInclude Include="src\uilib\ui\impl\scrollviewimpl.h">
       <Filter>src\uilib\ui\impl</Filter>
     </ClInclude>
+    <ClInclude Include="src\user-interface\components\cTextLink.h">
+      <Filter>src\user-interface\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\mainwindow.h">
+      <Filter>src\user-interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -870,9 +873,6 @@
     <ClCompile Include="src\cinetico.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\mainwindow.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\cineticodb.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -959,6 +959,12 @@
     </ClCompile>
     <ClCompile Include="src\uilib\ui\osd\windows\osdscrollview.cpp">
       <Filter>src\uilib\ui\osd\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\components\cTextLink.cpp">
+      <Filter>src\user-interface\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\mainwindow.cpp">
+      <Filter>src\user-interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
