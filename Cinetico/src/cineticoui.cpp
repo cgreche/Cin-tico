@@ -82,7 +82,7 @@ namespace cinetico {
 		setupRenderEngine();
 	}
 
-	void CineticoUI::goTo(ViewID viewId, Controller::ViewParams *params) {
+	void CineticoUI::goTo(ViewID viewId, Controller::ViewParams params) {
 		m_lastView = m_currentView;
 		if (m_currentView != INVALID) {
 			Controller *currentController = m_views[m_currentView].controller;
@@ -93,6 +93,7 @@ namespace cinetico {
 		controller->onViewUpdate();
 		m_mainWindow->setContentLayout(controller->viewDefinition());
 		m_currentView = viewId;
+		params.set<ViewID>("last_view", m_lastView);
 		controller->onViewEnter(params);
 
 		m_mainWindow->setSize(m_mainWindow->size());

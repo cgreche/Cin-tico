@@ -67,11 +67,10 @@ namespace cinetico {
 		~CineticoUI();
 
 		void registerView(int id, const char *name, Controller *controller);
-		void goTo(ViewID viewId, Controller::ViewParams *params = NULL);
+		void goTo(ViewID viewId, Controller::ViewParams params = Controller::ViewParams());
 
 		void update();
 		void step();
-		void render();
 
 		void setViewResolution(int width, int height, bool fullscreen);
 		void setHeaderAndFooterVisible(bool visible);

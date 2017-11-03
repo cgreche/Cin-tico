@@ -39,8 +39,8 @@ namespace cinetico {
 	static void buttonGoToDebugMode_onClick(Button &button) {
 		MainWindow *mainWindow = (MainWindow *)button.param();
 		Controller::ViewParams params;
-		params["play_mode"] = (void*)PlayMode::DEBUG_MODE;
-		mainWindow->m_cinetico.cineticoUI()->goTo(CineticoUI::PLAYING,&params);
+		params.set<int>("play_mode", PlayMode::DEBUG_MODE);
+		mainWindow->m_cinetico.cineticoUI()->goTo(CineticoUI::PLAYING,params);
 	}
 
 	void MainWindow::buildHeaderLayout() {
@@ -245,8 +245,8 @@ namespace cinetico {
 
 	void MainWindow::onClickUserLoginName() {
 		Controller::ViewParams params;
-		params["user"] = m_cinetico.currentUser();
-		m_cinetico.cineticoUI()->goTo(CineticoUI::USER_PROFILE,&params);
+		params.set<UserProfile*>("user",m_cinetico.currentUser());
+		m_cinetico.cineticoUI()->goTo(CineticoUI::USER_PROFILE,params);
 	}
 
 	void MainWindow::onClickLogoff() {

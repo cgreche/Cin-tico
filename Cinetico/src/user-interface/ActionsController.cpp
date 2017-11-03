@@ -360,13 +360,13 @@ namespace cinetico {
 		return &layout; 
 	}
 
-	void ActionsController::onViewEnter(ViewParams *params) {
+	void ActionsController::onViewEnter(ViewParams params) {
 		m_editMode = 0;
 		m_currentActionTypeSelection = -1;
 		m_currentMovementTypeSelection = -1;
 		buttonEdit.setEnabled(false);
 
-		Exercise *exercise = params ? (Exercise*)(*params)["exercise"] : NULL;
+		Exercise *exercise = params.get<Exercise*>("exercise");
 		m_currentExercise = exercise;
 		updateActionList();
 	}

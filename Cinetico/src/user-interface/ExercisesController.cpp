@@ -19,8 +19,8 @@ namespace cinetico {
 		ExercisesController *controller = (ExercisesController*)button.param();
 		if (controller->m_currentExercise) {
 			Controller::ViewParams params;
-			params["exercise"] = controller->m_currentExercise;
-			controller->m_cineticoUI.goTo(CineticoUI::ACTIONS, &params);
+			params.set<Exercise*>("exercise",controller->m_currentExercise);
+			controller->m_cineticoUI.goTo(CineticoUI::ACTIONS, params);
 		}
 	}
 
@@ -251,7 +251,7 @@ namespace cinetico {
 		return &layout;
 	}
 
-	void ExercisesController::onViewEnter(ViewParams *params) {
+	void ExercisesController::onViewEnter(ViewParams params) {
 		m_editMode = 0;
 		m_currentSelection = -1;
 		buttonCreateExercise.setEnabled(true);
@@ -357,9 +357,9 @@ namespace cinetico {
 
 			Message::msg(NULL, "Congratulations. Now get into the 3D World.");
 			ViewParams params;
-			params["exercise"] = m_currentExercise;
-			params["play_mode"] = (void*)(int)PlayMode::EXERCISE_MODE;
-			m_cineticoUI.goTo(CineticoUI::PLAYING,&params);
+			params.set<Exercise*>("exercise",m_currentExercise);
+			params.set<int>("play_mode", PlayMode::EXERCISE_MODE);
+			m_cineticoUI.goTo(CineticoUI::PLAYING,params);
 		}
 	}
 

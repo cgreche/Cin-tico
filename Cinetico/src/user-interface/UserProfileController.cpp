@@ -109,8 +109,8 @@ namespace cinetico {
 		return &layout;
 	}
 
-	void UserProfileController::onViewEnter(ViewParams *params) {
-		m_currentUser = (UserProfile*)(*params)["user"];
+	void UserProfileController::onViewEnter(ViewParams params) {
+		m_currentUser = params.get<UserProfile*>("user");
 
 		char datetime[256];
 		time_t now = ::time(0);

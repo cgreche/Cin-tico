@@ -34,14 +34,11 @@ namespace cinetico {
 
 		m_sensor = SensorFactory::getSystemSensor();
 		m_bodyTracker = new BodyTracker(*m_sensor);
-
 		m_dictionary = new Dictionary(*this);
-
 		m_cineticoDB = new CineticoDB(*this);
 		m_cineticoUI = new CineticoUI(*this);
 		
-
-		m_cineticoUI->goTo(CineticoUI::LOGIN, NULL);
+		m_cineticoUI->goTo(CineticoUI::LOGIN);
 	}
 
 

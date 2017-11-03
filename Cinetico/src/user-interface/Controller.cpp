@@ -11,7 +11,7 @@ namespace cinetico {
 		, m_dictionary(*m_cinetico.dictionary()) {
 	}
 
-	void Controller::onViewEnter(ViewParams *params) { }
+	void Controller::onViewEnter(ViewParams params) { }
 	void Controller::onViewUpdate() { }
 	void Controller::onViewTick() { }
 	void Controller::onViewQuit() { }

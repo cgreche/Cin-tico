@@ -33,7 +33,7 @@ namespace cinetico {
 		ExerciseRealizationController(CineticoUI &cineticoUI);
 
 		Layout *viewDefinition();
-		void onViewEnter(ViewParams *params);
+		void onViewEnter(ViewParams params);
 		void onViewTick();
 		void onViewQuit();
 	};

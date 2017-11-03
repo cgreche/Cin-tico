@@ -41,7 +41,7 @@ namespace cinetico {
 		LoginController(CineticoUI &cineticoUI);
 
 		Layout *viewDefinition();
-		void onViewEnter(ViewParams *params);
+		void onViewEnter(ViewParams params);
 		void onViewUpdate();
 		void onViewQuit();
 		void login();

@@ -107,7 +107,7 @@ namespace cinetico {
 		ActionsController(CineticoUI &cineticoUI);
 
 		Layout *viewDefinition();
-		virtual void onViewEnter(ViewParams *params);
+		virtual void onViewEnter(ViewParams params);
 		virtual void onViewUpdate();
 		virtual void onViewTick();
 		virtual void onViewQuit();

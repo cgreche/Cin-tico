@@ -21,9 +21,9 @@ namespace cinetico {
 		return &layout;
 	}
 
-	void ExerciseRealizationController::onViewEnter(ViewParams *params) {
+	void ExerciseRealizationController::onViewEnter(ViewParams params) {
 
-		PlayMode::PlayModeID playModeId = (PlayMode::PlayModeID)(int)(*params)["play_mode"];
+		PlayMode::PlayModeID playModeId = (PlayMode::PlayModeID)params.get<int>("play_mode");
 
 		m_renderEngine = m_cineticoUI.renderEngine();
 		m_renderEngineHelper = m_cineticoUI.renderEngineHelper();
@@ -32,7 +32,7 @@ namespace cinetico {
 		PlayMode *playMode = NULL;
 
 		if (playModeId == PlayMode::EXERCISE_MODE) {
-			Exercise *exercise = (Exercise*)(*params)["exercise"];
+			Exercise *exercise = params.get<Exercise*>("exercise");
 			playMode = new ExercisePlayMode(m_cinetico, *exercise);
 		}
 		else if (playModeId == PlayMode::DEBUG_MODE) {
