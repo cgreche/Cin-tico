@@ -8,9 +8,6 @@
 
 namespace cinetico {
 
-	bool lastKeyStates[256] = { 0 };
-	bool mouse[3] = { 0 };
-
 	int mouseX = 0;
 	int mouseY = 0;
 	int mouseZ = 0;
@@ -211,7 +208,7 @@ namespace cinetico {
 
 		//a = 0.05;
 		q = Quaternion::fromEuler(0,0,0);
-		q2 = Quaternion::fromEuler(0.7f,0.7f,0);
+		q2 = Quaternion::fromEuler(0,0,1);
 		q3 = Quaternion::nlerp(q, q2, a);
 		cinetico_core::Vector3 testRotation = q3.toEuler();
 		//testRotation = cinetico_core::Vector3(a, 0, 0);
@@ -334,17 +331,25 @@ namespace cinetico {
 	}
 
 	void DebugPlayMode::processCamera() {
+		Input::Keyboard &kb = m_cinetico.input()->keyboard;
+		Input::Mouse &mouse = m_cinetico.input()->mouse;
+		bool leftDown = kb.key('A');
+		bool rightDown = kb.key('D');
+		bool downDown = kb.key('S');
+		bool upDown = kb.key('W');
+		bool shiftDown = kb.key(VK_SHIFT);
+		bool ctrlDown = kb.key(VK_CONTROL);
+		bool tabDown = kb.key(VK_TAB);
+		bool spaceDown = kb.key(VK_SPACE);
+		bool mouse2Down = mouse.button(1);
 
-		bool leftDown = m_cinetico.input()->keyboard.key('A');
-		bool rightDown = m_cinetico.input()->keyboard.key('D');
-		bool downDown = m_cinetico.input()->keyboard.key('S');
-		bool upDown = m_cinetico.input()->keyboard.key('W');
-		bool shiftDown = m_cinetico.input()->keyboard.key(VK_SHIFT);
-		bool ctrlDown = m_cinetico.input()->keyboard.key(VK_CONTROL);
-		bool tabDown = m_cinetico.input()->keyboard.key(VK_TAB);
-		bool spaceDown = m_cinetico.input()->keyboard.key(VK_SPACE);
-		bool escDown = m_cinetico.input()->keyboard.key(VK_ESCAPE);
-		bool mouse2Down = mouse[1];
+		static int lastMouseX = mouse.x();
+		static int lastMouseY = mouse.y();
+		static int lastMouseZ = mouse.z();
+
+		int mouseX = mouse.x();
+		int mouseY = mouse.y();
+		int mouseZ = mouse.z();
 
 		int dx = mouseX - lastMouseX;
 		int dy = mouseY - lastMouseY;
@@ -354,42 +359,50 @@ namespace cinetico {
 		lastMouseZ = 0;
 		mouseZ = 0;
 
+		float fspeed = 0;
+		float rspeed = 0;
+		float uspeed = 0;
 		float d = 0.5f;
-		Camera *camera = m_renderEngine->camera(currentCameraId);
+		Camera *camera = m_renderEngine->camera(cam1);
 		render3d::Vector3 camPos = camera->pos();
+		render3d::Vector3 camRot = camera->rot();
+		render3d::Vector3 camUp = render3d::Vector3(0,1,0);
+		render3d::Vector3 camForward = camRot;
+		camForward.setX(-std::sin(camRot.y())*std::cos(camRot.x()));
+		camForward.setY(std::sin(camRot.x()));
+		camForward.setZ(std::cos(camRot.y())*std::cos(camRot.x()));
+		render3d::Vector3 camRight = crossProduct(camUp,camForward);
+		
+		render3d::Vector3 camVel;
+
+		camForward.normalize();
 		if (rightDown) {
-			camPos.setX(camPos.x() + d);
+			rspeed = d;
 		}
 
 		if (leftDown) {
-			camPos.setX(camPos.x() - d);
+			rspeed = -d;
 		}
 
 		if (upDown) {
 			if (ctrlDown)
-				camPos.setZ(camPos.z() + d);
+				fspeed = d;
 			else
-				camPos.setY(camPos.y() + d);
+				uspeed = d;
 		}
 
 		if (downDown) {
 			if (ctrlDown)
-				camPos.setZ(camPos.z() - d);
+				fspeed = -d;
 			else
-				camPos.setY(camPos.y() - d);
+				uspeed = -d;
 		}
 
-		camera->setPos(camPos);
-
-		if (spaceDown) {
-			currentCameraId = cam2;
-		}
-		else {
-			currentCameraId = cam1;
-		}
+		camVel = camForward*fspeed + camRight*rspeed + camUp*uspeed;
+		camera->setPos(camPos + camVel);
 
 		if (mouse2Down) {
-			Camera *camera = m_renderEngine->camera(currentCameraId);
+			Camera *camera = m_renderEngine->camera(cam1);
 			render3d::Vector3 camRot = camera->rot();
 
 			if (dx != 0) {

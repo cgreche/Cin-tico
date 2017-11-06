@@ -68,4 +68,17 @@ namespace render3d {
 		m_dirtyFlags |= COLORS_DIRTY;
 	}
 
+	Box ResourceData::getBoundingBox() {
+		float minX = 0.f, maxX = 0.f, minY = 0.f, maxY = 0.f, minZ = 0.f, maxZ = 0.f;
+		for (unsigned int i = 0; i < m_vertexCount; ++i) {
+			Vector3 &p = m_vertices[i];
+			if (p.x() < minX) minX = p.x();
+			else if (p.x() > maxX) maxX = p.x();
+			if (p.y() < minY) minY = p.y();
+			else if (p.y() > maxY) maxY = p.y();
+			if (p.z() < minZ) minZ = p.z();
+			else if (p.z() > maxZ) maxZ = p.z();
+		}
+		return Box(minX,maxX,minY,maxY,minZ,maxZ);
+	}
 }

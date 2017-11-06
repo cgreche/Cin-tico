@@ -68,7 +68,7 @@ namespace cinetico {
 		m_resCube = m_renderEngineHelper->createCube(1);
 		m_renderEngine->resourceData(m_resCube)->setColors(cubeColors);
 		m_instanceCube = m_renderEngine->newResourceInstance(m_resCube);
-		m_renderEngine->resourceInstance(m_instanceCube)->setPos(render3d::Vector3(-2.5f,0,0));
+		m_renderEngine->resourceInstance(m_instanceCube)->setPos(render3d::Vector3(-2.5f,0.5f,0));
 
 		float quadSize = 3.2f;
 		int quadCountH = 128;
@@ -92,6 +92,8 @@ namespace cinetico {
 		float percent = 0.25f;
 		Size size = m_cinetico.cineticoUI()->mainWindow()->size();
 		m_viewportActionPreview = m_renderEngine->newViewport(20, 20, (int)(size.width()*percent), (int)(size.height()*percent));
+
+		m_dummyChar->setPosition(cinetico_core::Vector3(0, terrain->pos().y(), 5));
 	}
 
 	void ExercisePlayMode::step() {
@@ -109,6 +111,8 @@ namespace cinetico {
 				m_exercise.reset();
 
 		}
+
+		m_dummyChar->update();
 		if(m_cinetico.input()->keyboard.key(VK_SHIFT))
 			processCube();
 		else
@@ -198,39 +202,47 @@ namespace cinetico {
 		lastMouseZ = 0;
 		mouseZ = 0;
 
+		float fspeed = 0;
+		float rspeed = 0;
+		float uspeed = 0;
 		float d = 0.5f;
 		Camera *camera = m_renderEngine->camera(m_currentCameraId);
 		render3d::Vector3 camPos = camera->pos();
+		render3d::Vector3 camRot = camera->rot();
+		render3d::Vector3 camUp = render3d::Vector3(0, 1, 0);
+		render3d::Vector3 camForward = camRot;
+		camForward.setX(-std::sin(camRot.y())*std::cos(camRot.x()));
+		camForward.setY(std::sin(camRot.x()));
+		camForward.setZ(std::cos(camRot.y())*std::cos(camRot.x()));
+		render3d::Vector3 camRight = crossProduct(camUp, camForward);
+
+		render3d::Vector3 camVel;
+
+		camForward.normalize();
 		if (rightDown) {
-			camPos.setX(camPos.x() + d);
+			rspeed = d;
 		}
 
 		if (leftDown) {
-			camPos.setX(camPos.x() - d);
+			rspeed = -d;
 		}
 
 		if (upDown) {
 			if (ctrlDown)
-				camPos.setZ(camPos.z() + d);
+				fspeed = d;
 			else
-				camPos.setY(camPos.y() + d);
+				uspeed = d;
 		}
 
 		if (downDown) {
 			if (ctrlDown)
-				camPos.setZ(camPos.z() - d);
+				fspeed = -d;
 			else
-				camPos.setY(camPos.y() - d);
+				uspeed = -d;
 		}
 
-		camera->setPos(camPos);
-
-		if (spaceDown) {
-			m_currentCameraId = m_cam2;
-		}
-		else {
-			m_currentCameraId = m_cam1;
-		}
+		camVel = camForward*fspeed + camRight*rspeed + camUp*uspeed;
+		camera->setPos(camPos + camVel);
 
 		if (mouse2Down) {
 			Camera *camera = m_renderEngine->camera(m_currentCameraId);
@@ -251,6 +263,7 @@ namespace cinetico {
 		}
 		return;
 	}
+
 
 	void ExercisePlayMode::processCube() {
 		Input::Keyboard &kb = m_cinetico.input()->keyboard;
