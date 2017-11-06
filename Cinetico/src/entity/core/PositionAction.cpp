@@ -15,16 +15,17 @@ namespace cinetico_core {
 		BodyPoint *bodyPoint = body.bodyPoint(m_bodyPoint);
 
 		//todo: handle refPoint Any or LastPosition
-		float gap = 0.2f;
+		float gap = 0.5f;
 		m_minHoldTime = 0.5f;
 		Vector3 position = bodyPoint->position();
-
-		Vector3 diff = m_lastPosition - position;
 
 		float curTime = (float)uilib::OSTime::ticks();
 		float tps = (float)uilib::OSTime::ticksPerSecond();
 		float holdTime;
-		if (sqrtf(diff.dotProduct(diff)) >= 0.1) //dotProduct here will square and sum
+
+		//Check if point position has changed "a lot"
+		//If so, restart time as if it was a new position
+		if (position.euclideanDistanceTo(m_lastPosition) >= 0.1)
 			m_holdStartTime = curTime;
 
 		holdTime = (curTime - m_holdStartTime) / tps;
@@ -56,8 +57,9 @@ namespace cinetico_core {
 		
 		if (m_refPointZ >= 0) {
 			Vector3 refPos = body.bodyPoint((BodyPoint::BodyPart)m_refPointZ)->position();
-			float finalPos = m_finalPosition.z() + refPos.z();
-			float diff = position.z() - finalPos;
+			//body point z points towards sensor, which is Z- in our rendering coordinate system. We must invert it (-m_finalPosition.z())
+			float finalPos = -m_finalPosition.z() + refPos.z();
+			float diff = (position.z()) - finalPos;
 			accuracyZ = 100.f - fabsf(diff)*100.f / gap;
 			if (accuracyZ < 0.f)
 				accuracyZ = 0.f;
@@ -77,7 +79,6 @@ namespace cinetico_core {
 		}
 
 		m_lastPosition = position;
-
 		return Missed;
 	}
 

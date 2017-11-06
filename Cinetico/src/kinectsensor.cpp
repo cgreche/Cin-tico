@@ -47,7 +47,7 @@ namespace cinetico_core {
 	}
 
 	void KinectSensor::update() {
-		return;
+
 		if (!m_pBodyFrameReader)
 			return;
 
