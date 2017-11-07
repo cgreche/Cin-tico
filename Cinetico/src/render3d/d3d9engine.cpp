@@ -525,8 +525,16 @@ namespace render3d {
 		m_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 		m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 		m_device->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-		//m_device->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE);
-		//m_device->SetRenderState(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
+
+		if (instance->drawFlags() & ResourceInstance::BACKFACE_CULL)
+			m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+		else
+			m_device->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE);
+
+		if (instance->drawFlags() & ResourceInstance::WIREFRAME)
+			m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+		else
+			m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
 		m_device->SetTransform(D3DTS_WORLD, &d3d9InstanceData->worldMatrix);
 		hr = m_device->SetVertexDeclaration(d3d9ResData->vertexDeclaration);

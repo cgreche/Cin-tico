@@ -7,6 +7,7 @@ namespace render3d {
 		: RenderObject(engine, resId)
 		, m_scale(1.f, 1.f, 1.f) {
 		m_resDataId = resDataId;
+		m_drawFlags = BACKFACE_CULL;
 	}
 
 	void ResourceInstance::setPos(const Vector3 &pos) {
@@ -27,6 +28,11 @@ namespace render3d {
 	void ResourceInstance::setRot(const Vector3 &rot) {
 		m_rot = rot;
 		m_dirtyFlags |= ROT_DIRTY;
+	}
+
+	void ResourceInstance::setDrawFlags(unsigned long flags) {
+		m_drawFlags = flags;
+		m_dirtyFlags |= DRAW_FLAGS_DIRTY;
 	}
 
 }

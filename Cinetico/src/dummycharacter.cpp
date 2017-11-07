@@ -64,6 +64,7 @@ namespace cinetico {
 
 		CineticoResources::ResIdBB = cineticoUI.renderEngineHelper()->createRectangularPrism(bb.size().x(), bb.size().y(), bb.size().z());
 		CineticoResources::InstBB = cineticoUI.renderEngine()->newResourceInstance(CineticoResources::ResIdBB);
+		cineticoUI.renderEngine()->resourceInstance(CineticoResources::InstBB)->setDrawFlags(ResourceInstance::WIREFRAME);
 	}
 
 	void DummyCharacter::update() {
@@ -72,12 +73,13 @@ namespace cinetico {
 			render3d::Vector3 modelPos = render3d::Vector3(m_position.x(), m_position.y()-bb.y2()+bb.size().y(), m_position.z());
 			modelInstance->setPos(modelPos);
 		}
+		m_cineticoUI.renderEngine()->resourceInstance(CineticoResources::InstBB)->setPos(render3d::Vector3(m_position.x(),m_position.y()+bb.size().y()/2,m_position.z()));
 	}
 
 	void DummyCharacter::render() {
 		for (unsigned int i = 0; i < m_instanceIds.size(); ++i) {
 			m_cineticoUI.renderEngine()->drawResource(m_instanceIds[i]);
-			//m_cineticoUI.renderEngine()->drawResource(CineticoResources::InstBB);
+			m_cineticoUI.renderEngine()->drawResource(CineticoResources::InstBB);
 		}
 	}
 

@@ -18,7 +18,13 @@ namespace render3d {
 		enum DirtyFlags {
 			POS_DIRTY = 0x01,
 			ROT_DIRTY = 0x02,
-			SCALE_DIRTY = 0x04
+			SCALE_DIRTY = 0x04,
+			DRAW_FLAGS_DIRTY = 0x08
+		};
+
+		enum DrawFlags {
+			BACKFACE_CULL = 1,
+			WIREFRAME = 2
 		};
 
 	private:
@@ -26,6 +32,7 @@ namespace render3d {
 		Vector3 m_pos;
 		Vector3 m_scale;
 		Vector3 m_rot;
+		unsigned long m_drawFlags;
 
 		ResourceInstance(RenderEngine *engine, int resId, int resDataId);
 
@@ -35,11 +42,13 @@ namespace render3d {
 		void setScale(float scale);
 		void setScale(const Vector3 &scale);
 		void setRot(const Vector3 &rot);
+		void setDrawFlags(unsigned long flags);
 
 		int resDataId() const { return m_resDataId; }
 		Vector3 pos() const { return m_pos; }
 		Vector3 scale() const { return m_scale; }
 		Vector3 rot() const { return m_rot; }
+		unsigned long drawFlags() const { return m_drawFlags; }
 	};
 
 }
