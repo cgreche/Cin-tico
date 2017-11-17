@@ -6,7 +6,7 @@
 #include "dictionary.h"
 #include "user-interface/controller.h"
 #include "sensor.h"
-#include "bodytracker.h"
+#include "entity/core/BodyTracker.h"
 #include <vector>
 #include <list>
 

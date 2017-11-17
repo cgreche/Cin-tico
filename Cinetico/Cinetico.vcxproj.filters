@@ -298,9 +298,6 @@
     <ClInclude Include="src\sensor.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\bodytracker.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\entity\core\Action.h">
       <Filter>src\entity\core</Filter>
     </ClInclude>
@@ -613,6 +610,12 @@
     <ClInclude Include="src\user-interface\mainwindow.h">
       <Filter>src\user-interface</Filter>
     </ClInclude>
+    <ClInclude Include="src\entity\core\ActionCommandsManager.h">
+      <Filter>src\entity\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\core\BodyTracker.h">
+      <Filter>src\entity\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -840,9 +843,6 @@
     <ClCompile Include="src\sensor.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\bodytracker.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\entity\core\Action.cpp">
       <Filter>src\entity\core</Filter>
     </ClCompile>
@@ -965,6 +965,12 @@
     </ClCompile>
     <ClCompile Include="src\user-interface\mainwindow.cpp">
       <Filter>src\user-interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\core\ActionCommandsManager.cpp">
+      <Filter>src\entity\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\core\BodyTracker.cpp">
+      <Filter>src\entity\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

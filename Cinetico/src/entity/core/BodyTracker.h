@@ -2,7 +2,7 @@
 #define __CINETICO_CORE_BODYTRACKER_H__
 
 #include "sensor.h"
-#include "entity/core/Body.h"
+#include "Body.h"
 
 namespace cinetico_core {
 
@@ -14,12 +14,12 @@ namespace cinetico_core {
 
 		int m_identifiedBodyCount;
 
-		public:
-			BodyTracker(Sensor& sensor);
-			~BodyTracker();
-			bool track();
-			void setTrackableBodyPoints(unsigned long trackableBodyPoints) { m_trackableBodyPoints = trackableBodyPoints; }
-			Body *body() const { return m_body; }
+	public:
+		BodyTracker(Sensor& sensor);
+		~BodyTracker();
+		bool track();
+		void setTrackableBodyPoints(unsigned long trackableBodyPoints) { m_trackableBodyPoints = trackableBodyPoints; }
+		Body *body() const { return m_body; }
 	};
 
 }

@@ -12,63 +12,95 @@ namespace cinetico_core {
 	}
 
 	Action::ActionResult PositionAction::avaliate(Body &body) {
-		BodyPoint *bodyPoint = body.bodyPoint(m_bodyPoint);
+		//Point we must position in the action
+		BodyPoint *actionBodyPoint = body.bodyPoint(m_bodyPoint);
 
 		//todo: handle refPoint Any or LastPosition
 		float gap = 0.5f;
 		m_minHoldTime = 0.5f;
-		Vector3 position = bodyPoint->position();
+		Vector3 actionPoint = actionBodyPoint->position();
+		Vector3 targetPoint;
 
 		float curTime = (float)uilib::OSTime::ticks();
 		float tps = (float)uilib::OSTime::ticksPerSecond();
-		float holdTime;
+		float timeToHold;
 
 		//Check if point position has changed "a lot"
 		//If so, restart time as if it was a new position
-		if (position.euclideanDistanceTo(m_lastPosition) >= 0.1)
+		if (actionPoint.euclideanDistanceTo(m_lastPosition) >= 0.1)
 			m_holdStartTime = curTime;
 
-		holdTime = (curTime - m_holdStartTime) / tps;
+		timeToHold = (curTime - m_holdStartTime) / tps;
+
+		BodyPoint *ref = body.bodyPoint((BodyPoint::BodyPart)m_refPoint);
+		Vector3 refPos = ref->position();
+		Vector3 refOrientation = ref->orientation();
+		Vector3 refOrientationVec;
+		refOrientationVec.setX(-std::sin(refOrientation.y())*std::cos(refOrientation.x()));
+		refOrientationVec.setY(std::sin(refOrientation.x()));
+		refOrientationVec.setZ(std::cos(refOrientation.y())*std::cos(refOrientation.x()));
+		Vector3 frontPos = refOrientationVec;
+		Vector3 rightPos = crossProduct(frontPos, Vector3(0, 1, 0));
+		Vector3 upPos = crossProduct(frontPos, rightPos);
 
 		float accuracyX = 0.f;
 		float accuracyY = 0.f;
 		float accuracyZ = 0.f;
-		float weightX = m_refPointX >= 0 ? 1.f : 0.f;
-		float weightY = m_refPointY >= 0 ? 1.f : 0.f;
-		float weightZ = m_refPointZ >= 0 ? 1.f : 0.f;
-		if (m_refPointX >= 0) {
-			Vector3 refPos = body.bodyPoint((BodyPoint::BodyPart)m_refPointX)->position();
-			float finalPos = m_finalPosition.x() + refPos.x();
-			float diff = position.x() - finalPos;
-			accuracyX = 100.f - fabsf(diff)*100.f / gap;
-			if (accuracyX < 0.f)
-				accuracyX = 0.f;
+		float weightX = m_operation & 1 ? 1.f : 0.f;
+		float weightY = m_operation & 1 ? 1.f : 0.f;
+		float weightZ = m_operation & 1 ? 1.f : 0.f;
+		if (m_operation & 1) {
+			targetPoint += rightPos*m_finalPosition.x();
 		}
 		
-		if (m_refPointY >= 0) {
-			Vector3 refPos = body.bodyPoint((BodyPoint::BodyPart)m_refPointY)->position();
-			float finalPos = m_finalPosition.y() + refPos.y();
-			float diff = position.y() - finalPos;
-			accuracyY = 100.f - fabsf(diff)*100.f / gap;
-			if (accuracyY < 0.f)
-				accuracyY = 0.f;
-			weightY = 1.f;
+		if (m_operation & 2) {
+			targetPoint += upPos*m_finalPosition.y();
+		}
+
+		if (m_operation & 4) {
+			targetPoint += frontPos*m_finalPosition.z();
 		}
 		
-		if (m_refPointZ >= 0) {
-			Vector3 refPos = body.bodyPoint((BodyPoint::BodyPart)m_refPointZ)->position();
-			//body point z points towards sensor, which is Z- in our rendering coordinate system. We must invert it (-m_finalPosition.z())
-			float finalPos = -m_finalPosition.z() + refPos.z();
-			float diff = (position.z()) - finalPos;
-			accuracyZ = 100.f - fabsf(diff)*100.f / gap;
-			if (accuracyZ < 0.f)
-				accuracyZ = 0.f;
-			weightZ = 1.f;
+		float accuracy = 0.f;
+		if (m_operation & 0x10) {
+			float accuracyX;
+			if (weightX != 0.f) {
+				if (actionPoint.x() > targetPoint.x())
+					accuracyX = 100.f;
+				else {
+					accuracyX = 1 - actionPoint.euclideanDistanceTo(targetPoint) / gap;
+				}
+			}
+			if (weightY != 0.f) {
+				if (actionPoint.y() > targetPoint.y())
+					accuracyY = 100.f;
+				else {
+					accuracyY = 1 - actionPoint.euclideanDistanceTo(targetPoint) / gap;
+				}
+			}
+			if (weightZ != 0.f) {
+				if (actionPoint.z() > targetPoint.z())
+					accuracyZ = 100.f;
+				else {
+					accuracyZ = 1 - actionPoint.euclideanDistanceTo(targetPoint) / gap;
+				}
+			}
+
+			accuracy = (accuracyX*weightX + accuracyY*weightY + accuracyZ*weightZ) / (weightX + weightY + weightZ);
 		}
-		
-		float accuracy = (accuracyX + accuracyY + accuracyZ) / (weightX + weightY + weightZ);
+		else {
+			float accuracy = 1 - actionPoint.euclideanDistanceTo(targetPoint) / gap;
+			accuracy *= 100.f;
+
+		}
+
+		if (accuracy < 0)
+			accuracy = 0.f;
+		if (accuracy > 100.f)
+			accuracy = 100.f;
+
 		m_accuracy = accuracy;
-		if (holdTime >= m_minHoldTime) {
+		if (timeToHold >= m_minHoldTime) {
 			if (accuracy < 50.f)
 				return Missed;
 			if (accuracy < 80.f)
@@ -78,7 +110,7 @@ namespace cinetico_core {
 			return Excellent;
 		}
 
-		m_lastPosition = position;
+		m_lastPosition = actionPoint;
 		return Missed;
 	}
 

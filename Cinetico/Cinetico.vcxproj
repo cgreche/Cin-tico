@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\bodytracker.h" />
     <ClInclude Include="src\character.h" />
     <ClInclude Include="src\cinetico.h" />
     <ClInclude Include="src\cineticoui.h" />
@@ -35,8 +34,10 @@
     <ClInclude Include="src\dictionary.h" />
     <ClInclude Include="src\dummycharacter.h" />
     <ClInclude Include="src\entity\core\Action.h" />
+    <ClInclude Include="src\entity\core\ActionCommandsManager.h" />
     <ClInclude Include="src\entity\core\Body.h" />
     <ClInclude Include="src\entity\core\BodyPoint.h" />
+    <ClInclude Include="src\entity\core\BodyTracker.h" />
     <ClInclude Include="src\entity\core\Exercise.h" />
     <ClInclude Include="src\entity\core\HandHandler.h" />
     <ClInclude Include="src\entity\core\MovementAction.h" />
@@ -196,7 +197,6 @@
     <ClInclude Include="src\utils\crypter.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\bodytracker.cpp" />
     <ClCompile Include="src\character.cpp" />
     <ClCompile Include="src\cineticodb.cpp" />
     <ClCompile Include="src\colladaparser.cpp" />
@@ -207,8 +207,10 @@
     <ClCompile Include="src\dictionary.cpp" />
     <ClCompile Include="src\dummycharacter.cpp" />
     <ClCompile Include="src\entity\core\Action.cpp" />
+    <ClCompile Include="src\entity\core\ActionCommandsManager.cpp" />
     <ClCompile Include="src\entity\core\Body.cpp" />
     <ClCompile Include="src\entity\core\BodyPoint.cpp" />
+    <ClCompile Include="src\entity\core\BodyTracker.cpp" />
     <ClCompile Include="src\entity\core\Exercise.cpp" />
     <ClCompile Include="src\entity\core\HandHandler.cpp" />
     <ClCompile Include="src\entity\core\MovementAction.cpp" />

@@ -6,7 +6,6 @@
 #include "entity/core/Exercise.h"
 #include "render3d/renderengine.h"
 #include "render3d/renderenginehelper.h"
-#include "bodytracker.h"
 #include "cinetico.h"
 
 namespace cinetico {

@@ -58,9 +58,8 @@ namespace cinetico {
 
 					Label labelPosition;
 					HorizontalLayout layoutPosition;
-						cComboBox cbRefPointX;
-						cComboBox cbRefPointY;
-						cComboBox cbRefPointZ;
+						cComboBox cbRefPoint;
+						cComboBox cbOperation;
 						cTextBox tbPositionX;
 						cTextBox tbPositionY;
 						cTextBox tbPositionZ;
@@ -94,6 +93,7 @@ namespace cinetico {
 		void fillOrderTypeCombo(cComboBox &combo);
 		void fillBodyPointCombo(cComboBox &combo);
 		void fillSpaceTypeCombo(cComboBox &combo);
+		void fillOperationCombo(cComboBox &combo);
 		void fillMovementTypeCombo(cComboBox &combo);
 		bool validateFields();
 		void saveCurrentAction();

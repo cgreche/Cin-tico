@@ -1,4 +1,3 @@
-
 #include "bodytracker.h"
 #ifdef _WIN32
 #include "kinectsensor.h"
@@ -46,7 +45,7 @@ do { \
 		sensor.update();
 
 		m_identifiedBodyCount = sensor.identifiedBodyCount();
-		if(m_identifiedBodyCount != 1) {
+		if (m_identifiedBodyCount != 1) {
 			if (m_body)
 				m_body->m_identifiedBodyPointCount = 0;
 			return false;
@@ -93,7 +92,7 @@ do { \
 		}
 
 		int identifiedBody;
-		for(int i = 0; i < BODY_COUNT; ++i) {
+		for (int i = 0; i < BODY_COUNT; ++i) {
 			if (sensor.bodyIsidentified(i)) {
 				identifiedBody = i;
 				break;

@@ -58,6 +58,11 @@ namespace cinetico_core {
 			return (*this - v).length();
 		}
 
+		float euclideanDistanceToLine(const Vector3 &v, const Vector3 &direction) const {
+			Vector3 p = v + dotProduct(*this - v, direction) * direction;
+			return (*this - p).length();
+		}
+
 		inline void set(float x, float y, float z) {
 			m_x = x;
 			m_y = y;

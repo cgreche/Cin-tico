@@ -4,17 +4,18 @@
 #include "input.h"
 #include "ExercisePlayMode.h"
 #include "entity/core/Exercise.h"
+#include "entity/core/ActionCommandsManager.h"
 #include "humancharacter.h"
 #include "dummycharacter.h"
 #include "render3d/renderengine.h"
 #include "render3d/renderenginehelper.h"
-
+#include <uilib/lib/time.h>
 
 namespace cinetico {
 
 	using namespace cinetico_core;
 	using namespace render3d;
-
+	
 	ExercisePlayMode::ExercisePlayMode(Cinetico &cinetico, Exercise &exercise)
 		: PlayMode(cinetico, EXERCISE_MODE)
 		, m_exercise(exercise) {
@@ -23,6 +24,7 @@ namespace cinetico {
 	void ExercisePlayMode::setup() {
 		m_humanChar = new HumanCharacter(*m_cinetico.cineticoUI());
 		m_dummyChar = new DummyCharacter(*m_cinetico.cineticoUI());
+		m_commandsManager = new ActionCommandsManager();
 
 		m_cinetico.bodyTracker()->setTrackableBodyPoints(m_exercise.trackableBodyPoints());
 
@@ -98,13 +100,16 @@ namespace cinetico {
 
 	void ExercisePlayMode::step() {
 		m_cinetico.bodyTracker()->track();
+		m_commandsManager->step(m_cinetico.currentTime());
 
 		Body *body;
 		body = m_cinetico.bodyTracker()->body();
 
 		if (body) {
-			if (m_exercise.state() == Exercise::Idle)
+			if (m_exercise.state() == Exercise::Idle) {
 				m_exercise.start(*body);
+				m_commandsManager->setBody(body);
+			}
 
 			m_humanChar->update();
 			if (m_exercise.step() == Exercise::Finished)
@@ -133,12 +138,33 @@ namespace cinetico {
 
 		m_renderEngine->drawResource(m_instanceTerrain);
 
+
+
 		m_renderEngine->setCurrentFont(m_resFontArial);
 		std::string str = "Exercício selecionado: ";
 		str += m_exercise.name();
 		m_renderEngine->drawText(str.c_str(), 500, 10, render3d::Color(255, 255, 255, 100));
-		m_renderEngine->setCurrentFont(m_resFontVerdana);
+		
 
+
+		int drawX = 400;
+		int drawY = 200;
+		str = "Action Commands: ";
+		m_renderEngine->drawText(str.c_str(), drawX, drawY, render3d::Color(255, 255, 255, 100));
+		drawY += 15;
+		for (unsigned int i = 0; i < m_commandsManager->commandCount(); ++i) {
+			str = "";
+			ActionCommand *command = m_commandsManager->actionCommand(i);
+			if (command->positionActionCommand())
+				str += "Position action";
+			else
+				str += "Movement action";
+			m_renderEngine->drawText(str.c_str(), drawX, drawY, render3d::Color(255, 255, 255, 100));
+			drawY += 15;
+		}
+
+
+		m_renderEngine->setCurrentFont(m_resFontVerdana);
 		if (m_exercise.state() == Exercise::Running) {
 			std::vector<Action *> actionList = m_exercise.actionList();
 			int actionIndex = m_exercise.currentActionIndex();
