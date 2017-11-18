@@ -95,14 +95,17 @@ namespace cinetico {
 	}
 
 	void ActionsController::fillOperationCombo(cComboBox &combo) {
-		combo.appendItem("WOW", -2);
 		combo.clear();
-		combo.appendItem(m_dictionary.getString(Dictionary::ActionRefPointAny), -2);
-		combo.appendItem(m_dictionary.getString(Dictionary::ActionRefPointLastPosition), -1);
-		std::vector<uilib::string> bpNames = m_cinetico.getAllBodyPointNames();
-		for (unsigned int i = 0; i < bpNames.size(); ++i) {
-			combo.appendItem(bpNames[i], i);
-		}
+		combo.appendItem("Posição fixa", Action::FixedPosition);
+		combo.appendItem("À frente", Action::InFront);
+		combo.appendItem("Atrás", Action::Behind);
+		combo.appendItem("À direita", Action::ToRight);
+		combo.appendItem("À esquerda", Action::ToLeft);
+		combo.appendItem("Acima", Action::Above);
+		combo.appendItem("Abaixo", Action::Below);
+		combo.appendItem("Alinhado horizontalmente", 7);
+		combo.appendItem("Alinhado verticalmente", 8);
+		combo.appendItem("Na mesma linha frontal", 9);
 	}
 
 	void ActionsController::fillMovementTypeCombo(cComboBox &combo) {
@@ -117,6 +120,7 @@ namespace cinetico {
 		if (cbActionType.selection() == -1
 			|| cbOrderType.selection() == -1
 			|| cbRefPoint.selection() == -1
+			|| cbOperation.selection() == -1
 			|| tbPositionX.text() == ""
 			|| tbPositionY.text() == ""
 			|| tbPositionZ.text() == ""
@@ -152,7 +156,7 @@ namespace cinetico {
 		string &maxTimeStr = tbMaxTime.text();
 		int bodyPoint = cbBodyPoint.selection();
 		int refPoint = (int)cbRefPoint.item(cbRefPoint.selection())->data();
-		int operation = (int)cbOperation.item(0)->data();
+		int operation = (int)cbOperation.item(cbOperation.selection())->data();
 		string &posXStr = tbPositionX.text();
 		string &posYStr = tbPositionY.text();
 		string &posZStr = tbPositionZ.text();
@@ -161,6 +165,20 @@ namespace cinetico {
 		string &orientationYStr = editOrientationY.text();
 		string &orientationZStr = editOrientationZ.text();
 		*/
+
+		unsigned long operationResult = operation&255;
+		if (operation == Action::FixedPosition) {
+			operationResult |= 7<<8;
+		}
+		else if (operation == Action::InFront || operation == Action::Behind) {
+			operationResult |= 4 << 8;
+		}
+		else if (operation == Action::ToRight || operation == Action::ToLeft) {
+			operationResult |= 1<<8;
+		}
+		else if (operation == Action::Above || operation == Action::Below) {
+			operationResult |= 2<<8;
+		}
 
 		Action *action;
 
@@ -203,7 +221,7 @@ namespace cinetico {
 		action->setMaxTime(maxTimeStr.toFloat());
 		action->setBodyPoint((BodyPoint::BodyPart)bodyPoint);
 		action->setRefPoint(refPoint);
-		action->setOperation(operation);
+		action->setOperation(operationResult);
 		action->setFinalPosition(cinetico_core::Vector3(posXStr.toFloat()*0.01f, posYStr.toFloat()*0.01f, posZStr.toFloat()*0.01f));
 
 		if (m_editMode == 1) {
@@ -456,7 +474,8 @@ namespace cinetico {
 				tbName.setText(action->name().c_str());
 				cbBodyPoint.setSelection(action->bodyPoint());
 				cbRefPoint.setSelection(action->refPoint() + 2);
-				cbOperation.setSelection(0);
+				int opFlags = action->operation();
+				cbOperation.setSelection(opFlags&255);
 				tbMinTime.setText(string::fromFloat(action->minTime()).data());
 				tbMaxTime.setText(string::fromFloat(action->maxTime()).data());
 				tbPositionX.setText(string::fromFloat(action->finalPosition().x()*100).data());

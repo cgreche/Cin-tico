@@ -84,7 +84,7 @@ namespace cinetico {
 			renderEngine->resourceData(resId.spine)->setColors(bodyColors);
 			resId.elbow = renderEngineHelper->createCube(ELBOW_SIZE);
 			renderEngine->resourceData(resId.elbow)->setColors(bodyColors);
-			resId.hand = renderEngineHelper->createCube(HAND_SIZE);
+			resId.hand = renderEngineHelper->createRectangularPrism(HAND_SIZE / 10.f,HAND_SIZE/1.3f,HAND_SIZE);
 			renderEngine->resourceData(resId.hand)->setColors(bodyColors);
 			resId.knee = renderEngineHelper->createCube(KNEE_SIZE);
 			renderEngine->resourceData(resId.knee)->setColors(bodyColors);

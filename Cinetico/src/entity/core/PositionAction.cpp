@@ -35,63 +35,81 @@ namespace cinetico_core {
 		BodyPoint *ref = body.bodyPoint((BodyPoint::BodyPart)m_refPoint);
 		Vector3 refPos = ref->position();
 		Vector3 refOrientation = ref->orientation();
-		Vector3 refOrientationVec;
-		refOrientationVec.setX(-std::sin(refOrientation.y())*std::cos(refOrientation.x()));
-		refOrientationVec.setY(std::sin(refOrientation.x()));
-		refOrientationVec.setZ(std::cos(refOrientation.y())*std::cos(refOrientation.x()));
+		Vector3 refOrientationVec(0,0,-1);
+		//refOrientationVec.setX(-std::sin(refOrientation.y())*std::cos(refOrientation.x()));
+		//refOrientationVec.setY(std::sin(refOrientation.x()));
+		//refOrientationVec.setZ(std::cos(refOrientation.y())*std::cos(refOrientation.x()));
 		Vector3 frontPos = refOrientationVec;
 		Vector3 rightPos = crossProduct(frontPos, Vector3(0, 1, 0));
-		Vector3 upPos = crossProduct(frontPos, rightPos);
+		Vector3 upPos = crossProduct(rightPos,frontPos);
 
-		float accuracyX = 0.f;
-		float accuracyY = 0.f;
-		float accuracyZ = 0.f;
-		float weightX = m_operation & 1 ? 1.f : 0.f;
-		float weightY = m_operation & 1 ? 1.f : 0.f;
-		float weightZ = m_operation & 1 ? 1.f : 0.f;
-		if (m_operation & 1) {
+		int op = m_operation & 255;
+		int posFlags = (m_operation >> 8) & 7;
+		if (posFlags == 0)
+			return Missed;
+
+		targetPoint = refPos;
+		if (posFlags & 1) {
 			targetPoint += rightPos*m_finalPosition.x();
 		}
 		
-		if (m_operation & 2) {
+		if (posFlags & 2) {
 			targetPoint += upPos*m_finalPosition.y();
 		}
 
-		if (m_operation & 4) {
+		if (posFlags & 4) {
 			targetPoint += frontPos*m_finalPosition.z();
 		}
 		
 		float accuracy = 0.f;
-		if (m_operation & 0x10) {
-			float accuracyX;
-			if (weightX != 0.f) {
-				if (actionPoint.x() > targetPoint.x())
-					accuracyX = 100.f;
-				else {
-					accuracyX = 1 - actionPoint.euclideanDistanceTo(targetPoint) / gap;
-				}
+		if (op == Action::InFront) {
+			if (actionPoint.z() > targetPoint.z())
+				accuracy = 100.f;
+			else {
+				accuracy = 1 - actionPoint.euclideanDistanceTo(targetPoint) / gap;
 			}
-			if (weightY != 0.f) {
-				if (actionPoint.y() > targetPoint.y())
-					accuracyY = 100.f;
-				else {
-					accuracyY = 1 - actionPoint.euclideanDistanceTo(targetPoint) / gap;
-				}
-			}
-			if (weightZ != 0.f) {
-				if (actionPoint.z() > targetPoint.z())
-					accuracyZ = 100.f;
-				else {
-					accuracyZ = 1 - actionPoint.euclideanDistanceTo(targetPoint) / gap;
-				}
-			}
-
-			accuracy = (accuracyX*weightX + accuracyY*weightY + accuracyZ*weightZ) / (weightX + weightY + weightZ);
 		}
-		else {
+		else if (op == Action::Behind) {
+			if (actionPoint.z() < targetPoint.z())
+				accuracy = 100.f;
+			else {
+				accuracy = 1 - actionPoint.euclideanDistanceTo(targetPoint) / gap;
+			}
+		}
+		else if (op == Action::ToRight) {
+			if (actionPoint.x() > targetPoint.x())
+				accuracy = 100.f;
+			else {
+				accuracy = 1 - actionPoint.euclideanDistanceTo(targetPoint) / gap;
+			}
+		}
+		else if (op == Action::ToLeft) {
+			if (actionPoint.x() > targetPoint.x())
+				accuracy = 100.f;
+			else {
+				accuracy = 1 - actionPoint.euclideanDistanceTo(targetPoint) / gap;
+			}
+		}
+		else if (op == Action::Above) {
+			if (actionPoint.y() > targetPoint.y())
+				accuracy = 100.f;
+			else {
+				accuracy = 1 - actionPoint.euclideanDistanceTo(targetPoint) / gap;
+			}
+		}
+		else if (op == Action::Below) {
+			if (actionPoint.y() < targetPoint.y())
+				accuracy = 100.f;
+			else {
+				accuracy = 1 - actionPoint.euclideanDistanceTo(targetPoint) / gap;
+			}
+		}
+		else if (op == Action::FixedPosition) {
 			float accuracy = 1 - actionPoint.euclideanDistanceTo(targetPoint) / gap;
 			accuracy *= 100.f;
-
+		}
+		else {
+			return Missed;
 		}
 
 		if (accuracy < 0)
@@ -103,6 +121,7 @@ namespace cinetico_core {
 		if (timeToHold >= m_minHoldTime) {
 			if (accuracy < 50.f)
 				return Missed;
+			m_state = Finished;
 			if (accuracy < 80.f)
 				return Bad;
 			if (accuracy < 90.f)

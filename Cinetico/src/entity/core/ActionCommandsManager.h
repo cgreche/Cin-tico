@@ -128,7 +128,7 @@ namespace cinetico_core {
 		ActionCommand* update(uilib::u64 curTime) {
 			static float minHoldTime = 0.5f;
 			static float gap = 0.025f;
-			uilib::u64 minHoldTicks = 1;// (uilib::u64)(uilib::OSTime::ticksPerSecond() / 3);
+			uilib::u64 minHoldTicks = (uilib::u64)(uilib::OSTime::ticksPerSecond()/4);
 
 			Vector3 curPos = m_bp.position();
 

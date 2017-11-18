@@ -14,11 +14,12 @@ namespace cinetico {
 		const char *actionSql = "INSERT INTO ACTION("
 			"exercise_id"
 			",type,order_type,name"
-			",min_time,max_time,"
-			",body_point,ref_point"
+			",min_time,max_time"
+			",body_point"
+			",ref_point,operation"
 			",final_position_x,final_position_y,final_position_z"
 			",final_orientation_x,final_orientation_y,final_orientation_z)"
-			" VALUES(?,?,?, ?,?,?, ?,?, ?,?,?, ?,?,?);";
+			" VALUES(?, ?,?,?, ?,?, ?, ?,?, ?,?,?, ?,?,?);";
 
 		SQLStatement *actionStmt;
 		actionStmt = m_db.prepare(actionSql);
@@ -30,12 +31,13 @@ namespace cinetico {
 		actionStmt->bind(6, action.maxTime());
 		actionStmt->bind(7, (int)action.bodyPoint());
 		actionStmt->bind(8, (int)action.refPoint());
-		actionStmt->bind(9, action.finalPosition().x());
-		actionStmt->bind(10, action.finalPosition().y());
-		actionStmt->bind(11, action.finalPosition().z());
-		actionStmt->bind(12, action.finalOrientation().x());
-		actionStmt->bind(13, action.finalOrientation().y());
-		actionStmt->bind(14, action.finalOrientation().z());
+		actionStmt->bind(9, (int)action.operation());
+		actionStmt->bind(10, action.finalPosition().x());
+		actionStmt->bind(11, action.finalPosition().y());
+		actionStmt->bind(12, action.finalPosition().z());
+		actionStmt->bind(13, action.finalOrientation().x());
+		actionStmt->bind(14, action.finalOrientation().y());
+		actionStmt->bind(15, action.finalOrientation().z());
 		int rc = actionStmt->execute();
 		actionStmt->close();
 
@@ -70,8 +72,8 @@ namespace cinetico {
 	void ActionDAO::update(Action &action) {
 		const char *actionSql = "UPDATE ACTION SET type = ?, order_type = ?"
 			", name = ?, min_time = ?, max_time = ?"
-			", body_point = ?, ref_point = ?"
-			", final_position_x = ?, final_position_y = ?, final_position_z = ?, "
+			", body_point = ?, ref_point = ?, operation = ?"
+			", final_position_x = ?, final_position_y = ?, final_position_z = ? "
 			", final_orientation_x = ?, final_orientation_y = ?, final_orientation_z = ? WHERE id = ?;";
 
 		SQLStatement *actionStmt;
@@ -83,13 +85,14 @@ namespace cinetico {
 		actionStmt->bind(5, action.maxTime());
 		actionStmt->bind(6, (int)action.bodyPoint());
 		actionStmt->bind(7, (int)action.refPoint());
-		actionStmt->bind(8, action.finalPosition().x());
-		actionStmt->bind(9, action.finalPosition().y());
-		actionStmt->bind(10, action.finalPosition().z());
-		actionStmt->bind(11, action.finalOrientation().x());
-		actionStmt->bind(12, action.finalOrientation().y());
-		actionStmt->bind(13, action.finalOrientation().z());
-		actionStmt->bind(14, action.id());
+		actionStmt->bind(8, (int)action.operation());
+		actionStmt->bind(9, action.finalPosition().x());
+		actionStmt->bind(10, action.finalPosition().y());
+		actionStmt->bind(11, action.finalPosition().z());
+		actionStmt->bind(12, action.finalOrientation().x());
+		actionStmt->bind(13, action.finalOrientation().y());
+		actionStmt->bind(14, action.finalOrientation().z());
+		actionStmt->bind(15, action.id());
 		int rc = actionStmt->execute();
 		actionStmt->close();
 
@@ -140,7 +143,7 @@ namespace cinetico {
 					sql = "SELECT "
 						"a.id,a.exercise_id,a.type,a.order_type"
 						",a.name,a.min_time,a.max_time"
-						",a.body_point, a.ref_point"
+						",a.body_point,a.ref_point,a.operation"
 						",a.final_position_x,a.final_position_y,a.final_position_z"
 						",a.final_orientation_x,a.final_orientation_y,a.final_orientation_z"
 
@@ -159,7 +162,7 @@ namespace cinetico {
 					}
 					pRS->next();
 
-					positionAction->setMinHoldTime(pRS->getFloat(15));
+					positionAction->setMinHoldTime(pRS->getFloat(16));
 
 					action = positionAction;
 
@@ -170,7 +173,7 @@ namespace cinetico {
 						"a.id,a.exercise_id"
 						",a.type,a.order_type,a.name"
 						",a.min_time,a.max_time"
-						",a.body_point,a.ref_point"
+						",a.body_point,a.ref_point,a.operation"
 						",a.final_position_x,a.final_position_y,a.final_position_z"
 						",a.final_orientation_x,a.final_orientation_y,a.final_orientation_z"
 
@@ -189,9 +192,9 @@ namespace cinetico {
 					}
 					pRS->next();
 
-					movementAction->setMovementType((MovementAction::MovementType)pRS->getInt(15));
-					movementAction->setMinSpeed(pRS->getFloat(16));
-					movementAction->setMaxSpeed(pRS->getFloat(17));
+					movementAction->setMovementType((MovementAction::MovementType)pRS->getInt(16));
+					movementAction->setMinSpeed(pRS->getFloat(17));
+					movementAction->setMaxSpeed(pRS->getFloat(18));
 
 					action = movementAction;
 				}
@@ -205,8 +208,9 @@ namespace cinetico {
 				action->setMaxTime(pRS->getFloat(6));
 				action->setBodyPoint((BodyPoint::BodyPart)pRS->getInt(7));
 				action->setRefPoint(pRS->getInt(8));
-				action->setFinalPosition(Vector3(pRS->getFloat(9), pRS->getFloat(10), pRS->getFloat(11)));
-				action->setFinalOrientation(Vector3(pRS->getFloat(12), pRS->getFloat(13), pRS->getFloat(14)));
+				action->setOperation(pRS->getInt(9));
+				action->setFinalPosition(Vector3(pRS->getFloat(10), pRS->getFloat(11), pRS->getFloat(12)));
+				action->setFinalOrientation(Vector3(pRS->getFloat(13), pRS->getFloat(14), pRS->getFloat(15)));
 				actionList.push_back(action);
 				pRS->close();
 				pStmt->close();

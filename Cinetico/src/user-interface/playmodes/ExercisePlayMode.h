@@ -24,8 +24,6 @@ namespace cinetico {
 
 		int m_resTerrain;
 		int m_instanceTerrain;
-		int m_resCube;
-		int m_instanceCube;
 		int m_cam1;
 		int m_cam2;
 		int m_currentCameraId;
@@ -36,7 +34,6 @@ namespace cinetico {
 		int m_resFontVerdana;
 
 		void processCamera();
-		void processCube();
 	public:
 		ExercisePlayMode(Cinetico &cinetico, cinetico_core::Exercise &exercise);
 

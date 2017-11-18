@@ -36,6 +36,16 @@ namespace cinetico_core {
 			Excellent
 		};
 
+		enum Operation {
+			FixedPosition = 0,
+			InFront,
+			Behind,
+			ToRight,
+			ToLeft,
+			Above,
+			Below
+		};
+
 	protected:
 		Exercise &m_owner;
 		int m_id;
@@ -72,6 +82,17 @@ namespace cinetico_core {
 
 		virtual ActionResult avaliate(Body &body) = 0;
 	public:
+		void start() {
+			m_state = Running;
+			m_result = Missed;
+			m_accuracy = 0.f;
+		}
+
+		void stop() {
+			m_state = Idle;
+			m_accuracy = 0.f;
+		}
+
 		void step(Body &body) {
 			m_result = avaliate(body);
 		}
@@ -97,6 +118,7 @@ namespace cinetico_core {
 		float maxTime() const { return m_maxTime; }
 		BodyPoint::BodyPart bodyPoint() const { return m_bodyPoint; }
 		int refPoint() const { return m_refPoint; }
+		int operation() const { return m_operation; }
 		const Vector3 &finalPosition() const { return m_finalPosition; }
 		const Vector3 &finalOrientation() const { return m_finalOrientation; }
 
