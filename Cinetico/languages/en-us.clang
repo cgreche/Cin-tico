@@ -62,9 +62,7 @@
 	<string id="DefaultActionQuestionDelete">Do you want to delete this register?
 	This operation cannot be undone.</string>
 	
-	
 	<!-- -->
-	
 	
 	<!--Entity-->
 	<string id="EntityUserProfile">User Profile</string>
@@ -81,22 +79,21 @@
 	<string id="ExerciseAuthor">Author</string>
 	<string id="ExercisePublic">Public</string>
 	
-	<string id="ActionType">Type</string>
-	<string id="ActionOrder">Order</string>
 	<string id="ActionName">Name</string>
-	<string id="ActionMinTime">Minimum execution time</string>
-	<string id="ActionMaxTime">Maximum execution time</string>
-	<string id="ActionBodyPoint">Body point</string>
-	<string id="ActionRefPointX">X reference point</string>
-	<string id="ActionRefPointY">Y reference point</string>
-	<string id="ActionRefPointZ">Z reference point</string>
-	<string id="ActionFinalPosition">Final position (cm)</string>
-	<string id="ActionFinalOrientation">Final orientation</string>
+	<string id="ActionMinExecutionTime">Minimum execution time</string>
+	<string id="ActionMaxExecutionTime">Maximum execution time</string>
+	<string id="ActionTimeToHold">Time to hold position</string>
 	
-	<string id="PositionActionMinHoldTime">Minimum time to hold the position (s)</string>
-	<string id="MovementActionType">Movement type</string>
-	<string id="MovementActionMinSpeed">Minimum execution speed (cm/s²)</string>
-	<string id="MovementActionMaxSpeed">Maximum execution speed (cm/s²)</string>
+	<string id="SimpleGesturetransitionType">Transition type</string>
+	<string id="SimpleGestureBodyPoint">Body POint</string>
+	<string id="SimpleGestureRefPoint">Reference point</string>
+	<string id="SimpleGestureValueX">Value X</string>
+	<string id="SimpleGestureValueY">Value Y</string>
+	<string id="SimpleGestureValueZ">Value Z</string>
+	
+	<string id="MovementGestureMovementType">Movement type</string>
+	<string id="MovementGestureMinSpeed">Minimum execution speed (cm/s²)</string>
+	<string id="MovementGestureMaxSpeed">Maximum execution speed (cm/s²)</string>
 	
 	
 	<!-- -->

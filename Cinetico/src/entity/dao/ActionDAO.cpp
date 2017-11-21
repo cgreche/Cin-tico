@@ -81,13 +81,16 @@ namespace cinetico {
 		actionStmt->close();
 
 		if (rc == 1) {
-			const char *sql = "DELETE FROM MOVEMENT_GESTURE WHERE id = ?";
-			SQLStatement *childClassStmt = m_db.prepare(sql);
-			childClassStmt->execute();
-
-			sql = "DELETE FROM SIMPLE_GESTURE WHERE id = ?";
-			childClassStmt = m_db.prepare(sql);
-			childClassStmt->execute();
+			//Delete All Movement Gestures
+			const char *sql = "DELETE FROM MOVEMENT_GESTURE WHERE simple_gesture_id IN (SELECT id FROM SIMPLE_GESTURE WHERE action_id = ?);";
+			SQLStatement *stmt = m_db.prepare(sql);
+			stmt->bind(1, action.id());
+			stmt->execute();
+			//Delete All Simple Gestures
+			sql = "DELETE FROM SIMPLE_GESTURE WHERE action_id = ?;";
+			stmt = m_db.prepare(sql);
+			stmt->bind(1, action.id());
+			stmt->execute();
 
 			for (int i = 0; i < action.gestureCount(); ++i) {
 				SimpleGesture *gesture = action.gesture(i);
@@ -112,9 +115,6 @@ namespace cinetico {
 					childClassStmt->bind(2, ((MovementGesture*)gesture)->movementType());
 					childClassStmt->bind(3, ((MovementGesture*)gesture)->minSpeed());
 					childClassStmt->bind(4, ((MovementGesture*)gesture)->maxSpeed());
-				}
-				else {
-					return;
 				}
 
 				int rc = childClassStmt->execute();
@@ -194,26 +194,22 @@ namespace cinetico {
 	}
 
 	void ActionDAO::exclude(Action &action) {
-		const char *sql = "";
 		SQLStatement *stmt;
-		int rc;
-
-		//todo: get movement_gesture from simple_gesture foreign key       
-		//Delete All gestures first
-		sql = "DELETE FROM SIMPLE_GESTURE_ACTION WHERE action_id = ?;" \
-			"DLETE FROM GESTURE WHERE action_id = ?;";
- 
+		//Delete All Movement Gestures
+		const char *sql = "DELETE FROM MOVEMENT_GESTURE WHERE simple_gesture_id IN (SELECT id FROM SIMPLE_GESTURE WHERE action_id = ?);";
 		stmt = m_db.prepare(sql);
 		stmt->bind(1, action.id());
-		stmt->bind(2, action.id());
-		rc = stmt->execute();
-		stmt->close();
-
-		//Delete base table
+		stmt->execute();
+		//Delete All Simple Gestures
+		sql = "DELETE FROM SIMPLE_GESTURE WHERE action_id = ?;";
+		stmt = m_db.prepare(sql);
+		stmt->bind(1, action.id());
+		stmt->execute();
+		//Delete the Action
 		sql = "DELETE FROM ACTION WHERE id = ?;";
 		stmt = m_db.prepare(sql);
 		stmt->bind(1, action.id());
-		rc = stmt->execute();
+		stmt->execute();
 		stmt->close();
 	}
 

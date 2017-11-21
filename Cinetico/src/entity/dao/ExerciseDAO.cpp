@@ -115,19 +115,27 @@ namespace cinetico {
 	}
 
 	void ExerciseDAO::exclude(Exercise &exercise) {
-		const char *sql = "DELETE FROM ACTION WHERE exercise_id = ?";
 		SQLStatement *stmt;
+		//Delete All Movement Gestures
+		const char *sql = "DELETE FROM MOVEMENT_GESTURE WHERE simple_gesture_id IN (SELECT SIMPLE_GESTURE.id FROM SIMPLE_GESTURE, ACTION WHERE action_id=ACTION.id AND ACTION.exercide_id = ?);";
 		stmt = m_db.prepare(sql);
 		stmt->bind(1, (int)exercise.id());
 		stmt->execute();
-
-		sql = "DELETE FROM EXERCISE WHERE id = ? ; ";
+		//Delete All Simple Gestures
+		sql = "DELETE FROM SIMPLE_GESTURE WHERE action_id IN (SELECT id FROM ACTION WHERE exercise_id = ?);";
 		stmt = m_db.prepare(sql);
 		stmt->bind(1, (int)exercise.id());
-		int rc = stmt->execute();
-		if (rc != 0) {
-			//todo
-		}
+		stmt->execute();
+		//Delete All Actions
+		sql = "DELETE FROM ACTION WHERE exercise_id = ?;";
+		stmt = m_db.prepare(sql);
+		stmt->bind(1, (int)exercise.id());
+		stmt->execute();
+		//Delete the exercise
+		sql = "DELETE FROM EXERCISE WHERE id = ?;";
+		stmt = m_db.prepare(sql);
+		stmt->bind(1, (int)exercise.id());
+		stmt->execute();
 		stmt->close();
 	}
 

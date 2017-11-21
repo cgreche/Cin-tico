@@ -140,12 +140,7 @@ namespace cinetico {
 		bool required = false;
 		bool invalid = false;
 
-		if (cbRefPoint.selection() == -1
-			|| cbOperation.selection() == -1
-			|| tbPositionX.text() == ""
-			|| tbPositionY.text() == ""
-			|| tbPositionZ.text() == ""
-			) {
+		if (tbName.text() == "") {
 			required = true;
 		}
 
@@ -202,8 +197,8 @@ namespace cinetico {
 		buttonBack.setText(m_dictionary.getString(Dictionary::DefaultActionBack));
 
 		gridActions.setHeaderText(0, m_dictionary.getString(Dictionary::ActionName));
-		gridActions.setHeaderText(2, m_dictionary.getString(Dictionary::ActionMinTime));
-		gridActions.setHeaderText(3, m_dictionary.getString(Dictionary::ActionMaxTime));
+		gridActions.setHeaderText(2, m_dictionary.getString(Dictionary::ActionMinExecutionTime));
+		gridActions.setHeaderText(3, m_dictionary.getString(Dictionary::ActionMaxExecutionTime));
 		gridActions.setHeaderText(4, m_dictionary.getString(Dictionary::ActionTimeToHold));
 		gridActions.setHeaderText(5, "Gesture count");
 
@@ -216,16 +211,16 @@ namespace cinetico {
 		separatorActionBasicData.setText(m_dictionary.getString(Dictionary::ActionsViewSectionBasicData));
 
 		tbName.setLabel(m_dictionary.getString(Dictionary::ActionName) + "*");
-		tbMinTime.setLabel(m_dictionary.getString(Dictionary::ActionMinTime));
-		tbMaxTime.setLabel(m_dictionary.getString(Dictionary::ActionMaxTime));
-		tbTimeToHold.setLabel(m_dictionary.getString(Dictionary::PositionActionMinHoldTime));
+		tbMinTime.setLabel(m_dictionary.getString(Dictionary::ActionMinExecutionTime));
+		tbMaxTime.setLabel(m_dictionary.getString(Dictionary::ActionMaxExecutionTime));
+		tbTimeToHold.setLabel(m_dictionary.getString(Dictionary::ActionTimeToHold));
 
 		fillTransitionTypeCombo(cbTransitionType);
 		fillBodyPointCombo(cbBodyPoint);
 		fillRefPointCombo(cbRefPoint);
 		fillOperationCombo(cbOperation);
-		buttonAddGesture.setText("Add");
-		buttonCancelGesture.setText("Cancel");
+		buttonAddGesture.setText(m_dictionary.getString(Dictionary::DefaultActionAdd));
+		buttonCancelGesture.setText(m_dictionary.getString(Dictionary::DefaultActionCancel));
 	}
 
 	ActionsController::ActionsController(CineticoUI &cineticoUI)

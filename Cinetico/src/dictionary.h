@@ -59,10 +59,6 @@ namespace cinetico {
 			, BodyPointRightAnkle
 			, BodyPointRightFoot
 
-			//Action Enums
-			, ActionTypePosition
-			, ActionTypeMovement
-
 			, ActionRefPointAny
 			, ActionRefPointLastPosition
 
@@ -98,23 +94,22 @@ namespace cinetico {
 			, ExerciseAuthor
 			, ExercisePublic
 
-			, ActionType
-			, ActionOrder
 			, ActionName
-			, ActionMinTime
-			, ActionMaxTime
+			, ActionMinExecutionTime
+			, ActionMaxExecutionTime
 			, ActionTimeToHold
-			, ActionBodyPoint
-			, ActionRefPointX
-			, ActionRefPointY
-			, ActionRefPointZ
-			, ActionFinalPosition
-			, ActionFinalOrientation
 
-			, PositionActionMinHoldTime
-			, MovementActionType
-			, MovementActionMinSpeed
-			, MovementActionMaxSpeed
+			, SimpleGestureTransitionType
+			, SimpleGestureBodyPoint
+			, SimpleGestureRefPoint
+			, SimpleGestureOperation
+			, SimpleGestureValueX
+			, SimpleGestureValueY
+			, SimpleGestureValueZ
+
+			, MovementGestureMovementType
+			, MovementGestureMinSpeed
+			, MovementGestureMaxSpeed
 
 			//Views
 			, ViewDefaultErrorRequiredFields

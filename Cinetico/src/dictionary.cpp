@@ -65,8 +65,6 @@ namespace cinetico {
 			MAP_STR(BodyPointRightFoot);
 
 			//Action Enums
-			MAP_STR(ActionTypePosition);
-			MAP_STR(ActionTypeMovement);
 
 			MAP_STR(ActionRefPointAny);
 			MAP_STR(ActionRefPointLastPosition);
@@ -103,23 +101,22 @@ namespace cinetico {
 			MAP_STR(ExerciseAuthor);
 			MAP_STR(ExercisePublic);
 
-			MAP_STR(ActionType);
-			MAP_STR(ActionOrder);
 			MAP_STR(ActionName);
-			MAP_STR(ActionMinTime);
-			MAP_STR(ActionMaxTime);
+			MAP_STR(ActionMinExecutionTime);
+			MAP_STR(ActionMaxExecutionTime);
 			MAP_STR(ActionTimeToHold);
-			MAP_STR(ActionBodyPoint);
-			MAP_STR(ActionRefPointX);
-			MAP_STR(ActionRefPointY);
-			MAP_STR(ActionRefPointZ);
-			MAP_STR(ActionFinalPosition);
-			MAP_STR(ActionFinalOrientation);
 
-			MAP_STR(PositionActionMinHoldTime);
-			MAP_STR(MovementActionType);
-			MAP_STR(MovementActionMinSpeed);
-			MAP_STR(MovementActionMaxSpeed);
+			MAP_STR(SimpleGestureTransitionType);
+			MAP_STR(SimpleGestureBodyPoint);
+			MAP_STR(SimpleGestureRefPoint);
+			MAP_STR(SimpleGestureOperation);
+			MAP_STR(SimpleGestureValueX);
+			MAP_STR(SimpleGestureValueY);
+			MAP_STR(SimpleGestureValueZ);
+
+			MAP_STR(MovementGestureMovementType);
+			MAP_STR(MovementGestureMinSpeed);
+			MAP_STR(MovementGestureMaxSpeed);
 
 			//Views
 			MAP_STR(ViewDefaultErrorRequiredFields);
