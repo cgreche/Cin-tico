@@ -4,8 +4,6 @@
 #include "cineticoui.h"
 
 #include "entity/core/Action.h"
-#include "entity/core/PositionAction.h"
-#include "entity/core/MovementAction.h"
 
 #include "ActionsController.h"
 
@@ -65,15 +63,10 @@ namespace cinetico {
 		controller->m_currentActionTypeSelection = combo.selection();
 	}
 
-	void ActionsController::fillActionTypeCombo(cComboBox &combo) {
-		combo.appendItem(m_dictionary.getString(Dictionary::ActionTypePosition),Action::Position);
-		combo.appendItem(m_dictionary.getString(Dictionary::ActionTypeMovement),Action::Movement);
-	}
-
-	void ActionsController::fillOrderTypeCombo(cComboBox &combo) {
-		combo.appendItem("Nova ação",0);
-		combo.appendItem("Última ação",1);
-		combo.appendItem("Todas as ações",2);
+	void ActionsController::fillTransitionTypeCombo(cComboBox &combo) {
+		combo.clear();
+		combo.appendItem("Livre",SimpleGesture::Free);
+		combo.appendItem("Movimento fixo",SimpleGesture::FixedMovement);
 	}
 
 	void ActionsController::fillBodyPointCombo(cComboBox &combo) {
@@ -84,7 +77,7 @@ namespace cinetico {
 		}
 	}
 
-	void ActionsController::fillSpaceTypeCombo(cComboBox &combo) {
+	void ActionsController::fillRefPointCombo(cComboBox &combo) {
 		combo.clear();
 		combo.appendItem(m_dictionary.getString(Dictionary::ActionRefPointAny), -2);
 		combo.appendItem(m_dictionary.getString(Dictionary::ActionRefPointLastPosition), -1);
@@ -94,18 +87,48 @@ namespace cinetico {
 		}
 	}
 
+	static void buttonAddGesture_onClick(Button &button) {
+		ActionsController *controller = (ActionsController*)button.param();
+		SimpleGesture *gesture;
+		SimpleGesture::TransitionType type = (SimpleGesture::TransitionType)(int)controller->cbTransitionType.item(controller->cbTransitionType.selection())->data();
+		BodyPoint::BodyPart bp = (BodyPoint::BodyPart)(int)controller->cbBodyPoint.item(controller->cbBodyPoint.selection())->data();
+		int refPoint = (int)controller->cbRefPoint.item(controller->cbRefPoint.selection())->data();
+		unsigned long operation = (unsigned long)controller->cbOperation.item(controller->cbOperation.selection())->data();
+		float valueX = controller->tbPositionX.text().toFloat();
+		float valueY = controller->tbPositionY.text().toFloat();
+		float valueZ = controller->tbPositionZ.text().toFloat();
+
+		if (type == SimpleGesture::FixedMovement) {
+			//todo: get movementType, minSpeed, maxSpeed from fields
+			MovementGesture::MovementType movementType = MovementGesture::Linear;
+			float minSpeed = 0.f;
+			float maxSpeed = 0.f;
+			MovementGesture *movementGesture = new MovementGesture(bp, movementType);
+			movementGesture->setMinSpeed(minSpeed);
+			movementGesture->setMaxSpeed(maxSpeed);
+			gesture = movementGesture;
+		}
+		else {
+			gesture = new SimpleGesture(type, bp);
+		}
+
+		gesture->setRefPoint(refPoint);
+		gesture->setOperation(operation);
+		controller->m_gestures.push_back(gesture);
+	}
+
 	void ActionsController::fillOperationCombo(cComboBox &combo) {
 		combo.clear();
-		combo.appendItem("Posição fixa", Action::FixedPosition);
-		combo.appendItem("À frente", Action::InFront);
-		combo.appendItem("Atrás", Action::Behind);
-		combo.appendItem("À direita", Action::ToRight);
-		combo.appendItem("À esquerda", Action::ToLeft);
-		combo.appendItem("Acima", Action::Above);
-		combo.appendItem("Abaixo", Action::Below);
-		combo.appendItem("Alinhado horizontalmente", 7);
-		combo.appendItem("Alinhado verticalmente", 8);
-		combo.appendItem("Na mesma linha frontal", 9);
+		combo.appendItem("Posição fixa", SimpleGesture::makeOperationFlags(SimpleGesture::FixedPosition,true,true,true));
+		combo.appendItem("À frente", SimpleGesture::makeOperationFlags(SimpleGesture::InFront,false,false,true));
+		combo.appendItem("Atrás", SimpleGesture::makeOperationFlags(SimpleGesture::Behind, false, false, true));
+		combo.appendItem("À direita", SimpleGesture::makeOperationFlags(SimpleGesture::ToRight, true, false, false));
+		combo.appendItem("À esquerda", SimpleGesture::makeOperationFlags(SimpleGesture::ToLeft, true, false, false));
+		combo.appendItem("Acima", SimpleGesture::makeOperationFlags(SimpleGesture::Above, false, true, false));
+		combo.appendItem("Abaixo", SimpleGesture::makeOperationFlags(SimpleGesture::Below, false, true, false));
+		combo.appendItem("Alinhado horizontalmente", SimpleGesture::makeOperationFlags((SimpleGesture::Operation)7, false, true, true));
+		combo.appendItem("Alinhado verticalmente", SimpleGesture::makeOperationFlags((SimpleGesture::Operation)8, true, false, false));
+		combo.appendItem("Na mesma linha frontal", SimpleGesture::makeOperationFlags((SimpleGesture::Operation)9, false, false, true));
 	}
 
 	void ActionsController::fillMovementTypeCombo(cComboBox &combo) {
@@ -117,21 +140,13 @@ namespace cinetico {
 		bool required = false;
 		bool invalid = false;
 
-		if (cbActionType.selection() == -1
-			|| cbOrderType.selection() == -1
-			|| cbRefPoint.selection() == -1
+		if (cbRefPoint.selection() == -1
 			|| cbOperation.selection() == -1
 			|| tbPositionX.text() == ""
 			|| tbPositionY.text() == ""
 			|| tbPositionZ.text() == ""
 			) {
 			required = true;
-		}
-
-		if (cbActionType.selection() == 1) {
-			if (cbMovementType.selection() == -1) {
-				required = true;
-			}
 		}
 
 		if (required) {
@@ -150,79 +165,20 @@ namespace cinetico {
 			return;
 
 		string &name = tbName.text();
-		int order = cbOrderType.selection();
-		int type = cbActionType.selection();
-		string &minTimeStr = tbMinTime.text();
-		string &maxTimeStr = tbMaxTime.text();
-		int bodyPoint = cbBodyPoint.selection();
-		int refPoint = (int)cbRefPoint.item(cbRefPoint.selection())->data();
-		int operation = (int)cbOperation.item(cbOperation.selection())->data();
-		string &posXStr = tbPositionX.text();
-		string &posYStr = tbPositionY.text();
-		string &posZStr = tbPositionZ.text();
-		/*
-		string &orientationXStr = editOrientationX.text();
-		string &orientationYStr = editOrientationY.text();
-		string &orientationZStr = editOrientationZ.text();
-		*/
+		float minTimeStr = tbMinTime.text().toFloat();
+		float maxTimeStr = tbMaxTime.text().toFloat();
+		float timeToHold = tbTimeToHold.text().toFloat();
 
-		unsigned long operationResult = operation&255;
-		if (operation == Action::FixedPosition) {
-			operationResult |= 7<<8;
-		}
-		else if (operation == Action::InFront || operation == Action::Behind) {
-			operationResult |= 4 << 8;
-		}
-		else if (operation == Action::ToRight || operation == Action::ToLeft) {
-			operationResult |= 1<<8;
-		}
-		else if (operation == Action::Above || operation == Action::Below) {
-			operationResult |= 2<<8;
-		}
-
-		Action *action;
-
-		if ((Action::ActionType)type == Action::Position) {
-			string &minHoldTimeStr = tbMinHoldTime.text();
-
-			PositionAction *posAction;
-			if (m_editMode == 1)
-				posAction = new PositionAction(*m_currentExercise);
-			else
-				posAction = (PositionAction*)m_currentAction;
-
-			posAction->setMinHoldTime(minHoldTimeStr.toFloat());
-			action = posAction;
-		}
-		else if ((Action::ActionType)type == Action::Movement) {
-			int movementType = cbMovementType.selection();
-			string &minSpeedStr = tbMinSpeed.text();
-			string &maxSpeedStr = tbMaxSpeed.text();
-
-			MovementAction *movementAction;
-			if (m_editMode == 1)
-				movementAction = new MovementAction(*m_currentExercise);
-			else
-				movementAction = (MovementAction*)m_currentAction;
-			movementAction->setMovementType((MovementAction::MovementType)movementType);
-			movementAction->setMinSpeed(minSpeedStr.toFloat());
-			movementAction->setMaxSpeed(maxSpeedStr.toFloat());
-
-			action = movementAction;
-		}
-		else {
-			//Should never reach here
-			return;
-		}
+		Action *action = m_currentAction;
 
 		action->setName(name.data());
-		action->setOrder((Action::ActionOrder)order);
-		action->setMinTime(minTimeStr.toFloat());
-		action->setMaxTime(maxTimeStr.toFloat());
-		action->setBodyPoint((BodyPoint::BodyPart)bodyPoint);
-		action->setRefPoint(refPoint);
-		action->setOperation(operationResult);
-		action->setFinalPosition(cinetico_core::Vector3(posXStr.toFloat()*0.01f, posYStr.toFloat()*0.01f, posZStr.toFloat()*0.01f));
+		action->setMinExecutionTime(minTimeStr);
+		action->setMaxExecutionTime(maxTimeStr);
+		action->setTimeToHold(timeToHold);
+
+		for (unsigned int i = 0; i < m_gestures.size(); ++i) {
+			action->addGesture(m_gestures[i]);
+		}
 
 		if (m_editMode == 1) {
 			m_cinetico.cineticoDB()->actionDAO()->create(*action);
@@ -231,6 +187,9 @@ namespace cinetico {
 		else {
 			m_cinetico.cineticoDB()->actionDAO()->update(*action);
 		}
+
+		if(!m_gestures.empty())
+			m_gestures.clear();
 
 		setEditionMode(0);
 	}
@@ -242,10 +201,11 @@ namespace cinetico {
 		buttonAdd.setText(m_dictionary.getString(Dictionary::DefaultActionAdd));
 		buttonBack.setText(m_dictionary.getString(Dictionary::DefaultActionBack));
 
-		gridActions.setHeaderText(0, m_dictionary.getString(Dictionary::ActionType));
-		gridActions.setHeaderText(1, m_dictionary.getString(Dictionary::ActionName));
-		gridActions.setHeaderText(2, m_dictionary.getString(Dictionary::ActionFinalPosition));
-		gridActions.setHeaderText(3, m_dictionary.getString(Dictionary::ActionFinalOrientation));
+		gridActions.setHeaderText(0, m_dictionary.getString(Dictionary::ActionName));
+		gridActions.setHeaderText(2, m_dictionary.getString(Dictionary::ActionMinTime));
+		gridActions.setHeaderText(3, m_dictionary.getString(Dictionary::ActionMaxTime));
+		gridActions.setHeaderText(4, m_dictionary.getString(Dictionary::ActionTimeToHold));
+		gridActions.setHeaderText(5, "Gesture count");
 
 		buttonEdit.setText(m_dictionary.getString(Dictionary::DefaultActionEdit));
 		buttonDelete.setText(m_dictionary.getString(Dictionary::DefaultActionDelete));
@@ -255,36 +215,17 @@ namespace cinetico {
 
 		separatorActionBasicData.setText(m_dictionary.getString(Dictionary::ActionsViewSectionBasicData));
 
-		cbActionType.setLabel(m_dictionary.getString(Dictionary::ActionType) + "*");
-		cbOrderType.setLabel(m_dictionary.getString(Dictionary::ActionOrder) + "*");
 		tbName.setLabel(m_dictionary.getString(Dictionary::ActionName) + "*");
-
-		cbBodyPoint.setLabel(m_dictionary.getString(Dictionary::ActionBodyPoint) + "*");
-		cbRefPoint.setLabel(m_dictionary.getString(Dictionary::ActionRefPointX) + "*");
-		cbOperation.setLabel(m_dictionary.getString(Dictionary::ActionRefPointY) + "*");
 		tbMinTime.setLabel(m_dictionary.getString(Dictionary::ActionMinTime));
 		tbMaxTime.setLabel(m_dictionary.getString(Dictionary::ActionMaxTime));
+		tbTimeToHold.setLabel(m_dictionary.getString(Dictionary::PositionActionMinHoldTime));
 
-		labelPosition.setText(m_dictionary.getString(Dictionary::ActionFinalPosition) + "*");
-		tbPositionX.setLabel(m_dictionary.getString(Dictionary::X));
-		tbPositionY.setLabel(m_dictionary.getString(Dictionary::Y));
-		tbPositionZ.setLabel(m_dictionary.getString(Dictionary::Z));
-
-		tbMinHoldTime.setLabel(m_dictionary.getString(Dictionary::PositionActionMinHoldTime));
-
-		cbMovementType.setLabel(m_dictionary.getString(Dictionary::MovementActionType) + "*");
-
-		tbMinSpeed.setLabel(m_dictionary.getString(Dictionary::MovementActionMinSpeed));
-		tbMaxSpeed.setLabel(m_dictionary.getString(Dictionary::MovementActionMaxSpeed));
-
-		separatorSpecificData.setText(m_dictionary.getString(Dictionary::ActionsViewSectionSpecificData));
-
-		fillActionTypeCombo(cbActionType);
-		fillOrderTypeCombo(cbOrderType);
+		fillTransitionTypeCombo(cbTransitionType);
 		fillBodyPointCombo(cbBodyPoint);
-		fillSpaceTypeCombo(cbRefPoint);
+		fillRefPointCombo(cbRefPoint);
 		fillOperationCombo(cbOperation);
-		fillMovementTypeCombo(cbMovementType);
+		buttonAddGesture.setText("Add");
+		buttonCancelGesture.setText("Cancel");
 	}
 
 	ActionsController::ActionsController(CineticoUI &cineticoUI)
@@ -301,7 +242,7 @@ namespace cinetico {
 
 		//List
 		gridActions.setStyle(CS_Border);
-		gridActions.setColumnCount(3);
+		gridActions.setColumnCount(5);
 		gridActions.setHeaderVisible(true);
 
 		gridActions.setParam(this);
@@ -333,41 +274,36 @@ namespace cinetico {
 		layoutActionDataActionButtons.append(buttonCancelAction);
 
 		//Base Action data
-		cbActionType.combo.setParam(this);
-		cbActionType.combo.setOnSelect(comboActionType_onChange);
+		buttonAddGesture.setParam(this);
+		buttonAddGesture.setOnClick(buttonAddGesture_onClick);
+		buttonCancelGesture.setParam(this);
 
-		layoutActionDataRow1.append(cbActionType, Size(SizeTypeMax, SizeTypeAuto));
-		layoutActionDataRow1.append(cbOrderType, Size(SizeTypeMax, SizeTypeAuto));
+
 		layoutActionDataRow1.append(tbName);
+		layoutActionDataRow1.append(tbMinTime);
+		layoutActionDataRow1.append(tbMaxTime);
+		layoutActionDataRow1.append(tbTimeToHold);
 
-		layoutBaseActionData.append(cbBodyPoint, Size(SizeTypeMax, SizeTypeAuto));
-		layoutBaseActionData.append(tbMinTime, Size(SizeTypeMax, SizeTypeAuto));
-		layoutBaseActionData.append(tbMaxTime, Size(SizeTypeMax, SizeTypeAuto));
+		layoutGestureDataRow1.append(cbTransitionType);
+		layoutGestureDataRow1.append(cbBodyPoint);
 
-		layoutPosition.append(cbRefPoint, Size(SizeTypeMax, SizeTypeAuto));
-		layoutPosition.append(cbOperation, Size(SizeTypeMax, SizeTypeAuto));
-		layoutPosition.append(tbPositionX);
-		layoutPosition.append(tbPositionY);
-		layoutPosition.append(tbPositionZ);
+		layoutGestureDataRow2.append(cbRefPoint);
+		layoutGestureDataRow2.append(cbOperation);
 
-		//Position Action
-		layoutPositionSpecific.append(tbMinHoldTime);
+		layoutGestureDataRow2.append(tbPositionX);
+		layoutGestureDataRow2.append(tbPositionY);
+		layoutGestureDataRow2.append(tbPositionZ);
+		layoutGestureDataRow2.append(buttonAddGesture);
+		layoutGestureDataRow2.append(buttonCancelGesture);
 
-		//Movement Action
-		layoutMovementAction.append(cbMovementType, Size(SizeTypeMax, SizeTypeAuto));
-		layoutMovementAction.append(tbMinSpeed, Size(SizeTypeMax, SizeTypeAuto));
-		layoutMovementAction.append(tbMaxSpeed, Size(SizeTypeMax, SizeTypeAuto));
-		layoutMovementSpecific.append(layoutMovementAction);
-
-		layoutSpecific.append(separatorSpecificData);
-
-		layoutActionData.append(layoutActionDataActionButtons, AutoSize, 10);
+		layoutActionData.append(layoutActionDataActionButtons);
 		layoutActionData.append(separatorActionBasicData);
 		layoutActionData.append(layoutActionDataRow1);
-		layoutActionData.append(layoutBaseActionData);
-		layoutActionData.append(labelPosition);
-		layoutActionData.append(layoutPosition,AutoSize,20);
-		layoutActionData.append(layoutSpecific);
+		layoutActionData.append(separatorGestureData);
+		layoutActionData.append(layoutGestureDataRow1);
+		layoutActionData.append(layoutGestureDataRow2);
+		layoutActionData.append(layoutGestureDataRow3);
+
 		//
 		layoutContent.append(layoutContentList);
 
@@ -408,6 +344,7 @@ namespace cinetico {
 		}
 
 		if (m_currentActionTypeSelection != lastActionType) {
+			/*
 			if (lastActionType == Action::Position) {
 				layoutSpecific.remove(layoutPositionSpecific);
 			}
@@ -421,6 +358,7 @@ namespace cinetico {
 			else if (m_currentActionTypeSelection == Action::Movement) {
 				layoutSpecific.append(layoutMovementSpecific);
 			}
+			*/
 
 			layout.setSize(layout.size());
 			layout.setVisible(true);
@@ -449,25 +387,13 @@ namespace cinetico {
 		else if (mode == 1 || mode == 2) {
 			layoutContent.append(layoutActionData);
 			//
-			cbActionType.setSelection(-1);
-			cbActionType.setEnabled(mode == 1);
-			cbOrderType.setSelection(-1);
 			tbName.setText("");
-			cbBodyPoint.setSelection(-1);
-			cbRefPoint.setSelection(-1);
-			cbOperation.setSelection(-1);
 			tbMinTime.setText("");
 			tbMaxTime.setText("");
-			tbPositionX.setText("");
-			tbPositionY.setText("");
-			tbPositionZ.setText("");
-			//
-			tbMinHoldTime.setText("");
-			//
-			cbMovementType.setSelection(-1);
-			tbMinSpeed.setText("");
-			tbMaxSpeed.setText("");
+			tbTimeToHold.setText("");
+
 			if (mode == 2) {
+				/*
 				Action *action = m_currentAction;
 				cbActionType.setSelection(action->type());
 				cbOrderType.setSelection(action->order());
@@ -490,7 +416,11 @@ namespace cinetico {
 					tbMinSpeed.setText(string::fromFloat(((MovementAction*)action)->minSpeed()).data());
 					tbMinSpeed.setText(string::fromFloat(((MovementAction*)action)->maxSpeed()).data());
 				}
+				*/
 
+			}
+			else {
+				m_currentAction = new Action(*m_currentExercise);
 			}
 		}
 
@@ -502,38 +432,16 @@ namespace cinetico {
 	void ActionsController::updateActionList() {
 		std::vector<Action*> actionList = m_cinetico.cineticoDB()->actionDAO()->getAllActionsByExercise(*m_currentExercise);
 		gridActions.deleteRows();
-		string actionTypePosition = m_dictionary.getString(Dictionary::ActionTypePosition);
-		string actionTypeMovement = m_dictionary.getString(Dictionary::ActionTypeMovement);
 		for (unsigned int i = 0; i < actionList.size(); ++i) {
 			Action *action = actionList[i];
 			gridActions.insertRow();
 			int lastRow = gridActions.rowCount() - 1;
-			gridActions.setItem(lastRow, 0, new ListViewItem(action->type() == Action::Position ? actionTypePosition : actionTypeMovement, uilib::Color(0, 0, 0), FontDesc("Arial", 10, 0), action));
-			gridActions.setItem(lastRow, 1, new ListViewItem(action->name().c_str()));
 
-			std::ostringstream ss;
-			ss << "[";
-			ss << action->finalPosition().x();
-			ss << ", ";
-			ss << action->finalPosition().y();
-			ss << ", ";
-			ss << action->finalPosition().z();
-			ss << "]";
-
-			gridActions.setItem(lastRow, 2, new ListViewItem(ss.str().c_str()));
-
-			ss.str("");
-			ss.clear();
-
-			ss << "[";
-			ss << action->finalOrientation().x();
-			ss << ", ";
-			ss << action->finalOrientation().y();
-			ss << ", ";
-			ss << action->finalOrientation().z();
-			ss << "]";
-
-			gridActions.setItem(lastRow, 3, new ListViewItem(ss.str().c_str()));
+			gridActions.setItem(lastRow, 0, new ListViewItem(action->name().c_str()));
+			gridActions.setItem(lastRow, 1, new ListViewItem(string::fromFloat(action->minExecutionTime(), 2)));
+			gridActions.setItem(lastRow, 2, new ListViewItem(string::fromFloat(action->maxExecutionTime(), 2)));
+			gridActions.setItem(lastRow, 3, new ListViewItem(string::fromFloat(action->timeToHold(), 2)));
+			gridActions.setItem(lastRow, 4, new ListViewItem(string::fromInteger(action->gestureCount())));
 		}
 		m_currentActionSelection = -1;
 		m_currentAction = NULL;

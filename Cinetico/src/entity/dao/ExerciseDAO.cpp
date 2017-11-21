@@ -23,35 +23,6 @@ namespace cinetico {
 		else
 			stmt->bindNull(6);
 		int rc = stmt->execute();
-		if (rc == 0) {
-			const char *sqlAction = "INSERT INTO ACTION(exercise_id,tag,order) VALUES(?,?)";
-			const char *sqlActionPosition = "INSERT INTO ACTION_POSITION(action_id) VALUES(?)";
-			const char *sqlActionMovement = "INSERT INTO ACTION_MOVEMENT(action_id) VALUES(?)";
-			SQLStatement *stmtAction = m_db.prepare(sqlAction);
-			SQLStatement *stmtActionPosition = m_db.prepare(sqlActionPosition);
-			SQLStatement *stmtActionMovement = m_db.prepare(sqlActionMovement);
-			for (unsigned int i = 0; i < exercise.actionCount(); ++i) {
-				Action *action = exercise.action(i);
-				stmtAction->bind(1, (int)exercise.id());
-				stmtAction->bind(2, action->name().c_str());
-				stmtAction->bind(3,(int)i);
-				stmt->execute();
-				if (action->type() == Action::Position) {
-					stmtActionPosition->bind(1, action->id());
-					stmtActionPosition->execute();
-				}
-				else if (action->type() == Action::Movement) {
-					stmtActionMovement->bind(1, action->id());
-					stmtActionMovement->execute();
-				}
-			}
-			stmtAction->close();
-			stmtActionPosition->close();
-			stmtActionMovement->close();
-		}
-		else {
-			//todo
-		}
 		stmt->close();
 	}
 

@@ -108,6 +108,7 @@ namespace cinetico {
 			MAP_STR(ActionName);
 			MAP_STR(ActionMinTime);
 			MAP_STR(ActionMaxTime);
+			MAP_STR(ActionTimeToHold);
 			MAP_STR(ActionBodyPoint);
 			MAP_STR(ActionRefPointX);
 			MAP_STR(ActionRefPointY);

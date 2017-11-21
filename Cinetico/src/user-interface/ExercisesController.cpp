@@ -355,7 +355,6 @@ namespace cinetico {
 
 			m_currentExercise->setActionList(actionList);
 
-			Message::msg(NULL, "Congratulations. Now get into the 3D World.");
 			ViewParams params;
 			params.set<Exercise*>("exercise",m_currentExercise);
 			params.set<int>("play_mode", PlayMode::EXERCISE_MODE);

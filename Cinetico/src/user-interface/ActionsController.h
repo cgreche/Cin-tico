@@ -48,35 +48,24 @@ namespace cinetico {
 
 					cSeparator separatorActionBasicData;
 					HorizontalLayout layoutActionDataRow1;
-						cComboBox cbActionType;
-						cComboBox cbOrderType;
 						cTextBox tbName;
-					HorizontalLayout layoutBaseActionData;
-						cComboBox cbBodyPoint;
 						cTextBox tbMinTime;
 						cTextBox tbMaxTime;
+						cTextBox tbTimeToHold;
 
-					Label labelPosition;
-					HorizontalLayout layoutPosition;
+					cSeparator separatorGestureData;
+					HorizontalLayout layoutGestureDataRow1;
+						cComboBox cbTransitionType;
+						cComboBox cbBodyPoint;
+					HorizontalLayout layoutGestureDataRow2;
 						cComboBox cbRefPoint;
 						cComboBox cbOperation;
+					HorizontalLayout layoutGestureDataRow3;
 						cTextBox tbPositionX;
 						cTextBox tbPositionY;
 						cTextBox tbPositionZ;
-
-					VerticalLayout layoutSpecific;
-						cSeparator separatorSpecificData;
-
-						//Position action
-						VerticalLayout layoutPositionSpecific;
-							cTextBox tbMinHoldTime;
-
-						//Movement action
-						VerticalLayout layoutMovementSpecific;
-							HorizontalLayout layoutMovementAction;
-								cComboBox cbMovementType;
-								cTextBox tbMinSpeed;
-								cTextBox tbMaxSpeed;
+						Button buttonAddGesture;
+						Button buttonCancelGesture;
 
 		Exercise *m_currentExercise;
 		int m_editMode;
@@ -85,14 +74,14 @@ namespace cinetico {
 		Action *m_currentAction;
 		int m_currentActionTypeSelection;
 		int m_currentMovementTypeSelection;
+		std::vector<SimpleGesture*> m_gestures;
 
 		void setEditionMode(int mode);
 		void updateActionList();
 
-		void fillActionTypeCombo(cComboBox &combo);
-		void fillOrderTypeCombo(cComboBox &combo);
+		void fillTransitionTypeCombo(cComboBox &combo);
 		void fillBodyPointCombo(cComboBox &combo);
-		void fillSpaceTypeCombo(cComboBox &combo);
+		void fillRefPointCombo(cComboBox &combo);
 		void fillOperationCombo(cComboBox &combo);
 		void fillMovementTypeCombo(cComboBox &combo);
 		bool validateFields();
@@ -102,6 +91,7 @@ namespace cinetico {
 		friend void buttonDelete_onClick(Button &button);
 		friend void comboActionType_onChange(ComboBox &combo, ComboBoxItem *item);
 		friend void buttonDelete_onClick(Button &button);
+		friend void buttonAddGesture_onClick(Button &button);
 
 	public:
 		ActionsController(CineticoUI &cineticoUI);

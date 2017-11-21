@@ -8,9 +8,10 @@ namespace cinetico {
 
 const char *Table_UserProfile = "CREATE TABLE USER_PROFILE(id INTEGER PRIMARY KEY AUTOINCREMENT, login_name TEXT, password TEXT, user_name TEXT, creation_date INTEGER NOT NULL, activated INTEGER NOT NULL DEFAULT 1);";
 const char *Table_Exercise = "CREATE TABLE EXERCISE(id INTEGER PRIMARY KEY, name TEXT, author TEXT, creation_date INTEGER, trackable_body_points INTEGER, is_public INTEGER, owner_id INTEGER REFERENCES USER_PROFILE(id));";
-const char *Table_Action = "CREATE TABLE ACTION(id INTEGER PRIMARY KEY, exercise_id REFERENCES EXERCISE(id), type INTEGER NOT NULL, order_type INTEGER NOT NULL, name TEXT, min_time REAL, max_time REAL, body_point INTEGER NOT NULL, ref_point INTEGER NOT NULL, operation INTEGER NOT NULL, final_position_x REAL NOT NULL, final_position_y REAL NOT NULL, final_position_z REAL NOT NULL, final_orientation_x REAL, final_orientation_y REAL, final_orientation_z REAL);";
-const char *Table_PositionAction = "CREATE TABLE POSITION_ACTION(action_id INTEGER PRIMARY KEY REFERENCES ACTION(id), min_hold_time REAL);";
-const char *Table_MovementAction = "CREATE TABLE MOVEMENT_ACTION(action_id INTEGER PRIMARY KEY REFERENCES ACTION(id), movement_type INTEGER, min_speed REAL, max_speed REAL);";
+const char *Table_Action = "CREATE TABLE ACTION(id INTEGER PRIMARY KEY, exercise_id REFERENCES EXERCISE(id), name TEXT, min_execution_time REAL, max_execution_time REAL, time_to_hold REAL);";
+const char *Table_SimpleGesture = "CREATE TABLE SIMPLE_GESTURE(id INTEGER PRIMARY KEY, action_id REFERENCES ACTION(id), transition_type INTEGER NOT NULL, body_point INTEGER NOT NULL, ref_point INTEGER NOT NULL, operation INTEGER NOT NULL, value_x REAL, value_y REAL, value_z REAL);";
+const char *Table_MovementGesture = "CREATE TABLE MOVEMENT_GESTURE(simple_gesture_id PRIMARY KEY REFERENCES SIMPLE_GESTURE(id), min_speed REAL, max_speed REAL);";
+const char *Table_MovementGesture_ExtraPoints = "CREATE TABLE MOVEMENT_GESTURE_EXTRA_POINTS(simple_gesture_id PRIMARY KEY REFERENCES SIMPLE_GESTURE(id), min_speed REAL, max_speed REAL);";
 
 	class CinetiCoDefs {
 	public:
@@ -60,11 +61,14 @@ const char *Table_MovementAction = "CREATE TABLE MOVEMENT_ACTION(action_id INTEG
 			stmt = db.prepare(Table_Action);
 			if(!stmt->execute())
 				int a = 1;
-			stmt = db.prepare(Table_PositionAction);
+			stmt = db.prepare(Table_SimpleGesture);
 			if(!stmt->execute())
 				int a = 1;
-			stmt = db.prepare(Table_MovementAction);
-			if(!stmt->execute())
+			stmt = db.prepare(Table_MovementGesture);
+			if (!stmt->execute())
+				int a = 1;
+			stmt = db.prepare(Table_MovementGesture_ExtraPoints);
+			if (!stmt->execute())
 				int a = 1;
 
 			m_userProfileDAO = new UserProfileDAO(db);

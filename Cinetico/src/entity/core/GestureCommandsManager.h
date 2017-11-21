@@ -3,21 +3,22 @@
 
 #include <vector>
 #include "BodyPoint.h"
-#include "PositionAction.h"
-#include "MovementAction.h"
+#include "Action.h"
 #include "vector3.h"
 #include "uilib/lib/time.h"
 
 namespace cinetico_core {
 
+	class Action;
 	class PositionActionCommand;
 	class MovementActionCommand;
 
-	struct ActionCommand {
+	class ActionCommand {
 	protected:
 		BodyPoint &m_bp;
 		uilib::u64 m_initTime;
 		uilib::u64 m_endTime;
+		uilib::u64 m_lastUpdateTime;
 		Vector3 m_initPosition;
 		bool m_finished;
 
@@ -36,12 +37,14 @@ namespace cinetico_core {
 		virtual bool update(uilib::u64 curTime) = 0;
 
 		void finish(uilib::u64 time) {
-			m_finished = false;
+			m_finished = true;
 			m_endTime = time;
 		}
 
+		BodyPoint &bodyPoint() { return m_bp; }
 		uilib::u64 initTime() const { return m_initTime; }
 		uilib::u64 endTime() const { return m_endTime; }
+		uilib::u64 lastUpdateTime() const { return m_lastUpdateTime; }
 		Vector3 initPosition() const { return m_initPosition; }
 		bool finished() const { return m_finished; }
 	};
@@ -59,7 +62,8 @@ namespace cinetico_core {
 		virtual PositionActionCommand *positionActionCommand() { return this; }
 
 		virtual bool update(uilib::u64 curTime) {
-			static float gap = 0.025f;
+			float gap = 0.25f;
+			m_lastUpdateTime = curTime;
 			cinetico_core::Vector3 curPos = m_bp.position();
 			if (curPos.euclideanDistanceTo(m_initPosition) < gap) {
 				m_holdTime = curTime - m_initTime;
@@ -91,13 +95,14 @@ namespace cinetico_core {
 
 		virtual bool update(uilib::u64 curTime) {
 			static float gap = 0.025f;
-			static float holdTime = 0.f;
+			static float holdTime = 0.5f;
 			static float lastDist = 0.f;
+			m_lastUpdateTime = curTime;
 			static uilib::u64 minHoldTicks = (uilib::u64)(uilib::OSTime::ticksPerSecond()*0.5f);
 			float distOnLine = m_bp.position().euclideanDistanceToLine(m_initPosition, m_currentOrientation);
 			float dist = m_bp.position().euclideanDistanceTo(m_initPosition);
 			//id dist < lastDist, then user wen't in the opposition direction
-			if (distOnLine > gap || dist < lastDist) {
+			if (distOnLine > gap) {
 				finish(curTime);
 				return true;
 			}
@@ -127,7 +132,7 @@ namespace cinetico_core {
 
 		ActionCommand* update(uilib::u64 curTime) {
 			static float minHoldTime = 0.5f;
-			static float gap = 0.025f;
+			float gap = 0.25f;
 			uilib::u64 minHoldTicks = (uilib::u64)(uilib::OSTime::ticksPerSecond()/4);
 
 			Vector3 curPos = m_bp.position();
@@ -139,7 +144,7 @@ namespace cinetico_core {
 				m_lastPosition = curPos;
 			}
 
-			bool result = true;
+			bool result = false;
 			if (m_currentAction) {
 				result = m_currentAction->update(curTime);
 				if (m_currentAction->movementActionCommand() && !result) {
@@ -150,6 +155,10 @@ namespace cinetico_core {
 					}
 				}
 			}
+			else {
+				if (m_holdTime >= minHoldTicks)
+					return m_currentAction = new PositionActionCommand(m_bp, curTime, m_lastPosition, m_holdTime);
+			}
 
 			if (result) {
 				if (m_currentAction && m_currentAction->positionActionCommand()) {
@@ -157,6 +166,7 @@ namespace cinetico_core {
 				}
 				if (m_holdTime >= minHoldTicks)
 					return m_currentAction = new PositionActionCommand(m_bp, curTime, m_lastPosition, m_holdTime);
+				m_currentAction = NULL;
 			}
 
 			return NULL;
@@ -167,14 +177,17 @@ namespace cinetico_core {
 	};
 
 
-	class ActionCommandsManager {
+	class GestureCommandsManager {
 		Body *m_body;
 		std::vector<ActionCommand*> m_commands;
 		std::vector<BodyPointState> m_trackedBps;
 
+		uilib::s64 m_curTime;
+
+		bool meetConditions(SimpleGesture *gesture, ActionCommand *command, float distThreshold);
 	public:
-		ActionCommandsManager();
-		~ActionCommandsManager();
+		GestureCommandsManager();
+		~GestureCommandsManager();
 
 		void step(uilib::s64 curTime);
 
@@ -182,8 +195,9 @@ namespace cinetico_core {
 		ActionCommand *actionCommand(int i) const { return m_commands[i]; }
 		void setBody(Body *body);
 
-		bool meetConditions(PositionAction &positionAction, float distThreshold);
-		bool meetConditions(MovementAction &positionAction, float distThreshold);
+		std::vector<ActionCommand *> filterCommands(int transitionType, BodyPoint::BodyPart bp);
+
+		void checkConditions(Action &action, float distThreshold);
 	};
 
 }

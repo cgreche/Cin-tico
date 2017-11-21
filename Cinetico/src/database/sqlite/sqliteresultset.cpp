@@ -19,7 +19,7 @@ bool SQLiteResultSet::next() {
 
 	if(rc == 21) {
 		const char *errMessage = sqlite3_errmsg(((SQLiteDatabase&)m_db).internalDB());
-		return rc;
+		return false;
 	}
 
 	return rc == SQLITE_ROW;

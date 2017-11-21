@@ -6,7 +6,7 @@
 
 namespace cinetico_core {
 	class Exercise;
-	class ActionCommandsManager;
+	class GestureCommandsManager;
 }
 
 namespace cinetico {
@@ -20,7 +20,7 @@ namespace cinetico {
 
 		HumanCharacter *m_humanChar;
 		DummyCharacter *m_dummyChar;
-		ActionCommandsManager *m_commandsManager;
+		GestureCommandsManager *m_commandsManager;
 
 		int m_resTerrain;
 		int m_instanceTerrain;

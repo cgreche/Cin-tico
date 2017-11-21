@@ -33,10 +33,6 @@ namespace cinetico_core {
 
 		float m_accuracy;
 
-		std::vector<int> m_actionIndexList; //temp
-		std::vector<Action*> m_currentActionList; //temp
-		int m_currentActionIndexesIndex; //temp
-
 		float calculateAccuracy();
 	public:
 		Exercise(unsigned long id = -1);
@@ -54,8 +50,6 @@ namespace cinetico_core {
 		void setTrackableBodyPoints(unsigned long trackableBodyPoints) { m_trackableBodyPoints = trackableBodyPoints; }
 		void setActionList(std::vector<Action*> actionList);
 
-		int getNextActions();
-
 		unsigned long id() const { return m_id; }
 		const std::string& name() const { return m_name; }
 		const std::string& author() const { return m_author; }
@@ -64,9 +58,7 @@ namespace cinetico_core {
 		Action *action(int index) const { return m_actions[index]; }
 		unsigned int actionCount() const { return m_actions.size(); }
 		std::vector<Action*> actionList() const { return m_actions; }
-		std::vector<int> actionIndexes() const { return m_actionIndexList; }
 		int currentActionIndex() const { return m_currentActionIndex; }
-		int currentActionIndexesIndex() const { return m_currentActionIndexesIndex; }
 
 		ExerciseState state() const { return m_state; }
 		float accuracy() const { return m_accuracy; }

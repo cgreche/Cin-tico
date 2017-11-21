@@ -1,8 +1,7 @@
 
 #include "database/database.h"
 #include "ActionDAO.h"
-#include "entity/core/PositionAction.h"
-#include "entity/core/MovementAction.h"
+#include "entity/core/Action.h"
 
 namespace cinetico {
 
@@ -13,210 +12,183 @@ namespace cinetico {
 	void ActionDAO::create(Action &action) {
 		const char *actionSql = "INSERT INTO ACTION("
 			"exercise_id"
-			",type,order_type,name"
-			",min_time,max_time"
-			",body_point"
-			",ref_point,operation"
-			",final_position_x,final_position_y,final_position_z"
-			",final_orientation_x,final_orientation_y,final_orientation_z)"
-			" VALUES(?, ?,?,?, ?,?, ?, ?,?, ?,?,?, ?,?,?);";
+			",name"
+			",min_execution_time,max_execution_time"
+			",time_to_hold)"
+			" VALUES(?,?,?,?,?);";
 
 		SQLStatement *actionStmt;
 		actionStmt = m_db.prepare(actionSql);
 		actionStmt->bind(1, (int)action.ownerExercise().id());
-		actionStmt->bind(2, (int)action.type());
-		actionStmt->bind(3, (int)action.order());
-		actionStmt->bind(4, action.name().c_str());
-		actionStmt->bind(5, action.minTime());
-		actionStmt->bind(6, action.maxTime());
-		actionStmt->bind(7, (int)action.bodyPoint());
-		actionStmt->bind(8, (int)action.refPoint());
-		actionStmt->bind(9, (int)action.operation());
-		actionStmt->bind(10, action.finalPosition().x());
-		actionStmt->bind(11, action.finalPosition().y());
-		actionStmt->bind(12, action.finalPosition().z());
-		actionStmt->bind(13, action.finalOrientation().x());
-		actionStmt->bind(14, action.finalOrientation().y());
-		actionStmt->bind(15, action.finalOrientation().z());
+		actionStmt->bind(2, action.name().c_str());
+		actionStmt->bind(3, action.minExecutionTime());
+		actionStmt->bind(4, action.maxExecutionTime());
+		actionStmt->bind(5, action.timeToHold());
 		int rc = actionStmt->execute();
 		actionStmt->close();
 
 		if (rc == 1) {
+			int lastRowId = m_db.getLastRowId();
+
 			const char *childClassSql;
 			SQLStatement *childClassStmt;
+			childClassSql = "INSERT INTO SIMPLE_GESTURE(action_id,transition_type,body_point,ref_point,operation,value_x,value_y,value_z) VALUES(?,?,?,?,?,?,?,?);";
+			childClassStmt = m_db.prepare(childClassSql);
 
-			int lastRowId = m_db.getLastRowId();
-			if (action.type() == Action::Position) {
-				childClassSql = "INSERT INTO POSITION_ACTION(action_id,min_hold_time) VALUES(?,?);";
-				childClassStmt = m_db.prepare(childClassSql);
-				childClassStmt->bind(1, lastRowId);
-				childClassStmt->bind(2, ((PositionAction&)action).minHoldTime());
-			}
-			else if (action.type() == Action::Movement) {
-				childClassSql = "INSERT INTO MOVEMENT_ACTION(action_id,movement_type,min_speed,max_speed) VALUES(?,?,?,?);";
-				childClassStmt = m_db.prepare(childClassSql);
-				childClassStmt->bind(1, lastRowId);
-				childClassStmt->bind(2, (int)((MovementAction&)action).movementType());
-				childClassStmt->bind(3, ((MovementAction&)action).minSpeed());
-				childClassStmt->bind(4, ((MovementAction&)action).maxSpeed());
-			}
-			else {
-				return;
-			}
+			for (int i = 0; i < action.gestureCount(); ++i) {
+				SimpleGesture *gesture = action.gesture(i);
 
-			int rc = childClassStmt->execute();
+				childClassStmt->bind(1, lastRowId);
+				childClassStmt->bind(2, (int)gesture->transitionType());
+				childClassStmt->bind(3, (int)gesture->bodyPoint());
+				childClassStmt->bind(4, gesture->refPoint());
+				childClassStmt->bind(5, (int)gesture->operation());
+				childClassStmt->bind(6, gesture->value().x());
+				childClassStmt->bind(7, gesture->value().y());
+				childClassStmt->bind(8, gesture->value().z());
+				int rc = childClassStmt->execute();
+				if (rc == 1) {
+					if (gesture->transitionType() == SimpleGesture::FixedMovement) {
+						const char *movementGestureSql = "INSERT INTO MOVEMENT_GESTURE(simple_gesture_id,movement_type,min_speed,max_speed) VALUES(?,?,?,?);";
+						SQLStatement *movementGestureStmt = m_db.prepare(movementGestureSql);
+						int gestureRowId = m_db.getLastRowId();
+						movementGestureStmt->bind(1, gestureRowId);
+						movementGestureStmt->bind(2, ((MovementGesture*)gesture)->movementType());
+						movementGestureStmt->bind(3, ((MovementGesture*)gesture)->minSpeed());
+						movementGestureStmt->bind(4, ((MovementGesture*)gesture)->maxSpeed());
+						movementGestureStmt->execute();
+						movementGestureStmt->close();
+					}
+				}
+			}
 			childClassStmt->close();
 		}		
 	}
 
 	void ActionDAO::update(Action &action) {
-		const char *actionSql = "UPDATE ACTION SET type = ?, order_type = ?"
-			", name = ?, min_time = ?, max_time = ?"
-			", body_point = ?, ref_point = ?, operation = ?"
-			", final_position_x = ?, final_position_y = ?, final_position_z = ? "
-			", final_orientation_x = ?, final_orientation_y = ?, final_orientation_z = ? WHERE id = ?;";
+		const char *actionSql = "UPDATE ACTION SET name = ?"
+			", min_execution_time = ?, max_execution_time = ?"
+			", time_to_hold = ? WHERE id = ?";
 
 		SQLStatement *actionStmt;
 		actionStmt = m_db.prepare(actionSql);
-		actionStmt->bind(1, (int)action.type());
-		actionStmt->bind(2, (int)action.order());
-		actionStmt->bind(3, action.name().c_str());
-		actionStmt->bind(4, action.minTime());
-		actionStmt->bind(5, action.maxTime());
-		actionStmt->bind(6, (int)action.bodyPoint());
-		actionStmt->bind(7, (int)action.refPoint());
-		actionStmt->bind(8, (int)action.operation());
-		actionStmt->bind(9, action.finalPosition().x());
-		actionStmt->bind(10, action.finalPosition().y());
-		actionStmt->bind(11, action.finalPosition().z());
-		actionStmt->bind(12, action.finalOrientation().x());
-		actionStmt->bind(13, action.finalOrientation().y());
-		actionStmt->bind(14, action.finalOrientation().z());
-		actionStmt->bind(15, action.id());
+		actionStmt->bind(1, action.name().c_str());
+		actionStmt->bind(2, action.minExecutionTime());
+		actionStmt->bind(3, action.maxExecutionTime());
+		actionStmt->bind(4, action.timeToHold());
+		actionStmt->bind(5, action.id());
 		int rc = actionStmt->execute();
 		actionStmt->close();
 
 		if (rc == 1) {
-			const char *childClassSql;
-			SQLStatement *childClassStmt;
+			const char *sql = "DELETE FROM MOVEMENT_GESTURE WHERE id = ?";
+			SQLStatement *childClassStmt = m_db.prepare(sql);
+			childClassStmt->execute();
 
-			if (action.type() == Action::Position) {
-				childClassSql = "UPDATE POSITION_ACTION SET min_hold_time = ? WHERE action_id = ?;";
-				childClassStmt = m_db.prepare(childClassSql);
-				childClassStmt->bind(1, ((PositionAction&)action).minHoldTime());
-				childClassStmt->bind(2, ((PositionAction&)action).id());
-			}
-			else if (action.type() == Action::Movement) {
-				childClassSql = "UPDATE MOVEMENT_ACTION SET movement_type = ?, min_speed = ?, max_speed = ? WHERE action_id = ?";
-				childClassStmt = m_db.prepare(childClassSql);
-				childClassStmt->bind(1, (int)((MovementAction&)action).movementType());
-				childClassStmt->bind(2, ((MovementAction&)action).minSpeed());
-				childClassStmt->bind(3, ((MovementAction&)action).maxSpeed());
-				childClassStmt->bind(4, ((MovementAction&)action).id());
-			}
-			else {
-				return;
-			}
+			sql = "DELETE FROM SIMPLE_GESTURE WHERE id = ?";
+			childClassStmt = m_db.prepare(sql);
+			childClassStmt->execute();
 
-			int rc = childClassStmt->execute();
-			childClassStmt->close();
+			for (int i = 0; i < action.gestureCount(); ++i) {
+				SimpleGesture *gesture = action.gesture(i);
+				const char *childClassSql;
+				SQLStatement *childClassStmt;
+
+				childClassSql = "INSERT INTO SIMPLE_GESTURE(action_id,transition_type,body_point,ref_point,operation,value_x,value_y,value_z) VALUES(?,?);";
+				childClassStmt = m_db.prepare(childClassSql);
+				childClassStmt->bind(1, action.id());
+				childClassStmt->bind(2, (int)gesture->transitionType());
+				childClassStmt->bind(3, (int)gesture->bodyPoint());
+				childClassStmt->bind(4, gesture->refPoint());
+				childClassStmt->bind(5, (int)gesture->operation());
+				childClassStmt->bind(6, gesture->value().x());
+				childClassStmt->bind(7, gesture->value().y());
+				childClassStmt->bind(8, gesture->value().z());
+				int gestureRowId = m_db.getLastRowId();
+				if (gesture->transitionType() == SimpleGesture::FixedMovement) {
+					childClassSql = "INSERT INTO MOVEMENT_GESTURE(simple_gesture_id,movement_type,min_speed,max_speed) VALUES(?,?,?,?);";
+					childClassStmt = m_db.prepare(childClassSql);
+					childClassStmt->bind(1, gestureRowId);
+					childClassStmt->bind(2, ((MovementGesture*)gesture)->movementType());
+					childClassStmt->bind(3, ((MovementGesture*)gesture)->minSpeed());
+					childClassStmt->bind(4, ((MovementGesture*)gesture)->maxSpeed());
+				}
+				else {
+					return;
+				}
+
+				int rc = childClassStmt->execute();
+				childClassStmt->close();
+			}
 		}
 	}
 
 	std::vector<Action *> ActionDAO::getAllActionsByExercise(Exercise &exercise) {
-		const char *sql = "SELECT id,type FROM ACTION WHERE exercise_id = ?;";
-		SQLStatement *stmt;
 		std::vector<Action *> actionList;
+
+		const char *sql = "SELECT * FROM ACTION WHERE exercise_id = ?;";
+		SQLStatement *stmt;
 		stmt = m_db.prepare(sql);
 		stmt->bind(1, (int)exercise.id());
 		ResultSet *rs = stmt->query();
-		if (rs) {
-			while (rs->next()) {
-				int id = rs->getInt(0);
-				Action::ActionType actionType = (Action::ActionType)rs->getInt(1);
-				Action *action;
-				SQLStatement *pStmt;
-				ResultSet *pRS;
-				if (actionType == Action::Position) {
-					PositionAction *positionAction = new PositionAction(exercise, id);
+		
+		while (rs->next()) {
+			int actionId = rs->getInt(0);
+			Action *action = new Action(exercise, actionId);
+			action->setName(rs->getString(2).c_str());
+			action->setMinExecutionTime(rs->getFloat(2));
+			action->setMaxExecutionTime(rs->getFloat(3));
+			action->setTimeToHold(rs->getFloat(4));
 
-					sql = "SELECT "
-						"a.id,a.exercise_id,a.type,a.order_type"
-						",a.name,a.min_time,a.max_time"
-						",a.body_point,a.ref_point,a.operation"
-						",a.final_position_x,a.final_position_y,a.final_position_z"
-						",a.final_orientation_x,a.final_orientation_y,a.final_orientation_z"
+			SQLStatement *gestureStmt = m_db.prepare("SELECT * FROM SIMPLE_GESTURE WHERE action_id = ?;");
+			gestureStmt->bind(1, actionId);
+			ResultSet *gestureRS = gestureStmt->query();
+			while (gestureRS->next()) {
+				SimpleGesture *gesture;
+				SimpleGesture::TransitionType transitionType = (SimpleGesture::TransitionType)gestureRS->getInt(2);
+				BodyPoint::BodyPart bodyPoint = (BodyPoint::BodyPart)gestureRS->getInt(3);
+				int refPoint = gestureRS->getInt(4);
+				unsigned long operation = (unsigned long)gestureRS->getInt(5);
+				float valueX = gestureRS->getFloat(6);
+				float valueY = gestureRS->getFloat(7);
+				float valueZ = gestureRS->getFloat(8);
 
-						",p.min_hold_time"
-						" FROM ACTION AS a, POSITION_ACTION AS p WHERE a.id = ? AND p.action_id = ?;";
+				if (transitionType == SimpleGesture::FixedMovement) {
+					MovementGesture::MovementType movementType = MovementGesture::Linear;
+					float minSpeed = 0.f;
+					float maxSpeed = 0.f;
 
-					pStmt = m_db.prepare(sql);
-					if (!pStmt)
-						continue;
-					pStmt->bind(1, id);
-					pStmt->bind(2, id);
-					pRS = pStmt->query();
-					if (!pRS) {
-						pStmt->close();
-						continue;
+					SQLStatement *movementGestureStmt = m_db.prepare("SELECT * FROM MOVEMENT_GESTURE WHERE simple_gesture_id = ?);");
+					ResultSet *rs = movementGestureStmt->query();
+					if (rs->next()) {
+						movementType = (MovementGesture::MovementType)rs->getInt(1);
+						minSpeed = rs->getFloat(2);
+						maxSpeed = rs->getFloat(3);
 					}
-					pRS->next();
+					rs->close();
+					movementGestureStmt->close();
 
-					positionAction->setMinHoldTime(pRS->getFloat(16));
-
-					action = positionAction;
-
-				}
-				else if (actionType == Action::Movement) {
-					MovementAction *movementAction = new MovementAction(exercise, id);
-					sql = "SELECT "
-						"a.id,a.exercise_id"
-						",a.type,a.order_type,a.name"
-						",a.min_time,a.max_time"
-						",a.body_point,a.ref_point,a.operation"
-						",a.final_position_x,a.final_position_y,a.final_position_z"
-						",a.final_orientation_x,a.final_orientation_y,a.final_orientation_z"
-
-						",m.movement_type,m.min_speed,m.max_speed"
-						" FROM ACTION AS a, MOVEMENT_ACTION AS m WHERE a.id = ? AND m.action_id = ?;";
-
-					pStmt = m_db.prepare(sql);
-					if (!pStmt)
-						continue;
-					pStmt->bind(1, id);
-					pStmt->bind(2, id); //todo: fix
-					pRS = pStmt->query();
-					if (!pRS) {
-						pStmt->close();
-						continue;
-					}
-					pRS->next();
-
-					movementAction->setMovementType((MovementAction::MovementType)pRS->getInt(16));
-					movementAction->setMinSpeed(pRS->getFloat(17));
-					movementAction->setMaxSpeed(pRS->getFloat(18));
-
-					action = movementAction;
+					MovementGesture *movementGesture = new MovementGesture(bodyPoint, movementType);
+					movementGesture->setMinSpeed(minSpeed);
+					movementGesture->setMaxSpeed(maxSpeed);
+					gesture = movementGesture;
 				}
 				else {
-					continue;
+					gesture = new SimpleGesture(transitionType, bodyPoint);
 				}
 
-				action->setOrder((Action::ActionOrder)pRS->getInt(3));
-				action->setName(pRS->getString(4).c_str());
-				action->setMinTime(pRS->getFloat(5));
-				action->setMaxTime(pRS->getFloat(6));
-				action->setBodyPoint((BodyPoint::BodyPart)pRS->getInt(7));
-				action->setRefPoint(pRS->getInt(8));
-				action->setOperation(pRS->getInt(9));
-				action->setFinalPosition(Vector3(pRS->getFloat(10), pRS->getFloat(11), pRS->getFloat(12)));
-				action->setFinalOrientation(Vector3(pRS->getFloat(13), pRS->getFloat(14), pRS->getFloat(15)));
-				actionList.push_back(action);
-				pRS->close();
-				pStmt->close();
+				gesture->setRefPoint(refPoint);
+				gesture->setOperation(operation);
+				gesture->setValue(Vector3(valueX, valueY, valueZ));
+				action->addGesture(gesture);
 			}
-			rs->close();
+
+			actionList.push_back(action);
+			gestureRS->close();
+			gestureStmt->close();
 		}
+			
+		rs->close();
 		stmt->close();
 		return actionList;
 	}
@@ -226,20 +198,16 @@ namespace cinetico {
 		SQLStatement *stmt;
 		int rc;
 
-		//Delete child table
-		Action::ActionType actionType = action.type();
-		if (actionType == Action::Position || actionType == Action::Movement) {
-			if (actionType == Action::Position) {
-				sql = "DELETE FROM POSITION_ACTION WHERE action_id = ?";
-			}
-			else if (actionType == Action::Movement) {
-				sql = "DELETE FROM MOVEMENT_ACTION WHERE action_id = ?";
-			}
-			stmt = m_db.prepare(sql);
-			stmt->bind(1, action.id());
-			rc = stmt->execute();
-			stmt->close();
-		}
+		//todo: get movement_gesture from simple_gesture foreign key       
+		//Delete All gestures first
+		sql = "DELETE FROM SIMPLE_GESTURE_ACTION WHERE action_id = ?;" \
+			"DLETE FROM GESTURE WHERE action_id = ?;";
+ 
+		stmt = m_db.prepare(sql);
+		stmt->bind(1, action.id());
+		stmt->bind(2, action.id());
+		rc = stmt->execute();
+		stmt->close();
 
 		//Delete base table
 		sql = "DELETE FROM ACTION WHERE id = ?;";

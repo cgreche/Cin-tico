@@ -103,6 +103,7 @@ namespace cinetico {
 			, ActionName
 			, ActionMinTime
 			, ActionMaxTime
+			, ActionTimeToHold
 			, ActionBodyPoint
 			, ActionRefPointX
 			, ActionRefPointY

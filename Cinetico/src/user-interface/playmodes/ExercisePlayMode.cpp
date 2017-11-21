@@ -4,7 +4,7 @@
 #include "input.h"
 #include "ExercisePlayMode.h"
 #include "entity/core/Exercise.h"
-#include "entity/core/ActionCommandsManager.h"
+#include "entity/core/GestureCommandsManager.h"
 #include "humancharacter.h"
 #include "dummycharacter.h"
 #include "render3d/renderengine.h"
@@ -24,7 +24,7 @@ namespace cinetico {
 	void ExercisePlayMode::setup() {
 		m_humanChar = new HumanCharacter(*m_cinetico.cineticoUI());
 		m_dummyChar = new DummyCharacter(*m_cinetico.cineticoUI());
-		m_commandsManager = new ActionCommandsManager();
+		m_commandsManager = new GestureCommandsManager();
 
 		m_cinetico.bodyTracker()->setTrackableBodyPoints(m_exercise.trackableBodyPoints());
 
@@ -68,8 +68,14 @@ namespace cinetico {
 			}
 
 			m_humanChar->update();
-			if (m_exercise.step() == Exercise::Finished)
-				;// m_exercise.reset();
+
+			if (m_exercise.state() != Exercise::Finished) {
+				int curAction = m_exercise.currentActionIndex();
+				if (curAction >= 0)
+					m_commandsManager->checkConditions(*m_exercise.actionList()[curAction], 0.2);
+				if (m_exercise.step() == Exercise::Finished)
+					;// m_exercise.reset();
+			}
 
 		}
 
@@ -95,7 +101,7 @@ namespace cinetico {
 		m_renderEngine->drawText(str.c_str(), 500, 10, render3d::Color(255, 255, 255, 100));
 				
 		int drawX = 1000;
-		int drawY = 200;
+		int drawY = 50;
 		str = "Action Commands: ";
 		m_renderEngine->drawText(str.c_str(), drawX, drawY, render3d::Color(255, 255, 255, 100));
 		drawY += 25;
@@ -113,9 +119,7 @@ namespace cinetico {
 		m_renderEngine->setCurrentFont(m_resFontVerdana);
 		
 		std::vector<Action *> actionList = m_exercise.actionList();
-		std::vector<int> actionIndexList = m_exercise.actionIndexes();
-		int currentActionIndex = m_exercise.currentActionIndexesIndex();
-
+		int currentActionIndex = m_exercise.currentActionIndex();
 
 		render3d::Color drawColor = render3d::Color(200, 200, 200);
 
@@ -143,8 +147,8 @@ namespace cinetico {
 		m_renderEngine->drawText("Lista de ações:", 20, drawIndexY, drawColor);
 		drawIndexY += 25;
 		
-		for (int i = 0; i < actionIndexList.size(); ++i) {
-			Action *action = actionList[actionIndexList[i]];
+		for (int i = 0; i < actionList.size(); ++i) {
+			Action *action = actionList[i];
 			if (action->isCorrect())
 				drawColor = render3d::Color(0, 220, 0, 200);
 			else {

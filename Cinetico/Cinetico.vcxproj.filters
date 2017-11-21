@@ -307,12 +307,6 @@
     <ClInclude Include="src\entity\core\BodyPoint.h">
       <Filter>src\entity\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity\core\MovementAction.h">
-      <Filter>src\entity\core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity\core\PositionAction.h">
-      <Filter>src\entity\core</Filter>
-    </ClInclude>
     <ClInclude Include="src\kinectsensor.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -610,10 +604,16 @@
     <ClInclude Include="src\user-interface\mainwindow.h">
       <Filter>src\user-interface</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity\core\ActionCommandsManager.h">
+    <ClInclude Include="src\entity\core\BodyTracker.h">
       <Filter>src\entity\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity\core\BodyTracker.h">
+    <ClInclude Include="src\entity\core\GestureCommandsManager.h">
+      <Filter>src\entity\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\core\MovementGesture.h">
+      <Filter>src\entity\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\core\SimpleGesture.h">
       <Filter>src\entity\core</Filter>
     </ClInclude>
   </ItemGroup>
@@ -852,12 +852,6 @@
     <ClCompile Include="src\entity\core\BodyPoint.cpp">
       <Filter>src\entity\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity\core\MovementAction.cpp">
-      <Filter>src\entity\core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entity\core\PositionAction.cpp">
-      <Filter>src\entity\core</Filter>
-    </ClCompile>
     <ClCompile Include="src\kinectsensor.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -966,10 +960,16 @@
     <ClCompile Include="src\user-interface\mainwindow.cpp">
       <Filter>src\user-interface</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity\core\ActionCommandsManager.cpp">
+    <ClCompile Include="src\entity\core\BodyTracker.cpp">
       <Filter>src\entity\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity\core\BodyTracker.cpp">
+    <ClCompile Include="src\entity\core\GestureCommandsManager.cpp">
+      <Filter>src\entity\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\core\MovementGesture.cpp">
+      <Filter>src\entity\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\core\SimpleGesture.cpp">
       <Filter>src\entity\core</Filter>
     </ClCompile>
   </ItemGroup>
