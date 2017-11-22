@@ -149,7 +149,7 @@ namespace render3d {
 				memcpy(pData, &vertices[i], sizeof(Vector3));
 				pData += sizeof(Vector3);
 
-				*(D3DVECTOR*)pData = D3DVECTOR({ 0.f, -1.f, 0.f });
+				//*(D3DVECTOR*)pData = D3DVECTOR({ 0.f, -1.f, 0.f }); //todo: use this method to set normal data
 				memcpy(pData, &normals[i], sizeof(Vector3));
 				pData += sizeof(Vector3);
 
@@ -499,10 +499,10 @@ namespace render3d {
 			m_device->SetMaterial(&material);
 
 			m_device->SetLight(0, &light);
-			m_device->LightEnable(0, TRUE);
+			
 			first = true;
 		}
-
+		m_device->LightEnable(0, TRUE);
 		ResourceData *resData = this->resourceData(instance->resDataId());
 		if (resData->dirtyFlags() != 0) {
 			updateInternalResourceData(resData);
@@ -554,6 +554,27 @@ namespace render3d {
 			RECT rect = { x,y,0,0 };
 			font->DrawText(NULL, text, -1, &rect, DT_LEFT | DT_NOCLIP, D3DCOLOR_RGBA(color.r(), color.g(), color.b(), color.a()));
 		}
+	}
+
+	void D3D9Engine::drawResourceDirect(render3d::Vector3 vertices[], int vertexCount, render3d::Color colorList[]) {
+		struct CustomVertex {
+			float x, y, z;
+			D3DCOLOR color;
+		};
+		CustomVertex *data = new CustomVertex[vertexCount];
+		for (int i = 0; i < vertexCount; ++i) {
+			data[i].x = vertices[i].x();
+			data[i].y = vertices[i].y();
+			data[i].z = vertices[i].z();
+			data[i].color = D3DCOLOR_ARGB(255, colorList[i].r(), colorList[i].g(), colorList[i].b());
+		}
+		D3DXMATRIX mat;
+		D3DXMatrixIdentity(&mat);
+		m_device->SetTransform(D3DTS_WORLD, &mat);
+		m_device->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
+		m_device->LightEnable(0, FALSE);
+		m_device->DrawPrimitiveUP(D3DPT_LINELIST,vertexCount/2, data, sizeof(CustomVertex));
+		delete[] data;
 	}
 
 }

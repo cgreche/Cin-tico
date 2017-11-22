@@ -54,6 +54,7 @@ namespace render3d {
 		virtual void addLight(int lightId) { }
 		virtual void setCurrentFont(int fontId);
 		virtual void drawText(const char *text, int x, int y, const Color &color);
+		virtual void drawResourceDirect(render3d::Vector3 vertices[], int vertexCount, render3d::Color colorList[]); //temp
 		virtual void clear(const Color &clearColor) = 0;
 
 		ResourceData *resourceData(int id) const { return m_resources[id]; }

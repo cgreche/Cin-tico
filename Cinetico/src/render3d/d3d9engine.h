@@ -32,6 +32,7 @@ namespace render3d {
 		virtual void *newInternalTextResource(TextResource *text);
 		virtual void drawInternalResource(ResourceInstance *resData);
 		virtual void drawText(const char *text, int x, int y, const Color &color);
+		virtual void drawResourceDirect(render3d::Vector3 vertices[], int vertexCount, render3d::Color colorList[]); //temp
 		virtual void setCurrentInternalCamera(Camera *camera);
 		virtual void setCurrentInternalViewport(Viewport *viewport);
 		virtual void setCurrentInternalFont(FontResource *font);

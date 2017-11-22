@@ -62,7 +62,7 @@ namespace cinetico_core {
 		virtual PositionActionCommand *positionActionCommand() { return this; }
 
 		virtual bool update(uilib::u64 curTime) {
-			float gap = 0.25f;
+			float gap = 0.04f;
 			m_lastUpdateTime = curTime;
 			cinetico_core::Vector3 curPos = m_bp.position();
 			if (curPos.euclideanDistanceTo(m_initPosition) < gap) {
@@ -94,11 +94,10 @@ namespace cinetico_core {
 		virtual MovementActionCommand *movementActionCommand() { return this; }
 
 		virtual bool update(uilib::u64 curTime) {
-			static float gap = 0.025f;
+			float gap = 0.04f;
 			static float holdTime = 0.5f;
-			static float lastDist = 0.f;
 			m_lastUpdateTime = curTime;
-			static uilib::u64 minHoldTicks = (uilib::u64)(uilib::OSTime::ticksPerSecond()*0.5f);
+			static uilib::u64 minHoldTicks = (uilib::u64)(uilib::OSTime::ticksPerSecond() / 4);
 			float distOnLine = m_bp.position().euclideanDistanceToLine(m_initPosition, m_currentOrientation);
 			float dist = m_bp.position().euclideanDistanceTo(m_initPosition);
 			//id dist < lastDist, then user wen't in the opposition direction
@@ -121,6 +120,7 @@ namespace cinetico_core {
 
 		ActionCommand *m_currentAction;
 
+
 	public:
 		BodyPointState(BodyPoint &bp, uilib::u64 initTime)
 			: m_bp(bp) {
@@ -132,7 +132,7 @@ namespace cinetico_core {
 
 		ActionCommand* update(uilib::u64 curTime) {
 			static float minHoldTime = 0.5f;
-			float gap = 0.25f;
+			float gap = 0.04f;
 			uilib::u64 minHoldTicks = (uilib::u64)(uilib::OSTime::ticksPerSecond()/4);
 
 			Vector3 curPos = m_bp.position();
@@ -189,6 +189,7 @@ namespace cinetico_core {
 		GestureCommandsManager();
 		~GestureCommandsManager();
 
+		void reset();
 		void step(uilib::s64 curTime);
 
 		unsigned int commandCount() const { return m_commands.size(); }

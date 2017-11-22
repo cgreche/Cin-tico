@@ -20,6 +20,9 @@ namespace cinetico_core {
 			ToLeft,
 			Above,
 			Below,
+			AtSameBreadth,
+			AtSameHeight,
+			AtSameDepth,
 			FixedOrientation,
 			OrientationLookingTo
 		};

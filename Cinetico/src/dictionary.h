@@ -59,11 +59,28 @@ namespace cinetico {
 			, BodyPointRightAnkle
 			, BodyPointRightFoot
 
-			, ActionRefPointAny
-			, ActionRefPointLastPosition
+			//Gesture enums
+			, SimpleGestureTransitionTypeFree
+			, SimpleGestureTransitionTypeDefinedMovement
 
-			, MovementTypeLinear
-			, MovementTypeAngular
+			, SimpleGestureRefPointAny
+			, SimpleGestureRefPointLastPosition
+
+			, SimpleGestureOperationFixedPosition
+			, SimpleGestureOperationInFront
+			, SimpleGestureOperationBehind
+			, SimpleGestureOperationToRight
+			, SimpleGestureOperationToLeft
+			, SimpleGestureOperationAbove
+			, SimpleGestureOperationBelow
+			, SimpleGestureOperationAtSameBreadth
+			, SimpleGestureOperationAtSameHeight
+			, SimpleGestureOperationAtSameDepth
+			, SimpleGestureOperationFixedOrientation
+			, SimpleGestureOperationOrientationLookingTo
+
+			, MovementGestureMovementTypeLinear
+			, MovementGestureMovementTypeSmooth
 
 			//
 			, ActionLogoff
@@ -98,6 +115,7 @@ namespace cinetico {
 			, ActionMinExecutionTime
 			, ActionMaxExecutionTime
 			, ActionTimeToHold
+			, ActionGestureCount
 
 			, SimpleGestureTransitionType
 			, SimpleGestureBodyPoint

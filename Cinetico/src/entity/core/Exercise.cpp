@@ -49,7 +49,7 @@ namespace cinetico_core {
 		m_actions[m_currentActionIndex]->step(*m_body);
 		if (m_actions[m_currentActionIndex]->state() == Action::Finished) {
 			++m_currentActionIndex;
-			if (m_currentActionIndex >= m_actions.size()) {
+			if (m_currentActionIndex >= (int)m_actions.size()) {
 				m_state = Finished;
 				m_accuracy = calculateAccuracy();
 			}
@@ -68,7 +68,7 @@ namespace cinetico_core {
 	void Exercise::reset() {
 		m_currentActionIndex = 0;
 		//set all actions to Idle state
-		for (int i = 0; i < m_actions.size(); ++i)
+		for (unsigned int i = 0; i < m_actions.size(); ++i)
 			m_actions[i]->stop();
 		m_actions[0]->start();
 		m_state = Running;

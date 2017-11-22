@@ -3,10 +3,30 @@
 
 #include <vector>
 #include "entity/core/vector3.h"
+#include "entity/core/BodyPoint.h"
 
 namespace cinetico {
-
+	using namespace cinetico_core;
 	class CineticoUI;
+
+	class BodyPointNode {
+		BodyPoint::BodyPart m_bpId;
+		BodyPointNode *m_parent;
+		std::vector<BodyPointNode *> m_childList;
+
+	public:
+		BodyPointNode(BodyPoint::BodyPart bpId, BodyPointNode* parent) {
+			m_bpId = bpId;
+			m_parent = parent;
+			if (parent)
+				parent->addChild(this);
+		}
+
+		void addChild(BodyPointNode *node) {
+			m_childList.push_back(node);
+		}
+
+	};
 
 	class Character {
 	protected:
@@ -15,6 +35,7 @@ namespace cinetico {
 		std::vector<int> m_instanceIds;
 		cinetico_core::Vector3 m_position;
 
+		void createBoneHierarchyTree();
 	public:
 		Character(CineticoUI &cineticoUI);
 

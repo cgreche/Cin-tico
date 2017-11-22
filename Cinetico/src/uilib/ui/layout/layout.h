@@ -46,7 +46,6 @@ namespace uilib {
 	class Layout;
 	class LayoutControlItem;
 	typedef std::vector<LayoutItem*> LayoutItemList;
-	typedef std::list<Layout*> LayoutList;
 
 	class LayoutItem
 	{
@@ -186,6 +185,8 @@ namespace uilib {
 		Control *parentControl() const;
 
 		void setLayoutTag(const string &tag) { m_tag = tag; }
+		LayoutItem *item(int index) { return m_childList[index]; }
+		int itemCount() const { return m_childList.size(); }
 	};
 
 }

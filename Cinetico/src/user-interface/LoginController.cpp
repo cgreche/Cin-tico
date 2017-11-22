@@ -61,6 +61,7 @@ namespace cinetico {
 		layout.append(layoutLoginArea);
 		layout.setMargin(10);
 
+		/*
 		testView.setBackgroundColor(uilib::Color(200, 200, 200));
 		testButton.setText("TESTTTTT");
 		testLayout.append(testButton);
@@ -69,6 +70,7 @@ namespace cinetico {
 		testLayout.append(testButton4);
 		testView.setLayout(&testLayout);
 		layout.append(testView,Size(100,100));
+		*/
 	}
 
 	Layout *LoginController::viewDefinition() {

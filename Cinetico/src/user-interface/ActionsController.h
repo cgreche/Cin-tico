@@ -32,7 +32,6 @@ namespace cinetico {
 			Separator separatorContent;
 
 			VerticalLayout layoutContent;
-
 			//
 				HorizontalLayout layoutContentList;
 					GridView gridActions;
@@ -54,18 +53,17 @@ namespace cinetico {
 						cTextBox tbTimeToHold;
 
 					cSeparator separatorGestureData;
-					HorizontalLayout layoutGestureDataRow1;
-						cComboBox cbTransitionType;
-						cComboBox cbBodyPoint;
-					HorizontalLayout layoutGestureDataRow2;
-						cComboBox cbRefPoint;
-						cComboBox cbOperation;
-					HorizontalLayout layoutGestureDataRow3;
-						cTextBox tbPositionX;
-						cTextBox tbPositionY;
-						cTextBox tbPositionZ;
-						Button buttonAddGesture;
-						Button buttonCancelGesture;
+					Button buttonAddGesture;
+					VerticalLayout layoutGestures;
+						HorizontalLayout layoutGestureLabels;
+							Label labelTransitionType;
+							Label labelBodyPoint;
+							Label labelRefPoint;
+							Label labelOperation;
+							Label labelValueX;
+							Label labelValueY;
+							Label labelValueZ;
+							Button buttonDummy;
 
 		Exercise *m_currentExercise;
 		int m_editMode;
@@ -84,6 +82,7 @@ namespace cinetico {
 		void fillRefPointCombo(cComboBox &combo);
 		void fillOperationCombo(cComboBox &combo);
 		void fillMovementTypeCombo(cComboBox &combo);
+		void removeAllGestures();
 		bool validateFields();
 		void saveCurrentAction();
 
@@ -94,6 +93,7 @@ namespace cinetico {
 		friend void buttonAddGesture_onClick(Button &button);
 
 	public:
+		friend class GestureRow;
 		ActionsController(CineticoUI &cineticoUI);
 
 		Layout *viewDefinition();

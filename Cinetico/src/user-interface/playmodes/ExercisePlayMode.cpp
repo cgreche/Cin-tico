@@ -15,6 +15,9 @@ namespace cinetico {
 
 	using namespace cinetico_core;
 	using namespace render3d;
+
+	static bool f4pressed = false;
+	static bool debug = false;
 	
 	ExercisePlayMode::ExercisePlayMode(Cinetico &cinetico, Exercise &exercise)
 		: PlayMode(cinetico, EXERCISE_MODE)
@@ -55,6 +58,13 @@ namespace cinetico {
 	}
 
 	void ExercisePlayMode::step() {
+
+		bool f4Down = m_cinetico.input()->keyboard.key(VK_F4);
+		if (!f4pressed && f4Down) {
+			debug = !debug;
+		}
+		f4pressed = f4Down;
+
 		m_cinetico.bodyTracker()->track();
 		m_commandsManager->step(m_cinetico.currentTime());
 
@@ -69,14 +79,17 @@ namespace cinetico {
 
 			m_humanChar->update();
 
-			if (m_exercise.state() != Exercise::Finished) {
+			if(m_exercise.state() == Exercise::Running) {
 				int curAction = m_exercise.currentActionIndex();
 				if (curAction >= 0)
-					m_commandsManager->checkConditions(*m_exercise.actionList()[curAction], 0.2);
-				if (m_exercise.step() == Exercise::Finished)
-					;// m_exercise.reset();
+					m_commandsManager->checkConditions(*m_exercise.actionList()[curAction], 0.06f);
+				m_exercise.step();
 			}
 
+			if (m_cinetico.input()->keyboard.key(VK_F5)) {
+				m_exercise.reset();
+				m_commandsManager->reset();
+			}
 		}
 
 		m_dummyChar->update();
@@ -88,32 +101,46 @@ namespace cinetico {
 		m_renderEngine->setCurrentViewport(m_cinetico.cineticoUI()->viewport());
 		m_renderEngine->clear(render3d::Color(30, 30, 30));
 
-		if (m_dummyChar)
-			m_dummyChar->render();
+		//if (m_dummyChar)
+		//	m_dummyChar->render();
 		if (m_humanChar)
 			m_humanChar->render();
 
 		m_renderEngine->drawResource(m_instanceTerrain);
 
 		m_renderEngine->setCurrentFont(m_resFontArial);
-		std::string str = "Exercício selecionado: ";
-		str += m_exercise.name();
-		m_renderEngine->drawText(str.c_str(), 500, 10, render3d::Color(255, 255, 255, 100));
-				
-		int drawX = 1000;
-		int drawY = 50;
-		str = "Action Commands: ";
-		m_renderEngine->drawText(str.c_str(), drawX, drawY, render3d::Color(255, 255, 255, 100));
-		drawY += 25;
-		for (unsigned int i = 0; i < m_commandsManager->commandCount(); ++i) {
-			str = "";
-			ActionCommand *command = m_commandsManager->actionCommand(i);
-			if (command->positionActionCommand())
-				str += "Position action";
-			else
-				str += "Movement action";
-			m_renderEngine->drawText(str.c_str(), drawX, drawY, render3d::Color(255, 255, 255, 100));
+		uilib::string str = "Exercício selecionado: ";
+		str += m_exercise.name().c_str();
+		m_renderEngine->drawText(str.data(), 500, 10, render3d::Color(255, 255, 255, 100));
+
+		int drawX;
+		int drawY;
+
+		static int fuck = 0;
+		if (debug) {
+			drawX = 1000;
+			drawY = 50;
+			str = "Action Commands: ";
+			m_renderEngine->drawText(str.data(), drawX, drawY, render3d::Color(255, 255, 255, 100));
 			drawY += 25;
+			for (unsigned int i = 0; i < m_commandsManager->commandCount(); ++i) {
+				str = "";
+				ActionCommand *command = m_commandsManager->actionCommand(i);
+				if (command->bodyPoint().bodyPart() == BodyPoint::RightPalm) {
+					if (command->positionActionCommand()) {
+						str += "Position action";
+						str += "(";
+						str += uilib::string::fromInteger(fuck);
+						str += ")";
+					}
+					else
+						str += "Movement action";
+					if (command->positionActionCommand() && command->finished())
+						++fuck;
+					m_renderEngine->drawText(str.data(), drawX, drawY, render3d::Color(255, 255, 255, 100));
+					drawY += 25;
+				}
+			}
 		}
 
 		m_renderEngine->setCurrentFont(m_resFontVerdana);
@@ -166,9 +193,9 @@ namespace cinetico {
 			drawIndexY += 30;
 		}
 
-		m_renderEngine->setCurrentCamera(m_cam2);
-		m_renderEngine->setCurrentViewport(m_viewportActionPreview);
-		m_renderEngine->clear(render3d::Color(0, 40, 100));
+		//m_renderEngine->setCurrentCamera(m_cam2);
+		//m_renderEngine->setCurrentViewport(m_viewportActionPreview);
+		//m_renderEngine->clear(render3d::Color(0, 40, 100));
 	}
 
 	void ExercisePlayMode::cleanUp() {

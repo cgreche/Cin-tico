@@ -12,10 +12,49 @@ namespace cinetico {
 #define CM2W 2
 
 #define HEAD_SIZE (4.f/8.f)
-#define FOOT_SIZE HEAD_SIZE/(2.f)
+#define FOOT_SIZE HEAD_SIZE/(1.6f)
 #define HAND_SIZE HEAD_SIZE/(2.f)
 #define ELBOW_SIZE HEAD_SIZE/(6.f)
 #define KNEE_SIZE HEAD_SIZE/(6.f)
+
+#define BONE_COLOR Color(255,255,255)
+
+	render3d::Color boneColors[] = 
+	{
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+		BONE_COLOR, BONE_COLOR,
+	};
+
+	render3d::Vector3 bonePositions[100];
+	int vertexCount = 0;
 
 	render3d::Color bodyColors[] =
 	{
@@ -69,6 +108,14 @@ namespace cinetico {
 
 	static bool humanBodyModelLoaded = false;
 
+	int mapBones(int index, Body *body, const cinetico_core::Vector3 &position, BodyPoint::BodyPart from, BodyPoint::BodyPart to) {
+		cinetico_core::Vector3 posFrom = body->bodyPoint(from)->position() * CM2W + position;
+		cinetico_core::Vector3 posTo = body->bodyPoint(to)->position() * CM2W + position;
+		bonePositions[index++] = render3d::Vector3(posFrom.x(), posFrom.y(), posFrom.z());
+		bonePositions[index++] = render3d::Vector3(posTo.x(), posTo.y(), posTo.z());
+		return index;
+	}
+
 	HumanCharacter::HumanCharacter(CineticoUI &cineticoUI)
 		: Character(cineticoUI) {
 
@@ -88,7 +135,7 @@ namespace cinetico {
 			renderEngine->resourceData(resId.hand)->setColors(bodyColors);
 			resId.knee = renderEngineHelper->createCube(KNEE_SIZE);
 			renderEngine->resourceData(resId.knee)->setColors(bodyColors);
-			resId.foot = renderEngineHelper->createCube(FOOT_SIZE);
+			resId.foot = renderEngineHelper->createRectangularPrism(FOOT_SIZE / 1.3f, FOOT_SIZE / 10.f , FOOT_SIZE);
 			renderEngine->resourceData(resId.foot)->setColors(bodyColors);
 
 			humanBodyModelLoaded = true;
@@ -114,9 +161,9 @@ namespace cinetico {
 		if (!m_body)
 			return;
 		instance = m_cineticoUI.renderEngine()->resourceInstance(instId);
-		cinetico_core::Vector3 pos = m_body->bodyPoint(bodyPoint)->position();
+		cinetico_core::Vector3 pos = m_body->bodyPoint(bodyPoint)->position() * CM2W;
 		cinetico_core::Vector3 rot = m_body->bodyPoint(bodyPoint)->orientation();
-		instance->setPos(render3d::Vector3(pos.x() * CM2W, pos.y() * CM2W, pos.z() * CM2W));
+		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
 		instance->setRot(render3d::Vector3(rot.x(), rot.y(), rot.z()));
 	}
 
@@ -133,12 +180,34 @@ namespace cinetico {
 			mapBodyPointToWorldPoint(m_instanceIds[7], BodyPoint::RightKnee);
 			mapBodyPointToWorldPoint(m_instanceIds[8], BodyPoint::LeftFoot);
 			mapBodyPointToWorldPoint(m_instanceIds[9], BodyPoint::RightFoot);
+
+			//cabeça até cervical
+			int index = 0;
+			index = mapBones(index, m_body, m_position, BodyPoint::Head, BodyPoint::Cervical);
+			index = mapBones(index, m_body, m_position, BodyPoint::Cervical, BodyPoint::LeftShoulder);
+			index = mapBones(index, m_body, m_position, BodyPoint::LeftShoulder, BodyPoint::LeftElbow);
+			index = mapBones(index, m_body, m_position, BodyPoint::LeftElbow, BodyPoint::LeftPalm);
+			index = mapBones(index, m_body, m_position, BodyPoint::Cervical, BodyPoint::RightShoulder);
+			index = mapBones(index, m_body, m_position, BodyPoint::RightShoulder, BodyPoint::RightElbow);
+			index = mapBones(index, m_body, m_position, BodyPoint::RightElbow, BodyPoint::RightPalm);
+			index = mapBones(index, m_body, m_position, BodyPoint::Cervical, BodyPoint::Spine);
+			index = mapBones(index, m_body, m_position, BodyPoint::Spine, BodyPoint::SpineBase);
+			index = mapBones(index, m_body, m_position, BodyPoint::SpineBase, BodyPoint::LeftHip);
+			index = mapBones(index, m_body, m_position, BodyPoint::LeftHip, BodyPoint::LeftKnee);
+			index = mapBones(index, m_body, m_position, BodyPoint::LeftKnee, BodyPoint::LeftAnkle);
+			index = mapBones(index, m_body, m_position, BodyPoint::LeftAnkle, BodyPoint::LeftFoot);
+			index = mapBones(index, m_body, m_position, BodyPoint::SpineBase, BodyPoint::RightHip);
+			index = mapBones(index, m_body, m_position, BodyPoint::RightHip, BodyPoint::RightKnee);
+			index = mapBones(index, m_body, m_position, BodyPoint::RightKnee, BodyPoint::RightAnkle);
+			index = mapBones(index, m_body, m_position, BodyPoint::RightAnkle, BodyPoint::RightFoot);
+			vertexCount = index;
 		}
 	}
 
 	void HumanCharacter::render() {
 		if (!m_body || m_body->identifiedBodyPointCount() == 0) return;
 		RenderEngine *renderEngine = m_cineticoUI.renderEngine();
+		renderEngine->drawResourceDirect(bonePositions,vertexCount,boneColors);
 		for (unsigned int i = 0; i < m_instanceIds.size(); ++i)
 			renderEngine->drawResource(m_instanceIds[i]);
 	}

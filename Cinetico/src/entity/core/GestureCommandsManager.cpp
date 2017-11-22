@@ -14,6 +14,11 @@ namespace cinetico_core {
 		}
 	}
 
+	void GestureCommandsManager::reset() {
+		if (!m_commands.empty())
+			m_commands.clear();
+	}
+
 	void GestureCommandsManager::step(uilib::s64 curTime) {
 		unsigned int i;
 		m_curTime = curTime;
@@ -45,9 +50,10 @@ namespace cinetico_core {
 	void GestureCommandsManager::setBody(Body *body) {
 		m_body = body;
 		//todo: set proper tracked points
-		//for (unsigned int i = 0; i < 30; ++i) {
-			m_trackedBps.push_back(BodyPointState(*body->bodyPoint((BodyPoint::BodyPart)BodyPoint::RightPalm), 0));
-		//}
+		//m_trackedBps.push_back(BodyPointState(*body->bodyPoint((BodyPoint::BodyPart)BodyPoint::RightPalm), 0));
+		for (unsigned int i = 0; i < 30; ++i) {
+			m_trackedBps.push_back(BodyPointState(*body->bodyPoint((BodyPoint::BodyPart)i), 0));
+		}
 	}
 
 	std::vector<ActionCommand*> GestureCommandsManager::filterCommands(int transitionType, BodyPoint::BodyPart bp) {
@@ -76,9 +82,9 @@ namespace cinetico_core {
 		Vector3 refPos = ref->position();
 		Vector3 refOrientation = ref->orientation();
 		Vector3 refOrientationVec(0, 0, -1);
-		//refOrientationVec.setX(-std::sin(refOrientation.y())*std::cos(refOrientation.x()));
-		//refOrientationVec.setY(std::sin(refOrientation.x()));
-		//refOrientationVec.setZ(std::cos(refOrientation.y())*std::cos(refOrientation.x()));
+		refOrientationVec.setX(-std::sin(refOrientation.y())*std::cos(refOrientation.x()));
+		refOrientationVec.setY(std::sin(refOrientation.x()));
+		refOrientationVec.setZ(std::cos(refOrientation.y())*std::cos(refOrientation.x()));
 		Vector3 frontPos = refOrientationVec;
 		Vector3 rightPos = crossProduct(frontPos, Vector3(0, 1, 0));
 		Vector3 upPos = crossProduct(rightPos, frontPos);
@@ -124,6 +130,21 @@ namespace cinetico_core {
 		}
 		else if (op == SimpleGesture::FixedPosition) {
 			return actionPoint.euclideanDistanceTo(targetPoint) <= distThreshold;
+		}
+		else if (op == SimpleGesture::AtSameBreadth) {
+			return fabsf(actionPoint.x() - targetPoint.x()) <= distThreshold;
+		}
+		else if (op == SimpleGesture::AtSameHeight) {
+			return fabsf(actionPoint.y() - targetPoint.y()) <= distThreshold;
+		}
+		else if (op == SimpleGesture::AtSameDepth) {
+			return fabsf(actionPoint.z() - targetPoint.z()) <= distThreshold;
+		}
+		else if (op == SimpleGesture::FixedOrientation) {
+			//todo
+		}
+		else if (op == SimpleGesture::OrientationLookingTo) {
+			//todo
 		}
 
 		return false;

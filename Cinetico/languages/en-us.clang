@@ -37,15 +37,28 @@
 	<string id="BodyPointRightAnkle">Right Ankle</string>
 	<string id="BodyPointRightFoot">Right Foot</string>
 	
-	<!-- Action Enums -->
-	<string id="ActionTypePosition">Position</string>
-	<string id="ActionTypeMovement">Movement</string>
+	<!-- Gesture Enums -->
+	<string id="SimpleGestureTransitionTypeFree">Free</string>
+	<string id="SimpleGestureTransitionTypeDefinedMovement">Defined movement</string>
+
+	<string id="SimpleGestureRefPointAny">Don't care</string>
+	<string id="SimpleGestureRefPointLastPosition">Last position</string>
 	
-	<string id="ActionRefPointWorld">Don't care</string>
-	<string id="ActionRefPointLastPosition">Last position</string>
+	<string id="SimpleGestureOperationFixedPosition">Fixed position</string>
+	<string id="SimpleGestureOperationInFront">In front</string>
+	<string id="SimpleGestureOperationBehind">Behind</string>
+	<string id="SimpleGestureOperationToRight">To the right</string>
+	<string id="SimpleGestureOperationToLeft">To the left</string>
+	<string id="SimpleGestureOperationAbove">Above</string>
+	<string id="SimpleGestureOperationBelow">Below</string>
+	<string id="SimpleGestureOperationAtSameBreadth">At same breadth</string>
+	<string id="SimpleGestureOperationAtSameHeight">At same height</string>
+	<string id="SimpleGestureOperationAtSameDepth">At same depth</string>
+	<string id="SimpleGestureOperationFixedOrientation">Fixed direction</string>
+	<string id="SimpleGestureOperationOrientationLookingTo">Looking to</string>
 	
-	<string id="MovementTypeLinear">Linear</string>
-	<string id="MovementTypeAngular">Angular</string>
+	<string id="MovementGestureMovementTypeLinear">Linear</string>
+	<string id="MovementGestureMovementTypeSmooth">Smooth</string>
 	
 	<!-- -->
 	<string id="ActionLogoff">Logoff</string>
@@ -80,13 +93,15 @@
 	<string id="ExercisePublic">Public</string>
 	
 	<string id="ActionName">Name</string>
-	<string id="ActionMinExecutionTime">Minimum execution time</string>
-	<string id="ActionMaxExecutionTime">Maximum execution time</string>
-	<string id="ActionTimeToHold">Time to hold position</string>
+	<string id="ActionMinExecutionTime">Minimum execution time (s)</string>
+	<string id="ActionMaxExecutionTime">Maximum execution time (s)</string>
+	<string id="ActionTimeToHold">Minimum time to hold position (s)</string>
+	<string id="ActionGestureCount">Gesture count</string>
 	
-	<string id="SimpleGesturetransitionType">Transition type</string>
-	<string id="SimpleGestureBodyPoint">Body POint</string>
+	<string id="SimpleGestureTransitionType">Transition type</string>
+	<string id="SimpleGestureBodyPoint">Body Point</string>
 	<string id="SimpleGestureRefPoint">Reference point</string>
+	<string id="SimpleGestureOperation">Operation</string>
 	<string id="SimpleGestureValueX">Value X</string>
 	<string id="SimpleGestureValueY">Value Y</string>
 	<string id="SimpleGestureValueZ">Value Z</string>

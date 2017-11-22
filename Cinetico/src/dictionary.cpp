@@ -65,12 +65,27 @@ namespace cinetico {
 			MAP_STR(BodyPointRightFoot);
 
 			//Action Enums
+			MAP_STR(SimpleGestureTransitionTypeFree);
+			MAP_STR(SimpleGestureTransitionTypeDefinedMovement);
 
-			MAP_STR(ActionRefPointAny);
-			MAP_STR(ActionRefPointLastPosition);
+			MAP_STR(SimpleGestureRefPointAny);
+			MAP_STR(SimpleGestureRefPointLastPosition);
 
-			MAP_STR(MovementTypeLinear);
-			MAP_STR(MovementTypeAngular);
+			MAP_STR(SimpleGestureOperationFixedPosition);
+			MAP_STR(SimpleGestureOperationInFront);
+			MAP_STR(SimpleGestureOperationBehind);
+			MAP_STR(SimpleGestureOperationToRight);
+			MAP_STR(SimpleGestureOperationToLeft);
+			MAP_STR(SimpleGestureOperationAbove);
+			MAP_STR(SimpleGestureOperationBelow);
+			MAP_STR(SimpleGestureOperationAtSameBreadth);
+			MAP_STR(SimpleGestureOperationAtSameHeight);
+			MAP_STR(SimpleGestureOperationAtSameDepth);
+			MAP_STR(SimpleGestureOperationFixedOrientation);
+			MAP_STR(SimpleGestureOperationOrientationLookingTo);
+
+			MAP_STR(MovementGestureMovementTypeLinear);
+			MAP_STR(MovementGestureMovementTypeSmooth);
 
 			//
 			MAP_STR(ActionLogoff);
@@ -105,6 +120,7 @@ namespace cinetico {
 			MAP_STR(ActionMinExecutionTime);
 			MAP_STR(ActionMaxExecutionTime);
 			MAP_STR(ActionTimeToHold);
+			MAP_STR(ActionGestureCount);
 
 			MAP_STR(SimpleGestureTransitionType);
 			MAP_STR(SimpleGestureBodyPoint);
