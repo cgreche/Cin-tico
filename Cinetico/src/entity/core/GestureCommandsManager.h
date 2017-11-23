@@ -141,6 +141,7 @@ namespace cinetico_core {
  				m_holdTime = curTime - m_initTime;
 			else {
 				m_initTime = curTime;
+				m_holdTime = 0;
 				m_lastPosition = curPos;
 			}
 
@@ -155,20 +156,17 @@ namespace cinetico_core {
 					}
 				}
 			}
-			else {
-				if (m_holdTime >= minHoldTicks)
-					return m_currentAction = new PositionActionCommand(m_bp, curTime, m_lastPosition, m_holdTime);
-			}
 
 			if (result) {
 				if (m_currentAction && m_currentAction->positionActionCommand()) {
 					return m_currentAction = new MovementActionCommand(m_bp, curTime, m_lastPosition);
 				}
-				if (m_holdTime >= minHoldTicks)
-					return m_currentAction = new PositionActionCommand(m_bp, curTime, m_lastPosition, m_holdTime);
+
 				m_currentAction = NULL;
 			}
 
+			if (m_holdTime >= minHoldTicks)
+				return m_currentAction = new PositionActionCommand(m_bp, curTime, m_lastPosition, m_holdTime);
 			return NULL;
 		}
 

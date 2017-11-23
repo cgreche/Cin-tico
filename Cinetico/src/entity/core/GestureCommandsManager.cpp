@@ -75,7 +75,12 @@ namespace cinetico_core {
 
 	bool GestureCommandsManager::meetConditions(SimpleGesture *gesture, ActionCommand *command, float distThreshold) {
 		//todo: handle refPoint Any or LastPosition
-		Vector3 actionPoint = command->initPosition();
+
+		Vector3 actionPoint;
+		if (command->movementActionCommand())
+			actionPoint = command->movementActionCommand()->endPosition();
+		else
+			actionPoint = command->initPosition();
 		Vector3 targetPoint;
 
 		BodyPoint *ref = m_body->bodyPoint((BodyPoint::BodyPart)gesture->refPoint());

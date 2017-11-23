@@ -23,6 +23,23 @@ namespace cinetico {
 	class ActionsController : public Controller
 	{
 	public:
+		class GestureRow : public HorizontalLayout {
+		public:
+			ActionsController &m_controller;
+			cComboBox cbTransitionType;
+			cComboBox cbBodyPoint;
+			cComboBox cbRefPoint;
+			cComboBox cbOperation;
+			cTextBox tbValueX;
+			cTextBox tbValueY;
+			cTextBox tbValueZ;
+			Button buttonDelete;
+
+			GestureRow(ActionsController &controller);
+			void removeSelf();
+		};
+
+	public:
 		VerticalLayout layout;
 			cPageTitle title;
 			HorizontalLayout layoutActionButtons;
@@ -82,7 +99,12 @@ namespace cinetico {
 		void fillRefPointCombo(cComboBox &combo);
 		void fillOperationCombo(cComboBox &combo);
 		void fillMovementTypeCombo(cComboBox &combo);
+
+		void addGestureRow();
+		void removeGestureRow(GestureRow *gesture);
 		void removeAllGestures();
+		void addGestureToAction(GestureRow *gesture);
+		
 		bool validateFields();
 		void saveCurrentAction();
 

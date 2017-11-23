@@ -13,55 +13,37 @@ namespace cinetico {
 	using namespace cinetico_core;
 	using cinetico::ComboBox;
 
-	void Gesture_buttonDelete_onClick(Button &button);
-
-	class GestureRow : public HorizontalLayout {
-	public:
-		ActionsController &m_controller;
-		cComboBox cbTransitionType;
-		cComboBox cbBodyPoint;
-		cComboBox cbRefPoint;
-		cComboBox cbOperation;
-		cTextBox tbValueX;
-		cTextBox tbValueY;
-		cTextBox tbValueZ;
-		Button buttonDelete;
-
-		GestureRow(ActionsController &controller, void *param = NULL)
-		: m_controller(controller) {
-			append(cbTransitionType);
-			controller.fillTransitionTypeCombo(cbTransitionType);
-			append(cbBodyPoint);
-			controller.fillBodyPointCombo(cbBodyPoint);
-			append(cbRefPoint);
-			controller.fillRefPointCombo(cbRefPoint);
-			append(cbOperation);
-			controller.fillOperationCombo(cbOperation);
-			append(tbValueX);
-			append(tbValueY);
-			append(tbValueZ);
-			buttonDelete.setParam(this);
-			buttonDelete.setOnClick(Gesture_buttonDelete_onClick);
-			append(buttonDelete);
-
-			buttonDelete.setText(controller.m_dictionary.getString(Dictionary::DefaultActionDelete));
-
-			setAlignment(Layout::center_align);
-		}
-
-		void removeSelf() {
-			m_controller.layoutGestures.remove(*this);
-			m_controller.layout.setSize(m_controller.layout.size());
-			delete this;
-		}
-
-		void *param;
-	};
-
 	void Gesture_buttonDelete_onClick(Button &button) {
-		GestureRow *gestureRow = (GestureRow*)button.param();
+		ActionsController::GestureRow *gestureRow = (ActionsController::GestureRow*)button.param();
 		gestureRow->removeSelf();
 	}
+
+	ActionsController::GestureRow::GestureRow(ActionsController &controller)
+		: m_controller(controller) {
+		append(cbTransitionType);
+		controller.fillTransitionTypeCombo(cbTransitionType);
+		append(cbBodyPoint);
+		controller.fillBodyPointCombo(cbBodyPoint);
+		append(cbRefPoint);
+		controller.fillRefPointCombo(cbRefPoint);
+		append(cbOperation);
+		controller.fillOperationCombo(cbOperation);
+		append(tbValueX);
+		append(tbValueY);
+		append(tbValueZ);
+		buttonDelete.setParam(this);
+		buttonDelete.setOnClick(Gesture_buttonDelete_onClick);
+		append(buttonDelete);
+
+		buttonDelete.setText(controller.m_dictionary.getString(Dictionary::DefaultActionDelete));
+
+		setAlignment(Layout::center_align);
+	}
+
+	void ActionsController::GestureRow::removeSelf() {
+		m_controller.removeGestureRow(this);
+	}
+
 
 	static void buttonBack_onClick(Button &button) {
 		ActionsController *controller = (ActionsController*)button.param();
@@ -139,9 +121,7 @@ namespace cinetico {
 
 	static void buttonAddGesture_onClick(Button &button) {
 		ActionsController *controller = (ActionsController*)button.param();
-		GestureRow *gestureRow = new GestureRow(*controller);
-		controller->layoutGestures.append(*gestureRow);
-		controller->layout.setSize(controller->layout.size());
+		controller->addGestureRow();
 	}
 
 	void buttonDeleteAllGestures_onClick(Button &button) {
@@ -223,8 +203,9 @@ namespace cinetico {
 	}
 
 	//todo: remove this temp shit
-	void addGestureToAction(ActionsController &controller, GestureRow *gestureRow) {
-		Action *action = controller.m_currentAction;
+	void ActionsController::addGestureToAction(GestureRow *gestureRow) {
+		Action *action = m_currentAction;
+
 		if (!action)
 			return;
 
@@ -281,7 +262,7 @@ namespace cinetico {
 		for (int i = 0; i < layoutGestures.itemCount(); ++i) {
 			LayoutItem *layoutItem = layoutGestures.item(i);
 			GestureRow *gestureRow = (GestureRow*)layoutItem->layout();
-			addGestureToAction(*this,gestureRow);
+			addGestureToAction(gestureRow);
 		}
 
 		for (unsigned int i = 0; i < m_gestures.size(); ++i) {
@@ -457,6 +438,7 @@ namespace cinetico {
 		}
 
 		if (m_currentActionTypeSelection != lastActionType) {
+			//todo: dinamismo
 			/*
 			if (lastActionType == Action::Position) {
 				layoutSpecific.remove(layoutPositionSpecific);
@@ -483,7 +465,19 @@ namespace cinetico {
 	}
 
 	void ActionsController::onViewQuit() {
+		removeAllGestures();
+	}
 
+	void ActionsController::addGestureRow() {
+		GestureRow *gestureRow = new GestureRow(*this);
+		layoutGestures.append(*gestureRow);
+		layout.setSize(layout.size());
+	}
+
+	void ActionsController::removeGestureRow(ActionsController::GestureRow *gestureRow) {
+		layoutGestures.remove(*gestureRow);
+		delete gestureRow;
+		layout.setSize(layout.size());
 	}
 
 	void ActionsController::removeAllGestures() {
@@ -514,7 +508,6 @@ namespace cinetico {
 			tbMinTime.setText("");
 			tbMaxTime.setText("");
 			tbTimeToHold.setText("");
-			removeAllGestures();
 
 			if (mode == 2) {
 				Action *action = m_currentAction;
@@ -523,7 +516,16 @@ namespace cinetico {
 				tbMaxTime.setText(string::fromFloat(action->maxExecutionTime()).data());
 				tbTimeToHold.setText(string::fromFloat(action->timeToHold()).data());
 				for (int i = 0; i < action->gestureCount(); ++i) {
-					layoutGestures.append(*new GestureRow(*this));
+					GestureRow *gestureRow = new GestureRow(*this);
+					SimpleGesture *gesture = action->gesture(i);
+					//gestureRow->cbTransitionType.setSelection(); //todo
+					//gestureRow->cbBodyPoint.setSelection();
+					//gestureRow->cbBodyPoint.setSelection();
+					//gestureRow->cbBodyPoint.setSelection();
+					gestureRow->tbValueX.setText(string::fromFloat(gesture->value().x()));
+					gestureRow->tbValueY.setText(string::fromFloat(gesture->value().y()));
+					gestureRow->tbValueZ.setText(string::fromFloat(gesture->value().z()));
+					layoutGestures.append(*gestureRow);
 				}
 				layout.setSize(layout.size());
 
