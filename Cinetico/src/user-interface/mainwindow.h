@@ -5,6 +5,7 @@
 #include <vector>
 #include "uilib/ui/uibase.h"
 #include "components/cTextLink.h"
+#include "components/cButton.h"
 
 namespace cinetico {
 
@@ -17,14 +18,14 @@ namespace cinetico {
 		VerticalLayout layoutHeader;
 			Label bgBlack;
 			HorizontalLayout layoutAppState;
-				Label labelAppname;
+				cButton labelAppname;
 
 				//Login Info
 				VerticalLayout layoutLoginInfo;
 					HorizontalLayout layoutLoginInfo2;
 						Label labelUsername;
 						TextLink linkUsername;
-						Button buttonLogoff;
+						cButton buttonLogoff;
 
 		VerticalLayout layoutContent;
 		HorizontalLayout layoutFooter;

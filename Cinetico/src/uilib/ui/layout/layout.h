@@ -129,15 +129,18 @@ namespace uilib {
 
 		Point m_position;
 		Size m_currentSize;
-		
+
 		Size m_biggestControlSize;
 
-		string m_tag; //for debugging purposes
+		bool m_dirty;
+		void requestUpdate();
 
+		string m_tag; //for debugging purposes
 		LayoutItemList::iterator _find(Control &control);
 		LayoutItemList::iterator _find(Layout &layout);
 		LayoutItemList::iterator _insert(LayoutItemList::iterator position, Control &control, const Size &size, int spacing = SizeTypeAuto);
 		LayoutItemList::iterator _insert(LayoutItemList::iterator position, Layout &layout, const Size &size, int spacing = SizeTypeAuto);
+
 	public:
 		static float left_align;
 		static float center_align;
@@ -182,11 +185,13 @@ namespace uilib {
 		void insertAfter(Control &position, Layout &layout, const Size &size = AutoSize, int spacing = SizeTypeAuto);
 		void insertAfter(Layout &position, Layout &layout, const Size &size = AutoSize, int spacing = SizeTypeAuto);
 
+		void update();
+
 		Control *parentControl() const;
 
 		void setLayoutTag(const string &tag) { m_tag = tag; }
 		LayoutItem *item(int index) { return m_childList[index]; }
-		int itemCount() const { return m_childList.size(); }
+		int itemCount() const { return (int)m_childList.size(); }
 	};
 
 }

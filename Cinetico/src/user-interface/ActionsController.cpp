@@ -3,7 +3,7 @@
 #include "cineticodb.h"
 #include "cineticoui.h"
 
-#include "entity/core/Action.h"
+#include "core/entity/Action.h"
 
 #include "ActionsController.h"
 

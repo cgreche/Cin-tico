@@ -165,6 +165,11 @@ namespace uilib {
 		return 0;
 	}
 
+	LRESULT OSDLabel::OnNCHitTest(WPARAM wParam, LPARAM lParam)
+	{
+		// static controls return HTTRANSPARENT (prevents receiving mouse msgs), so change to HTCLIENT
+		return HTCLIENT;
+	}
 
 
 
@@ -298,7 +303,15 @@ namespace uilib {
 		return 0;
 	}
 
+	LRESULT OSDTextLink::HandleParentMessage(UINT msg, WPARAM wParam, LPARAM lParam)
+	{
+		if (msg == WM_CTLCOLORSTATIC) {
+			//	this->redraw();
+			//	return 0;//(LRESULT)::GetStockObject(NULL_BRUSH);
+		}
 
+		return 0;
+	}
 
 
 
@@ -439,12 +452,6 @@ namespace uilib {
 	LRESULT OSDTextLink::OnSetCursor(WPARAM wParam, LPARAM lParam)
 	{
 		return TRUE;
-	}
-
-	LRESULT OSDTextLink::OnNCHitTest(WPARAM wParam, LPARAM lParam)
-	{
-		// static controls return HTTRANSPARENT (prevents receiving mouse msgs), so change to HTCLIENT
-		return HTCLIENT;
 	}
 
 	void OSDTextLink::onMouseMoveEvent(MouseEvent &event)

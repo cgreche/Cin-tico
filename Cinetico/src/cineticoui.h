@@ -3,7 +3,7 @@
 
 #include "user-interface/mainwindow.h"
 #include "user-interface/controller.h"
-#include "entity/core/Exercise.h"
+#include "core/entity/Exercise.h"
 #include "render3d/renderengine.h"
 #include "render3d/renderenginehelper.h"
 #include "cinetico.h"

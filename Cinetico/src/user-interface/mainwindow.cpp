@@ -3,7 +3,7 @@
 #include "mainwindow.h"
 #include "input.h"
 #include "dictionary.h"
-#include "entity/user/UserProfile.h"
+#include "entity/UserProfile.h"
 #include "viewtemplate.h"
 #include "playmodes/PlayMode.h"
 
@@ -57,7 +57,7 @@ namespace cinetico {
 		linkUsername.setOnClick(linkUserLoginName_onClick);
 		buttonLogoff.setText("Sair");
 		buttonLogoff.setParam(this);
-		buttonLogoff.setOnClick(buttonLogoff_onClick);
+		//buttonLogoff.setOnClick(buttonLogoff_onClick);
 
 		layoutLoginInfo2.append(labelUsername);
 		layoutLoginInfo2.append(linkUsername);

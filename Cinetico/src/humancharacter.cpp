@@ -156,31 +156,25 @@ namespace cinetico {
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.foot));
 	}
 
-	void HumanCharacter::mapBodyPointToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint) {
-		ResourceInstance *instance;
-		if (!m_body)
-			return;
-		instance = m_cineticoUI.renderEngine()->resourceInstance(instId);
-		cinetico_core::Vector3 pos = m_body->bodyPoint(bodyPoint)->position() * CM2W;
-		cinetico_core::Vector3 rot = m_body->bodyPoint(bodyPoint)->orientation();
+	void HumanCharacter::mapBodyPointNodeToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint) {
+		ResourceInstance *instance = m_cineticoUI.renderEngine()->resourceInstance(instId);
+		cinetico_core::Vector3 pos = m_bodyPoints[bodyPoint]->globalPosition() * CM2W;
+		cinetico_core::Quaternion rot = m_bodyPoints[bodyPoint]->globalOrientation();
+		cinetico_core::Vector3 euler = rot.toEuler();
 		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
-		instance->setRot(render3d::Vector3(rot.x(), rot.y(), rot.z()));
+		instance->setRot(render3d::Vector3(euler.x(), euler.y(), euler.z()));
+	}
+
+	void HumanCharacter::mapBodyPointToCharacterBodyPointNode(int instId, BodyPoint::BodyPart bodyPoint) {
+		cinetico_core::Vector3 pos = m_body->bodyPoint(bodyPoint)->position();
+		cinetico_core::Quaternion rot = m_body->bodyPoint(bodyPoint)->orientation();
+		m_bodyPoints[bodyPoint]->setGlobalPosition(pos);
+		m_bodyPoints[bodyPoint]->setLocalOrientation(rot);
 	}
 
 	void HumanCharacter::update() {
 		m_body = m_cineticoUI.cinetico().bodyTracker()->body();
 		if (m_body) {
-			mapBodyPointToWorldPoint(m_instanceIds[0], BodyPoint::Head);
-			mapBodyPointToWorldPoint(m_instanceIds[1], BodyPoint::Spine);
-			mapBodyPointToWorldPoint(m_instanceIds[2], BodyPoint::LeftElbow);
-			mapBodyPointToWorldPoint(m_instanceIds[3], BodyPoint::RightElbow);
-			mapBodyPointToWorldPoint(m_instanceIds[4], BodyPoint::LeftPalm);
-			mapBodyPointToWorldPoint(m_instanceIds[5], BodyPoint::RightPalm);
-			mapBodyPointToWorldPoint(m_instanceIds[6], BodyPoint::LeftKnee);
-			mapBodyPointToWorldPoint(m_instanceIds[7], BodyPoint::RightKnee);
-			mapBodyPointToWorldPoint(m_instanceIds[8], BodyPoint::LeftFoot);
-			mapBodyPointToWorldPoint(m_instanceIds[9], BodyPoint::RightFoot);
-
 			//cabeça até cervical
 			int index = 0;
 			index = mapBones(index, m_body, m_position, BodyPoint::Head, BodyPoint::Cervical);
@@ -202,6 +196,17 @@ namespace cinetico {
 			index = mapBones(index, m_body, m_position, BodyPoint::RightAnkle, BodyPoint::RightFoot);
 			vertexCount = index;
 		}
+		Character::update();
+		mapBodyPointNodeToWorldPoint(m_instanceIds[0], BodyPoint::Head);
+		mapBodyPointNodeToWorldPoint(m_instanceIds[1], BodyPoint::Spine);
+		mapBodyPointNodeToWorldPoint(m_instanceIds[2], BodyPoint::LeftElbow);
+		mapBodyPointNodeToWorldPoint(m_instanceIds[3], BodyPoint::RightElbow);
+		mapBodyPointNodeToWorldPoint(m_instanceIds[4], BodyPoint::LeftPalm);
+		mapBodyPointNodeToWorldPoint(m_instanceIds[5], BodyPoint::RightPalm);
+		mapBodyPointNodeToWorldPoint(m_instanceIds[6], BodyPoint::LeftKnee);
+		mapBodyPointNodeToWorldPoint(m_instanceIds[7], BodyPoint::RightKnee);
+		mapBodyPointNodeToWorldPoint(m_instanceIds[8], BodyPoint::LeftFoot);
+		mapBodyPointNodeToWorldPoint(m_instanceIds[9], BodyPoint::RightFoot);
 	}
 
 	void HumanCharacter::render() {

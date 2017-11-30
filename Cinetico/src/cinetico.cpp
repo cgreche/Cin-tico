@@ -4,7 +4,7 @@
 #include "cineticoui.h"
 #include "input.h"
 #include "utils/crypter.h"
-#include "kinectsensor.h"
+#include "core/kinectsensor.h"
 #include "uilib/lib/time.h"
 
 namespace cinetico {

@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "entity/user/UserProfile.h"
+#include "entity/UserProfile.h"
 
 class Database;
 

@@ -5,8 +5,8 @@
 
 #include "dictionary.h"
 #include "user-interface/controller.h"
-#include "sensor.h"
-#include "entity/core/BodyTracker.h"
+#include "core/Sensor.h"
+#include "core/BodyTracker.h"
 #include <vector>
 #include <list>
 

@@ -10,8 +10,10 @@ namespace uilib {
 
 	void LinearLayout::calcMinMaxSize()
 	{
+		//if (!m_dirty)
+		//	return;
+
 		//todo: max size is buggy
-		Size parentSize = parentControl() != NULL ? parentControl()->size() : Size(0, 0);
 		Size definedSize, minSize, biggestChildSize;
 		uint undefinedWidthCount = 0, undefinedHeightCount = 0;
 		float definedPercentWidth = 0;
@@ -53,7 +55,6 @@ namespace uilib {
 			}
 			else if (isSizeTypePercent(requiredSize.height())) {
 				childSize.setHeight(0);
-				float test = PercentValue(requiredSize.height());
 				definedPercentHeight += PercentValue(requiredSize.height());
 			}
 

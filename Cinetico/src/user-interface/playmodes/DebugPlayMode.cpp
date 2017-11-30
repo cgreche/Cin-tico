@@ -4,7 +4,7 @@
 #include "cinetico.h"
 #include "cineticoui.h"
 #include "input.h"
-#include "entity/core/quaternion.h"
+#include "core/lib/quaternion.h"
 
 namespace cinetico {
 

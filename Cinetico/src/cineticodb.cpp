@@ -1,6 +1,6 @@
 
 #include "cineticodb.h"
-#include "entity/user/UserProfile.h"
+#include "entity/UserProfile.h"
 #include "utils/crypter.h"
 #include "database/sqlite/sqlitedatabase.h"
 

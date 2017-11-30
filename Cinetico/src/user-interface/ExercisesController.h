@@ -3,7 +3,7 @@
 #define __CINETICO_EXERCISESCONTROLLER_H__
 
 #include "Controller.h"
-#include "entity/core/exercise.h"
+#include "core/entity/exercise.h"
 #include "uilib/ui/uibase.h"
 #include "components/cPageTitle.h"
 #include "components/cSeparator.h"

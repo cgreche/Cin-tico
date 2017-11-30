@@ -1,7 +1,7 @@
 
 #include "cinetico.h"
 #include "cineticoui.h"
-#include "entity/core/Exercise.h"
+#include "core/entity/Exercise.h"
 #include "render3d/d3d9engine.h"
 
 #include "user-interface/mainwindow.h"

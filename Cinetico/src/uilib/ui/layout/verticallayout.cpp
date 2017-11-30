@@ -19,6 +19,10 @@ namespace uilib {
 
 	void VerticalLayout::setSize(const Size &size)
 	{
+		//if (size == m_currentSize && !m_dirty)
+		//	return;
+		calcMinMaxSize();
+
 		m_currentSize = size;
 
 		Point curPos = m_position;
@@ -28,10 +32,10 @@ namespace uilib {
 		curSize.setWidth(curSize.width() - (m_leftMargin + m_rightMargin));
 		curSize.setHeight(curSize.height() - (m_topMargin + m_bottomMargin));
 
-		calcMinMaxSize();
+		Size definedSize = m_definedSize;
 
-		m_definedSize.setWidth(m_definedSize.width() + curSize.width()*(m_definedPercentWidth + 0.5f)/100.f);
-		m_definedSize.setHeight(m_definedSize.height() + curSize.height()*(m_definedPercentHeight + 0.5f)/100.f);
+		definedSize.setWidth(definedSize.width() + (int)(curSize.width()*(m_definedPercentWidth + 0.5f)/100.f));
+		definedSize.setHeight(definedSize.height() + (int)(curSize.height()*(m_definedPercentHeight + 0.5f)/100.f));
 
 		LayoutItemList::iterator it;
 
@@ -50,7 +54,7 @@ namespace uilib {
 				childSize.setWidth((curSize.width()*PercentValue(childSize.width())) / 100);
 
 			if (isSizeTypeMaximum(childSize.height()))
-				childSize.setHeight(max(curSize.height() - m_definedSize.height(), 0) / m_undefinedHeightCount);
+				childSize.setHeight(max(curSize.height() - definedSize.height(), 0) / m_undefinedHeightCount);
 			else if (isSizeTypePercent(childSize.height()))
 				childSize.setHeight((curSize.height()*PercentValue(childSize.height())) / 100);
 
@@ -62,11 +66,14 @@ namespace uilib {
 			int spacing = isSizeTypeAuto(child.spacing()) ? m_defSpacing : child.spacing();
 			curPos.setY(curPos.y() + childSize.height() + spacing);
 		}
+
+		m_dirty = false;
 	}
 
 	Size VerticalLayout::getAutoSize()
 	{
 		Size ret;
+
 		calcMinMaxSize();
 
 		if (m_undefinedWidthCount != 0)

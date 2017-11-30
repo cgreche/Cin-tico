@@ -26,20 +26,11 @@
     <Filter Include="src\lib\libxml">
       <UniqueIdentifier>{7a7ad390-ab54-41d9-b3c7-4508f602e2ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\lib\lib">
-      <UniqueIdentifier>{de0ef2b0-0548-4819-92c7-71a6ed8d3afd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\render3d">
       <UniqueIdentifier>{77c95dfa-4399-416a-934b-bb7de5b5bf85}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\entity">
       <UniqueIdentifier>{5ef661f1-0efd-41c5-91b9-89e5b6f49862}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\entity\user">
-      <UniqueIdentifier>{904d23ec-c192-4918-a82e-cfd303c06bfd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\entity\core">
-      <UniqueIdentifier>{59e42ef3-6ef6-4f78-af82-341eb11646a1}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\entity\dao">
       <UniqueIdentifier>{48d08050-1bbb-45fd-a91b-e7cbe0d24bd7}</UniqueIdentifier>
@@ -85,6 +76,21 @@
     </Filter>
     <Filter Include="src\uilib\ui\impl">
       <UniqueIdentifier>{1540d453-e5f8-4f88-bbe9-f5eb1cfa17ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lib\lib">
+      <UniqueIdentifier>{7b523a99-9c9e-4308-8354-900e13f0c916}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lib\lib\libxml">
+      <UniqueIdentifier>{92653eb7-e2db-4e8e-abd0-acf68be19505}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{f517622c-31c4-4e43-bf23-5dafc99f8ce5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\lib">
+      <UniqueIdentifier>{4f1240e6-63cb-4e64-84c1-8137e7dd8440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\entity">
+      <UniqueIdentifier>{c6383885-82df-49c4-a16f-cc421583ab29}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -289,33 +295,6 @@
     <ClInclude Include="src\render3d\textresource.h">
       <Filter>src\render3d</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity\user\UserProfile.h">
-      <Filter>src\entity\user</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity\core\Exercise.h">
-      <Filter>src\entity\core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sensor.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity\core\Action.h">
-      <Filter>src\entity\core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity\core\Body.h">
-      <Filter>src\entity\core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity\core\BodyPoint.h">
-      <Filter>src\entity\core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\kinectsensor.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity\core\vector3.h">
-      <Filter>src\entity\core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity\core\HandHandler.h">
-      <Filter>src\entity\core</Filter>
-    </ClInclude>
     <ClInclude Include="src\defs.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -363,9 +342,6 @@
     </ClInclude>
     <ClInclude Include="src\user-interface\components\cComboBox.h">
       <Filter>src\user-interface\components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity\core\quaternion.h">
-      <Filter>src\entity\core</Filter>
     </ClInclude>
     <ClInclude Include="src\colladaparser.h">
       <Filter>src</Filter>
@@ -604,17 +580,50 @@
     <ClInclude Include="src\user-interface\mainwindow.h">
       <Filter>src\user-interface</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity\core\BodyTracker.h">
-      <Filter>src\entity\core</Filter>
+    <ClInclude Include="src\user-interface\components\cButton.h">
+      <Filter>src\user-interface\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity\core\GestureCommandsManager.h">
-      <Filter>src\entity\core</Filter>
+    <ClInclude Include="src\core\entity\Action.h">
+      <Filter>src\core\entity</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity\core\MovementGesture.h">
-      <Filter>src\entity\core</Filter>
+    <ClInclude Include="src\core\entity\Body.h">
+      <Filter>src\core\entity</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity\core\SimpleGesture.h">
-      <Filter>src\entity\core</Filter>
+    <ClInclude Include="src\core\entity\BodyPoint.h">
+      <Filter>src\core\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\entity\Exercise.h">
+      <Filter>src\core\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\entity\MovementGesture.h">
+      <Filter>src\core\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\entity\SimpleGesture.h">
+      <Filter>src\core\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\lib\quaternion.h">
+      <Filter>src\core\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\lib\vector3.h">
+      <Filter>src\core\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\BodyTracker.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\kinectsensor.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Sensor.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\UserProfile.h">
+      <Filter>src\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\GestureCommandsManager.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\HandHandler.h">
+      <Filter>src\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -834,30 +843,6 @@
     <ClCompile Include="src\render3d\textresource.cpp">
       <Filter>src\render3d</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity\user\UserProfile.cpp">
-      <Filter>src\entity\user</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entity\core\Exercise.cpp">
-      <Filter>src\entity\core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sensor.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entity\core\Action.cpp">
-      <Filter>src\entity\core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entity\core\Body.cpp">
-      <Filter>src\entity\core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entity\core\BodyPoint.cpp">
-      <Filter>src\entity\core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\kinectsensor.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entity\core\HandHandler.cpp">
-      <Filter>src\entity\core</Filter>
-    </ClCompile>
     <ClCompile Include="src\user-interface\ExerciseRealizationController.cpp">
       <Filter>src\user-interface</Filter>
     </ClCompile>
@@ -960,17 +945,44 @@
     <ClCompile Include="src\user-interface\mainwindow.cpp">
       <Filter>src\user-interface</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity\core\BodyTracker.cpp">
-      <Filter>src\entity\core</Filter>
+    <ClCompile Include="src\user-interface\components\cButton.cpp">
+      <Filter>src\user-interface\components</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity\core\GestureCommandsManager.cpp">
-      <Filter>src\entity\core</Filter>
+    <ClCompile Include="src\core\entity\Action.cpp">
+      <Filter>src\core\entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity\core\MovementGesture.cpp">
-      <Filter>src\entity\core</Filter>
+    <ClCompile Include="src\core\entity\Body.cpp">
+      <Filter>src\core\entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity\core\SimpleGesture.cpp">
-      <Filter>src\entity\core</Filter>
+    <ClCompile Include="src\core\entity\BodyPoint.cpp">
+      <Filter>src\core\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\entity\Exercise.cpp">
+      <Filter>src\core\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\entity\MovementGesture.cpp">
+      <Filter>src\core\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\entity\SimpleGesture.cpp">
+      <Filter>src\core\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\BodyTracker.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\kinectsensor.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Sensor.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\UserProfile.cpp">
+      <Filter>src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\GestureCommandsManager.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\HandHandler.cpp">
+      <Filter>src\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

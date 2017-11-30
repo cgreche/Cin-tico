@@ -1,7 +1,7 @@
 
 //Layout
 // File: layout.cpp
-// Last edit: 25/09/2017 03:22 (UTC-3)
+// Last edit: 26/11/2017 01:35 (UTC-3)
 // Author: CGR
 
 #include "../uibase.h"
@@ -29,7 +29,9 @@ namespace uilib {
 	Size LayoutItem::getRequiredSize()
 	{
 		Size wantedSize = this->size();
-		Size retSize = wantedSize;
+		Size retSize;
+
+		Size autoSize = getAutoSize();
 
 		//Firstly, process the width
 		//Check if size is defined as constant value
@@ -37,8 +39,6 @@ namespace uilib {
 			retSize.setWidth(currentSize().width());
 		}
 		else if (isSizeTypeAuto(wantedSize.width())) {
-			//Check if size if defined as auto
-			Size autoSize = getAutoSize();
 			retSize.setWidth(autoSize.width());
 		}
 		else {
@@ -50,8 +50,6 @@ namespace uilib {
 			retSize.setHeight(currentSize().height());
 		}
 		else if (isSizeTypeAuto(size().height())) {
-			//Check if size if defined as auto
-			Size autoSize = getAutoSize();
 			retSize.setHeight(autoSize.height());
 		}
 		else {
@@ -87,6 +85,11 @@ namespace uilib {
 	Layout* LayoutItemLayout::layout() { return m_layout; }
 
 
+	void Layout::requestUpdate() {
+		m_dirty = true;
+		if (m_parentLayout)
+			m_parentLayout->requestUpdate();
+	}
 
 	//Layout
 	LayoutItemList::iterator Layout::_find(Control &control) {
@@ -124,6 +127,7 @@ namespace uilib {
 			control.m_parentLayout = this; //must be set after setParent()
 		}
 
+		requestUpdate();
 		return m_childList.insert(position, new LayoutItemControl(control, size, spacing));
 	}
 
@@ -140,14 +144,15 @@ namespace uilib {
 			layout.m_parentLayout = this; //must be set after setParent()
 		}
 
+		requestUpdate();
 		return m_childList.insert(position, new LayoutItemLayout(layout, size, spacing));
 	}
 
 	Layout::Layout()
 		: m_topMargin(0), m_leftMargin(0), m_bottomMargin(0), m_rightMargin(0),
-		m_defSpacing(5), m_alignment(0.0f),
+		m_defSpacing(5), m_alignment(Layout::left_align),
 		m_parentControl(NULL), m_parentLayout(NULL),
-		m_position(0, 0), m_currentSize(0, 0)
+		m_dirty(true)
 	{
 	}
 
@@ -175,6 +180,7 @@ namespace uilib {
 			LayoutItem &child = **it;
 			child.setParent(parent);
 		}
+		requestUpdate();
 	}
 
 	void Layout::setPosition(const Point &position)
@@ -191,7 +197,6 @@ namespace uilib {
 		//Move objects
 		for (it = m_childList.begin(); it != m_childList.end(); ++it) {
 			LayoutItem &child = **it;
-
 			Point childPos = child.position() + diffPos;
 			child.setPosition(childPos);
 		}
@@ -215,6 +220,16 @@ namespace uilib {
 		}
 	}
 
+	void Layout::update() {
+		if (m_dirty) {
+			if (m_parentLayout && m_parentLayout->m_dirty)
+				m_parentLayout->update();
+			else
+				setSize(size());
+			m_dirty = false;
+		}
+	}
+
 	Point Layout::position() const
 	{
 		return m_position;
@@ -233,12 +248,14 @@ namespace uilib {
 	void Layout::setMargin(int margin)
 	{
 		m_topMargin = m_leftMargin = m_bottomMargin = m_rightMargin = margin;
+		requestUpdate();
 	}
 
 	void Layout::setMargin(int vMargin, int hMargin)
 	{
 		m_topMargin = m_bottomMargin = vMargin;
 		m_leftMargin = m_rightMargin = hMargin;
+		requestUpdate();
 	}
 
 	void Layout::setMargin(int topMargin, int leftMargin, int bottomMargin, int rightMargin)
@@ -247,31 +264,37 @@ namespace uilib {
 		m_leftMargin = leftMargin;
 		m_bottomMargin = bottomMargin;
 		m_rightMargin = rightMargin;
+		requestUpdate();
 	}
 
 	void Layout::setTopMargin(int margin)
 	{
 		m_topMargin = margin;
+		requestUpdate();
 	}
 
 	void Layout::setLeftMargin(int margin)
 	{
 		m_leftMargin = margin;
+		requestUpdate();
 	}
 
 	void Layout::setBottomMargin(int margin)
 	{
 		m_bottomMargin = margin;
+		requestUpdate();
 	}
 
 	void Layout::setRightMargin(int margin)
 	{
 		m_rightMargin = margin;
+		requestUpdate();
 	}
 
 	void Layout::setDefaultSpacing(int spacing)
 	{
 		m_defSpacing = spacing;
+		requestUpdate();
 	}
 
 	void Layout::getMargins(int *pTopMargin, int *pLeftMargin, int *pBottomMargin, int *pRightMargin)
@@ -285,6 +308,7 @@ namespace uilib {
 	void Layout::setAlignment(float alignment)
 	{
 		m_alignment = max(0.0f, min(1.0f, alignment));
+		requestUpdate();
 	}
 
 	void Layout::append(Control& control, const Size &size, int spacing)
@@ -301,6 +325,7 @@ namespace uilib {
 			child.control()->setParent(NULL);
 			delete &child;
 			m_childList.erase(it);
+			requestUpdate();
 		}
 	}
 
@@ -340,7 +365,7 @@ namespace uilib {
 			child.layout()->setParent(NULL);
 			delete &child;
 			m_childList.erase(it);
-			return;
+			requestUpdate();
 		}
 	}
 

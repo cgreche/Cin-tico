@@ -1,7 +1,7 @@
 
 #include "database/database.h"
 #include "ActionDAO.h"
-#include "entity/core/Action.h"
+#include "core/entity/Action.h"
 
 namespace cinetico {
 

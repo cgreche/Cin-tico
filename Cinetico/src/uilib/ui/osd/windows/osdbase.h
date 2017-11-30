@@ -396,6 +396,7 @@ namespace uilib {
 	class OSDLabel : public OSDControl
 	{
 		virtual LRESULT HandleParentMessage(UINT msg, WPARAM wParam, LPARAM lParam);
+		MSG_HANDLER(OnNCHitTest) //0x0084
 		MSG_HANDLER(OnEnable); //0x000A
 		MSG_HANDLER(OnNCPaint) //0x0085
 
@@ -446,9 +447,9 @@ namespace uilib {
 
 	class OSDTextLink : public OSDLabel
 	{
+		virtual LRESULT HandleParentMessage(UINT msg, WPARAM wParam, LPARAM lParam);
 		MSG_HANDLER(OnKillFocus) //0x0008
-			MSG_HANDLER(OnSetCursor) //0x0020
-			MSG_HANDLER(OnNCHitTest) //0x0084
+		MSG_HANDLER(OnSetCursor) //0x0020
 
 	protected:
 		virtual void onPaintEvent(PaintEvent &event);

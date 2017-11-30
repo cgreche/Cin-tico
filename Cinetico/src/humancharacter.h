@@ -2,8 +2,8 @@
 #define __CINETICO_UI_HUMANCHARACTER_H__
 
 #include "character.h"
-#include "entity/core/Body.h"
-#include "entity/core/BodyPoint.h"
+#include "core/entity/Body.h"
+#include "core/entity/BodyPoint.h"
 
 namespace cinetico {
 
@@ -12,7 +12,8 @@ namespace cinetico {
 	class HumanCharacter : public Character {
 		Body *m_body;
 
-		void mapBodyPointToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint);
+		void mapBodyPointNodeToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint);
+		void mapBodyPointToCharacterBodyPointNode(int instId, BodyPoint::BodyPart bodyPoint);
 	public:
 		HumanCharacter(CineticoUI &cinetico);
 

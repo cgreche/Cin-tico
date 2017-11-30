@@ -4,8 +4,8 @@
 #include <vector>
 #include <string>
 
-#include "entity/core/Exercise.h"
-#include "entity/core/Action.h"
+#include "core/entity/Exercise.h"
+#include "core/entity/Action.h"
 
 class Database;
 

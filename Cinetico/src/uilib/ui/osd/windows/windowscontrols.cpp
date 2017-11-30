@@ -250,7 +250,7 @@ namespace uilib {
 			style,
 			0, 0, 0, 0,
 			hwndParent, (HMENU)NULL, GetModuleHandle(NULL), 0);
-		::SetWindowLongPtr(hwnd, GWL_USERDATA, (LONG_PTR)&osdControl.ref());
+		::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)&osdControl.ref());
 
 		osdControl.m_hwnd = hwnd;
 		osdControl.setWndProc(GenericWndProc);
