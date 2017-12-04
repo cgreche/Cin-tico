@@ -1,6 +1,6 @@
 
-#ifndef __CINETICO_ACTIONSCONTROLLER_H__
-#define __CINETICO_ACTIONSCONTROLLER_H__
+#ifndef __CINETICO_ACTIONS_CONTROLLER_H__
+#define __CINETICO_ACTIONS_CONTROLLER_H__
 
 #include "Controller.h"
 #include "uilib/ui/uibase.h"

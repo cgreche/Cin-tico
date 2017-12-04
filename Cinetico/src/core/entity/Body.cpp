@@ -16,7 +16,7 @@ namespace cinetico_core {
 			{ BodyPoint::Head, "Head" },
 			{ BodyPoint::Cervical, "Cervical" },
 			{ BodyPoint::Spine, "Spine" },
-			{ BodyPoint::SpineBase, "Spine Base" },
+			{ BodyPoint::Pelvis, "Pelvis" },
 			{ BodyPoint::LeftShoulder, "Left Shoulder" },
 			{ BodyPoint::LeftElbow, "Left Elbow" },
 			{ BodyPoint::LeftWrist, "Left Wrist" },

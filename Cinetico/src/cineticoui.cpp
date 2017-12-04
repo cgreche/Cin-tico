@@ -11,6 +11,7 @@
 #include "user-interface/ExercisesController.h"
 #include "user-interface/ActionsController.h"
 #include "user-interface/ExerciseRealizationController.h"
+#include "user-interface/DebugController.h"
 
 using namespace cinetico_core;
 using namespace render3d;
@@ -41,7 +42,6 @@ namespace cinetico {
 		m_mainWindow = NULL;
 		m_playingExercise = NULL;
 		m_globalFrameCount = 0;
-		m_headerAndFooterVisible = true;
 		setup();
 	}
 
@@ -77,6 +77,7 @@ namespace cinetico {
 		registerView(EXERCISES, dictionary->getString(Dictionary::ExercisesViewTitle).data(), new ExercisesController(*this));
 		registerView(ACTIONS, dictionary->getString(Dictionary::ActionsViewTitle).data(), new ActionsController(*this));
 		registerView(PLAYING, "Exercise Realization", new ExerciseRealizationController(*this));
+		registerView(DEBUG, "Debug mode", new DebugController(*this));
 
 		setupWindow();
 		setupRenderEngine();
@@ -143,10 +144,10 @@ namespace cinetico {
 		m_mainWindow->setVisibilityMode(fullscreen ? uilib::Fullscreen : uilib::ShowNormal);
 	}
 
-	void CineticoUI::setHeaderAndFooterVisible(bool visible) {
-		m_mainWindow->setHeaderVisible(visible);
-		m_mainWindow->setFooterVisible(visible);
-		m_headerAndFooterVisible = visible;
+	void CineticoUI::setHeaderContentFooterVisible(bool headerVisible, bool contentVisible, bool footerVisible) {
+		m_mainWindow->setHeaderVisible(headerVisible);
+		m_mainWindow->setContentVisible(contentVisible);
+		m_mainWindow->setFooterVisible(footerVisible);
 		update();
 	}
 

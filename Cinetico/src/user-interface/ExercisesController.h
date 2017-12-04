@@ -1,6 +1,6 @@
 
-#ifndef __CINETICO_EXERCISESCONTROLLER_H__
-#define __CINETICO_EXERCISESCONTROLLER_H__
+#ifndef __CINETICO_EXERCISES_CONTROLLER_H__
+#define __CINETICO_EXERCISES_CONTROLLER_H__
 
 #include "Controller.h"
 #include "core/entity/exercise.h"

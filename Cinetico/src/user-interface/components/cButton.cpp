@@ -17,7 +17,9 @@ namespace cinetico {
 	}
 
 	void cButton::onMouseReleaseEvent(MouseEvent &event) {
-		int a = 1;
+		for (cButtonActionFunc f : m_callbacks) {
+			(*f)(*this);
+		}
 	}
 
 	cButton::cButton() {

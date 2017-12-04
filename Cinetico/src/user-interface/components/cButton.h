@@ -8,12 +8,21 @@ namespace cinetico {
 	using namespace uilib;
 
 	class cButton : public Label {
+	public:
+		typedef void(*cButtonActionFunc)(cButton& button);
+
+	private:
 		virtual void onMouseEnterEvent(MouseEvent &event);
 		virtual void onMouseLeaveEvent(MouseEvent &event);
 		virtual void onMouseReleaseEvent(MouseEvent &event);
 
+		std::vector<cButtonActionFunc> m_callbacks;
+
 	public:
 		cButton();
+		void addOnAction(cButtonActionFunc callback) {
+			m_callbacks.push_back(callback);
+		}
 
 	};
 

@@ -36,6 +36,12 @@ namespace cinetico {
 		mainWindow->m_cinetico.setLanguage(Dictionary::ES_ES);
 	}
 
+	static void buttonGoToDebugView_onClick(Button &button) {
+		MainWindow *mainWindow = (MainWindow *)button.param();
+		Controller::ViewParams params;
+		mainWindow->m_cinetico.cineticoUI()->goTo(CineticoUI::DEBUG, params);
+	}
+
 	static void buttonGoToDebugMode_onClick(Button &button) {
 		MainWindow *mainWindow = (MainWindow *)button.param();
 		Controller::ViewParams params;
@@ -72,10 +78,10 @@ namespace cinetico {
 		layoutAppState.setAlignment(Layout::center_align);
 		layoutAppState.setMargin(10);
 
-		bgBlack.setBackgroundColor(ViewTemplate::AppHeaderBgColor);
-		bgBlack.setTransparent(false);
-		bgBlack.setLayout(&layoutAppState);
-		layoutHeader.append(bgBlack, Size(SizeTypeMax, SizeTypeMax));
+		layoutHeader.append(layoutAppState);
+
+		bgHeader.setBackgroundColor(ViewTemplate::AppHeaderBgColor);
+		bgHeader.setTransparent(false);
 	}
 
 	void MainWindow::buildFooterLayout() {
@@ -83,9 +89,14 @@ namespace cinetico {
 		labelAuthor.setFont(ViewTemplate::FooterInfoFont);
 		labelAuthor.setTextColor(ViewTemplate::FooterInfoColor);
 
+		buttonDebugView.setText("Go to Debug view");
+		buttonDebugView.setParam(this);
+		buttonDebugView.setOnClick(buttonGoToDebugView_onClick);
+
 		buttonDebugMode.setText("Go to debug mode");
 		buttonDebugMode.setParam(this);
 		buttonDebugMode.setOnClick(buttonGoToDebugMode_onClick);
+		layoutOptions.append(buttonDebugView);
 		layoutOptions.append(buttonDebugMode);
 		layoutOptions.setAlignment(Layout::center_align);
 		
@@ -107,15 +118,21 @@ namespace cinetico {
 		linkEspanol.setParam(this);
 		linkEspanol.setOnClick(linkEspanol_onClick);
 
+		layoutAuthorInfo.append(labelAuthor);
+
 		layoutLanguages.append(linkPortugues);
 		layoutLanguages.append(linkEnglish);
 		layoutLanguages.append(linkEspanol);
 		layoutLanguages.setAlignment(Layout::right_align);
 
-		layoutFooter.setMargin(10);
-		layoutFooter.append(labelAuthor, MaximumSize);
+		layoutFooter.append(layoutAuthorInfo, MaximumSize);
 		layoutFooter.append(layoutOptions, MaximumSize);
 		layoutFooter.append(layoutLanguages, MaximumSize);
+		layoutFooter.setMargin(10);
+
+		bgHeader.setLayout(&layoutHeader);
+		bgContent.setLayout(&layoutContent);
+		bgFooter.setLayout(&layoutFooter);
 	}
 
 
@@ -161,9 +178,9 @@ namespace cinetico {
 		buildHeaderLayout();
 		buildFooterLayout();
 
-		layout.append(layoutHeader, Size(SizeTypeMax, MakePercentType(10)), 20);
-		layout.append(layoutContent, MaximumSize, 20);
-		layout.append(layoutFooter, Size(SizeTypeMax, MakePercentType(10)));
+		layout.append(bgHeader, Size(SizeTypeMax, MakePercentType(10)), 20);
+		layout.append(bgContent, MaximumSize, 20);
+		layout.append(bgFooter, Size(SizeTypeMax, MakePercentType(10)));
 
 		setLayout(&layout);
 		setFrameSize(Size(1024, 768));
@@ -228,19 +245,27 @@ namespace cinetico {
 	}
 
 	void MainWindow::setHeaderVisible(bool visible) {
-		layoutHeader.setVisible(visible);
+		bgHeader.setVisible(visible);
 		if (!visible)
-			layout.remove(layoutHeader);
+			layout.remove(bgHeader);
 		else
-			layout.insertBefore(layoutContent, layoutHeader, Size(SizeTypeMax, MakePercentType(10)), 20);
+			layout.insertBefore(bgContent, bgHeader, Size(SizeTypeMax, MakePercentType(10)), 20);
+	}
+
+	void MainWindow::setContentVisible(bool visible) {
+		bgContent.setVisible(visible);
+		if (!visible)
+			layout.remove(bgContent);
+		else
+			layout.insertBefore(bgFooter, bgContent, MaximumSize, 20);
 	}
 
 	void MainWindow::setFooterVisible(bool visible) {
-		layoutFooter.setVisible(visible);
+		bgFooter.setVisible(visible);
 		if (!visible)
-			layout.remove(layoutFooter);
+			layout.remove(bgFooter);
 		else
-			layout.insertAfter(layoutContent, layoutFooter, Size(SizeTypeMax, MakePercentType(10)));
+			layout.insertAfter(bgContent, bgFooter, Size(SizeTypeMax, MakePercentType(10)));
 	}
 
 	void MainWindow::onClickUserLoginName() {

@@ -143,7 +143,7 @@ namespace cinetico {
 			rz = ((rand() % 100 + 1) / 100.f) * 6.28f;
 			s = 0.1f + ((rand() % 101) / 100.f)* 0.9f;
 			inst->setPos(render3d::Vector3(x, y, z));
-			inst->setRot(render3d::Vector3(rx, ry, rz));
+			//inst->setRotation(render3d::Vector3(rx, ry, rz));
 			inst->setScale(s);
 		}
 
@@ -156,7 +156,7 @@ namespace cinetico {
 
 		ResourceInstance *instance = (ResourceInstance*)m_renderEngine->resourceInstance(instanceWall);
 		instance->setPos(render3d::Vector3(0.f, quadCountV / 2 * quadSize, quadCountV / 2 * quadSize));
-		instance->setRot(render3d::Vector3(-3.14159f * 0.5f, 0.f, 0.f));
+		//instance->setRot(render3d::Vector3(-3.14159f * 0.5f, 0.f, 0.f));
 
 		ResourceInstance *terrain = (ResourceInstance*)m_renderEngine->resourceInstance(instanceTerrain);
 		terrain->setPos(render3d::Vector3(0, -2, 0));
@@ -215,7 +215,7 @@ namespace cinetico {
 
 		ResourceInstance *instance;
 		instance = m_renderEngine->resourceInstance(instCubeTest);
-		instance->setRot(render3d::Vector3(testRotation.x(), testRotation.y(), testRotation.z()));
+		//instance->setRotation(render3d::Vector3(testRotation.x(), testRotation.y(), testRotation.z()));
 
 
 
@@ -224,13 +224,14 @@ namespace cinetico {
 			processCamera();
 			Camera *cam = m_renderEngine->camera(cam1);
 			render3d::Vector3 faceCam = render3d::Vector3(-cam->rot().x(), -cam->rot().y(), -cam->rot().z());
-			m_renderEngine->resourceInstance(instanceQuad1)->setRot(faceCam);
-			m_renderEngine->resourceInstance(instanceQuad2)->setRot(faceCam);
+			//m_renderEngine->resourceInstance(instanceQuad1)->setRot(faceCam);
+			//m_renderEngine->resourceInstance(instanceQuad2)->setRot(faceCam);
 		}
 
 
 		instance = m_renderEngine->resourceInstance(instanceCube);
 		render3d::Vector3 newPos = instance->pos();
+		/*
 		render3d::Vector3 newRot = instance->rot();
 
 		if (leftDown) {
@@ -284,9 +285,10 @@ namespace cinetico {
 				newPos.setY(newPos.y() + d);
 			}
 		}
-
+		
 		instance->setPos(newPos);
 		instance->setRot(newRot);
+		*/
 	}
 
 	void DebugPlayMode::render() {

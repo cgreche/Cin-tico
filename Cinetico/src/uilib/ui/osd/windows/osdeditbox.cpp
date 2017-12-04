@@ -73,7 +73,7 @@ namespace uilib {
 	{
 		if (ref().text().length() == 0) {
 			m_placeholderSet = true;
-			::SetWindowText(m_hwnd, text.data());
+			//::SetWindowText(m_hwnd, text.data());
 		}
 	}
 
@@ -122,12 +122,14 @@ namespace uilib {
 	{
 		int vk = wParam;
 		//remove placeholder
+		/*
 		if (m_placeholderSet) {
 			if (vk == VK_DELETE || vk == VK_BACK
 				|| vk == VK_LEFT || vk == VK_RIGHT || vk == VK_UP || vk == VK_DOWN
 				|| vk == VK_PRIOR || vk == VK_NEXT || vk == VK_END || vk == VK_HOME)
 				return 0;
 		}
+		*/
 
 		/*
 		char myMask[] = "999...9AS";
@@ -164,8 +166,8 @@ namespace uilib {
 	LRESULT OSDEditBox::OnChar(WPARAM wParam, LPARAM lParam)
 	{
 		if (wParam == 0x08) { //backspace
-			if (m_placeholderSet)
-				return 0;
+			//if (m_placeholderSet)
+			//	return 0;
 		}
 		else {
 
@@ -214,6 +216,7 @@ namespace uilib {
 			*/
 		}
 
+		/*
 		//remove placeholder
 		if (m_placeholderSet) {
 			if (ref().placeholderTextBehavior() == HIDE_ON_FIRST_CHAR) {
@@ -223,19 +226,22 @@ namespace uilib {
 				m_placeholderSet = false;
 			}
 		}
+		*/
 		return ::CallWindowProc(m_originalWndProc, m_hwnd, WM_CHAR, wParam, lParam);
 	}
 
 	void OSDEditBox::onMouseMoveEvent(MouseEvent &event)
 	{
+		/*
 		if (event.buttonsState() & 1 && m_placeholderSet)
 			event.accepted();
-		else
+		else*/
 			event.ignore();
 	}
 
 	void OSDEditBox::onMousePressEvent(MouseEvent &event)
 	{
+		/*
 		if (event.button() == 1) {
 			if (m_placeholderSet) {
 				::CallWindowProc(m_originalWndProc, m_hwnd, WM_LBUTTONDOWN, MK_LBUTTON, 0);
@@ -243,18 +249,21 @@ namespace uilib {
 				return;
 			}
 		}
+		*/
 
 		event.ignore();
 	}
 
 	void OSDEditBox::onMouseDoubleClickEvent(MouseEvent &event)
 	{
+		/*
 		if (event.button() == 1) {
 			if (m_placeholderSet) {
 				event.accept();
 				return;
 			}
 		}
+		*/
 
 		event.ignore();
 	}
@@ -268,80 +277,95 @@ namespace uilib {
 	{
 		if (msg == WM_COMMAND) {
 			switch (HIWORD(wParam)) {
-			case EN_SETFOCUS:
-			{
-				if (m_placeholderSet) {
-					::SendMessage(m_hwnd, EM_SETSEL, 0, 0);
-					if (ref().placeholderTextBehavior() == HIDE_ON_FOCUS) {
-						::SetWindowText(m_hwnd, "");
-						m_placeholderSet = false;
-					}
-				}
-				break;
-			}
-
-			case EN_KILLFOCUS:
-			{
-				if (ref().placeholderTextBehavior() == HIDE_ON_FOCUS) {
-					unsigned int len = ref().text().length();
-					if (len == 0) {
-						m_placeholderSet = true;
-						::SetWindowText(m_hwnd, ref().placeholderText().data());
-					}
-				}
-				break;
-			}
-
-			case EN_CHANGE:
-			{
-				if (m_systemCommand)
-					return 0;
-
-				int curSel = LOWORD(::SendMessage(m_hwnd, EM_GETSEL, 0, 0));
-				string oldText = ref().text();
-				int oldLen = ref().text().length();
-				string newText;
-				int newLen;
-
-				unsigned int controlLen = ::GetWindowTextLength(m_hwnd);
-				TCHAR *buf = new TCHAR[controlLen + 1];
-				if (buf) {
-					::GetWindowText(m_hwnd, buf, controlLen + 1);
-				}
-				newText = buf;
-				newLen = newText.length();
-				delete[] buf;
-
-				if (newText == oldText)
-					return 0;
-
-				if (!m_placeholderSet) {
+					
+				case EN_SETFOCUS:
+				{
 					/*
-					if((curSel-1) == 4 && !isdigit(buf[curSel-1])) {
-						buf[curSel-1] = '\0';
-						::SetWindowText(m_hwnd, buf);
-						::SendMessage(m_hwnd, EM_SETSEL, curSel, curSel);
-						return 0;
+					if (m_placeholderSet) {
+						::SendMessage(m_hwnd, EM_SETSEL, 0, 0);
+						if (ref().placeholderTextBehavior() == HIDE_ON_FOCUS) {
+							::SetWindowText(m_hwnd, "");
+							m_placeholderSet = false;
+						}
 					}
 					*/
-
-					*ref().m_receivebuffer = newText;
-					if (ref().m_onChange)
-						ref().m_onChange(ref());
-
-					::SendMessage(m_hwnd, EM_SETSEL, curSel, curSel);
+					break;
 				}
 
-				if (ref().placeholderTextBehavior() == HIDE_ON_FIRST_CHAR) {
-					if (newLen == 0 && !m_placeholderSet) {
-						m_placeholderSet = true;
-						::SetWindowText(m_hwnd, ref().placeholderText().data());
+				case EN_KILLFOCUS:
+				{
+					/*
+					if (ref().placeholderTextBehavior() == HIDE_ON_FOCUS) {
+						unsigned int len = ref().text().length();
+						if (len == 0) {
+							m_placeholderSet = true;
+							::SetWindowText(m_hwnd, ref().placeholderText().data());
+						}
 					}
+					*/
+					break;
 				}
-			}break;
+
+				case EN_CHANGE:
+				{
+					if (m_systemCommand)
+						return 0;
+
+					int curSel = LOWORD(::SendMessage(m_hwnd, EM_GETSEL, 0, 0));
+					string oldText = ref().text();
+					int oldLen = ref().text().length();
+					string newText;
+					int newLen;
+
+					unsigned int controlLen = ::GetWindowTextLength(m_hwnd);
+					TCHAR *buf = new TCHAR[controlLen + 1];
+					if (buf) {
+						::GetWindowText(m_hwnd, buf, controlLen + 1);
+					}
+					newText = buf;
+					newLen = newText.length();
+					delete[] buf;
+
+					if (newText == oldText)
+						return 0;
+
+					//if (!m_placeholderSet) {
+						/*
+						if((curSel-1) == 4 && !isdigit(buf[curSel-1])) {
+							buf[curSel-1] = '\0';
+							::SetWindowText(m_hwnd, buf);
+							::SendMessage(m_hwnd, EM_SETSEL, curSel, curSel);
+							return 0;
+						}
+						*/
+
+						*ref().m_receivebuffer = newText;
+						if (ref().m_onChange)
+							ref().m_onChange(ref());
+
+						::SendMessage(m_hwnd, EM_SETSEL, curSel, curSel);
+					//}
+
+					/*
+					if (ref().placeholderTextBehavior() == HIDE_ON_FIRST_CHAR) {
+						if (newLen == 0 && !m_placeholderSet) {
+							m_placeholderSet = true;
+							::SetWindowText(m_hwnd, ref().placeholderText().data());
+						}
+					}
+					*/
+				}break;
+
+				default:
+				{
+					int a = 1;
+					break;
+				}
+
+
 			}
 
-			return 0;
+			//return 0;
 		}
 
 		if (msg == WM_CTLCOLOREDIT)

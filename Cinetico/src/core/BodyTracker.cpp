@@ -18,28 +18,25 @@ namespace cinetico_core {
 			delete m_body;
 	}
 
-	bool BodyTracker::track() {
-		int identifiedBodyPointCount = 0;
-
 #ifdef _WIN32
-#define KinectJoint2CineticoBodyPoint(bp,kj) \
-do { \
-	BodyPoint *p = m_body->m_bodyPoint[bp]; \
-	if(p->trackable()) { \
-		Joint joint = sensor.joint(identifiedBody, kj); \
-		JointOrientation jointOrientation = sensor.jointOrientation(identifiedBody, kj); \
-		Vector3 position = Vector3(joint.Position.X, joint.Position.Y, joint.Position.Z); \
-		Quaternion orientation(jointOrientation.Orientation.x,jointOrientation.Orientation.y,jointOrientation.Orientation.z,jointOrientation.Orientation.w); \
-		if(p->trackable()) { \
-			p->m_position = position; \
-			p->m_orientation = orientation; \
-			p->m_identified = joint.TrackingState != TrackingState_NotTracked; \
-			p->m_occluded = joint.TrackingState != TrackingState_Tracked; \
-			if(p->m_identified) identifiedBodyPointCount++; \
-		} \
-	} \
-} while(0)
+	void KinectJoint2CineticoBodyPoint(KinectSensor &sensor, Body *body, BodyPoint::BodyPart bpid, int bodyIndex, JointType kj) {
+		BodyPoint *bp = body->bodyPoint(bpid);
+		if (bp->trackable()) {
+			Joint joint = sensor.joint(bodyIndex, kj);
+			JointOrientation jointOrientation = sensor.jointOrientation(bodyIndex, kj);
+			Vector3 position = Vector3(joint.Position.X, joint.Position.Y, joint.Position.Z);
+			Quaternion orientation(jointOrientation.Orientation.w, jointOrientation.Orientation.x, jointOrientation.Orientation.y, jointOrientation.Orientation.z);
+			if (orientation == Quaternion(0, 0, 0, 0))
+				orientation = Quaternion();
+			bp->m_position = position;
+			bp->m_orientation = orientation;
+			bp->m_identified = joint.TrackingState != TrackingState_NotTracked;
+			bp->m_occluded = joint.TrackingState != TrackingState_Tracked;
+		}
+	}
+#endif
 
+	bool BodyTracker::track() {
 		KinectSensor &sensor = (KinectSensor&)m_sensor;
 		sensor.update();
 
@@ -57,36 +54,8 @@ do { \
 			else {
 				m_body->setAllBodyPointsTrackable(false);
 
-				if (m_trackableBodyPoints & (1 << 0)) m_body->setBodyPointTrackable(BodyPoint::Head, true);
-				if (m_trackableBodyPoints & (1 << 1)) m_body->setBodyPointTrackable(BodyPoint::Cervical, true);
-				if (m_trackableBodyPoints & (1 << 2)) m_body->setBodyPointTrackable(BodyPoint::Spine, true);
-				if (m_trackableBodyPoints & (1 << 3)) m_body->setBodyPointTrackable(BodyPoint::SpineBase, true);
-				if (m_trackableBodyPoints & (1 << 4)) m_body->setBodyPointTrackable(BodyPoint::LeftShoulder, true);
-				if (m_trackableBodyPoints & (1 << 5)) m_body->setBodyPointTrackable(BodyPoint::LeftElbow, true);
-				if (m_trackableBodyPoints & (1 << 6)) m_body->setBodyPointTrackable(BodyPoint::LeftWrist, true);
-				if (m_trackableBodyPoints & (1 << 7)) m_body->setBodyPointTrackable(BodyPoint::LeftPalm, true);
-				if (m_trackableBodyPoints & (1 << 8)) m_body->setBodyPointTrackable(BodyPoint::LeftPinky, true);
-				if (m_trackableBodyPoints & (1 << 9)) m_body->setBodyPointTrackable(BodyPoint::LeftRingFinger, true);
-				if (m_trackableBodyPoints & (1 << 10)) m_body->setBodyPointTrackable(BodyPoint::LeftMiddleFinger, true);
-				if (m_trackableBodyPoints & (1 << 11)) m_body->setBodyPointTrackable(BodyPoint::LeftIndexFinger, true);
-				if (m_trackableBodyPoints & (1 << 12)) m_body->setBodyPointTrackable(BodyPoint::LeftThumb, true);
-				if (m_trackableBodyPoints & (1 << 13)) m_body->setBodyPointTrackable(BodyPoint::LeftHip, true);
-				if (m_trackableBodyPoints & (1 << 14)) m_body->setBodyPointTrackable(BodyPoint::LeftKnee, true);
-				if (m_trackableBodyPoints & (1 << 15)) m_body->setBodyPointTrackable(BodyPoint::LeftAnkle, true);
-				if (m_trackableBodyPoints & (1 << 16)) m_body->setBodyPointTrackable(BodyPoint::LeftFoot, true);
-				if (m_trackableBodyPoints & (1 << 17)) m_body->setBodyPointTrackable(BodyPoint::RightShoulder, true);
-				if (m_trackableBodyPoints & (1 << 18)) m_body->setBodyPointTrackable(BodyPoint::RightElbow, true);
-				if (m_trackableBodyPoints & (1 << 19)) m_body->setBodyPointTrackable(BodyPoint::RightWrist, true);
-				if (m_trackableBodyPoints & (1 << 20)) m_body->setBodyPointTrackable(BodyPoint::RightPalm, true);
-				if (m_trackableBodyPoints & (1 << 21)) m_body->setBodyPointTrackable(BodyPoint::RightPinky, true);
-				if (m_trackableBodyPoints & (1 << 22)) m_body->setBodyPointTrackable(BodyPoint::RightRingFinger, true);
-				if (m_trackableBodyPoints & (1 << 23)) m_body->setBodyPointTrackable(BodyPoint::RightMiddleFinger, true);
-				if (m_trackableBodyPoints & (1 << 24)) m_body->setBodyPointTrackable(BodyPoint::RightIndexFinger, true);
-				if (m_trackableBodyPoints & (1 << 25)) m_body->setBodyPointTrackable(BodyPoint::RightThumb, true);
-				if (m_trackableBodyPoints & (1 << 26)) m_body->setBodyPointTrackable(BodyPoint::RightHip, true);
-				if (m_trackableBodyPoints & (1 << 27)) m_body->setBodyPointTrackable(BodyPoint::RightKnee, true);
-				if (m_trackableBodyPoints & (1 << 28)) m_body->setBodyPointTrackable(BodyPoint::RightAnkle, true);
-				if (m_trackableBodyPoints & (1 << 29)) m_body->setBodyPointTrackable(BodyPoint::RightFoot, true);
+				for (int i = 0; i < BodyPoint::BodyPartCount; ++i)
+					m_body->setBodyPointTrackable((BodyPoint::BodyPart)i, m_trackableBodyPoints & (1 << i));
 			}
 		}
 
@@ -99,43 +68,50 @@ do { \
 		}
 
 		//Left and right must be mirrored
-
+#ifdef _WIN32
 		//todo: fingers
-		KinectJoint2CineticoBodyPoint(BodyPoint::Head, JointType_Head);
-		KinectJoint2CineticoBodyPoint(BodyPoint::Cervical, JointType_SpineShoulder);
-		KinectJoint2CineticoBodyPoint(BodyPoint::Spine, JointType_SpineMid);
-		KinectJoint2CineticoBodyPoint(BodyPoint::SpineBase, JointType_SpineBase);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::Head, identifiedBody, JointType_Head);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::Neck, identifiedBody, JointType_Neck);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::Cervical, identifiedBody, JointType_SpineShoulder);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::Spine, identifiedBody, JointType_SpineMid);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::Pelvis, identifiedBody, JointType_SpineBase);
 		//Left
-		KinectJoint2CineticoBodyPoint(BodyPoint::LeftShoulder, JointType_ShoulderLeft);
-		KinectJoint2CineticoBodyPoint(BodyPoint::LeftElbow, JointType_ElbowLeft);
-		KinectJoint2CineticoBodyPoint(BodyPoint::LeftWrist, JointType_WristLeft);
-		KinectJoint2CineticoBodyPoint(BodyPoint::LeftPalm, JointType_HandLeft);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::LeftShoulder, identifiedBody, JointType_ShoulderLeft);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::LeftElbow, identifiedBody, JointType_ElbowLeft);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::LeftWrist, identifiedBody, JointType_WristLeft);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::LeftPalm, identifiedBody, JointType_HandLeft);
 		//fingers
-		//KinectJoint2CineticoBodyPoint(BodyPoint::LeftPinky, JointType_HandLeft);
-		//KinectJoint2CineticoBodyPoint(BodyPoint::LeftRingFinger, JointType_HandLeft);
-		//KinectJoint2CineticoBodyPoint(BodyPoint::LeftMiddleFinger, JointType_HandLeft);
-		//KinectJoint2CineticoBodyPoint(BodyPoint::LeftIndexFinger, JointType_HandLeft);
-		//KinectJoint2CineticoBodyPoint(BodyPoint::LeftThumb, JointType_HandLeft);
-		KinectJoint2CineticoBodyPoint(BodyPoint::LeftHip, JointType_HipLeft);
-		KinectJoint2CineticoBodyPoint(BodyPoint::LeftKnee, JointType_KneeLeft);
-		KinectJoint2CineticoBodyPoint(BodyPoint::LeftAnkle, JointType_AnkleLeft);
-		KinectJoint2CineticoBodyPoint(BodyPoint::LeftFoot, JointType_FootLeft);
+		//KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::LeftPinky, identifiedBody, JointType_HandLeft);
+		//KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::LeftRingFinger, identifiedBody, JointType_HandLeft);
+		//KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::LeftMiddleFinger, identifiedBody, JointType_HandLeft);
+		//KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::LeftIndexFinger, identifiedBody, JointType_HandLeft);
+		//KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::LeftThumb, identifiedBody, JointType_HandLeft);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::LeftHip, identifiedBody, JointType_HipLeft);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::LeftKnee, identifiedBody, JointType_KneeLeft);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::LeftAnkle, identifiedBody, JointType_AnkleLeft);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::LeftFoot, identifiedBody, JointType_FootLeft);
 		//Right
-		KinectJoint2CineticoBodyPoint(BodyPoint::RightShoulder, JointType_ShoulderRight);
-		KinectJoint2CineticoBodyPoint(BodyPoint::RightElbow, JointType_ElbowRight);
-		KinectJoint2CineticoBodyPoint(BodyPoint::RightWrist, JointType_WristRight);
-		KinectJoint2CineticoBodyPoint(BodyPoint::RightPalm, JointType_HandRight);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::RightShoulder, identifiedBody, JointType_ShoulderRight);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::RightElbow, identifiedBody, JointType_ElbowRight);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::RightWrist, identifiedBody, JointType_WristRight);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::RightPalm, identifiedBody, JointType_HandRight);
 		//fingers
-		//KinectJoint2CineticoBodyPoint(BodyPoint::RightPinky, JointType_HandRight);
-		//KinectJoint2CineticoBodyPoint(BodyPoint::RightRingFinger, JointType_HandRight);
-		//KinectJoint2CineticoBodyPoint(BodyPoint::RightMiddleFinger, JointType_HandRight);
-		//KinectJoint2CineticoBodyPoint(BodyPoint::RightIndexFinger, JointType_HandRight);
-		//KinectJoint2CineticoBodyPoint(BodyPoint::RightThumb, JointType_HandRight);
-		KinectJoint2CineticoBodyPoint(BodyPoint::RightHip, JointType_HipRight);
-		KinectJoint2CineticoBodyPoint(BodyPoint::RightKnee, JointType_KneeRight);
-		KinectJoint2CineticoBodyPoint(BodyPoint::RightAnkle, JointType_AnkleRight);
-		KinectJoint2CineticoBodyPoint(BodyPoint::RightFoot, JointType_FootRight);
+		//KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::RightPinky, identifiedBody, JointType_HandRight);
+		//KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::RightRingFinger, identifiedBody, JointType_HandRight);
+		//KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::RightMiddleFinger, identifiedBody, JointType_HandRight);
+		//KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::RightIndexFinger, identifiedBody, JointType_HandRight);
+		//KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::RightThumb, identifiedBody, JointType_HandRight);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::RightHip, identifiedBody, JointType_HipRight);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::RightKnee, identifiedBody, JointType_KneeRight);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::RightAnkle, identifiedBody, JointType_AnkleRight);
+		KinectJoint2CineticoBodyPoint((KinectSensor&)m_sensor, m_body, BodyPoint::RightFoot, identifiedBody, JointType_FootRight);
 
+		int identifiedBodyPointCount = 0;
+		for (int i = 0; i < BodyPoint::BodyPartCount; ++i) {
+			BodyPoint *bp = m_body->bodyPoint((BodyPoint::BodyPart)i);
+			if(bp->isIdentified())
+				++identifiedBodyPointCount;
+		}
 		m_body->m_identifiedBodyPointCount = identifiedBodyPointCount;
 		return true;
 #else

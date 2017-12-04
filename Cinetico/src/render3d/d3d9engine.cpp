@@ -174,23 +174,40 @@ namespace render3d {
 		resData->setDirtyFlags(0);
 	}
 
-	void D3D9Engine::updateInternalResourceInstanceData(ResourceInstance *resData) {
-		unsigned long dirty = resData->dirtyFlags();
-		D3D9ResInstanceData *data = (D3D9ResInstanceData *)resData->internalData();
+	void D3D9Engine::updateInternalResourceInstanceData(ResourceInstance *resInstance) {
+		unsigned long dirty = resInstance->dirtyFlags();
+		D3D9ResInstanceData *data = (D3D9ResInstanceData *)resInstance->internalData();
 
 		if (dirty & ResourceInstance::POS_DIRTY | ResourceInstance::ROT_DIRTY | ResourceInstance::ROT_DIRTY) {
 			if (dirty & ResourceInstance::POS_DIRTY) {
-				Vector3 pos = resData->pos();
+				Vector3 pos = resInstance->pos();
 				D3DXMatrixTranslation(&data->transMatrix, pos.x(), pos.y(), pos.z());
 			}
 
 			if (dirty & ResourceInstance::ROT_DIRTY) {
-				Vector3 rot = resData->rot();
-				D3DXMatrixRotationYawPitchRoll(&data->rotMatrix, rot.y(), rot.x(), rot.z());
+				cinetico_core::Quaternion rot = resInstance->rot();
+				cinetico_core::Matrix4x4 rotMatrix = rot.toRotationMatrix().transposed();
+				data->rotMatrix._11 = rotMatrix.m[0][0];
+				data->rotMatrix._12 = rotMatrix.m[0][1];
+				data->rotMatrix._13 = rotMatrix.m[0][2];
+				data->rotMatrix._14 = rotMatrix.m[0][3];
+				data->rotMatrix._21 = rotMatrix.m[1][0];
+				data->rotMatrix._22 = rotMatrix.m[1][1];
+				data->rotMatrix._23 = rotMatrix.m[1][2];
+				data->rotMatrix._24 = rotMatrix.m[1][3];
+				data->rotMatrix._31 = rotMatrix.m[2][0];
+				data->rotMatrix._32 = rotMatrix.m[2][1];
+				data->rotMatrix._33 = rotMatrix.m[2][2];
+				data->rotMatrix._34 = rotMatrix.m[2][3];
+				data->rotMatrix._41 = rotMatrix.m[3][0];
+				data->rotMatrix._42 = rotMatrix.m[3][1];
+				data->rotMatrix._43 = rotMatrix.m[3][2];
+				data->rotMatrix._44 = rotMatrix.m[3][3];
+				//D3DXMatrixRotationYawPitchRoll(&data->rotMatrix, rot.y(), rot.x(), rot.z());
 			}
 
 			if (dirty & ResourceInstance::SCALE_DIRTY) {
-				Vector3 scale = resData->scale();
+				Vector3 scale = resInstance->scale();
 				D3DXMatrixScaling(&data->scaleMatrix, scale.x(), scale.y(), scale.z());
 			}
 
@@ -200,8 +217,9 @@ namespace render3d {
 			data->worldMatrix = matRes;
 		}
 
-		resData->setDirtyFlags(0);
+		resInstance->setDirtyFlags(0);
 	}
+
 	const float PI = 3.14159f;
 	void D3D9Engine::updateInternalCamera(Camera *camera) {
 		D3DXMATRIX temp;
@@ -519,7 +537,7 @@ namespace render3d {
 
 		m_device->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
 		m_device->SetRenderState(D3DRS_ZWRITEENABLE, D3DZB_TRUE);
-		//m_device->SetRenderState(D3DRS_LIGHTING, FALSE);
+		m_device->SetRenderState(D3DRS_LIGHTING, FALSE);
 		m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 		m_device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 		m_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);

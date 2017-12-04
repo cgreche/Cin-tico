@@ -184,6 +184,7 @@
     <ClInclude Include="src\user-interface\components\cTextLink.h" />
     <ClInclude Include="src\user-interface\Controller.h" />
     <ClInclude Include="src\user-interface\ActionsController.h" />
+    <ClInclude Include="src\user-interface\DebugController.h" />
     <ClInclude Include="src\user-interface\ExerciseRealizationController.h" />
     <ClInclude Include="src\user-interface\ExercisesController.h" />
     <ClInclude Include="src\user-interface\LoginController.h" />
@@ -304,6 +305,7 @@
     <ClCompile Include="src\user-interface\components\cTextLink.cpp" />
     <ClCompile Include="src\user-interface\Controller.cpp" />
     <ClCompile Include="src\user-interface\ActionsController.cpp" />
+    <ClCompile Include="src\user-interface\DebugController.cpp" />
     <ClCompile Include="src\user-interface\ExerciseRealizationController.cpp" />
     <ClCompile Include="src\user-interface\ExercisesController.cpp" />
     <ClCompile Include="src\user-interface\LoginController.cpp" />

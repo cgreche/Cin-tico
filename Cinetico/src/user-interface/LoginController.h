@@ -1,6 +1,6 @@
 
-#ifndef __CINETICO_LOGINCONTROLLER_H__
-#define __CINETICO_LOGINCONTROLLER_H__
+#ifndef __CINETICO_LOGIN_CONTROLLER_H__
+#define __CINETICO_LOGIN_CONTROLLER_H__
 
 #include "Controller.h"
 #include "components/cPageTitle.h"

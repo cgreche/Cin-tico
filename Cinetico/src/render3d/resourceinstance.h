@@ -7,6 +7,7 @@
 #include "vector3.h"
 #include "renderobject.h"
 #include "resourcedata.h"
+#include "core/lib/quaternion.h"
 
 namespace render3d {
 
@@ -31,7 +32,7 @@ namespace render3d {
 		int m_resDataId;
 		Vector3 m_pos;
 		Vector3 m_scale;
-		Vector3 m_rot;
+		cinetico_core::Quaternion m_rot;
 		unsigned long m_drawFlags;
 
 		ResourceInstance(RenderEngine *engine, int resId, int resDataId);
@@ -41,13 +42,13 @@ namespace render3d {
 		void setPos(const Vector3 &pos);
 		void setScale(float scale);
 		void setScale(const Vector3 &scale);
-		void setRot(const Vector3 &rot);
+		void setRotation(const cinetico_core::Quaternion &rot);
 		void setDrawFlags(unsigned long flags);
 
 		int resDataId() const { return m_resDataId; }
 		Vector3 pos() const { return m_pos; }
 		Vector3 scale() const { return m_scale; }
-		Vector3 rot() const { return m_rot; }
+		cinetico_core::Quaternion rot() const { return m_rot; }
 		unsigned long drawFlags() const { return m_drawFlags; }
 	};
 

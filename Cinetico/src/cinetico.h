@@ -75,7 +75,7 @@ namespace cinetico {
 			bodyPointNames[BodyPoint::Head] = m_dictionary->getString(Dictionary::BodyPointHead);
 			bodyPointNames[BodyPoint::Cervical] = m_dictionary->getString(Dictionary::BodyPointCervical);
 			bodyPointNames[BodyPoint::Spine] = m_dictionary->getString(Dictionary::BodyPointSpine);
-			bodyPointNames[BodyPoint::SpineBase] = m_dictionary->getString(Dictionary::BodyPointSpineBase);
+			bodyPointNames[BodyPoint::Pelvis] = m_dictionary->getString(Dictionary::BodyPointSpineBase);
 			bodyPointNames[BodyPoint::LeftShoulder] = m_dictionary->getString(Dictionary::BodyPointLeftShoulder);
 			bodyPointNames[BodyPoint::LeftElbow] = m_dictionary->getString(Dictionary::BodyPointLeftElbow);
 			bodyPointNames[BodyPoint::LeftWrist] = m_dictionary->getString(Dictionary::BodyPointLeftWrist);

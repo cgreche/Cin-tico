@@ -15,8 +15,8 @@ namespace cinetico {
 	class MainWindow : public Window
 	{
 		VerticalLayout layout;
-		VerticalLayout layoutHeader;
-			Label bgBlack;
+		Label bgHeader;
+			VerticalLayout layoutHeader;
 			HorizontalLayout layoutAppState;
 				cButton labelAppname;
 
@@ -27,12 +27,16 @@ namespace cinetico {
 						TextLink linkUsername;
 						cButton buttonLogoff;
 
+		Label bgContent;
 		VerticalLayout layoutContent;
-		HorizontalLayout layoutFooter;
-			Label labelAuthor;
-			VerticalLayout layoutOptions;
-				Button buttonDebugMode;
 
+		Label bgFooter;
+		HorizontalLayout layoutFooter;
+			VerticalLayout layoutAuthorInfo;
+				Label labelAuthor;
+			VerticalLayout layoutOptions;
+				Button buttonDebugView;
+				Button buttonDebugMode;
 			VerticalLayout layoutLanguages;
 				cTextLink linkPortugues;
 				cTextLink linkEnglish;
@@ -50,6 +54,7 @@ namespace cinetico {
 		friend void linkPortugues_onClick(TextLink &link);
 		friend void linkEnglish_onClick(TextLink &link);
 		friend void linkEspanol_onClick(TextLink &link);
+		friend void buttonGoToDebugView_onClick(Button &button);
 		friend void buttonGoToDebugMode_onClick(Button &button);
 		void onClickUserLoginName();
 		void onClickLogoff();
@@ -68,6 +73,7 @@ namespace cinetico {
 		void step();
 		void setContentLayout(Layout *layout);
 		void setHeaderVisible(bool visible);
+		void setContentVisible(bool visible);
 		void setFooterVisible(bool visible);
 	};
 

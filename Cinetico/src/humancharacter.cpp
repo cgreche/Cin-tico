@@ -159,13 +159,17 @@ namespace cinetico {
 	void HumanCharacter::mapBodyPointNodeToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint) {
 		ResourceInstance *instance = m_cineticoUI.renderEngine()->resourceInstance(instId);
 		cinetico_core::Vector3 pos = m_bodyPoints[bodyPoint]->globalPosition() * CM2W;
-		cinetico_core::Quaternion rot = m_bodyPoints[bodyPoint]->globalOrientation();
+		BodyPointNode *parent = m_bodyPoints[bodyPoint]->parent();
+		cinetico_core::Quaternion rot;
+		if(parent)
+			rot = m_bodyPoints[bodyPoint]->globalOrientation();
+		rot = m_bodyPoints[bodyPoint]->globalOrientation();
 		cinetico_core::Vector3 euler = rot.toEuler();
 		instance->setPos(render3d::Vector3(pos.x(), pos.y(), pos.z()));
-		instance->setRot(render3d::Vector3(euler.x(), euler.y(), euler.z()));
+		instance->setRotation(rot);
 	}
 
-	void HumanCharacter::mapBodyPointToCharacterBodyPointNode(int instId, BodyPoint::BodyPart bodyPoint) {
+	inline void HumanCharacter::mapBodyPointToCharacterBodyPointNode(BodyPoint::BodyPart bodyPoint) {
 		cinetico_core::Vector3 pos = m_body->bodyPoint(bodyPoint)->position();
 		cinetico_core::Quaternion rot = m_body->bodyPoint(bodyPoint)->orientation();
 		m_bodyPoints[bodyPoint]->setGlobalPosition(pos);
@@ -177,6 +181,11 @@ namespace cinetico {
 		if (m_body) {
 			//cabeça até cervical
 			int index = 0;
+
+			for (int i = 0; i < BodyPoint::BodyPartCount; ++i) {
+				mapBodyPointToCharacterBodyPointNode((BodyPoint::BodyPart)i);
+			}
+
 			index = mapBones(index, m_body, m_position, BodyPoint::Head, BodyPoint::Cervical);
 			index = mapBones(index, m_body, m_position, BodyPoint::Cervical, BodyPoint::LeftShoulder);
 			index = mapBones(index, m_body, m_position, BodyPoint::LeftShoulder, BodyPoint::LeftElbow);
@@ -185,12 +194,12 @@ namespace cinetico {
 			index = mapBones(index, m_body, m_position, BodyPoint::RightShoulder, BodyPoint::RightElbow);
 			index = mapBones(index, m_body, m_position, BodyPoint::RightElbow, BodyPoint::RightPalm);
 			index = mapBones(index, m_body, m_position, BodyPoint::Cervical, BodyPoint::Spine);
-			index = mapBones(index, m_body, m_position, BodyPoint::Spine, BodyPoint::SpineBase);
-			index = mapBones(index, m_body, m_position, BodyPoint::SpineBase, BodyPoint::LeftHip);
+			index = mapBones(index, m_body, m_position, BodyPoint::Spine, BodyPoint::Pelvis);
+			index = mapBones(index, m_body, m_position, BodyPoint::Pelvis, BodyPoint::LeftHip);
 			index = mapBones(index, m_body, m_position, BodyPoint::LeftHip, BodyPoint::LeftKnee);
 			index = mapBones(index, m_body, m_position, BodyPoint::LeftKnee, BodyPoint::LeftAnkle);
 			index = mapBones(index, m_body, m_position, BodyPoint::LeftAnkle, BodyPoint::LeftFoot);
-			index = mapBones(index, m_body, m_position, BodyPoint::SpineBase, BodyPoint::RightHip);
+			index = mapBones(index, m_body, m_position, BodyPoint::Pelvis, BodyPoint::RightHip);
 			index = mapBones(index, m_body, m_position, BodyPoint::RightHip, BodyPoint::RightKnee);
 			index = mapBones(index, m_body, m_position, BodyPoint::RightKnee, BodyPoint::RightAnkle);
 			index = mapBones(index, m_body, m_position, BodyPoint::RightAnkle, BodyPoint::RightFoot);
@@ -212,8 +221,28 @@ namespace cinetico {
 	void HumanCharacter::render() {
 		if (!m_body || m_body->identifiedBodyPointCount() == 0) return;
 		RenderEngine *renderEngine = m_cineticoUI.renderEngine();
-		renderEngine->drawResourceDirect(bonePositions,vertexCount,boneColors);
-		for (unsigned int i = 0; i < m_instanceIds.size(); ++i)
+		//renderEngine->drawResourceDirect(bonePositions,vertexCount,boneColors);
+		
+		for (unsigned int i = 0; i < m_instanceIds.size(); ++i) {
 			renderEngine->drawResource(m_instanceIds[i]);
+			render3d::Vector3 line[2];
+			ResourceInstance *inst = renderEngine->resourceInstance(m_instanceIds[i]);
+			cinetico_core::Vector3 rot = inst->rot().toEuler();
+			line[0].set(inst->pos().x(), inst->pos().y(), inst->pos().z());
+			float lineSize = 0.3f;
+			line[1].set(inst->pos().x() + rot.x()*lineSize, inst->pos().y() + rot.y()*lineSize, inst->pos().z() + rot.z()*lineSize);
+			renderEngine->drawResourceDirect(line, 6, boneColors);
+		}
+		
+		/*
+		ResourceInstance *inst = renderEngine->resourceInstance(g_bodyResourceIds.spine);
+		renderEngine->drawResource(g_bodyResourceIds.spine);
+		render3d::Vector3 line[2];
+		cinetico_core::Vector3 rot = inst->rot().toEuler();
+		line[0].set(inst->pos().x(), inst->pos().y(), inst->pos().z());
+		float lineSize = 1.f;
+		line[1].set(inst->pos().x() + rot.x()*lineSize, inst->pos().y() + rot.y()*lineSize, inst->pos().z() + rot.z()*lineSize);
+		renderEngine->drawResourceDirect(line, 6, boneColors);
+		*/
 	}
 }

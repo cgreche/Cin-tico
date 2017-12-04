@@ -3,58 +3,50 @@
 
 namespace cinetico {
 
+	BodyPointNode *Character::addBodyPointNode(BodyPoint::BodyPart bp, BodyPointNode *parent) {
+		BodyPointNode *bpn = new BodyPointNode(bp, parent);
+		m_bodyPoints[bp] = bpn;
+		return bpn;
+	}
+
 	void Character::createBoneHierarchyTree() {
-		BodyPointNode *pelvis = new BodyPointNode(BodyPoint::SpineBase, NULL);
+		m_bodyPoints.resize(BodyPoint::BodyPartCount);
+		BodyPointNode *pelvis = addBodyPointNode(BodyPoint::Pelvis, NULL);
 		
-		BodyPointNode *spine = new BodyPointNode(BodyPoint::Spine, pelvis);
-		BodyPointNode *cervical = new BodyPointNode(BodyPoint::Cervical, spine);
-		BodyPointNode *head = new BodyPointNode(BodyPoint::Head, cervical);
+		BodyPointNode *spine = addBodyPointNode(BodyPoint::Spine, pelvis);
+		BodyPointNode *cervical = addBodyPointNode(BodyPoint::Cervical, spine);
+		BodyPointNode *neck = addBodyPointNode(BodyPoint::Neck, cervical);
+		BodyPointNode *head = addBodyPointNode(BodyPoint::Head, neck);
 
-		BodyPointNode *leftHip = new BodyPointNode(BodyPoint::LeftHip, pelvis);
-		BodyPointNode *leftKnee = new BodyPointNode(BodyPoint::LeftKnee, leftHip);
-		BodyPointNode *leftAnkle = new BodyPointNode(BodyPoint::LeftAnkle, leftKnee);
-		BodyPointNode *leftFoot = new BodyPointNode(BodyPoint::LeftFoot, leftAnkle);
+		BodyPointNode *leftHip = addBodyPointNode(BodyPoint::LeftHip, pelvis);
+		BodyPointNode *leftKnee = addBodyPointNode(BodyPoint::LeftKnee, leftHip);
+		BodyPointNode *leftAnkle = addBodyPointNode(BodyPoint::LeftAnkle, leftKnee);
+		BodyPointNode *leftFoot = addBodyPointNode(BodyPoint::LeftFoot, leftAnkle);
 
-		BodyPointNode *rightHip = new BodyPointNode(BodyPoint::RightHip, pelvis);
-		BodyPointNode *rightKnee = new BodyPointNode(BodyPoint::RightKnee, rightHip);
-		BodyPointNode *rightAnkle = new BodyPointNode(BodyPoint::RightAnkle, rightKnee);
-		BodyPointNode *rightFoot = new BodyPointNode(BodyPoint::RightFoot, rightAnkle);
+		BodyPointNode *rightHip = addBodyPointNode(BodyPoint::RightHip, pelvis);
+		BodyPointNode *rightKnee = addBodyPointNode(BodyPoint::RightKnee, rightHip);
+		BodyPointNode *rightAnkle = addBodyPointNode(BodyPoint::RightAnkle, rightKnee);
+		BodyPointNode *rightFoot = addBodyPointNode(BodyPoint::RightFoot, rightAnkle);
 
-		BodyPointNode *leftShoulder = new BodyPointNode(BodyPoint::LeftShoulder, cervical);
-		BodyPointNode *leftElbow = new BodyPointNode(BodyPoint::LeftElbow, leftShoulder);
-		BodyPointNode *leftWrist = new BodyPointNode(BodyPoint::LeftWrist, leftElbow);
-		BodyPointNode *leftPalm = new BodyPointNode(BodyPoint::LeftPalm, leftWrist);
+		BodyPointNode *leftShoulder = addBodyPointNode(BodyPoint::LeftShoulder, cervical);
+		BodyPointNode *leftElbow = addBodyPointNode(BodyPoint::LeftElbow, leftShoulder);
+		BodyPointNode *leftWrist = addBodyPointNode(BodyPoint::LeftWrist, leftElbow);
+		BodyPointNode *leftPalm = addBodyPointNode(BodyPoint::LeftPalm, leftWrist);
+		BodyPointNode *leftPinky = addBodyPointNode(BodyPoint::LeftPinky, leftPalm);
+		BodyPointNode *leftRingFinger = addBodyPointNode(BodyPoint::LeftRingFinger, leftPalm);
+		BodyPointNode *leftMiddleFinger = addBodyPointNode(BodyPoint::LeftMiddleFinger, leftPalm);
+		BodyPointNode *leftIndexFinger = addBodyPointNode(BodyPoint::LeftIndexFinger, leftPalm);
+		BodyPointNode *leftThumb = addBodyPointNode(BodyPoint::LeftThumb, leftPalm);
 
-		BodyPointNode *rightShoulder = new BodyPointNode(BodyPoint::RightShoulder, cervical);
-		BodyPointNode *rightElbow = new BodyPointNode(BodyPoint::RightElbow, rightShoulder);
-		BodyPointNode *rightWrist = new BodyPointNode(BodyPoint::RightWrist, rightElbow);
-		BodyPointNode *rightPalm = new BodyPointNode(BodyPoint::RightPalm, rightWrist);
-
-		m_bodyPoints.push_back(pelvis);
-
-		m_bodyPoints.push_back(spine);
-		m_bodyPoints.push_back(cervical);
-		m_bodyPoints.push_back(head);
-
-		m_bodyPoints.push_back(leftHip);
-		m_bodyPoints.push_back(leftKnee);
-		m_bodyPoints.push_back(leftAnkle);
-		m_bodyPoints.push_back(leftFoot);
-
-		m_bodyPoints.push_back(rightHip);
-		m_bodyPoints.push_back(rightKnee);
-		m_bodyPoints.push_back(rightAnkle);
-		m_bodyPoints.push_back(rightFoot);
-
-		m_bodyPoints.push_back(leftShoulder);
-		m_bodyPoints.push_back(leftElbow);
-		m_bodyPoints.push_back(leftWrist);
-		m_bodyPoints.push_back(leftPalm);
-
-		m_bodyPoints.push_back(rightShoulder);
-		m_bodyPoints.push_back(rightElbow);
-		m_bodyPoints.push_back(rightWrist);
-		m_bodyPoints.push_back(rightPalm);
+		BodyPointNode *rightShoulder = addBodyPointNode(BodyPoint::RightShoulder, cervical);
+		BodyPointNode *rightElbow = addBodyPointNode(BodyPoint::RightElbow, rightShoulder);
+		BodyPointNode *rightWrist = addBodyPointNode(BodyPoint::RightWrist, rightElbow);
+		BodyPointNode *rightPalm = addBodyPointNode(BodyPoint::RightPalm, rightWrist);
+		BodyPointNode *rightPinky = addBodyPointNode(BodyPoint::RightPinky, rightPalm);
+		BodyPointNode *rightRingFinger = addBodyPointNode(BodyPoint::RightRingFinger, rightPalm);
+		BodyPointNode *rightMiddleFinger = addBodyPointNode(BodyPoint::RightMiddleFinger, rightPalm);
+		BodyPointNode *rightIndexFinger = addBodyPointNode(BodyPoint::RightIndexFinger, rightPalm);
+		BodyPointNode *rightThumb = addBodyPointNode(BodyPoint::RightThumb, rightPalm);
 
 		m_rootBodyPoint = pelvis;
 	}
@@ -65,7 +57,8 @@ namespace cinetico {
 	}
 
 	void Character::update() {
-		m_rootBodyPoint->updateState(Quaternion());
+		Matrix4x4 identityTransform = Quaternion().toRotationMatrix();
+		m_rootBodyPoint->updateState(Quaternion(),identityTransform);
 	}
 
 }

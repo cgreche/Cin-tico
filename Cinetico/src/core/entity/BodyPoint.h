@@ -15,9 +15,10 @@ namespace cinetico_core {
 		enum BodyPart
 		{
 			Head,
+			Neck,
 			Cervical,
 			Spine,
-			SpineBase,
+			Pelvis,
 			LeftShoulder,
 			LeftElbow,
 			LeftWrist,

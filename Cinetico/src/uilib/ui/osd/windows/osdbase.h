@@ -97,8 +97,8 @@ namespace uilib {
 	protected:
 		virtual void onPaintEvent(PaintEvent &event);
 		virtual void onCloseEvent() { }//event.ignore(); }
-		virtual void onKeyPressEvent(KeyEvent &event) { }
-		virtual void onKeyReleaseEvent(KeyEvent &event) { }
+		virtual void onKeyPressEvent(KeyEvent &event) { event.ignore(); }
+		virtual void onKeyReleaseEvent(KeyEvent &event) { event.ignore(); }
 		virtual void onMouseMoveEvent(MouseEvent &event) { event.ignore(); }
 		virtual void onMousePressEvent(MouseEvent &event) { event.ignore(); }
 		virtual void onMouseReleaseEvent(MouseEvent &event) { event.ignore(); }

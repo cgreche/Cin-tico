@@ -8,10 +8,48 @@
 
 namespace cinetico_core {
 
-	class Matrix4 {
+	class Matrix4x4 {
 	public:
 		float m[4][4];
+
+		Matrix4x4 transposed() const {
+			Matrix4x4 result;
+			for (int row = 0; row < 4; ++row) {
+				for (int col = 0; col < 4; ++col) {
+					result.m[col][row] = m[row][col];
+				}
+			}
+			return result;
+		}
+
+		friend inline Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2);
 	};
+
+	inline Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2) {
+		Matrix4x4 ret;
+		
+		ret.m[0][0] = m1.m[0][0] * m2.m[0][0] + m1.m[1][0] * m2.m[0][1] + m1.m[2][0] * m2.m[0][2] + m1.m[3][0] * m2.m[0][3];
+		ret.m[0][1] = m1.m[0][1] * m2.m[0][0] + m1.m[1][1] * m2.m[0][1] + m1.m[2][1] * m2.m[0][2] + m1.m[3][1] * m2.m[0][3];
+		ret.m[0][2] = m1.m[0][2] * m2.m[0][0] + m1.m[1][2] * m2.m[0][1] + m1.m[2][2] * m2.m[0][2] + m1.m[3][2] * m2.m[0][3];
+		ret.m[0][3] = m1.m[0][3] * m2.m[0][0] + m1.m[1][3] * m2.m[0][1] + m1.m[2][3] * m2.m[0][2] + m1.m[3][3] * m2.m[0][3];
+		
+		ret.m[1][0] = m1.m[0][0] * m2.m[1][0] + m1.m[1][0] * m2.m[1][1] + m1.m[2][0] * m2.m[1][2] + m1.m[3][0] * m2.m[1][3];
+		ret.m[1][1] = m1.m[0][1] * m2.m[1][0] + m1.m[1][1] * m2.m[1][1] + m1.m[2][1] * m2.m[1][2] + m1.m[3][1] * m2.m[1][3];
+		ret.m[1][2] = m1.m[0][2] * m2.m[1][0] + m1.m[1][2] * m2.m[1][1] + m1.m[2][2] * m2.m[1][2] + m1.m[3][2] * m2.m[1][3];
+		ret.m[1][3] = m1.m[0][3] * m2.m[1][0] + m1.m[1][3] * m2.m[1][1] + m1.m[2][3] * m2.m[1][2] + m1.m[3][3] * m2.m[1][3];
+
+		ret.m[2][0] = m1.m[0][0] * m2.m[2][0] + m1.m[1][0] * m2.m[2][1] + m1.m[2][0] * m2.m[2][2] + m1.m[3][0] * m2.m[2][3];
+		ret.m[2][1] = m1.m[0][1] * m2.m[2][0] + m1.m[1][1] * m2.m[2][1] + m1.m[2][1] * m2.m[2][2] + m1.m[3][1] * m2.m[2][3];
+		ret.m[2][2] = m1.m[0][2] * m2.m[2][0] + m1.m[1][2] * m2.m[2][1] + m1.m[2][2] * m2.m[2][2] + m1.m[3][2] * m2.m[2][3];
+		ret.m[2][3] = m1.m[0][3] * m2.m[2][0] + m1.m[1][3] * m2.m[2][1] + m1.m[2][3] * m2.m[2][2] + m1.m[3][3] * m2.m[2][3];
+
+		ret.m[3][0] = m1.m[0][0] * m2.m[3][0] + m1.m[1][0] * m2.m[3][1] + m1.m[2][0] * m2.m[3][2] + m1.m[3][0] * m2.m[3][3];
+		ret.m[3][1] = m1.m[0][1] * m2.m[3][0] + m1.m[1][1] * m2.m[3][1] + m1.m[2][1] * m2.m[3][2] + m1.m[3][1] * m2.m[3][3];
+		ret.m[3][2] = m1.m[0][2] * m2.m[3][0] + m1.m[1][2] * m2.m[3][1] + m1.m[2][2] * m2.m[3][2] + m1.m[3][2] * m2.m[3][3];
+		ret.m[3][3] = m1.m[0][3] * m2.m[3][0] + m1.m[1][3] * m2.m[3][1] + m1.m[2][3] * m2.m[3][2] + m1.m[3][3] * m2.m[3][3];
+
+		return ret;
+	}
 
 
 	class Quaternion
@@ -23,17 +61,17 @@ namespace cinetico_core {
 
 	public:
 		Quaternion() {
+			m_w = 1;
 			m_x = 0;
 			m_y = 0;
 			m_z = 0;
-			m_w = 1;
 		}
 
-		Quaternion(float x, float y, float z, float w) {
+		Quaternion(float w, float x, float y, float z) {
+			m_w = w; 
 			m_x = x;
 			m_y = y;
 			m_z = z;
-			m_w = w;
 		}
 
 		void normalize() {
@@ -46,7 +84,7 @@ namespace cinetico_core {
 
 		Quaternion normalized() {
 			float mag = sqrtf(m_w * m_w + m_x * m_x + m_y * m_y + m_z * m_z);
-			return Quaternion(m_x / mag, m_y / mag, m_z / mag, m_w / mag);
+			return Quaternion(m_w / mag, m_x / mag, m_y / mag, m_z / mag);
 		}
 
 		static float dotProduct(const Quaternion &q1, const Quaternion &q2) {
@@ -71,25 +109,28 @@ namespace cinetico_core {
 		}
 
 		static Quaternion fromEuler(float pitch, float yaw, float roll) {
-			Quaternion q;
-			// Abbreviations for the various angular functions
-			float cy = cosf(yaw * 0.5f);
-			float sy = sinf(yaw * 0.5f);
-			float cr = cosf(roll * 0.5f);
-			float sr = sinf(roll * 0.5f);
-			float cp = cosf(pitch * 0.5f);
-			float sp = sinf(pitch * 0.5f);
+			float c1 = std::cosf(yaw*0.5f);
+			float s1 = std::sinf(yaw*0.5f);
+			float c2 = std::cosf(roll*0.5f);
+			float s2 = std::sinf(roll*0.5f);
+			float c3 = std::cosf(pitch*0.5f);
+			float s3 = std::sinf(pitch*0.5f);
+			float c1c2 = c1 * c2;
+			float s1s2 = s1 * s2;
 
-			q.m_w = cy * cr * cp + sy * sr * sp;
-			q.m_x = cy * cr * sp + sy * sr * cp;
-			q.m_y = sy * cr * cp - cy * sr * sp;
-			q.m_z = cy * sr * cp - sy * cr * sp;
-			return q;
+			const float w = c1c2 * c3 + s1s2 * s3;
+			const float x = c1c2 * s3 + s1s2 * c3;
+			const float y = s1 * c2 * c3 - c1 * s2 * s3;
+			const float z = c1 * s2 * c3 - s1 * c2 * s3;
+
+			return Quaternion(w, x, y, z);
 		}
 
 		Vector3 toEuler() const {
 			float pitch, yaw, roll;
 
+			// Algorithm from:
+			// http://www.j3d.org/matrix_faq/matrfaq_latest.html#Q37
 			float xx = m_x * m_x;
 			float xy = m_x * m_y;
 			float xz = m_x * m_z;
@@ -100,8 +141,10 @@ namespace cinetico_core {
 			float zz = m_z * m_z;
 			float zw = m_z * m_w;
 
+#define E 0.000001f
 			const float lengthSquared = xx + yy + zz + m_w * m_w;
-			if (lengthSquared != 0.f) {
+			float test = lengthSquared - 1.0f;
+			if (!(fabsf(lengthSquared - 1.0f) < E) && !(fabsf(lengthSquared) < E)) {
 				xx /= lengthSquared;
 				xy /= lengthSquared; // same as (xp / length) * (yp / length)
 				xz /= lengthSquared;
@@ -113,30 +156,30 @@ namespace cinetico_core {
 				zw /= lengthSquared;
 			}
 
+			pitch = std::asinf(-2.0f * (yz - xw));
 
-			pitch = std::asin(-2.0f * (yz - xw));
 			if (pitch < M_PI/2) {
-				if (pitch > -M_PI/2) {
-					yaw = std::atan2(2.0f * (xz + yw), 1.0f - 2.0f * (xx + yy));
-					roll = std::atan2(2.0f * (xy + zw), 1.0f - 2.0f * (xx + zz));
+				if (pitch > -(M_PI/2)) {
+					yaw = std::atan2f(2.0f * (xz + yw), 1.0f - 2.0f * (xx + yy));
+					roll = std::atan2f(2.0f * (xy + zw), 1.0f - 2.0f * (xx + zz));
 				}
 				else {
 					// not a unique solution
 					roll = 0.0f;
-					yaw = -std::atan2(-2.0f * (xy - zw), 1.0f - 2.0f * (yy + zz));
+					yaw = -std::atan2f(-2.0f * (xy - zw), 1.0f - 2.0f * (yy + zz));
 				}
 			}
 			else {
 				// not a unique solution
 				roll = 0.0f;
-				yaw = std::atan2(-2.0f * (xy - zw), 1.0f - 2.0f * (yy + zz));
+				yaw = std::atan2f(-2.0f * (xy - zw), 1.0f - 2.0f * (yy + zz));
 			}
 
 			return Vector3(pitch, yaw, roll);
 		}
 
-		Matrix4 toRotationMatrix() {
-			Matrix4 matrix;
+		Matrix4x4 toRotationMatrix() {
+			Matrix4x4 matrix;
 			float xy = m_x * m_y;
 			float xz = m_x * m_z;
 			float xw = m_x * m_w;
@@ -165,7 +208,7 @@ namespace cinetico_core {
 			return matrix;
 		}
 
-		static Quaternion fromRotationMatrix(Matrix4 matrix) {
+		static Quaternion fromRotationMatrix(Matrix4x4 matrix) {
 			float w, x, y, z;
 			float diagonal = matrix.m[0][0] + matrix.m[1][1] + matrix.m[2][2];
 			if (diagonal > 0) {
@@ -196,7 +239,7 @@ namespace cinetico_core {
 				y = (matrix.m[1][2] + matrix.m[2][1]) / z4;
 				z = z4 / 4.f;
 			}
-			return Quaternion(x, y, z, w);
+			return Quaternion(w, x, y, z);
 		}
 
 		Quaternion &operator*=(const Quaternion &q) {
@@ -204,6 +247,13 @@ namespace cinetico_core {
 			return *this;
 		}
 
+		float w() const { return m_w; }
+		float x() const { return m_x; }
+		float y() const { return m_y; }
+		float z() const { return m_z; }
+
+		friend inline bool operator==(const Quaternion &q1, const Quaternion &q2);
+		friend inline bool operator!=(const Quaternion &q1, const Quaternion &q2);
 		friend inline const Quaternion operator+(const Quaternion &q1, const Quaternion &q2);
 		friend inline const Quaternion operator-(const Quaternion &q1, const Quaternion &q2);
 		friend inline const Quaternion operator*(const Quaternion &q1, const Quaternion &q2);
@@ -211,17 +261,24 @@ namespace cinetico_core {
 		friend inline const Quaternion operator-(const Quaternion &q);
 	};
 
+	inline bool operator==(const Quaternion &q1, const Quaternion &q2) {
+		return q1.m_w == q2.m_w && q1.m_x == q2.m_x && q1.m_y == q2.m_y && q1.m_z == q2.m_z;
+	}
+
+	inline bool operator!=(const Quaternion &q1, const Quaternion &q2) {
+		return q1.m_w != q2.m_w || q1.m_x != q2.m_x || q1.m_y != q2.m_y || q1.m_z != q2.m_z;
+	}
 
 	inline const Quaternion operator+(const Quaternion &q1, const Quaternion &q2) {
-		return Quaternion(q1.m_x + q2.m_x, q1.m_y + q2.m_y, q1.m_z + q2.m_z, q1.m_w + q2.m_w);
+		return Quaternion(q1.m_w + q2.m_w, q1.m_x + q2.m_x, q1.m_y + q2.m_y, q1.m_z + q2.m_z);
 	}
 
 	inline const Quaternion operator-(const Quaternion &q1, const Quaternion &q2) {
-		return Quaternion(q1.m_x - q2.m_x, q1.m_y - q2.m_y, q1.m_z - q2.m_z, q1.m_w - q2.m_w);
+		return Quaternion(q1.m_w - q2.m_w, q1.m_x - q2.m_x, q1.m_y - q2.m_y, q1.m_z - q2.m_z);
 	}
 
 	inline const Quaternion operator*(const Quaternion &q, float factor) {
-		return Quaternion(q.m_x * factor, q.m_y * factor, q.m_z * factor, q.m_w * factor);
+		return Quaternion(q.m_w * factor, q.m_x * factor, q.m_y * factor, q.m_z * factor);
 	}
 
 	inline const Quaternion operator*(const Quaternion &q1, const Quaternion& q2) {
@@ -239,7 +296,7 @@ namespace cinetico_core {
 	}
 
 	inline const Quaternion operator-(const Quaternion &q) {
-		return Quaternion(-q.m_x, -q.m_y, -q.m_z, -q.m_w);
+		return Quaternion(-q.m_w, -q.m_x, -q.m_y, -q.m_z);
 	}
 }
 

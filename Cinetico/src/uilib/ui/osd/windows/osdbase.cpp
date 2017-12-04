@@ -99,12 +99,14 @@ namespace uilib {
 
 			BOOL res = ::IsDialogMessage(hwndToUse, &msg);
 			//little hacky
+			if (msg.message == WM_KEYDOWN || msg.wParam == VK_ESCAPE)
+				int a = 1;
 			if(!res || (msg.message == WM_KEYDOWN && msg.wParam == VK_ESCAPE)) {
 				::TranslateMessage(&msg);
 				::DispatchMessage(&msg);
 			}
-			//else {
-
+			else {
+				int a = 1;
 				/*
 				if(msg.message != WM_MOUSEMOVE
 					&& msg.message != WM_TIMER
@@ -160,7 +162,7 @@ namespace uilib {
 					}
 				}
 				*/
-				//}
+				}
 
 			if (msg.message == WM_QUIT) {
 				if (objects)

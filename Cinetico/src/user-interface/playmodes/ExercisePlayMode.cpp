@@ -103,8 +103,9 @@ namespace cinetico {
 
 		//if (m_dummyChar)
 		//	m_dummyChar->render();
-		if (m_humanChar)
+		if (m_humanChar) {
 			m_humanChar->render();
+		}
 
 		m_renderEngine->drawResource(m_instanceTerrain);
 
@@ -115,6 +116,12 @@ namespace cinetico {
 
 		int drawX;
 		int drawY;
+
+		Quaternion q(1, 0, 0, 0);
+		cinetico_core::Vector3 euler = q.toEuler();
+
+		cinetico_core::Vector3 euler2 = cinetico_core::Vector3(1.571f, 0, 0);
+		Quaternion q2 = Quaternion::fromEuler(euler2.x(), euler2.y(), euler2.z());
 
 		static int fuck = 0;
 		if (debug) {
@@ -174,7 +181,7 @@ namespace cinetico {
 		m_renderEngine->drawText("Lista de ações:", 20, drawIndexY, drawColor);
 		drawIndexY += 25;
 		
-		for (int i = 0; i < actionList.size(); ++i) {
+		for (unsigned int i = 0; i < actionList.size(); ++i) {
 			Action *action = actionList[i];
 			if (action->isCorrect())
 				drawColor = render3d::Color(0, 220, 0, 200);
@@ -192,6 +199,35 @@ namespace cinetico {
 			m_renderEngine->drawText(curAction.data(), drawIndexX, drawIndexY, drawColor);
 			drawIndexY += 30;
 		}
+
+
+		Body *body = m_humanChar->body();
+		if (body) {
+			BodyPoint *bpTest = body->bodyPoint(BodyPoint::Head);
+			Quaternion q = bpTest->orientation();
+			cinetico_core::Vector3 e = q.toEuler();
+
+			uilib::string strQ;
+			strQ += "Q: [";
+			strQ += string::fromFloat(q.w());
+			strQ += ", ";
+			strQ += string::fromFloat(q.x());
+			strQ += ", ";
+			strQ += string::fromFloat(q.y());
+			strQ += ", ";
+			strQ += string::fromFloat(q.z());
+			strQ += "]\n";
+			strQ += "E: [";
+			strQ += string::fromFloat(e.x());
+			strQ += ", ";
+			strQ += string::fromFloat(e.y());
+			strQ += ", ";
+			strQ += string::fromFloat(e.z());
+			strQ += "]";
+			m_renderEngine->drawText(strQ.data(), 200, drawIndexY, drawColor);
+		}
+
+		
 
 		//m_renderEngine->setCurrentCamera(m_cam2);
 		//m_renderEngine->setCurrentViewport(m_viewportActionPreview);

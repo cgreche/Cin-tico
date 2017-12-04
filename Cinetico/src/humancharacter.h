@@ -13,12 +13,14 @@ namespace cinetico {
 		Body *m_body;
 
 		void mapBodyPointNodeToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint);
-		void mapBodyPointToCharacterBodyPointNode(int instId, BodyPoint::BodyPart bodyPoint);
+		inline void mapBodyPointToCharacterBodyPointNode(BodyPoint::BodyPart bodyPoint);
 	public:
 		HumanCharacter(CineticoUI &cinetico);
 
 		virtual void update();
 		virtual void render();
+
+		Body *body() const { return m_body; }
 	};
 
 }

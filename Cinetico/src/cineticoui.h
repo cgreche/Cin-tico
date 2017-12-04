@@ -34,7 +34,8 @@ namespace cinetico {
 			USER_PROFILE,
 			EXERCISES,
 			ACTIONS,
-			PLAYING
+			PLAYING,
+			DEBUG
 		};
 
 	private:
@@ -57,8 +58,6 @@ namespace cinetico {
 		ViewID m_currentView;
 		ViewID m_lastView;
 
-		bool m_headerAndFooterVisible;
-
 		int m_viewport;
 
 	public:
@@ -72,7 +71,7 @@ namespace cinetico {
 		void step();
 
 		void setViewResolution(int width, int height, bool fullscreen);
-		void setHeaderAndFooterVisible(bool visible);
+		void setHeaderContentFooterVisible(bool headerVisible, bool contentVisible, bool footerVisible);
 
 		Cinetico &cinetico() const { return m_cinetico; }
 		MainWindow *mainWindow() const { return m_mainWindow; }

@@ -27,7 +27,7 @@ namespace cinetico {
 
 		m_renderEngine = m_cineticoUI.renderEngine();
 		m_renderEngineHelper = m_cineticoUI.renderEngineHelper();
-		m_cineticoUI.setHeaderAndFooterVisible(false);
+		m_cineticoUI.setHeaderContentFooterVisible(false,false,false);
 
 		PlayMode *playMode = NULL;
 
@@ -74,7 +74,7 @@ namespace cinetico {
 	}
 
 	void ExerciseRealizationController::onViewQuit() {
-		m_cineticoUI.setHeaderAndFooterVisible(true);
+		m_cineticoUI.setHeaderContentFooterVisible(true,true,true);
 		if (m_playingMode)
 			m_playingMode->cleanUp();
 		m_cineticoUI.setViewResolution(m_oldWidth, m_oldHeight, m_oldFullscreen);

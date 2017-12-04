@@ -1,6 +1,6 @@
 
-#ifndef __CINETICO_USERPROFILECONTROLLER_H__
-#define __CINETICO_USERPROFILECONTROLLER_H__
+#ifndef __CINETICO_USERPROFILE_CONTROLLER_H__
+#define __CINETICO_USERPROFILE_CONTROLLER_H__
 
 #include "Controller.h"
 #include "uilib/ui/uibase.h"

@@ -25,7 +25,7 @@ namespace render3d {
 		m_dirtyFlags |= SCALE_DIRTY;
 	}
 
-	void ResourceInstance::setRot(const Vector3 &rot) {
+	void ResourceInstance::setRotation(const cinetico_core::Quaternion &rot) {
 		m_rot = rot;
 		m_dirtyFlags |= ROT_DIRTY;
 	}
