@@ -63,7 +63,7 @@ namespace cinetico {
 		linkUsername.setOnClick(linkUserLoginName_onClick);
 		buttonLogoff.setText("Sair");
 		buttonLogoff.setParam(this);
-		//buttonLogoff.setOnClick(buttonLogoff_onClick);
+		buttonLogoff.setOnClick(buttonLogoff_onClick);
 
 		layoutLoginInfo2.append(labelUsername);
 		layoutLoginInfo2.append(linkUsername);
@@ -79,6 +79,7 @@ namespace cinetico {
 		layoutAppState.setMargin(10);
 
 		layoutHeader.append(layoutAppState);
+		layoutHeader.setAlignment(Layout::center_align);
 
 		bgHeader.setBackgroundColor(ViewTemplate::AppHeaderBgColor);
 		bgHeader.setTransparent(false);
@@ -96,8 +97,8 @@ namespace cinetico {
 		buttonDebugMode.setText("Go to debug mode");
 		buttonDebugMode.setParam(this);
 		buttonDebugMode.setOnClick(buttonGoToDebugMode_onClick);
-		layoutOptions.append(buttonDebugView);
-		layoutOptions.append(buttonDebugMode);
+		//layoutOptions.append(buttonDebugView);
+		//layoutOptions.append(buttonDebugMode);
 		layoutOptions.setAlignment(Layout::center_align);
 		
 		linkPortugues.setText("Português");

@@ -18,14 +18,14 @@ namespace cinetico {
 		Label bgHeader;
 			VerticalLayout layoutHeader;
 			HorizontalLayout layoutAppState;
-				cButton labelAppname;
+				Label labelAppname;
 
 				//Login Info
 				VerticalLayout layoutLoginInfo;
 					HorizontalLayout layoutLoginInfo2;
 						Label labelUsername;
 						TextLink linkUsername;
-						cButton buttonLogoff;
+						Button buttonLogoff;
 
 		Label bgContent;
 		VerticalLayout layoutContent;
