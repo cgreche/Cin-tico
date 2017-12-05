@@ -12,7 +12,7 @@ namespace cinetico {
 	class HumanCharacter : public Character {
 		Body *m_body;
 
-		void mapBodyPointNodeToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint);
+		void mapBodyPointNodeToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint, bool mirrored = false);
 		inline void mapBodyPointToCharacterBodyPointNode(BodyPoint::BodyPart bodyPoint);
 	public:
 		HumanCharacter(CineticoUI &cinetico);

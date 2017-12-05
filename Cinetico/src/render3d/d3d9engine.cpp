@@ -595,4 +595,31 @@ namespace render3d {
 		delete[] data;
 	}
 
+	void D3D9Engine::printScreen(const char *fileName) {
+		IDirect3DSurface9* surface;
+		D3DDISPLAYMODE mode;
+		m_device->GetDisplayMode(0, &mode); // pDev is my *IDirect3DDevice
+										// we can capture only the entire screen,
+										// so width and height must match current display mode
+		m_device->CreateOffscreenPlainSurface(mode.Width, mode.Height, D3DFMT_A8R8G8B8, D3DPOOL_SCRATCH, &surface, NULL);
+		if (m_device->GetFrontBufferData(0, surface) == D3D_OK)
+		{
+			/*
+			if (bWindowed) // a global config variable
+			{
+				// get client area in desktop coordinates
+				// this might need to be changed to support multiple screens
+				RECT r;
+				GetClientRect(hWnd, &r); // hWnd is our window handle
+				POINT p = { 0, 0 };
+				ClientToScreen(hWnd, &p);
+				SetRect(&r, p.x, p.y, p.x + r.right, p.y + r.bottom);
+				D3DXSaveSurfaceToFile(szFilename, D3DXIFF_JPG, surface, NULL, &r);
+			}
+			else
+			*/
+				D3DXSaveSurfaceToFile(fileName, D3DXIFF_JPG, surface, NULL, NULL);
+		}
+		surface->Release();
+	}
 }

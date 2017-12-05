@@ -51,7 +51,7 @@ namespace cinetico_core {
 		m_body = body;
 		//todo: set proper tracked points
 		//m_trackedBps.push_back(BodyPointState(*body->bodyPoint((BodyPoint::BodyPart)BodyPoint::RightPalm), 0));
-		for (unsigned int i = 0; i < 30; ++i) {
+		for (unsigned int i = 0; i < BodyPoint::BodyPartCount; ++i) {
 			m_trackedBps.push_back(BodyPointState(*body->bodyPoint((BodyPoint::BodyPart)i), 0));
 		}
 	}
@@ -87,9 +87,9 @@ namespace cinetico_core {
 		Vector3 refPos = ref->position();
 		Vector3 refOrientation = ref->orientation().toEuler();
 		Vector3 refOrientationVec(0, 0, -1);
-		refOrientationVec.setX(-std::sin(refOrientation.y())*std::cos(refOrientation.x()));
-		refOrientationVec.setY(std::sin(refOrientation.x()));
-		refOrientationVec.setZ(std::cos(refOrientation.y())*std::cos(refOrientation.x()));
+		//refOrientationVec.setX(-std::sin(refOrientation.y())*std::cos(refOrientation.x()));
+		//refOrientationVec.setY(std::sin(refOrientation.x()));
+		//refOrientationVec.setZ(std::cos(refOrientation.y())*std::cos(refOrientation.x()));
 		Vector3 frontPos = refOrientationVec;
 		Vector3 rightPos = crossProduct(frontPos, Vector3(0, 1, 0));
 		Vector3 upPos = crossProduct(rightPos, frontPos);

@@ -44,7 +44,7 @@ namespace cinetico {
 			if (qTest == m_globalOrientation)
 				int a = 1;
 
-			m_globalOrientation = qTest;
+			m_globalOrientation = m_localOrientation;
 			for (BodyPointNode *bpn : m_childList)
 				bpn->updateState(m_globalOrientation,m_globalTransform);
 		}

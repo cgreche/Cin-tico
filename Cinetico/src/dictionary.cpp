@@ -34,6 +34,7 @@ namespace cinetico {
 
 			//Body Points
 			MAP_STR(BodyPointHead);
+			MAP_STR(BodyPointNeck);
 			MAP_STR(BodyPointCervical);
 			MAP_STR(BodyPointSpine);
 			MAP_STR(BodyPointSpineBase);

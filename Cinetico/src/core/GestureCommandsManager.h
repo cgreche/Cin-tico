@@ -7,6 +7,8 @@
 #include "core/lib/vector3.h"
 #include "uilib/lib/time.h"
 
+#define gap 0.4f
+
 namespace cinetico_core {
 
 	class Action;
@@ -62,7 +64,6 @@ namespace cinetico_core {
 		virtual PositionActionCommand *positionActionCommand() { return this; }
 
 		virtual bool update(uilib::u64 curTime) {
-			float gap = 0.04f;
 			m_lastUpdateTime = curTime;
 			cinetico_core::Vector3 curPos = m_bp.position();
 			if (curPos.euclideanDistanceTo(m_initPosition) < gap) {
@@ -94,7 +95,6 @@ namespace cinetico_core {
 		virtual MovementActionCommand *movementActionCommand() { return this; }
 
 		virtual bool update(uilib::u64 curTime) {
-			float gap = 0.04f;
 			static float holdTime = 0.5f;
 			m_lastUpdateTime = curTime;
 			static uilib::u64 minHoldTicks = (uilib::u64)(uilib::OSTime::ticksPerSecond() / 4);
@@ -132,7 +132,6 @@ namespace cinetico_core {
 
 		ActionCommand* update(uilib::u64 curTime) {
 			static float minHoldTime = 0.5f;
-			float gap = 0.04f;
 			uilib::u64 minHoldTicks = (uilib::u64)(uilib::OSTime::ticksPerSecond()/4);
 
 			Vector3 curPos = m_bp.position();

@@ -96,7 +96,19 @@ namespace cinetico {
 		processCamera();
 	}
 
+	inline void printVector3(string &str, const cinetico_core::Vector3 &v) {
+		str += "V: [";
+		str += string::fromFloat(v.x());
+		str += ", ";
+		str += string::fromFloat(v.y());
+		str += ", ";
+		str += string::fromFloat(v.z());
+		str += "]\n";
+	}
+	unsigned long frameCount = 0;
+	int print = 0;
 	void ExercisePlayMode::render() {
+		++frameCount;
 		m_renderEngine->setCurrentCamera(m_currentCameraId);
 		m_renderEngine->setCurrentViewport(m_cinetico.cineticoUI()->viewport());
 		m_renderEngine->clear(render3d::Color(30, 30, 30));
@@ -122,6 +134,16 @@ namespace cinetico {
 
 		cinetico_core::Vector3 euler2 = cinetico_core::Vector3(1.571f, 0, 0);
 		Quaternion q2 = Quaternion::fromEuler(euler2.x(), euler2.y(), euler2.z());
+
+		/*
+		if(frameCount % 100) {
+			string filename = "prints/test";
+			filename += string::fromInteger(print);
+			filename += ".png";
+			++print;
+			m_renderEngine->printScreen(filename.data());
+		}
+		*/
 
 		static int fuck = 0;
 		if (debug) {
@@ -176,6 +198,7 @@ namespace cinetico {
 		else {
 			exerciseInfo += "Executando";
 		}
+
 		m_renderEngine->drawText(exerciseInfo.data(), 20, drawIndexY, drawColor);
 		drawIndexY += 25;
 		m_renderEngine->drawText("Lista de ações:", 20, drawIndexY, drawColor);
@@ -223,8 +246,11 @@ namespace cinetico {
 			strQ += string::fromFloat(e.y());
 			strQ += ", ";
 			strQ += string::fromFloat(e.z());
-			strQ += "]";
-			m_renderEngine->drawText(strQ.data(), 200, drawIndexY, drawColor);
+			strQ += "]\n";
+			printVector3(strQ, body->bodyPoint(BodyPoint::RightPalm)->position());
+			printVector3(strQ, body->bodyPoint(BodyPoint::Head)->position());
+			strQ += string::fromInteger(frameCount);
+			//m_renderEngine->drawText(strQ.data(), 200, drawIndexY, drawColor);
 		}
 
 		

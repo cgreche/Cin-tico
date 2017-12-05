@@ -29,6 +29,7 @@ namespace cinetico {
 
 			//Body Points
 			, BodyPointHead
+			, BodyPointNeck
 			, BodyPointCervical
 			, BodyPointSpine
 			, BodyPointSpineBase

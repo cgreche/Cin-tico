@@ -73,6 +73,7 @@ namespace cinetico {
 			bodyPointNames.resize(BodyPoint::BodyPartCount);
 
 			bodyPointNames[BodyPoint::Head] = m_dictionary->getString(Dictionary::BodyPointHead);
+			bodyPointNames[BodyPoint::Neck] = m_dictionary->getString(Dictionary::BodyPointNeck);
 			bodyPointNames[BodyPoint::Cervical] = m_dictionary->getString(Dictionary::BodyPointCervical);
 			bodyPointNames[BodyPoint::Spine] = m_dictionary->getString(Dictionary::BodyPointSpine);
 			bodyPointNames[BodyPoint::Pelvis] = m_dictionary->getString(Dictionary::BodyPointSpineBase);
