@@ -7,7 +7,7 @@
 #include "core/lib/vector3.h"
 #include "uilib/lib/time.h"
 
-#define gap 0.4f
+#define GAP 0.05f
 
 namespace cinetico_core {
 
@@ -66,7 +66,7 @@ namespace cinetico_core {
 		virtual bool update(uilib::u64 curTime) {
 			m_lastUpdateTime = curTime;
 			cinetico_core::Vector3 curPos = m_bp.position();
-			if (curPos.euclideanDistanceTo(m_initPosition) < gap) {
+			if (curPos.euclideanDistanceTo(m_initPosition) < GAP) {
 				m_holdTime = curTime - m_initTime;
 				return false;
 			}
@@ -101,7 +101,7 @@ namespace cinetico_core {
 			float distOnLine = m_bp.position().euclideanDistanceToLine(m_initPosition, m_currentOrientation);
 			float dist = m_bp.position().euclideanDistanceTo(m_initPosition);
 			//id dist < lastDist, then user wen't in the opposition direction
-			if (distOnLine > gap) {
+			if (distOnLine > GAP) {
 				finish(curTime);
 				return true;
 			}
@@ -131,12 +131,11 @@ namespace cinetico_core {
 		}
 
 		ActionCommand* update(uilib::u64 curTime) {
-			static float minHoldTime = 0.5f;
 			uilib::u64 minHoldTicks = (uilib::u64)(uilib::OSTime::ticksPerSecond()/4);
 
 			Vector3 curPos = m_bp.position();
 
-			if (curPos.euclideanDistanceTo(m_lastPosition) < gap)
+			if (curPos.euclideanDistanceTo(m_lastPosition) < GAP)
  				m_holdTime = curTime - m_initTime;
 			else {
 				m_initTime = curTime;
@@ -144,6 +143,19 @@ namespace cinetico_core {
 				m_lastPosition = curPos;
 			}
 
+			bool result;
+			if (m_currentAction) {
+				result = m_currentAction->update(curTime);
+				if (result)
+					return m_currentAction = NULL;
+			}
+
+			if (m_holdTime >= minHoldTicks)
+				return m_currentAction = new PositionActionCommand(m_bp, curTime, m_lastPosition, m_holdTime);
+
+
+
+			/*
 			bool result = false;
 			if (m_currentAction) {
 				result = m_currentAction->update(curTime);
@@ -166,6 +178,7 @@ namespace cinetico_core {
 
 			if (m_holdTime >= minHoldTicks)
 				return m_currentAction = new PositionActionCommand(m_bp, curTime, m_lastPosition, m_holdTime);
+				*/
 			return NULL;
 		}
 
@@ -179,7 +192,7 @@ namespace cinetico_core {
 		std::vector<ActionCommand*> m_commands;
 		std::vector<BodyPointState> m_trackedBps;
 
-		uilib::s64 m_curTime;
+		uilib::u64 m_curTime;
 
 		bool meetConditions(SimpleGesture *gesture, ActionCommand *command, float distThreshold);
 	public:
@@ -187,7 +200,7 @@ namespace cinetico_core {
 		~GestureCommandsManager();
 
 		void reset();
-		void step(uilib::s64 curTime);
+		void step(uilib::u64 curTime);
 
 		unsigned int commandCount() const { return m_commands.size(); }
 		ActionCommand *actionCommand(int i) const { return m_commands[i]; }

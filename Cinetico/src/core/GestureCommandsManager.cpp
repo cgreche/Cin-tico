@@ -19,42 +19,39 @@ namespace cinetico_core {
 			m_commands.clear();
 	}
 
-	void GestureCommandsManager::step(uilib::s64 curTime) {
+	void GestureCommandsManager::setBody(Body *body) {
+		m_body = body;
+		//todo: set proper tracked points
+		//m_trackedBps.push_back(BodyPointState(*body->bodyPoint((BodyPoint::BodyPart)BodyPoint::RightPalm), 0));
+		
+		for (unsigned int i = 0; i < BodyPoint::BodyPartCount; ++i) {
+			m_trackedBps.push_back(BodyPointState(*body->bodyPoint((BodyPoint::BodyPart)i), 0));
+		}
+		
+	}
+
+	void GestureCommandsManager::step(uilib::u64 curTime) {
 		unsigned int i;
 		m_curTime = curTime;
 		if (!m_body)
 			return;
 
-		int finishedCommandCount = 0;
-		for (unsigned int i = 0; i < m_commands.size(); ++i) {
-			if (m_commands[i]->finished()) {
-				++finishedCommandCount;
-			}
-		}
+		if (!m_commands.empty())
+			m_commands.clear();
 
-		if (finishedCommandCount > 0) {
-			for (int i = 0; i < finishedCommandCount; ++i) {
-				//delete m_commands[i];
-			}
-			m_commands.erase(m_commands.begin(), m_commands.begin() + finishedCommandCount);
-		}
-
-		for (i = 0; i < m_trackedBps.size(); ++i) {
-			ActionCommand *action = m_trackedBps[i].update(curTime);
-			if (action) {
-				m_commands.push_back(action);
-			}
-		}
-	}
-
-	void GestureCommandsManager::setBody(Body *body) {
-		m_body = body;
-		//todo: set proper tracked points
-		//m_trackedBps.push_back(BodyPointState(*body->bodyPoint((BodyPoint::BodyPart)BodyPoint::RightPalm), 0));
 		for (unsigned int i = 0; i < BodyPoint::BodyPartCount; ++i) {
-			m_trackedBps.push_back(BodyPointState(*body->bodyPoint((BodyPoint::BodyPart)i), 0));
+			ActionCommand *actionCommand = m_trackedBps[i].update(curTime);
+			if (actionCommand)
+				m_commands.push_back(actionCommand);
 		}
+		/*
+		ActionCommand *actionCommand = m_trackedBps[0].update(curTime);
+		if (actionCommand)
+			m_commands.push_back(actionCommand);
+		*/
 	}
+
+
 
 	std::vector<ActionCommand*> GestureCommandsManager::filterCommands(int transitionType, BodyPoint::BodyPart bp) {
 		unsigned int i;
@@ -115,11 +112,14 @@ namespace cinetico_core {
 		}
 
 		float accuracy = 0.f;
+
+		//further to sensor: +z
+		//closer to sensor: -z
 		if (op == SimpleGesture::InFront) {
-			return actionPoint.z() > targetPoint.z();
+			return actionPoint.z() < targetPoint.z();
 		}
 		else if (op == SimpleGesture::Behind) {
-			return actionPoint.z() < targetPoint.z();
+			return actionPoint.z() > targetPoint.z();
 		}
 		else if (op == SimpleGesture::ToRight) {
 			return actionPoint.x() > targetPoint.x();

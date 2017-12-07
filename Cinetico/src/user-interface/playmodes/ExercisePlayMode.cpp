@@ -247,10 +247,12 @@ namespace cinetico {
 			strQ += ", ";
 			strQ += string::fromFloat(e.z());
 			strQ += "]\n";
-			printVector3(strQ, body->bodyPoint(BodyPoint::RightPalm)->position());
-			printVector3(strQ, body->bodyPoint(BodyPoint::Head)->position());
-			strQ += string::fromInteger(frameCount);
-			//m_renderEngine->drawText(strQ.data(), 200, drawIndexY, drawColor);
+			printVector3(strQ, body->bodyPoint(actionList[0]->gesture(0)->bodyPoint())->position());
+			printVector3(strQ, body->bodyPoint(BodyPoint::Spine)->position());
+			strQ += string::fromInteger(m_cinetico.currentTime());
+			if (m_humanChar->body()->bodyPoint(BodyPoint::RightPalm)->position().y() > m_humanChar->body()->bodyPoint(BodyPoint::Head)->position().y())
+				strQ = "Fuck";
+			m_renderEngine->drawText(strQ.data(), 200, drawIndexY, drawColor);
 		}
 
 		

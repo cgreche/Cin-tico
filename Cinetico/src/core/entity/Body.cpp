@@ -37,7 +37,7 @@ namespace cinetico_core {
 		}
 
 		for(i = 0; i < sizeof(bodyPartTag) / sizeof(bodyPartTag[0]); ++i) {
-			m_bodyPoint[i] = new BodyPoint(*this, bodyPartTag[i].bodyPart, bodyPartTag[i].tag);
+			m_bodyPoint[bodyPartTag[i].bodyPart] = new BodyPoint(*this, bodyPartTag[i].bodyPart, bodyPartTag[i].tag);
 		}
 
 		for (i = 0; i < BodyPoint::BodyPartCount; ++i) {
