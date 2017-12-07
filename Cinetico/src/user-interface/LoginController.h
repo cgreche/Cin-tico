@@ -29,8 +29,6 @@ namespace cinetico {
 					cTextBox tbCreateAccountPassword;
 					Button buttonCreateAccount;
 			ScrollView testView;
-				HorizontalLayout layoutGestures;
-					Label labelGestures[20];
 				VerticalLayout testLayout;
 				Button testButton;
 				Button testButton2;

@@ -33,19 +33,6 @@ namespace cinetico {
 		buttonCreateAccount.setText(m_dictionary.getString(Dictionary::LoginViewActionCreateUserProfile));
 	}
 
-	class GestureItem : public Label {
-	public:
-		void onMouseEnterEvent(MouseEvent &event) {
-			setBackgroundColor(uilib::Color(0, 200, 200));
-		}
-
-		void onMouseLeaveEvent(MouseEvent &event) {
-			setBackgroundColor(uilib::Color(200, 20, 20));
-		}
-	};
-
-	GestureItem gestureItem[20];
-
 	LoginController::LoginController(CineticoUI &cineticoUI)
 		: Controller(cineticoUI)
 	{
@@ -74,26 +61,16 @@ namespace cinetico {
 		layout.append(layoutLoginArea);
 		layout.setMargin(10);
 
-		
+		/*
 		testView.setBackgroundColor(uilib::Color(200, 200, 200));
-
-		
-		for (int i = 0; i < 20; ++i) {
-			gestureItem[i].setTransparent(false);
-			gestureItem[i].setBackgroundColor(uilib::Color(200, 20, 20));
-			gestureItem[i].setText(string::fromInteger(i));
-			gestureItem[i].setAlignment(Label::VCenter | Label::HCenter);
-			gestureItem[i].setTextColor(uilib::Color(255, 255, 255));
-			layoutGestures.append(gestureItem[i],Size(16, 34));
-		}
-		testLayout.append(layoutGestures);
 		testButton.setText("TESTTTTT");
 		testLayout.append(testButton);
 		testLayout.append(testButton2);
 		testLayout.append(testButton3);
 		testLayout.append(testButton4);
 		testView.setLayout(&testLayout);
-		layout.append(testView,Size(300,100));
+		layout.append(testView,Size(100,100));
+		*/
 	}
 
 	Layout *LoginController::viewDefinition() {
