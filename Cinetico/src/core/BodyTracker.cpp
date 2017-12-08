@@ -26,8 +26,7 @@ namespace cinetico_core {
 			JointOrientation jointOrientation = sensor.jointOrientation(bodyIndex, kj);
 			Vector3 position = Vector3(joint.Position.X, joint.Position.Y, joint.Position.Z);
 			Quaternion orientation(jointOrientation.Orientation.w, jointOrientation.Orientation.x, jointOrientation.Orientation.y, jointOrientation.Orientation.z);
-			if (orientation == Quaternion(0, 0, 0, 0))
-				orientation = Quaternion();
+			orientation *= Quaternion(0, 0, 1, 0);
 			bp->m_position = position;
 			bp->m_orientation = orientation;
 			bp->m_identified = joint.TrackingState != TrackingState_NotTracked;

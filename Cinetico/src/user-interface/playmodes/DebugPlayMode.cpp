@@ -208,14 +208,14 @@ namespace cinetico {
 
 		//a = 0.05;
 		q = Quaternion::fromEuler(0,0,0);
-		q2 = Quaternion::fromEuler(0,0,1);
+		q2 = Quaternion(0,0,1,0);
 		q3 = Quaternion::nlerp(q, q2, a);
-		cinetico_core::Vector3 testRotation = q3.toEuler();
+		//cinetico_core::Vector3 testRotation = q3.toEuler();
 		//testRotation = cinetico_core::Vector3(a, 0, 0);
 
 		ResourceInstance *instance;
 		instance = m_renderEngine->resourceInstance(instCubeTest);
-		//instance->setRotation(render3d::Vector3(testRotation.x(), testRotation.y(), testRotation.z()));
+		instance->setRotation(q3);
 
 
 

@@ -2,9 +2,9 @@
 #define __CINETICO_CORE_ACTION_COMMANDS_MANAGER_H__
 
 #include <vector>
-#include "core/entity/BodyPoint.h"
-#include "core/entity/Action.h"
-#include "core/lib/vector3.h"
+#include "entity/BodyPoint.h"
+#include "entity/Action.h"
+#include "lib/vector3.h"
 #include "uilib/lib/time.h"
 
 #define GAP 0.05f
@@ -12,10 +12,67 @@
 namespace cinetico_core {
 
 	class Action;
-	class PositionActionCommand;
-	class MovementActionCommand;
+	class PositionGestureCommand;
+	class MovementGestureCommand;
 
-	class ActionCommand {
+	class BodyPointState {
+	public:
+		enum GestureState {
+			NOT_IDENTIFIED,
+			STAYED,
+			MOVING
+		};
+
+	private:
+		BodyPoint &m_bp;
+		uilib::u64 m_initTime;
+		uilib::u64 m_holdTime;
+		Vector3 m_initalPosition;
+		Vector3 m_lastPosition;
+
+		GestureState m_gestureState;
+
+	public:
+		BodyPointState(BodyPoint &bp, uilib::u64 initTime)
+			: m_bp(bp) {
+			m_initalPosition = m_lastPosition = bp.position();
+			m_holdTime = 0;
+			m_initTime = initTime;
+			m_gestureState = NOT_IDENTIFIED;
+		}
+
+		GestureState update(uilib::u64 curTime) {
+			uilib::u64 minHoldTime = (uilib::u64)(uilib::OSTime::ticksPerSecond() / 4);
+
+			Vector3 curPos = m_bp.position();
+			GestureState gestureState = m_gestureState;
+
+			if (curPos.euclideanDistanceTo(m_lastPosition) < GAP) {
+				m_holdTime = curTime - m_initTime;
+				if (gestureState != STAYED && m_holdTime >= minHoldTime) {
+					m_initTime = curTime;
+					gestureState = STAYED;
+				}
+			}
+			else {
+				m_holdTime = 0;
+				m_initalPosition = curPos;
+				if (m_gestureState == STAYED)
+					m_gestureState = MOVING;
+			}
+
+			m_lastPosition = curPos;
+			return m_gestureState = gestureState;
+		}
+
+		BodyPoint& bodyPoint() const { return m_bp; }
+		uilib::u64 initTime() const { return m_holdTime; }
+		uilib::u64 holdTime() const { return m_holdTime; }
+		const Vector3 &initialPosition() const { return m_initalPosition; }
+		const Vector3 &lastPosition() const { return m_lastPosition; }
+	};
+
+	class GestureCommand {
 	protected:
 		BodyPoint &m_bp;
 		uilib::u64 m_initTime;
@@ -25,176 +82,81 @@ namespace cinetico_core {
 		bool m_finished;
 
 	public:
-		ActionCommand(BodyPoint &bp, uilib::u64 initTime, const Vector3 initPosition)
-			: m_bp(bp) {
-			m_initTime = initTime;
-			m_initPosition = initPosition;
-			m_endTime = 0;
-			m_finished = false;
-		}
+		GestureCommand(const BodyPointState &bodyPointState)
+			: m_bp(bodyPointState.bodyPoint()) {
+				m_initTime = bodyPointState.initTime();
+				m_initPosition = bodyPointState.initialPosition();
+				m_endTime = 0;
+				m_finished = false;
+			}
 
-		virtual PositionActionCommand *positionActionCommand() { return NULL; }
-		virtual MovementActionCommand *movementActionCommand() { return NULL; }
+			virtual PositionGestureCommand *positionGestureCommand() { return NULL; }
+			virtual MovementGestureCommand *movementGestureCommand() { return NULL; }
 
-		virtual bool update(uilib::u64 curTime) = 0;
+			virtual void update(const BodyPointState &bodyPointState) = 0;
 
-		void finish(uilib::u64 time) {
-			m_finished = true;
-			m_endTime = time;
-		}
+			void finish(uilib::u64 time) {
+				m_finished = true;
+				m_endTime = time;
+			}
 
-		BodyPoint &bodyPoint() { return m_bp; }
-		uilib::u64 initTime() const { return m_initTime; }
-		uilib::u64 endTime() const { return m_endTime; }
-		uilib::u64 lastUpdateTime() const { return m_lastUpdateTime; }
-		Vector3 initPosition() const { return m_initPosition; }
-		bool finished() const { return m_finished; }
+			BodyPoint &bodyPoint() { return m_bp; }
+			uilib::u64 initTime() const { return m_initTime; }
+			uilib::u64 endTime() const { return m_endTime; }
+			uilib::u64 lastUpdateTime() const { return m_lastUpdateTime; }
+			Vector3 initPosition() const { return m_initPosition; }
+			bool finished() const { return m_finished; }
 	};
 
-	class PositionActionCommand : public ActionCommand {
+	class PositionGestureCommand : public GestureCommand {
 
 		uilib::u64 m_holdTime;
 
 	public:
-		PositionActionCommand(BodyPoint &bp, uilib::u64 initTime, const cinetico_core::Vector3 &initPosition, uilib::u64 holdTime)
-			: ActionCommand(bp, initTime, initPosition) {
-			m_holdTime = holdTime;
+		PositionGestureCommand(const BodyPointState &bodyPointState)
+			: GestureCommand(bodyPointState) {
+			m_holdTime = bodyPointState.holdTime();
 		}
 
-		virtual PositionActionCommand *positionActionCommand() { return this; }
+		virtual PositionGestureCommand *positionGestureCommand() { return this; }
 
-		virtual bool update(uilib::u64 curTime) {
-			m_lastUpdateTime = curTime;
-			cinetico_core::Vector3 curPos = m_bp.position();
-			if (curPos.euclideanDistanceTo(m_initPosition) < GAP) {
-				m_holdTime = curTime - m_initTime;
-				return false;
-			}
-			else {
-				finish(curTime);
-				return true;
-			}
+		virtual void update(const BodyPointState &bodyPointState) {
+			m_holdTime = bodyPointState.holdTime();
 		}
 
-		cinetico_core::Vector3 initPosition() const { return m_initPosition; }
 		uilib::u64 holdTime() const { return m_holdTime; }
 	};
 
-	class MovementActionCommand : public ActionCommand {
-		cinetico_core::Vector3 m_currentOrientation;
+	class MovementGestureCommand : public GestureCommand {
+		cinetico_core::Vector3 m_currentDirection;
 		cinetico_core::Vector3 m_endPosition;
 		std::vector<Vector3> m_points;
 
 	public:
-		MovementActionCommand(BodyPoint &bp, uilib::u64 initTime, const Vector3 &initPosition)
-			: ActionCommand(bp, initTime, initPosition) {
-			m_currentOrientation = bp.position() - initPosition;
-			m_currentOrientation.normalize();
+		MovementGestureCommand(const BodyPointState &bodyPointState)
+			: GestureCommand(bodyPointState) {
+			m_currentDirection = m_bp.position() - m_initPosition;
+			m_currentDirection.normalize();
 		}
 
-		virtual MovementActionCommand *movementActionCommand() { return this; }
+		virtual MovementGestureCommand *movementGestureCommand() { return this; }
 
-		virtual bool update(uilib::u64 curTime) {
-			static float holdTime = 0.5f;
-			m_lastUpdateTime = curTime;
-			static uilib::u64 minHoldTicks = (uilib::u64)(uilib::OSTime::ticksPerSecond() / 4);
-			float distOnLine = m_bp.position().euclideanDistanceToLine(m_initPosition, m_currentOrientation);
-			float dist = m_bp.position().euclideanDistanceTo(m_initPosition);
-			//id dist < lastDist, then user wen't in the opposition direction
-			if (distOnLine > GAP) {
-				finish(curTime);
-				return true;
-			}
-			return false;
+		virtual void update(const BodyPointState &bodyPointState) {
+			//to-do: calculate direction change (dotProduct)
 		}
 
 		Vector3 endPosition() const { return m_endPosition; }
 
 	};
 
-	class BodyPointState {
-		BodyPoint &m_bp;
-		uilib::u64 m_initTime;
-		uilib::u64 m_holdTime;
-		Vector3 m_lastPosition;
-
-		ActionCommand *m_currentAction;
-
-
-	public:
-		BodyPointState(BodyPoint &bp, uilib::u64 initTime)
-			: m_bp(bp) {
-			m_lastPosition = bp.position();
-			m_holdTime = 0;
-			m_initTime = initTime;
-			m_currentAction = NULL;
-		}
-
-		ActionCommand* update(uilib::u64 curTime) {
-			uilib::u64 minHoldTicks = (uilib::u64)(uilib::OSTime::ticksPerSecond()/4);
-
-			Vector3 curPos = m_bp.position();
-
-			if (curPos.euclideanDistanceTo(m_lastPosition) < GAP)
- 				m_holdTime = curTime - m_initTime;
-			else {
-				m_initTime = curTime;
-				m_holdTime = 0;
-				m_lastPosition = curPos;
-			}
-
-			bool result;
-			if (m_currentAction) {
-				result = m_currentAction->update(curTime);
-				if (result)
-					return m_currentAction = NULL;
-			}
-
-			if (m_holdTime >= minHoldTicks)
-				return m_currentAction = new PositionActionCommand(m_bp, curTime, m_lastPosition, m_holdTime);
-
-
-
-			/*
-			bool result = false;
-			if (m_currentAction) {
-				result = m_currentAction->update(curTime);
-				if (m_currentAction->movementActionCommand() && !result) {
-					MovementActionCommand *curAction = m_currentAction->movementActionCommand();
-					if (m_holdTime >= minHoldTicks) {
-						curAction->finish(curTime);
-						result = true;
-					}
-				}
-			}
-
-			if (result) {
-				if (m_currentAction && m_currentAction->positionActionCommand()) {
-					return m_currentAction = new MovementActionCommand(m_bp, curTime, m_lastPosition);
-				}
-
-				m_currentAction = NULL;
-			}
-
-			if (m_holdTime >= minHoldTicks)
-				return m_currentAction = new PositionActionCommand(m_bp, curTime, m_lastPosition, m_holdTime);
-				*/
-			return NULL;
-		}
-
-		const BodyPoint& bodyPoint() const { return m_bp; }
-		uilib::u64 holdTime() { return m_holdTime; }
-	};
-
-
 	class GestureCommandsManager {
 		Body *m_body;
-		std::vector<ActionCommand*> m_commands;
+		std::vector<GestureCommand*> m_gestureCommands;
 		std::vector<BodyPointState> m_trackedBps;
 
 		uilib::u64 m_curTime;
 
-		bool meetConditions(SimpleGesture *gesture, ActionCommand *command, float distThreshold);
+		bool meetConditions(SimpleGesture *gesture, GestureCommand *command, float distThreshold);
 	public:
 		GestureCommandsManager();
 		~GestureCommandsManager();
@@ -202,11 +164,11 @@ namespace cinetico_core {
 		void reset();
 		void step(uilib::u64 curTime);
 
-		unsigned int commandCount() const { return m_commands.size(); }
-		ActionCommand *actionCommand(int i) const { return m_commands[i]; }
+		unsigned int commandCount() const { return m_gestureCommands.size(); }
+		GestureCommand *actionCommand(int i) const { return m_gestureCommands[i]; }
 		void setBody(Body *body);
 
-		std::vector<ActionCommand *> filterCommands(int transitionType, BodyPoint::BodyPart bp);
+		std::vector<GestureCommand *> filterCommands(int transitionType, BodyPoint::BodyPart bp);
 
 		void checkConditions(Action &action, float distThreshold);
 	};

@@ -97,8 +97,8 @@ namespace cinetico {
 		buttonDebugMode.setText("Go to debug mode");
 		buttonDebugMode.setParam(this);
 		buttonDebugMode.setOnClick(buttonGoToDebugMode_onClick);
-		//layoutOptions.append(buttonDebugView);
-		//layoutOptions.append(buttonDebugMode);
+		layoutOptions.append(buttonDebugView);
+		layoutOptions.append(buttonDebugMode);
 		layoutOptions.setAlignment(Layout::center_align);
 		
 		linkPortugues.setText("Português");

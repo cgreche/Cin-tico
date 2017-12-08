@@ -154,9 +154,9 @@ namespace cinetico {
 			drawY += 25;
 			for (unsigned int i = 0; i < m_commandsManager->commandCount(); ++i) {
 				str = "";
-				ActionCommand *command = m_commandsManager->actionCommand(i);
+				GestureCommand *command = m_commandsManager->actionCommand(i);
 				if (command->bodyPoint().bodyPart() == BodyPoint::RightPalm) {
-					if (command->positionActionCommand()) {
+					if (command->positionGestureCommand()) {
 						str += "Position action";
 						str += "(";
 						str += uilib::string::fromInteger(fuck);
@@ -164,7 +164,7 @@ namespace cinetico {
 					}
 					else
 						str += "Movement action";
-					if (command->positionActionCommand() && command->finished())
+					if (command->positionGestureCommand() && command->finished())
 						++fuck;
 					m_renderEngine->drawText(str.data(), drawX, drawY, render3d::Color(255, 255, 255, 100));
 					drawY += 25;

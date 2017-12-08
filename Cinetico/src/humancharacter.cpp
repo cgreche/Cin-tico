@@ -149,8 +149,8 @@ namespace cinetico {
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.elbow));
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.elbow));
 		//renderEngine->resourceInstance(m_instanceIds.back())->setScale(render3d::Vector3(-1, -1, -1));
-		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.hand));
-		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.hand));
+		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.head));
+		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.head));
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.knee));
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.knee));
 		//renderEngine->resourceInstance(m_instanceIds.back())->setScale(render3d::Vector3(-1, -1, -1));
@@ -218,8 +218,8 @@ namespace cinetico {
 		mapBodyPointNodeToWorldPoint(m_instanceIds[1], BodyPoint::Spine);
 		mapBodyPointNodeToWorldPoint(m_instanceIds[2], BodyPoint::LeftElbow);
 		mapBodyPointNodeToWorldPoint(m_instanceIds[3], BodyPoint::RightElbow);
-		mapBodyPointNodeToWorldPoint(m_instanceIds[4], BodyPoint::LeftPalm);
-		mapBodyPointNodeToWorldPoint(m_instanceIds[5], BodyPoint::RightPalm);
+		mapBodyPointNodeToWorldPoint(m_instanceIds[4], BodyPoint::LeftWrist);
+		mapBodyPointNodeToWorldPoint(m_instanceIds[5], BodyPoint::RightWrist);
 		mapBodyPointNodeToWorldPoint(m_instanceIds[6], BodyPoint::LeftKnee);
 		mapBodyPointNodeToWorldPoint(m_instanceIds[7], BodyPoint::RightKnee);
 		mapBodyPointNodeToWorldPoint(m_instanceIds[8], BodyPoint::LeftFoot);
