@@ -298,7 +298,6 @@ namespace cinetico {
 		delete action;
 
 		setEditionMode(0);
-		
 	}
 
 	bool ActionsController::validateCurrentGesture() {
@@ -401,7 +400,6 @@ namespace cinetico {
 	ActionsController::ActionsController(CineticoUI &cineticoUI)
 		: Controller(cineticoUI)
 	{
-		
 		buttonAdd.setParam(this);
 		buttonAdd.setOnClick(buttonAdd_onClick);
 		
@@ -455,8 +453,6 @@ namespace cinetico {
 		layoutActionCommands.append(buttonAddGesture);
 		layoutActionCommands.append(buttonDelGesture);
 
-
-
 		//Gestures
 		fillTransitionTypeCombo(cbTransitionType);
 		fillBodyPointCombo(cbBodyPoint);
@@ -482,7 +478,6 @@ namespace cinetico {
 		layoutActionData.append(layoutGestureItems,Size(SizeTypeMax, MaxGestureItemWidth*3));
 		layoutActionData.append(layoutGesture);
 		
-
 		//
 		layoutContent.append(layoutContentList);
 
@@ -491,8 +486,6 @@ namespace cinetico {
 		layout.append(separatorContent);
 		layout.append(layoutContent);
 		layout.setMargin(10);
-
-		m_selectedGesture = -1;
 	}
 
 	Layout *ActionsController::viewDefinition() {
@@ -508,47 +501,49 @@ namespace cinetico {
 		Exercise *exercise = params.get<Exercise*>("exercise");
 		m_currentExercise = exercise;
 		updateActionList();
+
+		//
+		cbTransitionType.setSelection(-1);
+		cbBodyPoint.setSelection(-1);
+		cbRefPoint.setSelection(-1);
+		cbOperation.setSelection(-1);
+		tbValueX.setText("");
+		tbValueY.setText("");
+		tbValueZ.setText("");
 	}
 
 	void ActionsController::onViewTick() {
 		static int lastEditMode = 0;
 		static int lastActionSelection = -1;
 		static int lastActionType = -1;
+		static int lastSelectedGestureIndex = -1;
 
 		if (m_editMode != lastEditMode) {
 			buttonAdd.setEnabled(m_editMode == 0);
 			buttonBack.setEnabled(m_editMode == 0);
 		}
 
-		if (m_currentActionSelection != lastActionSelection) {
-			buttonEdit.setEnabled(m_currentActionSelection >= 0);
+		if (m_selectedGesture != lastSelectedGestureIndex) {
+			if (m_selectedGesture == -1) {
+				cbTransitionType.setSelection(-1);
+				cbBodyPoint.setSelection(-1);
+				cbRefPoint.setSelection(-1);
+				cbOperation.setSelection(-1);
+				tbValueX.setText("");
+				tbValueY.setText("");
+				tbValueZ.setText("");
+			}
+			layoutGesture.setEnabled(m_selectedGesture >= 0);
 		}
 
-		if (m_currentActionTypeSelection != lastActionType) {
-			//todo: dinamismo
-			/*
-			if (lastActionType == Action::Position) {
-				layoutSpecific.remove(layoutPositionSpecific);
-			}
-			else if (lastActionType == Action::Movement) {
-				layoutSpecific.remove(layoutMovementSpecific);
-			}
-
-			if (m_currentActionTypeSelection == Action::Position) {
-				layoutSpecific.append(layoutPositionSpecific);
-			}
-			else if (m_currentActionTypeSelection == Action::Movement) {
-				layoutSpecific.append(layoutMovementSpecific);
-			}
-			*/
-
-			layout.setSize(layout.size());
-			layout.setVisible(true);
+		if (m_currentActionSelection != lastActionSelection) {
+			buttonEdit.setEnabled(m_currentActionSelection >= 0);
 		}
 
 		lastEditMode = m_editMode;
 		lastActionSelection = m_currentActionSelection;
 		lastActionType = m_currentActionTypeSelection;
+		lastSelectedGestureIndex = m_selectedGesture;
 	}
 
 	void ActionsController::onViewQuit() {
@@ -568,10 +563,6 @@ namespace cinetico {
 		}
 		m_selectedGesture = selectedGesture;
 
-		if (selectedGesture == -1) {
-			//todo: disable fields?
-		}
-
 		SimpleGesture *gesture = (SimpleGesture*)item.param();
 
 		//clearing fields
@@ -586,7 +577,6 @@ namespace cinetico {
 		if (!gesture)
 			return;
 
-		//todo: set fields
 		cbTransitionType.setSelection(gesture->transitionType());
 		cbBodyPoint.setSelection(gesture->bodyPoint()); 
 		cbRefPoint.setSelectionByData((void*)gesture->refPoint());
