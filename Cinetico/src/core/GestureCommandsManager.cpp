@@ -35,46 +35,56 @@ namespace cinetico_core {
 		if (!m_body)
 			return;
 
-		if (!m_gestureCommands.empty())
-			m_gestureCommands.clear();
-
 		for (unsigned int i = 0; i < BodyPoint::BodyPartCount; ++i) {
+			if (i == BodyPoint::RightPalm)
+				int a = 1;
+
 			BodyPointState::GestureState gestureState = m_trackedBps[i].update(curTime);
 			std::vector<GestureCommand*> gestureCommands;
+
 			if (gestureState != BodyPointState::NOT_IDENTIFIED) {
-				gestureCommands = filterCommands(gestureState, (BodyPoint::BodyPart)i);
-				if (gestureCommands.size() > 0) {
-					gestureCommands[0]->update(m_trackedBps[i]);
-				}
-			}
-			else {
-				if (gestureState == BodyPointState::STAYED) {
-					m_gestureCommands.push_back(new PositionGestureCommand(m_trackedBps[i]));
+				std::vector<GestureCommand*> posGesture = filterCommands(BodyPointState::STEADY, (BodyPoint::BodyPart)i);
+				std::vector<GestureCommand*> movGesture = filterCommands(BodyPointState::MOVING, (BodyPoint::BodyPart)i);
+				if (gestureState == BodyPointState::STEADY) {
+					if (posGesture.size() > 0)
+						posGesture[0]->update(m_trackedBps[i]);
+					else {
+						if (movGesture.size() > 0)
+							movGesture[0]->finish(curTime);
+						m_gestureCommands.push_back(new PositionGestureCommand(m_trackedBps[i]));
+					}
 				}
 				else if (gestureState == BodyPointState::MOVING) {
-					m_gestureCommands.push_back(new MovementGestureCommand(m_trackedBps[i]));
+					if (movGesture.size() > 0)
+						movGesture[0]->update(m_trackedBps[i]);
+					else {
+						if (posGesture.size() > 0)
+							posGesture[0]->finish(curTime);
+						m_gestureCommands.push_back(new MovementGestureCommand(m_trackedBps[i]));
+					}
 				}
 			}
 		}
-		/*
-		ActionCommand *actionCommand = m_trackedBps[0].update(curTime);
-		if (actionCommand)
-			m_commands.push_back(actionCommand);
-		*/
+
+		for (int i = 0; i < m_gestureCommands.size();) {
+			if (m_gestureCommands[i]->finished())
+				m_gestureCommands.erase(m_gestureCommands.begin() + i);
+			else
+				++i;
+		}
 	}
 
 
 
-	std::vector<GestureCommand*> GestureCommandsManager::filterCommands(int transitionType, BodyPoint::BodyPart bp) {
+	std::vector<GestureCommand*> GestureCommandsManager::filterCommands(int type, BodyPoint::BodyPart bp) {
 		std::vector<GestureCommand*> ret;
 		for (GestureCommand *command : m_gestureCommands) {
-			if (transitionType == 0 && command->positionGestureCommand()) {
-				if ((command->initTime() == m_curTime || command->lastUpdateTime() == m_curTime)
-					&& command->bodyPoint().bodyPart() == bp)
+			if (type == BodyPointState::STEADY && command->positionGestureCommand()) {
+				if (command->bodyPoint().bodyPart() == bp)
 					ret.push_back(command);
 			}
-			else if (transitionType == 1 && command->movementGestureCommand()) {
-				if (command->endTime() == m_curTime && command->bodyPoint().bodyPart() == bp)
+			else if (type == BodyPointState::MOVING && command->movementGestureCommand()) {
+				if (command->bodyPoint().bodyPart() == bp)
 					ret.push_back(command);
 			}
 		}
@@ -86,7 +96,7 @@ namespace cinetico_core {
 
 		Vector3 actionPoint;
 		if (command->movementGestureCommand())
-			actionPoint = command->movementGestureCommand()->endPosition();
+			actionPoint = command->movementGestureCommand()->currentPosition();
 		else
 			actionPoint = command->initPosition();
 		Vector3 targetPoint;
@@ -173,7 +183,7 @@ namespace cinetico_core {
 			SimpleGesture *gesture = action.gesture(i);
 			BodyPoint::BodyPart bp = gesture->bodyPoint();
 			if (gesture->transitionType() == SimpleGesture::Free) {
-				std::vector<GestureCommand*> actions = filterCommands(0, bp);
+				std::vector<GestureCommand*> actions = filterCommands(BodyPointState::STEADY, bp);
 				if (!actions.empty()) {
 					int gestureResult = meetConditions(gesture, actions[0], distThreshold) ? 1 : 0;
 					action.setResult(i, gestureResult);
@@ -181,10 +191,11 @@ namespace cinetico_core {
 			}
 			else if (gesture->transitionType() == SimpleGesture::FixedMovement) {
 				BodyPoint::BodyPart bp = gesture->bodyPoint();
-				std::vector<GestureCommand*> actions = filterCommands(1, bp);
+				std::vector<GestureCommand*> actions = filterCommands(BodyPointState::MOVING, bp);
 				if (!actions.empty()) {
 					int gestureResult = meetConditions(gesture, actions[0], distThreshold) ? 1 : 2;
-					action.setResult(i, gestureResult);
+					if(gestureResult || actions[0]->finished())
+						action.setResult(i, gestureResult);
 				}
 			}
 		}

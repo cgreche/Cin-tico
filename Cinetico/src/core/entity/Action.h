@@ -58,7 +58,7 @@ namespace cinetico_core {
 
 		bool isCorrect() const { return m_state == Finished && m_result != Missed; }
 
-		void setName(const char *name) { m_name = name; }
+		void setName(const std::string &name) { m_name = name; }
 		void setMinExecutionTime(float minExecutionTime) { m_minExecutionTime = minExecutionTime; }
 		void setMaxExecutionTime(float maxExecutionTime) { m_maxExecutionTime = maxExecutionTime; }
 		void setTimeToHold(float timeToHold) { m_timeToHold = timeToHold; }

@@ -17,26 +17,42 @@ namespace cinetico_core {
 namespace cinetico {
 
 	using namespace uilib;
-	using cinetico::ComboBox;
 	using namespace cinetico_core;
 
 	class ActionsController : public Controller
 	{
 	public:
-		class GestureRow : public HorizontalLayout {
-		public:
-			ActionsController &m_controller;
-			cComboBox cbTransitionType;
-			cComboBox cbBodyPoint;
-			cComboBox cbRefPoint;
-			cComboBox cbOperation;
-			cTextBox tbValueX;
-			cTextBox tbValueY;
-			cTextBox tbValueZ;
-			Button buttonDelete;
 
-			GestureRow(ActionsController &controller);
-			void removeSelf();
+		class GestureItem : public Label {
+			ActionsController &m_controller;
+
+			enum State {
+				IDLE,
+				HOVER,
+				PRESSED,
+			};
+
+			uilib::Color m_color;
+			uilib::Color m_colorSimpleGesture;
+			uilib::Color m_colorMovementGesture;
+
+			State m_state;
+			bool m_selected;
+
+		public:
+			GestureItem(ActionsController &controller);
+			void onMouseEnterEvent(MouseEvent &event);
+			void onMouseLeaveEvent(MouseEvent &event);
+			void onMousePressEvent(MouseEvent &event);
+			void onMouseReleaseEvent(MouseEvent &event);
+
+			void setSelected(bool selected);
+			void setParam(void *param);
+
+			void update();
+
+			virtual Size getAutoSize();
+			bool selected() const { return m_selected; }
 		};
 
 	public:
@@ -70,17 +86,21 @@ namespace cinetico {
 						cTextBox tbTimeToHold;
 
 					cSeparator separatorGestureData;
-					Button buttonAddGesture;
-					VerticalLayout layoutGestures;
-						HorizontalLayout layoutGestureLabels;
-							Label labelTransitionType;
-							Label labelBodyPoint;
-							Label labelRefPoint;
-							Label labelOperation;
-							Label labelValueX;
-							Label labelValueY;
-							Label labelValueZ;
-							Button buttonDummy;
+					HorizontalLayout layoutActionCommands;
+						Button buttonAddGesture;
+						Button buttonDelGesture;
+					HorizontalLayout layoutGestureItems;
+					std::vector<GestureItem *> gestureItems;
+					HorizontalLayout layoutGesture;
+						cComboBox cbTransitionType;
+						cComboBox cbBodyPoint;
+						cComboBox cbRefPoint;
+						cComboBox cbOperation;
+						cTextBox tbValueX;
+						cTextBox tbValueY;
+						cTextBox tbValueZ;
+						//todo: add MovementGesture fields
+						Button buttonSaveGesture;
 
 		Exercise *m_currentExercise;
 		int m_editMode;
@@ -90,6 +110,7 @@ namespace cinetico {
 		int m_currentActionTypeSelection;
 		int m_currentMovementTypeSelection;
 		std::vector<SimpleGesture*> m_gestures;
+		int m_selectedGesture;
 
 		void setEditionMode(int mode);
 		void updateActionList();
@@ -100,22 +121,28 @@ namespace cinetico {
 		void fillOperationCombo(cComboBox &combo);
 		void fillMovementTypeCombo(cComboBox &combo);
 
-		void addGestureRow();
-		void removeGestureRow(GestureRow *gesture);
+		void onGestureItemSelected(GestureItem &item);
+		GestureItem *addNewGesture(SimpleGesture *gesture);
 		void removeAllGestures();
-		void addGestureToAction(GestureRow *gesture);
-		
+		bool validateCurrentGesture();
+
 		bool validateFields();
 		void saveCurrentAction();
+		void saveCurrentGesture();
 
 		friend void buttonBack_onClick(Button &button);
 		friend void buttonDelete_onClick(Button &button);
 		friend void comboActionType_onChange(ComboBox &combo, ComboBoxItem *item);
 		friend void buttonDelete_onClick(Button &button);
+
+		//Gestures
 		friend void buttonAddGesture_onClick(Button &button);
+		friend void buttonDelGesture_onClick(Button &button);
+		friend void buttonSaveGesture_onClick(Button &button);
 
 	public:
 		friend class GestureRow;
+		friend class GestureItem;
 		ActionsController(CineticoUI &cineticoUI);
 
 		Layout *viewDefinition();

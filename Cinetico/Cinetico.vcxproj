@@ -112,6 +112,7 @@
     <ClInclude Include="src\lib\libxml\xpointer.h" />
     <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3.h" />
     <ClInclude Include="src\lib\sqlite-amalgamation-3200100\sqlite3ext.h" />
+    <ClInclude Include="src\RelOrientChar.h" />
     <ClInclude Include="src\render3d\camera.h" />
     <ClInclude Include="src\render3d\color.h" />
     <ClInclude Include="src\render3d\d3d9engine.h" />
@@ -227,6 +228,7 @@
     <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\lib\sqlite-amalgamation-3200100\shell.c" />
     <ClCompile Include="src\lib\sqlite-amalgamation-3200100\sqlite3.c" />
+    <ClCompile Include="src\RelOrientChar.cpp" />
     <ClCompile Include="src\render3d\d3d9engine.cpp" />
     <ClCompile Include="src\render3d\fontresource.cpp" />
     <ClCompile Include="src\render3d\renderengine.cpp" />

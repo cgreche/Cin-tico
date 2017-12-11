@@ -1,6 +1,6 @@
 //GridView 1.0
 // File: gridview.h
-// Last edit: 28/09/2017 13:49 (UTC-3)
+// Last edit: 09/12/2017 18:21 (UTC-3)
 // Author: CGR
 
 #ifndef __UILIB_GRIDVIEW_H__
@@ -27,6 +27,8 @@ namespace uilib {
 		int m_colCount;
 		bool m_headerVisible;
 		std::vector<std::vector<ListViewItem *> > m_items;
+		int m_selectedRow;
+		int m_selectedCol;
 
 		GridViewColResizeFunc m_onColResize;
 		GridViewActionProc m_onItemSelect;
@@ -56,6 +58,8 @@ namespace uilib {
 		void deleteRows();
 
 		ListViewItem* item(int row, int col) const { return m_items[row][col]; }
+		int selectedRow() const { return m_selectedRow; }
+		int selectedCol() const { return m_selectedCol; }
 		bool headerVisible() const { return m_headerVisible; }
 		const string &headerText(int col) const { return m_headerText[col]; }
 		int rowCount() const { return m_rowCount; }

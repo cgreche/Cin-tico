@@ -267,6 +267,7 @@ namespace cinetico {
 			delete m_humanChar;
 		if(m_dummyChar)
 			delete m_dummyChar;
+		delete m_commandsManager;
 	}
 
 	void ExercisePlayMode::processCamera() {

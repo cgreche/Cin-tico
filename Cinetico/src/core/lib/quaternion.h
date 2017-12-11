@@ -87,6 +87,18 @@ namespace cinetico_core {
 			return Quaternion(m_w / mag, m_x / mag, m_y / mag, m_z / mag);
 		}
 
+		Quaternion inverse() const {
+			double len = (double)m_w * (double)m_w + (double)m_x * (double)m_x + (double)m_y * (double)m_y + (double)m_z * (double)m_z;
+			if(len != 0.f)
+				return Quaternion((float)((double)m_w / len), (float)((double)-m_x / len), (float)((double)-m_y / len), (float)((double)-m_z / len));
+			return Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+		}
+
+
+		Quaternion Quaternion::conjugated() const {
+			return Quaternion(m_w, -m_x, -m_y, -m_z);
+		}
+
 		static float dotProduct(const Quaternion &q1, const Quaternion &q2) {
 			return q1.m_w * q2.m_w + q1.m_x * q2.m_x + q1.m_y * q2.m_y + q1.m_z * q2.m_z;
 		}

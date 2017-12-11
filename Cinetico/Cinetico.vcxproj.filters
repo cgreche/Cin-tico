@@ -628,6 +628,9 @@
     <ClInclude Include="src\core\entity\BodyPoint.h">
       <Filter>src\core\entity</Filter>
     </ClInclude>
+    <ClInclude Include="src\RelOrientChar.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -989,6 +992,9 @@
     </ClCompile>
     <ClCompile Include="src\core\entity\BodyPoint.cpp">
       <Filter>src\core\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RelOrientChar.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

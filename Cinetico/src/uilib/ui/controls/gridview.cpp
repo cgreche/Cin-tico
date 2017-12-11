@@ -1,7 +1,7 @@
 
 //GridView 1.0
 // File: gridview.h
-// Last edit: 28/09/2017 13:49 (UTC-3)
+// Last edit: 09/12/2017 18:21 (UTC-3)
 // Author: CGR
 
 #include "..\\uibase.h"
@@ -14,7 +14,10 @@ namespace uilib {
 		m_rowCount = 0;
 		m_colCount = 0;
 		m_headerVisible = false;
+		m_selectedRow = -1;
+		m_selectedCol = -1;
 		m_onColResize = NULL;
+		m_onItemSelect = NULL;
 
 		m_contentScrollX = 0;
 		m_contentScrollY = 0;

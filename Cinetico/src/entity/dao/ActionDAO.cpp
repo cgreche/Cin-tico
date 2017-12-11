@@ -92,13 +92,16 @@ namespace cinetico {
 			stmt->bind(1, action.id());
 			stmt->execute();
 
+			int lastRowId = m_db.getLastRowId();
+
+			const char *childClassSql;
+			SQLStatement *childClassStmt;
+			childClassSql = "INSERT INTO SIMPLE_GESTURE(action_id,transition_type,body_point,ref_point,operation,value_x,value_y,value_z) VALUES(?,?,?,?,?,?,?,?);";
+			childClassStmt = m_db.prepare(childClassSql);
+
 			for (int i = 0; i < action.gestureCount(); ++i) {
 				SimpleGesture *gesture = action.gesture(i);
-				const char *childClassSql;
-				SQLStatement *childClassStmt;
 
-				childClassSql = "INSERT INTO SIMPLE_GESTURE(action_id,transition_type,body_point,ref_point,operation,value_x,value_y,value_z) VALUES(?,?);";
-				childClassStmt = m_db.prepare(childClassSql);
 				childClassStmt->bind(1, action.id());
 				childClassStmt->bind(2, (int)gesture->transitionType());
 				childClassStmt->bind(3, (int)gesture->bodyPoint());
@@ -107,19 +110,22 @@ namespace cinetico {
 				childClassStmt->bind(6, gesture->value().x());
 				childClassStmt->bind(7, gesture->value().y());
 				childClassStmt->bind(8, gesture->value().z());
-				int gestureRowId = m_db.getLastRowId();
-				if (gesture->transitionType() == SimpleGesture::FixedMovement) {
-					childClassSql = "INSERT INTO MOVEMENT_GESTURE(simple_gesture_id,movement_type,min_speed,max_speed) VALUES(?,?,?,?);";
-					childClassStmt = m_db.prepare(childClassSql);
-					childClassStmt->bind(1, gestureRowId);
-					childClassStmt->bind(2, ((MovementGesture*)gesture)->movementType());
-					childClassStmt->bind(3, ((MovementGesture*)gesture)->minSpeed());
-					childClassStmt->bind(4, ((MovementGesture*)gesture)->maxSpeed());
-				}
-
 				int rc = childClassStmt->execute();
-				childClassStmt->close();
+				if (rc == 1) {
+					if (gesture->transitionType() == SimpleGesture::FixedMovement) {
+						const char *movementGestureSql = "INSERT INTO MOVEMENT_GESTURE(simple_gesture_id,movement_type,min_speed,max_speed) VALUES(?,?,?,?);";
+						SQLStatement *movementGestureStmt = m_db.prepare(movementGestureSql);
+						int gestureRowId = m_db.getLastRowId();
+						movementGestureStmt->bind(1, gestureRowId);
+						movementGestureStmt->bind(2, ((MovementGesture*)gesture)->movementType());
+						movementGestureStmt->bind(3, ((MovementGesture*)gesture)->minSpeed());
+						movementGestureStmt->bind(4, ((MovementGesture*)gesture)->maxSpeed());
+						movementGestureStmt->execute();
+						movementGestureStmt->close();
+					}
+				}
 			}
+			childClassStmt->close();
 		}
 	}
 

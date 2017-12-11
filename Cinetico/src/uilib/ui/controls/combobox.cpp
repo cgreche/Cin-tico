@@ -1,7 +1,7 @@
 
 //Combo Box
 // File name: combobox.cpp
-// Last edit: 06/10/2017 04:27 (UTC-3)
+// Last edit: 09/12/2017 19:59 (UTC-3)
 // Author: CGR
 
 #include "..\\uibase.h"
@@ -74,13 +74,13 @@ namespace uilib {
 		//todo
 	}
 
-	int ComboBox::setSelection(int row)
+	int ComboBox::setSelection(int index)
 	{
-		if (row < 0 || row >= m_items.size())
-			return -1;
-		m_selection = row;
-		osdRef().setSelection(row);
-		return row;
+		if (index < 0 || index >= m_items.size())
+			index = -1;
+		m_selection = index;
+		osdRef().setSelection(index);
+		return index;
 	}
 
 	ComboBoxItem *ComboBox::item(int row) const

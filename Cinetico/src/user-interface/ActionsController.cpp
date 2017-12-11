@@ -13,61 +13,79 @@ namespace cinetico {
 	using namespace cinetico_core;
 	using cinetico::ComboBox;
 
-	void Gesture_buttonDelete_onClick(Button &button) {
-		ActionsController::GestureRow *gestureRow = (ActionsController::GestureRow*)button.param();
-		gestureRow->removeSelf();
-	}
+	static int MaxGestureItemWidth = UITools::getTextSize("999", FontDesc("Arial", 10, 0)).width()+6;
 
-	/*
-	class GestureItem : public Label {
-	public:
-		void onMouseEnterEvent(MouseEvent &event) {
-			setBackgroundColor(uilib::Color(0, 200, 200));
-		}
-
-		void onMouseLeaveEvent(MouseEvent &event) {
-			setBackgroundColor(uilib::Color(200, 20, 20));
-		}
-	};
-
-	GestureItem gestureItem[20];
-
-	for (int i = 0; i < 20; ++i) {
-		gestureItem[i].setTransparent(false);
-		gestureItem[i].setBackgroundColor(uilib::Color(200, 20, 20));
-		gestureItem[i].setText(string::fromInteger(i));
-		gestureItem[i].setAlignment(Label::VCenter | Label::HCenter);
-		gestureItem[i].setTextColor(uilib::Color(255, 255, 255));
-		layoutGestures.append(gestureItem[i], Size(16, 34));
-	}
-	testLayout.append(layoutGestures);
-	*/
-	ActionsController::GestureRow::GestureRow(ActionsController &controller)
+	ActionsController::GestureItem::GestureItem(ActionsController &controller)
 		: m_controller(controller) {
-		append(cbTransitionType);
-		controller.fillTransitionTypeCombo(cbTransitionType);
-		append(cbBodyPoint);
-		controller.fillBodyPointCombo(cbBodyPoint);
-		append(cbRefPoint);
-		controller.fillRefPointCombo(cbRefPoint);
-		append(cbOperation);
-		controller.fillOperationCombo(cbOperation);
-		append(tbValueX);
-		append(tbValueY);
-		append(tbValueZ);
-		buttonDelete.setParam(this);
-		buttonDelete.setOnClick(Gesture_buttonDelete_onClick);
-		append(buttonDelete);
-
-		buttonDelete.setText(controller.m_dictionary.getString(Dictionary::DefaultActionDelete));
-
-		setAlignment(Layout::center_align);
+		m_color = uilib::Color(255, 255, 255);
+		m_colorSimpleGesture = uilib::Color(0x80, 0xDE, 0xEA);
+		m_colorMovementGesture = uilib::Color(0xFF, 0xCC, 0x80);
+		m_state = IDLE;
+		setBackgroundColor(m_color);
 	}
 
-	void ActionsController::GestureRow::removeSelf() {
-		m_controller.removeGestureRow(this);
+	Size ActionsController::GestureItem::getAutoSize() {
+		return Size(MaxGestureItemWidth, MaxGestureItemWidth * 3);
 	}
 
+	void ActionsController::GestureItem::onMouseEnterEvent(MouseEvent &event) {
+		m_state = HOVER;
+		update();
+	}
+
+	void ActionsController::GestureItem::onMouseLeaveEvent(MouseEvent &event) {
+		m_state = IDLE;
+		update();
+	}
+
+	void ActionsController::GestureItem::onMousePressEvent(MouseEvent &event) {
+		m_state = PRESSED;
+		update();
+	}
+
+	void ActionsController::GestureItem::onMouseReleaseEvent(MouseEvent &event) {
+		m_state = HOVER;
+		setSelected(true);
+	}
+
+	void ActionsController::GestureItem::setSelected(bool selected) {
+		if (m_selected != selected) {
+			m_selected = selected;
+			if (selected)
+				m_controller.onGestureItemSelected(*this);
+		}
+		update();
+	}
+
+	void ActionsController::GestureItem::setParam(void *param) {
+		m_param = param;
+		update();
+	}
+
+	void ActionsController::GestureItem::update() {
+		uilib::Color color = m_color;
+		if (m_param != NULL) {
+			SimpleGesture *gesture = (SimpleGesture*)m_param;
+			if (gesture->transitionType() == SimpleGesture::Free)
+				color = m_colorSimpleGesture;
+			else if (gesture->transitionType() == SimpleGesture::FixedMovement)
+				color = m_colorMovementGesture;
+		}
+
+		if (m_state == IDLE) {
+			if (m_selected) {
+				color = uilib::Color(color.red()*0.8f, color.green()*0.8f, color.blue()*0.8f);
+			}
+		} 
+		else if (m_state == HOVER) {
+			color = uilib::Color(color.red()*0.9f, color.green()*0.9f, color.blue()*0.9f);
+		}
+		else if (m_state == PRESSED) {
+			color = uilib::Color(color.red()*0.7f, color.green()*0.7f, color.blue()*0.7f);
+		}
+
+		setBackgroundColor(color);
+	}
 
 	static void buttonBack_onClick(Button &button) {
 		ActionsController *controller = (ActionsController*)button.param();
@@ -81,7 +99,7 @@ namespace cinetico {
 
 	static void buttonEdit_onClick(Button& button) {
 		ActionsController *controller = (ActionsController*)button.param();
-		if (controller->m_currentAction)
+		if (controller->m_currentActionSelection >= 0)
 			controller->setEditionMode(2);
 	}
 
@@ -99,8 +117,7 @@ namespace cinetico {
 	static void gridActions_onChange(GridView &grid, int row, int col) {
 		ActionsController *controller = (ActionsController*)grid.param();
 		controller->m_currentActionSelection = row;
-		if (row >= 0)
-			controller->m_currentAction = (Action*)grid.item(row, 0)->data();
+		controller->m_currentAction = (Action*)grid.item(row, 0)->data();
 	}
 
 
@@ -145,7 +162,33 @@ namespace cinetico {
 
 	static void buttonAddGesture_onClick(Button &button) {
 		ActionsController *controller = (ActionsController*)button.param();
-		controller->addGestureRow();
+		ActionsController::GestureItem *item = controller->addNewGesture(NULL);
+		item->setSelected(true);
+	}
+
+	static void buttonDelGesture_onClick(Button &button) {
+		ActionsController *controller = (ActionsController*)button.param();
+
+		int selectedGesture = controller->m_selectedGesture;
+		if (selectedGesture == -1)
+			return;
+
+		ActionsController::GestureItem *item = controller->gestureItems[selectedGesture];
+		controller->layoutGestureItems.remove(*item);
+		controller->gestureItems.erase(controller->gestureItems.begin() + selectedGesture);
+		delete item;
+
+		if (selectedGesture < (int)controller->gestureItems.size()) {
+			for (int i = selectedGesture; i < (int)controller->gestureItems.size(); ++i) {
+				controller->gestureItems[i]->setText(string::fromInteger(i+1));
+			}
+			controller->gestureItems[selectedGesture]->setSelected(true);
+		}
+		else {
+			selectedGesture = -1;
+		}
+
+		controller->layoutGestureItems.update();	
 	}
 
 	void buttonDeleteAllGestures_onClick(Button &button) {
@@ -153,37 +196,10 @@ namespace cinetico {
 		controller->removeAllGestures();
 	}
 
-	/*
-	static void buttonAddGesture_onClick(Button &button) {
+	static void buttonSaveGesture_onClick(Button &button) {
 		ActionsController *controller = (ActionsController*)button.param();
-		SimpleGesture *gesture;
-		SimpleGesture::TransitionType type = (SimpleGesture::TransitionType)(int)controller->cbTransitionType.item(controller->cbTransitionType.selection())->data();
-		BodyPoint::BodyPart bp = (BodyPoint::BodyPart)(int)controller->cbBodyPoint.item(controller->cbBodyPoint.selection())->data();
-		int refPoint = (int)controller->cbRefPoint.item(controller->cbRefPoint.selection())->data();
-		unsigned long operation = (unsigned long)controller->cbOperation.item(controller->cbOperation.selection())->data();
-		float valueX = controller->tbValueX.text().toFloat();
-		float valueY = controller->tbValueY.text().toFloat();
-		float valueZ = controller->tbValueZ.text().toFloat();
-
-		if (type == SimpleGesture::FixedMovement) {
-			//todo: get movementType, minSpeed, maxSpeed from fields
-			MovementGesture::MovementType movementType = MovementGesture::Linear;
-			float minSpeed = 0.f;
-			float maxSpeed = 0.f;
-			MovementGesture *movementGesture = new MovementGesture(bp, movementType);
-			movementGesture->setMinSpeed(minSpeed);
-			movementGesture->setMaxSpeed(maxSpeed);
-			gesture = movementGesture;
-		}
-		else {
-			gesture = new SimpleGesture(type, bp);
-		}
-
-		gesture->setRefPoint(refPoint);
-		gesture->setOperation(operation);
-		controller->m_gestures.push_back(gesture);
+		controller->saveCurrentGesture();
 	}
-	*/
 
 	void ActionsController::fillOperationCombo(cComboBox &combo) {
 		combo.clear();
@@ -223,24 +239,97 @@ namespace cinetico {
 			//todo: campos somente numéricos
 		}
 
+		//todo: add to dictionary
+		if (layoutGesture.itemCount() == 0) {
+			uilib::Message::warning(NULL, "Uma ação deve conter pelo menos um gesto.");
+			return false;
+		}
+
+		//validate gestures
+		std::vector<int> invalidGestures;
+		for (int i = 0; i < (int)gestureItems.size(); ++i) {
+			if (gestureItems[i]->param() == NULL) {
+				invalidGestures.push_back(i+1);
+			}
+		}
+
+		if (invalidGestures.size() > 0) {
+			string str = "A(s) Ação(ões) ";
+			size_t i;
+			for (i = 0; i < invalidGestures.size() - 1; ++i) {
+				str += string::fromInteger(invalidGestures[i]);
+				str += ", ";
+			}
+			str += string::fromInteger(invalidGestures[i]);
+			str += " estão inválidas";
+			Message::warning(NULL,str);
+			return false;
+		}
+
 		return !required && !invalid;
 	}
 
-	//todo: remove this temp shit
-	void ActionsController::addGestureToAction(GestureRow *gestureRow) {
-		Action *action = m_currentAction;
+	void ActionsController::saveCurrentAction() {
 
-		if (!action)
+		if(!validateFields())
+			return;
+
+		string &name = tbName.text();
+		float minTimeStr = tbMinTime.text().toFloat();
+		float maxTimeStr = tbMaxTime.text().toFloat();
+		float timeToHold = tbTimeToHold.text().toFloat();
+
+		Action *action = new Action(*m_currentExercise, m_currentAction ? m_currentAction->id() : -1);
+		action->setName(name.data());
+		action->setMinExecutionTime(minTimeStr);
+		action->setMaxExecutionTime(maxTimeStr);
+		action->setTimeToHold(timeToHold);
+
+		for (GestureItem *item : gestureItems) {
+			action->addGesture((SimpleGesture*)item->param());
+		}
+
+		if (m_editMode == 1) {
+			m_cinetico.cineticoDB()->actionDAO()->create(*action);
+		}
+		else {
+			m_cinetico.cineticoDB()->actionDAO()->update(*action);
+		}
+		delete action;
+
+		setEditionMode(0);
+		
+	}
+
+	bool ActionsController::validateCurrentGesture() {
+		if (m_selectedGesture == -1)
+			return false;
+		if (cbTransitionType.selectedItem() == NULL
+			|| cbBodyPoint.selectedItem() == NULL
+			|| cbRefPoint.selectedItem() == NULL
+			|| cbOperation.selectedItem() == NULL) {
+			return false;
+		}
+		return true;
+	}
+
+	void ActionsController::saveCurrentGesture() {
+		if (m_selectedGesture == -1)
+			return;
+
+		GestureItem *item = gestureItems[m_selectedGesture];
+
+		if (!validateCurrentGesture())
 			return;
 
 		SimpleGesture *gesture;
-		SimpleGesture::TransitionType type = (SimpleGesture::TransitionType)(int)gestureRow->cbTransitionType.item(gestureRow->cbTransitionType.selection())->data();
-		BodyPoint::BodyPart bp = (BodyPoint::BodyPart)(int)gestureRow->cbBodyPoint.item(gestureRow->cbBodyPoint.selection())->data();
-		int refPoint = (int)gestureRow->cbRefPoint.item(gestureRow->cbRefPoint.selection())->data();
-		unsigned long operation = (unsigned long)gestureRow->cbOperation.item(gestureRow->cbOperation.selection())->data();
-		float valueX = gestureRow->tbValueX.text().toFloat();
-		float valueY = gestureRow->tbValueY.text().toFloat();
-		float valueZ = gestureRow->tbValueZ.text().toFloat();
+		SimpleGesture::TransitionType type = (SimpleGesture::TransitionType)(int)cbTransitionType.selectedItem()->data();
+		BodyPoint::BodyPart bp = (BodyPoint::BodyPart)(int)cbBodyPoint.selectedItem()->data();
+		int refPoint = (int)cbRefPoint.selectedItem()->data();
+		unsigned long operation = (unsigned long)cbOperation.selectedItem()->data();
+		float valueX = tbValueX.text().toFloat();
+		float valueY = tbValueY.text().toFloat();
+		float valueZ = tbValueZ.text().toFloat();
 
 		if (type == SimpleGesture::FixedMovement) {
 			//todo: get movementType, minSpeed, maxSpeed from fields
@@ -259,52 +348,12 @@ namespace cinetico {
 		gesture->setRefPoint(refPoint);
 		gesture->setOperation(operation);
 
-		action->addGesture(gesture);
-	}
-	void ActionsController::saveCurrentAction() {
-
-		if(!validateFields())
-			return;
-
-		if (layoutGestures.itemCount() == 0) {
-			uilib::Message::warning(NULL, "Uma ação deve conter pelo menos um gesto.");
-			return;
+		if (item->param()) {
+			delete (SimpleGesture*)item->param();
 		}
 
-		string &name = tbName.text();
-		float minTimeStr = tbMinTime.text().toFloat();
-		float maxTimeStr = tbMaxTime.text().toFloat();
-		float timeToHold = tbTimeToHold.text().toFloat();
-
-		Action *action = m_currentAction;
-
-		action->setName(name.data());
-		action->setMinExecutionTime(minTimeStr);
-		action->setMaxExecutionTime(maxTimeStr);
-		action->setTimeToHold(timeToHold);
-
-		for (int i = 0; i < layoutGestures.itemCount(); ++i) {
-			LayoutItem *layoutItem = layoutGestures.item(i);
-			GestureRow *gestureRow = (GestureRow*)layoutItem->layout();
-			addGestureToAction(gestureRow);
-		}
-
-		for (unsigned int i = 0; i < m_gestures.size(); ++i) {
-			action->addGesture(m_gestures[i]);
-		}
-
-		if (m_editMode == 1) {
-			m_cinetico.cineticoDB()->actionDAO()->create(*action);
-			delete action;
-		}
-		else {
-			m_cinetico.cineticoDB()->actionDAO()->update(*action);
-		}
-
-		if(!m_gestures.empty())
-			m_gestures.clear();
-
-		setEditionMode(0);
+		item->setParam(gesture);
+		item->update();
 	}
 
 	void ActionsController::onViewUpdate() {
@@ -333,20 +382,20 @@ namespace cinetico {
 		tbMaxTime.setLabel(m_dictionary.getString(Dictionary::ActionMaxExecutionTime));
 		tbTimeToHold.setLabel(m_dictionary.getString(Dictionary::ActionTimeToHold));
 
+		//todo: add to dictionary
 		separatorGestureData.setText("Gestos");
 
-		labelTransitionType.setText(m_dictionary.getString(Dictionary::SimpleGestureTransitionType) + '*');
-		labelBodyPoint.setText(m_dictionary.getString(Dictionary::SimpleGestureBodyPoint) + '*');
-		labelRefPoint.setText(m_dictionary.getString(Dictionary::SimpleGestureRefPoint) + '*');
-		labelOperation.setText(m_dictionary.getString(Dictionary::SimpleGestureOperation) + '*');
-		labelValueX.setText(m_dictionary.getString(Dictionary::SimpleGestureValueX));
-		labelValueY.setText(m_dictionary.getString(Dictionary::SimpleGestureValueY));
-		labelValueZ.setText(m_dictionary.getString(Dictionary::SimpleGestureValueZ));
-		buttonDummy.setText(m_dictionary.getString(Dictionary::DefaultActionDelete));
-		buttonDummy.setParam(this);
-		buttonDummy.setOnClick(buttonDeleteAllGestures_onClick);
+		cbTransitionType.setLabel(m_dictionary.getString(Dictionary::SimpleGestureTransitionType) + '*');
+		cbBodyPoint.setLabel(m_dictionary.getString(Dictionary::SimpleGestureBodyPoint) + '*');
+		cbRefPoint.setLabel(m_dictionary.getString(Dictionary::SimpleGestureRefPoint) + '*');
+		cbOperation.setLabel(m_dictionary.getString(Dictionary::SimpleGestureOperation) + '*');
+		tbValueX.setLabel(m_dictionary.getString(Dictionary::SimpleGestureValueX));
+		tbValueY.setLabel(m_dictionary.getString(Dictionary::SimpleGestureValueY));
+		tbValueZ.setLabel(m_dictionary.getString(Dictionary::SimpleGestureValueZ));
+		buttonSaveGesture.setText(m_dictionary.getString(Dictionary::DefaultActionSave));
 
 		buttonAddGesture.setText(m_dictionary.getString(Dictionary::DefaultActionAdd));
+		buttonDelGesture.setText(m_dictionary.getString(Dictionary::DefaultActionDelete));
 	}
 
 	ActionsController::ActionsController(CineticoUI &cineticoUI)
@@ -385,7 +434,6 @@ namespace cinetico {
 		//Action data
 
 		//Action buttons
-		
 		buttonSaveAction.setParam(this);
 		buttonSaveAction.setOnClick(buttonSaveAction_onClick);
 		
@@ -394,32 +442,45 @@ namespace cinetico {
 		layoutActionDataActionButtons.append(buttonSaveAction);
 		layoutActionDataActionButtons.append(buttonCancelAction);
 
-		//Base Action data
 		buttonAddGesture.setParam(this);
 		buttonAddGesture.setOnClick(buttonAddGesture_onClick);
+		buttonDelGesture.setParam(this);
+		buttonDelGesture.setOnClick(buttonDelGesture_onClick);
 
+		//Base Action data
 		layoutActionDataRow1.append(tbName);
 		layoutActionDataRow1.append(tbMinTime);
 		layoutActionDataRow1.append(tbMaxTime);
 		layoutActionDataRow1.append(tbTimeToHold);
+		layoutActionCommands.append(buttonAddGesture);
+		layoutActionCommands.append(buttonDelGesture);
 
-		layoutGestureLabels.append(labelTransitionType,Size(SizeTypeMax,SizeTypeAuto));
-		layoutGestureLabels.append(labelBodyPoint, Size(SizeTypeMax, SizeTypeAuto));
-		layoutGestureLabels.append(labelRefPoint, Size(SizeTypeMax, SizeTypeAuto));
-		layoutGestureLabels.append(labelOperation, Size(SizeTypeMax, SizeTypeAuto));
-		layoutGestureLabels.append(labelValueX, Size(SizeTypeMax, SizeTypeAuto));
-		layoutGestureLabels.append(labelValueY, Size(SizeTypeMax, SizeTypeAuto));
-		layoutGestureLabels.append(labelValueZ, Size(SizeTypeMax, SizeTypeAuto));
-		buttonDummy.setVisible(false);
-		layoutGestureLabels.append(buttonDummy);
+
+
+		//Gestures
+		fillTransitionTypeCombo(cbTransitionType);
+		fillBodyPointCombo(cbBodyPoint);
+		fillRefPointCombo(cbRefPoint);
+		fillOperationCombo(cbOperation);
+		buttonSaveGesture.setOnClick(buttonSaveGesture_onClick);
+		buttonSaveGesture.setParam(this);
+
+		layoutGesture.append(cbTransitionType,Size(SizeTypeMax,SizeTypeAuto));
+		layoutGesture.append(cbBodyPoint, Size(SizeTypeMax, SizeTypeAuto));
+		layoutGesture.append(cbRefPoint, Size(SizeTypeMax, SizeTypeAuto));
+		layoutGesture.append(cbOperation, Size(SizeTypeMax, SizeTypeAuto));
+		layoutGesture.append(tbValueX, Size(SizeTypeMax, SizeTypeAuto));
+		layoutGesture.append(tbValueY, Size(SizeTypeMax, SizeTypeAuto));
+		layoutGesture.append(tbValueZ, Size(SizeTypeMax, SizeTypeAuto));
+		layoutGesture.append(buttonSaveGesture);
 
 		layoutActionData.append(layoutActionDataActionButtons);
 		layoutActionData.append(separatorActionBasicData);
 		layoutActionData.append(layoutActionDataRow1);
 		layoutActionData.append(separatorGestureData);
-		layoutActionData.append(buttonAddGesture);
-		layoutActionData.append(layoutGestureLabels);
-		layoutActionData.append(layoutGestures);
+		layoutActionData.append(layoutActionCommands);
+		layoutActionData.append(layoutGestureItems,Size(SizeTypeMax, MaxGestureItemWidth*3));
+		layoutActionData.append(layoutGesture);
 		
 
 		//
@@ -430,6 +491,8 @@ namespace cinetico {
 		layout.append(separatorContent);
 		layout.append(layoutContent);
 		layout.setMargin(10);
+
+		m_selectedGesture = -1;
 	}
 
 	Layout *ActionsController::viewDefinition() {
@@ -492,24 +555,75 @@ namespace cinetico {
 		removeAllGestures();
 	}
 
-	void ActionsController::addGestureRow() {
-		GestureRow *gestureRow = new GestureRow(*this);
-		layoutGestures.append(*gestureRow);
-		layout.setSize(layout.size());
+	void ActionsController::onGestureItemSelected(GestureItem &item) {
+
+		//find index;
+		int selectedGesture = -1;
+		for (int i = 0; i < (int)gestureItems.size(); ++i) {
+			GestureItem *_item = gestureItems[i];
+			if (&item != _item)
+				_item->setSelected(false);
+			else
+				selectedGesture = i;
+		}
+		m_selectedGesture = selectedGesture;
+
+		if (selectedGesture == -1) {
+			//todo: disable fields?
+		}
+
+		SimpleGesture *gesture = (SimpleGesture*)item.param();
+
+		//clearing fields
+		cbTransitionType.setSelection(-1);
+		cbBodyPoint.setSelection(-1);
+		cbRefPoint.setSelection(-1);
+		cbOperation.setSelection(-1);
+		tbValueX.setText("");
+		tbValueY.setText("");
+		tbValueZ.setText("");
+
+		if (!gesture)
+			return;
+
+		//todo: set fields
+		cbTransitionType.setSelection(gesture->transitionType());
+		cbBodyPoint.setSelection(gesture->bodyPoint()); 
+		cbRefPoint.setSelectionByData((void*)gesture->refPoint());
+		cbOperation.setSelectionByData((void*)gesture->operation());
+		tbValueX.setText(string::fromFloat(gesture->value().x()));
+		tbValueY.setText(string::fromFloat(gesture->value().y()));
+		tbValueZ.setText(string::fromFloat(gesture->value().z()));
+
+		if (gesture->transitionType() == SimpleGesture::FixedMovement) {
+			MovementGesture *movementGesture = reinterpret_cast<MovementGesture*>(gesture);
+			//todo: set movement gesture fields
+		}
+
 	}
 
-	void ActionsController::removeGestureRow(ActionsController::GestureRow *gestureRow) {
-		layoutGestures.remove(*gestureRow);
-		delete gestureRow;
-		layout.setSize(layout.size());
+	ActionsController::GestureItem *ActionsController::addNewGesture(SimpleGesture* gesture) {
+		ActionsController::GestureItem *item = new ActionsController::GestureItem(*this);
+		item->setText(string::fromInteger(layoutGestureItems.itemCount() + 1));
+		item->setAlignment(Label::HCenter | Label::VCenter);
+		item->setStyle(item->style() | CS_Border);
+		item->setTransparent(false);
+		if(gesture)
+			item->setParam(gesture);
+		gestureItems.push_back(item);
+		layoutGestureItems.append(*item);
+		layoutGestureItems.update();
+		return item;
 	}
 
 	void ActionsController::removeAllGestures() {
+		/*
 		for (int i = layoutGestures.itemCount() -1; i >= 0; --i) {
 			GestureRow *gestureRow = (GestureRow*)layoutGestures.item(i)->layout();
 			layoutGestures.remove(*gestureRow);
 			delete gestureRow;
 		}
+		*/
 		//update layout
 		layout.setSize(layout.size());
 	}
@@ -527,35 +641,58 @@ namespace cinetico {
 		}
 		else if (mode == 1 || mode == 2) {
 			layoutContent.append(layoutActionData);
-			//
-			tbName.setText("");
-			tbMinTime.setText("");
-			tbMaxTime.setText("");
-			tbTimeToHold.setText("");
+			
+			// Clear gestures from last edit operation
+			if (!gestureItems.empty()) {
+				for (int i = gestureItems.size() - 1; i >= 0; --i) {
+					GestureItem *item = gestureItems[i];
+					layoutGestureItems.remove(*item);
+				}
+				gestureItems.clear();
+			}
+			m_selectedGesture = -1;
 
 			if (mode == 2) {
-				Action *action = m_currentAction;
+				//Editing an existing action, make a copy
+				Action *action = (Action*)m_currentAction;
 				tbName.setText(action->name().c_str());
 				tbMinTime.setText(string::fromFloat(action->minExecutionTime()).data());
 				tbMaxTime.setText(string::fromFloat(action->maxExecutionTime()).data());
 				tbTimeToHold.setText(string::fromFloat(action->timeToHold()).data());
-				for (int i = 0; i < action->gestureCount(); ++i) {
-					GestureRow *gestureRow = new GestureRow(*this);
-					SimpleGesture *gesture = action->gesture(i);
-					//gestureRow->cbTransitionType.setSelection(); //todo
-					//gestureRow->cbBodyPoint.setSelection();
-					//gestureRow->cbBodyPoint.setSelection();
-					//gestureRow->cbBodyPoint.setSelection();
-					gestureRow->tbValueX.setText(string::fromFloat(gesture->value().x()));
-					gestureRow->tbValueY.setText(string::fromFloat(gesture->value().y()));
-					gestureRow->tbValueZ.setText(string::fromFloat(gesture->value().z()));
-					layoutGestures.append(*gestureRow);
-				}
-				layout.setSize(layout.size());
 
+				for (int i = 0; i < action->gestureCount(); ++i) {
+					SimpleGesture *gesture = action->gesture(i);
+					SimpleGesture *copy;
+					if (gesture->transitionType() == SimpleGesture::FixedMovement) {
+						MovementGesture *_copy = new MovementGesture(gesture->bodyPoint(), ((MovementGesture*)gesture)->movementType());
+						_copy->setMinSpeed(((MovementGesture*)gesture)->minSpeed());
+						_copy->setMaxSpeed(((MovementGesture*)gesture)->maxSpeed());
+						//todo: handle extraPoint;
+						copy = _copy;
+					}
+					else {
+						copy = new SimpleGesture(SimpleGesture::Free, gesture->bodyPoint());
+					}
+					copy->setRefPoint(gesture->refPoint());
+					copy->setOperation(gesture->operation());
+					copy->setValue(gesture->value());
+
+					GestureItem *item = addNewGesture(copy);
+				}
+
+				layout.setSize(layout.size());
 			}
 			else {
-				m_currentAction = new Action(*m_currentExercise);
+				//inserting new
+				tbName.setText("");
+				tbMinTime.setText("");
+				tbMaxTime.setText("");
+				tbTimeToHold.setText("");
+
+				cbBodyPoint.setSelection(-1);
+				cbTransitionType.setSelection(-1);
+				cbRefPoint.setSelection(-1);
+				cbOperation.setSelection(-1);
 			}
 		}
 

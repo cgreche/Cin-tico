@@ -15,4 +15,12 @@ namespace cinetico {
 		append(combo, Size(SizeTypeMax, SizeTypeAuto));
 	}
 
+	void cComboBox::setSelectionByData(void *data) {
+		for (int i = 0; i < combo.itemCount(); ++i) {
+			ComboBoxItem *item = combo.item(i);
+			if (item->data() == data)
+				combo.setSelection(i);
+		}
+	}
+
 }

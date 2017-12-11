@@ -1,7 +1,7 @@
 
 //ComboBox
 // File: combobox.h
-// Last edit: 06/10/2017 04:27 (UTC-3)
+// Last edit: 09/12/2017 19:59 (UTC-3)
 // Author: CGR
 
 #ifndef __UIBASE_H__
@@ -71,10 +71,11 @@ namespace uilib {
 		void removeItem(ComboBoxItem &item);
 		void reset();
 		void sort();
-		int setSelection(int row);
+		int setSelection(int index);
 		int selection() const { return m_selection; }
 		ComboBoxItem *selectedItem() const { return item(selection()); }
-		ComboBoxItem *item(int row) const ;
+		ComboBoxItem *item(int row) const;
+		int itemCount() const { return m_items.size(); }
 
 		virtual Size getAutoSize();
 

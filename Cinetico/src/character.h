@@ -11,6 +11,8 @@ namespace cinetico {
 	class CineticoUI;
 
 	class BodyPointNode {
+
+	protected:
 		BodyPoint::BodyPart m_bpId;
 		BodyPointNode *m_parent;
 		std::vector<BodyPointNode *> m_childList;
@@ -34,17 +36,17 @@ namespace cinetico {
 			m_childList.push_back(node);
 		}
 
-		void updateState(Quaternion orientation, const Matrix4x4 &transform) {
+		virtual void updateState(Quaternion orientation, const Matrix4x4 &transform) {
 			m_globalOrientation = m_localOrientation*orientation;
 			m_localTransform = m_localOrientation.toRotationMatrix();
-			m_globalTransform = m_localTransform*transform;
+			m_globalTransform = transform*m_localTransform;
 
 			Quaternion qTest = Quaternion::fromRotationMatrix(m_globalTransform);
 
 			if (qTest == m_globalOrientation)
 				int a = 1;
 
-			m_globalOrientation = m_localOrientation;
+			//m_globalOrientation = m_localOrientation;
 			for (BodyPointNode *bpn : m_childList)
 				bpn->updateState(m_globalOrientation,m_globalTransform);
 		}
@@ -65,6 +67,7 @@ namespace cinetico {
 		BodyPointNode *parent() const { return m_parent; }
 
 		const cinetico_core::Vector3 &globalPosition() const { return m_globalPosition; }
+		const Quaternion &localOrientation() const { return m_localOrientation; }
 		const Quaternion &globalOrientation() const { return m_globalOrientation; }
 
 		Matrix4x4 &localTransform() { return m_localTransform; }
