@@ -13,6 +13,7 @@ namespace cinetico {
 
 	class HumanCharacter;
 	class DummyCharacter;
+	class RelOrientChar;
 
 	class ExercisePlayMode : public PlayMode {
 
@@ -20,6 +21,7 @@ namespace cinetico {
 
 		HumanCharacter *m_humanChar;
 		DummyCharacter *m_dummyChar;
+		RelOrientChar *m_roChar;
 		GestureCommandsManager *m_commandsManager;
 
 		int m_resTerrain;

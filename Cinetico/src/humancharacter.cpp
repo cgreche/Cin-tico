@@ -236,7 +236,7 @@ namespace cinetico {
 		
 		for (unsigned int i = 0; i < m_instanceIds.size(); ++i) {
 			renderEngine->drawResource(m_instanceIds[i]);
-			/*
+			
 			render3d::Vector3 line[2];
 			ResourceInstance *inst = renderEngine->resourceInstance(m_instanceIds[i]);
 			cinetico_core::Vector3 rot = inst->rot().toEuler();
@@ -244,7 +244,7 @@ namespace cinetico {
 			float lineSize = 0.3f;
 			line[1].set(inst->pos().x() + rot.x()*lineSize, inst->pos().y() + rot.y()*lineSize, inst->pos().z() + rot.z()*lineSize);
 			renderEngine->drawResourceDirect(line, 6, boneColors);
-			*/
+			
 		}
 		
 		/*

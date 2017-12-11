@@ -15,6 +15,7 @@ namespace cinetico {
 		void mapBodyPointNodeToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint, bool mirrored = false);
 		inline void mapBodyPointToCharacterBodyPointNode(BodyPoint::BodyPart bodyPoint);
 
+		void renderBone(BodyPointNode *node);
 	public:
 		RelOrientChar(CineticoUI &cinetico);
 

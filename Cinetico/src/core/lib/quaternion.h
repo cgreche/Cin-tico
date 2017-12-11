@@ -94,13 +94,17 @@ namespace cinetico_core {
 			return Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
 		}
 
-
 		Quaternion Quaternion::conjugated() const {
 			return Quaternion(m_w, -m_x, -m_y, -m_z);
 		}
 
 		static float dotProduct(const Quaternion &q1, const Quaternion &q2) {
 			return q1.m_w * q2.m_w + q1.m_x * q2.m_x + q1.m_y * q2.m_y + q1.m_z * q2.m_z;
+		}
+
+		Vector3 Quaternion::rotatedVector(const Vector3& vector) const {
+			Quaternion res = *this * Quaternion(0,vector.x(),vector.y(),vector.z()) * conjugated();
+			return Vector3(res.x(),res.y(),res.z());
 		}
 
 		static Quaternion nlerp(const Quaternion& q1, const Quaternion& q2, float t) {

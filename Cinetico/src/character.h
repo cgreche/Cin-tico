@@ -65,6 +65,8 @@ namespace cinetico {
 
 		BodyPoint::BodyPart bp() const { return m_bpId; }
 		BodyPointNode *parent() const { return m_parent; }
+		int childCount() const { return m_childList.size(); }
+		BodyPointNode *child(int index) const { return m_childList[index]; }
 
 		const cinetico_core::Vector3 &globalPosition() const { return m_globalPosition; }
 		const Quaternion &localOrientation() const { return m_localOrientation; }

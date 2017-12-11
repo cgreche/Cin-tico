@@ -42,7 +42,7 @@ namespace cinetico_core {
 		ActionState m_state;
 		ActionResult m_result;
 		float m_accuracy;
-		std::vector<int> m_results;
+		std::vector<int> m_gestureResults;
 
 		//
 		bool evaluate();
@@ -63,7 +63,7 @@ namespace cinetico_core {
 		void setMaxExecutionTime(float maxExecutionTime) { m_maxExecutionTime = maxExecutionTime; }
 		void setTimeToHold(float timeToHold) { m_timeToHold = timeToHold; }
 
-		void setResult(int gestureId, int result) { m_results[gestureId] = result; }
+		void setGestureResult(int gestureId, int result) { m_gestureResults[gestureId] = result; }
 
 		Exercise &ownerExercise() const { return m_owner; }
 		int id() const { return m_id; }

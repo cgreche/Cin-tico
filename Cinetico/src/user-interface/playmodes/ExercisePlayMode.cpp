@@ -7,6 +7,7 @@
 #include "core/GestureCommandsManager.h"
 #include "humancharacter.h"
 #include "dummycharacter.h"
+#include "RelOrientChar.h"
 #include "render3d/renderengine.h"
 #include "render3d/renderenginehelper.h"
 #include <uilib/lib/time.h>
@@ -27,6 +28,7 @@ namespace cinetico {
 	void ExercisePlayMode::setup() {
 		m_humanChar = new HumanCharacter(*m_cinetico.cineticoUI());
 		m_dummyChar = new DummyCharacter(*m_cinetico.cineticoUI());
+		m_roChar = new RelOrientChar(*m_cinetico.cineticoUI());
 		m_commandsManager = new GestureCommandsManager();
 
 		m_cinetico.bodyTracker()->setTrackableBodyPoints(m_exercise.trackableBodyPoints());
@@ -78,6 +80,7 @@ namespace cinetico {
 			}
 
 			m_humanChar->update();
+			m_roChar->update();
 
 			if(m_exercise.state() == Exercise::Running) {
 				int curAction = m_exercise.currentActionIndex();
@@ -105,6 +108,7 @@ namespace cinetico {
 		str += string::fromFloat(v.z());
 		str += "]\n";
 	}
+
 	unsigned long frameCount = 0;
 	int print = 0;
 	void ExercisePlayMode::render() {
@@ -118,22 +122,21 @@ namespace cinetico {
 		if (m_humanChar) {
 			m_humanChar->render();
 		}
+		if (m_roChar) {
+			m_roChar->setPosition(cinetico_core::Vector3(10, 0, 0));
+			m_roChar->render();
+		}
 
 		m_renderEngine->drawResource(m_instanceTerrain);
 
 		m_renderEngine->setCurrentFont(m_resFontArial);
+		//todo: add to dictionary
 		uilib::string str = "Exercício selecionado: ";
 		str += m_exercise.name().c_str();
 		m_renderEngine->drawText(str.data(), 500, 10, render3d::Color(255, 255, 255, 100));
 
 		int drawX;
 		int drawY;
-
-		Quaternion q(1, 0, 0, 0);
-		cinetico_core::Vector3 euler = q.toEuler();
-
-		cinetico_core::Vector3 euler2 = cinetico_core::Vector3(1.571f, 0, 0);
-		Quaternion q2 = Quaternion::fromEuler(euler2.x(), euler2.y(), euler2.z());
 
 		/*
 		if(frameCount % 100) {
@@ -267,6 +270,8 @@ namespace cinetico {
 			delete m_humanChar;
 		if(m_dummyChar)
 			delete m_dummyChar;
+		if (m_roChar)
+			delete m_roChar;
 		delete m_commandsManager;
 	}
 

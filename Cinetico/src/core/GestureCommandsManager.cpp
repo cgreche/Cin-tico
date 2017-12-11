@@ -35,6 +35,13 @@ namespace cinetico_core {
 		if (!m_body)
 			return;
 
+		for (int i = 0; i < m_gestureCommands.size();) {
+			if (m_gestureCommands[i]->finished())
+				m_gestureCommands.erase(m_gestureCommands.begin() + i);
+			else
+				++i;
+		}
+
 		for (unsigned int i = 0; i < BodyPoint::BodyPartCount; ++i) {
 			if (i == BodyPoint::RightPalm)
 				int a = 1;
@@ -64,13 +71,6 @@ namespace cinetico_core {
 					}
 				}
 			}
-		}
-
-		for (int i = 0; i < m_gestureCommands.size();) {
-			if (m_gestureCommands[i]->finished())
-				m_gestureCommands.erase(m_gestureCommands.begin() + i);
-			else
-				++i;
 		}
 	}
 
@@ -186,7 +186,7 @@ namespace cinetico_core {
 				std::vector<GestureCommand*> actions = filterCommands(BodyPointState::STEADY, bp);
 				if (!actions.empty()) {
 					int gestureResult = meetConditions(gesture, actions[0], distThreshold) ? 1 : 0;
-					action.setResult(i, gestureResult);
+					action.setGestureResult(i, gestureResult);
 				}
 			}
 			else if (gesture->transitionType() == SimpleGesture::FixedMovement) {
@@ -194,8 +194,8 @@ namespace cinetico_core {
 				std::vector<GestureCommand*> actions = filterCommands(BodyPointState::MOVING, bp);
 				if (!actions.empty()) {
 					int gestureResult = meetConditions(gesture, actions[0], distThreshold) ? 1 : 2;
-					if(gestureResult || actions[0]->finished())
-						action.setResult(i, gestureResult);
+					if(gestureResult==1 || actions[0]->finished())
+						action.setGestureResult(i, gestureResult);
 				}
 			}
 		}

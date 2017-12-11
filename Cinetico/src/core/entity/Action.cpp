@@ -20,7 +20,7 @@ namespace cinetico_core {
 	int Action::addGesture(SimpleGesture *gesture) {
 		int id = m_gestures.size();
 		m_gestures.push_back(gesture);
-		m_results.push_back(0);
+		m_gestureResults.push_back(0);
 		return id;
 	}
 
@@ -28,24 +28,27 @@ namespace cinetico_core {
 		m_state = Running;
 		m_result = Missed;
 		m_accuracy = 0.f;
-		for (unsigned int i = 0; i < m_results.size(); ++i)
-			m_results[i] = 0;
+		for (unsigned int i = 0; i < m_gestureResults.size(); ++i)
+			m_gestureResults[i] = 0;
 	}
 
 	void Action::stop() {
 		m_state = Idle;
 		m_accuracy = 0.f;
-		for (unsigned int i = 0; i < m_results.size(); ++i)
-			m_results[i] = 0;
+		for (unsigned int i = 0; i < m_gestureResults.size(); ++i)
+			m_gestureResults[i] = 0;
 	}
 
 	bool Action::evaluate() {
 		float accuracy = 0.f;
 		bool result = true;
-		for (unsigned int i = 0; i < m_results.size(); ++i) {
-			if (m_results[i] == 1)
+		for (unsigned int i = 0; i < m_gestureResults.size(); ++i) {
+			//result 0 = not realized
+			//result 1 = success
+			//result 2 = incorrect
+			if (m_gestureResults[i] == 1)
 				accuracy += 1.f;
-			else if (m_results[i] == 0)
+			else if (m_gestureResults[i] == 0)
 				result = false;
 		}
 
