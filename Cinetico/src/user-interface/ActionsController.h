@@ -62,8 +62,6 @@ namespace cinetico {
 				Button buttonAdd;
 				Button buttonBack;
 
-			Separator separatorContent;
-
 			VerticalLayout layoutContent;
 			//
 				HorizontalLayout layoutContentList;
@@ -99,10 +97,11 @@ namespace cinetico {
 						cTextBox tbValueX;
 						cTextBox tbValueY;
 						cTextBox tbValueZ;
-						//Movement Gesture fields
-						cTextBox minSpeed;
-						cTextBox maxSpeed;
-						Button buttonSaveGesture;
+					//Movement Gesture fields
+					HorizontalLayout layoutMovementGestureData;
+						cTextBox tbMinSpeed;
+						cTextBox tbMaxSpeed;
+					Button buttonSaveGesture;
 
 		Exercise *m_currentExercise;
 		int m_editMode;

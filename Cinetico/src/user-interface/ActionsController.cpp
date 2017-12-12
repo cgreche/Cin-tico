@@ -4,7 +4,6 @@
 #include "cineticoui.h"
 
 #include "core/entity/Action.h"
-
 #include "ActionsController.h"
 
 #include <sstream>
@@ -129,11 +128,6 @@ namespace cinetico {
 	static void buttonCancelAction_onClick(Button &button) {
 		ActionsController *controller = (ActionsController*)button.param();
 		controller->setEditionMode(0);
-	}
-
-	static void comboActionType_onChange(uilib::ComboBox &combo, ComboBoxItem *item) {
-		ActionsController *controller = (ActionsController*)combo.param();
-		controller->m_currentActionTypeSelection = combo.selection();
 	}
 
 	void ActionsController::fillTransitionTypeCombo(cComboBox &combo) {
@@ -483,7 +477,6 @@ namespace cinetico {
 
 		layout.append(title);
 		layout.append(layoutActionButtons);
-		layout.append(separatorContent);
 		layout.append(layoutContent);
 		layout.setMargin(10);
 	}
@@ -494,8 +487,6 @@ namespace cinetico {
 
 	void ActionsController::onViewEnter(ViewParams params) {
 		m_editMode = 0;
-		m_currentActionTypeSelection = -1;
-		m_currentMovementTypeSelection = -1;
 		buttonEdit.setEnabled(false);
 
 		Exercise *exercise = params.get<Exercise*>("exercise");
@@ -517,6 +508,7 @@ namespace cinetico {
 		static int lastActionSelection = -1;
 		static int lastActionType = -1;
 		static int lastSelectedGestureIndex = -1;
+		static int lastTransitionTypeIndex = -1;
 
 		if (m_editMode != lastEditMode) {
 			buttonAdd.setEnabled(m_editMode == 0);
@@ -533,14 +525,12 @@ namespace cinetico {
 				tbValueY.setText("");
 				tbValueZ.setText("");
 			}
-			cbTransitionType.setEnabled(m_selectedGesture != -1);
-//			cbBodyPoint.setEnabled(m_selectedGesture != -1);
-//			cbRefPoint.setEnabled(m_selectedGesture != -1);
-//			cbOperation.setEnabled(m_selectedGesture != -1);
-			tbValueX.setEnabled(m_selectedGesture != -1);
-//			tbValueY.setEnabled(m_selectedGesture != -1);
-//			tbValueZ.setEnabled(m_selectedGesture != -1);
-			//layoutGesture.setEnabled(m_selectedGesture >= 0);
+			layoutGesture.setEnabled(m_selectedGesture >= 0);
+		}
+
+		int transitionTypeIndex = cbTransitionType.selection();
+		if (lastTransitionTypeIndex != transitionTypeIndex) {
+			layoutMovementGestureData.setVisible(transitionTypeIndex == SimpleGesture::FixedMovement);
 		}
 
 		if (m_currentActionSelection != lastActionSelection) {
@@ -548,8 +538,7 @@ namespace cinetico {
 		}
 
 		lastEditMode = m_editMode;
-		lastActionSelection = m_currentActionSelection;
-		lastActionType = m_currentActionTypeSelection;
+		lastTransitionTypeIndex = transitionTypeIndex;
 		lastSelectedGestureIndex = m_selectedGesture;
 	}
 
@@ -580,6 +569,8 @@ namespace cinetico {
 		tbValueX.setText("");
 		tbValueY.setText("");
 		tbValueZ.setText("");
+		tbMinSpeed.setText("");
+		tbMaxSpeed.setText("");
 
 		if (!gesture)
 			return;
@@ -594,7 +585,10 @@ namespace cinetico {
 
 		if (gesture->transitionType() == SimpleGesture::FixedMovement) {
 			MovementGesture *movementGesture = reinterpret_cast<MovementGesture*>(gesture);
-			//todo: set movement gesture fields
+			
+			//todo: set movement type
+			tbMinSpeed.setText(string::fromFloat(movementGesture->minSpeed()));
+			tbMaxSpeed.setText(string::fromFloat(movementGesture->maxSpeed()));
 		}
 
 	}

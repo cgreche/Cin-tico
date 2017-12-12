@@ -117,32 +117,6 @@ namespace cinetico_core {
 			bool finished() const { return m_finished; }
 	};
 
-	class PositionGestureCommand : public GestureCommand {
-		MovementGestureCommand *m_transitionGesture;
-		uilib::u64 m_holdTime;
-
-	public:
-		PositionGestureCommand(MovementGestureCommand* transitionGesture, const BodyPointState &bodyPointState)
-			: GestureCommand(bodyPointState) {
-			m_transitionGesture = transitionGesture;
-			m_holdTime = bodyPointState.holdTime();
-		}
-
-		virtual PositionGestureCommand *positionGestureCommand() { return this; }
-
-		virtual void update(const BodyPointState &bodyPointState) {
-			GestureCommand::update(bodyPointState);
-			m_holdTime = bodyPointState.holdTime();
-		}
-
-		virtual void finish(uilib::u64 time) {
-			m_transitionGesture->finish(time);
-			this->GestureCommand::finish(time);
-		}
-
-		uilib::u64 holdTime() const { return m_holdTime; }
-	};
-
 	class MovementGestureCommand : public GestureCommand {
 		cinetico_core::Vector3 m_currentDirection;
 		cinetico_core::Vector3 m_currentPosition;
@@ -168,7 +142,33 @@ namespace cinetico_core {
 		}
 
 		const Vector3 &currentPosition() const { return m_currentPosition; }
+	};
 
+	class PositionGestureCommand : public GestureCommand {
+		MovementGestureCommand *m_transitionGesture;
+		uilib::u64 m_holdTime;
+
+	public:
+		PositionGestureCommand(MovementGestureCommand* transitionGesture, const BodyPointState &bodyPointState)
+			: GestureCommand(bodyPointState) {
+			m_transitionGesture = transitionGesture;
+			m_holdTime = bodyPointState.holdTime();
+		}
+
+		virtual PositionGestureCommand *positionGestureCommand() { return this; }
+
+		virtual void update(const BodyPointState &bodyPointState) {
+			GestureCommand::update(bodyPointState);
+			m_holdTime = bodyPointState.holdTime();
+		}
+
+		virtual void finish(uilib::u64 time) {
+			if(m_transitionGesture)
+				m_transitionGesture->finish(time);
+			this->GestureCommand::finish(time);
+		}
+
+		uilib::u64 holdTime() const { return m_holdTime; }
 	};
 
 	class GestureCommandsManager {
