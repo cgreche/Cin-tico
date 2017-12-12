@@ -104,7 +104,7 @@ namespace cinetico_core {
 				m_lastUpdateTime = bodyPointState.lastUpdateTime();
 			}
 
-			void finish(uilib::u64 time) {
+			virtual void finish(uilib::u64 time) {
 				m_finished = true;
 				m_endTime = time;
 			}
@@ -118,12 +118,13 @@ namespace cinetico_core {
 	};
 
 	class PositionGestureCommand : public GestureCommand {
-
+		MovementGestureCommand *m_transitionGesture;
 		uilib::u64 m_holdTime;
 
 	public:
-		PositionGestureCommand(const BodyPointState &bodyPointState)
+		PositionGestureCommand(MovementGestureCommand* transitionGesture, const BodyPointState &bodyPointState)
 			: GestureCommand(bodyPointState) {
+			m_transitionGesture = transitionGesture;
 			m_holdTime = bodyPointState.holdTime();
 		}
 
@@ -132,6 +133,11 @@ namespace cinetico_core {
 		virtual void update(const BodyPointState &bodyPointState) {
 			GestureCommand::update(bodyPointState);
 			m_holdTime = bodyPointState.holdTime();
+		}
+
+		virtual void finish(uilib::u64 time) {
+			m_transitionGesture->finish(time);
+			this->GestureCommand::finish(time);
 		}
 
 		uilib::u64 holdTime() const { return m_holdTime; }

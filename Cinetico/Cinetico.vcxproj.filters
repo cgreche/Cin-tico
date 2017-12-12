@@ -619,9 +619,6 @@
     <ClInclude Include="src\core\GestureCommandsManager.h">
       <Filter>src\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\HandHandler.h">
-      <Filter>src\core</Filter>
-    </ClInclude>
     <ClInclude Include="src\user-interface\DebugController.h">
       <Filter>src\user-interface</Filter>
     </ClInclude>
@@ -982,9 +979,6 @@
       <Filter>src\entity</Filter>
     </ClCompile>
     <ClCompile Include="src\core\GestureCommandsManager.cpp">
-      <Filter>src\core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\HandHandler.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\DebugController.cpp">

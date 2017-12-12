@@ -99,7 +99,9 @@ namespace cinetico {
 						cTextBox tbValueX;
 						cTextBox tbValueY;
 						cTextBox tbValueZ;
-						//todo: add MovementGesture fields
+						//Movement Gesture fields
+						cTextBox minSpeed;
+						cTextBox maxSpeed;
 						Button buttonSaveGesture;
 
 		Exercise *m_currentExercise;

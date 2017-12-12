@@ -16,7 +16,7 @@ namespace cinetico {
 		mainWindow->onClickUserLoginName();
 	}
 
-	static void buttonLogoff_onClick(Button &button) {
+	static void buttonLogoff_onClick(cButton &button) {
 		MainWindow* mainWindow = (MainWindow *)button.param();
 		mainWindow->onClickLogoff();
 	}
@@ -56,14 +56,14 @@ namespace cinetico {
 		labelAppname.setFont(ViewTemplate::AppTitleFont);
 
 		labelUsername.setText("Usuário: ");
-		labelUsername.setTextColor(ViewTemplate::LoggedUserInfoColor);
+		labelUsername.setTextColor(ViewTemplate::AppTitleColor);
 		linkUsername.setTextColor(ViewTemplate::LoggedUserInfoColor);
 		linkUsername.setHoverColor(ViewTemplate::LoggedUserInfoHoverColor);
 		linkUsername.setParam(this);
 		linkUsername.setOnClick(linkUserLoginName_onClick);
 		buttonLogoff.setText("Sair");
 		buttonLogoff.setParam(this);
-		buttonLogoff.setOnClick(buttonLogoff_onClick);
+		buttonLogoff.addOnAction(buttonLogoff_onClick);
 
 		layoutLoginInfo2.append(labelUsername);
 		layoutLoginInfo2.append(linkUsername);

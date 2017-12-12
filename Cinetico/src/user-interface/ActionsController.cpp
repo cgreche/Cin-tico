@@ -533,7 +533,14 @@ namespace cinetico {
 				tbValueY.setText("");
 				tbValueZ.setText("");
 			}
-			layoutGesture.setEnabled(m_selectedGesture >= 0);
+			cbTransitionType.setEnabled(m_selectedGesture != -1);
+//			cbBodyPoint.setEnabled(m_selectedGesture != -1);
+//			cbRefPoint.setEnabled(m_selectedGesture != -1);
+//			cbOperation.setEnabled(m_selectedGesture != -1);
+			tbValueX.setEnabled(m_selectedGesture != -1);
+//			tbValueY.setEnabled(m_selectedGesture != -1);
+//			tbValueZ.setEnabled(m_selectedGesture != -1);
+			//layoutGesture.setEnabled(m_selectedGesture >= 0);
 		}
 
 		if (m_currentActionSelection != lastActionSelection) {
@@ -614,8 +621,6 @@ namespace cinetico {
 			delete gestureRow;
 		}
 		*/
-		//update layout
-		layout.setSize(layout.size());
 	}
 
 	void ActionsController::setEditionMode(int mode) {
@@ -630,6 +635,7 @@ namespace cinetico {
 			updateActionList();
 		}
 		else if (mode == 1 || mode == 2) {
+			
 			layoutContent.append(layoutActionData);
 			
 			// Clear gestures from last edit operation
@@ -640,6 +646,7 @@ namespace cinetico {
 				}
 				gestureItems.clear();
 			}
+
 			m_selectedGesture = -1;
 
 			if (mode == 2) {
@@ -670,7 +677,7 @@ namespace cinetico {
 					GestureItem *item = addNewGesture(copy);
 				}
 
-				layout.setSize(layout.size());
+				layout.update();
 			}
 			else {
 				//inserting new
@@ -684,6 +691,7 @@ namespace cinetico {
 				cbRefPoint.setSelection(-1);
 				cbOperation.setSelection(-1);
 			}
+
 		}
 
 		m_editMode = mode;

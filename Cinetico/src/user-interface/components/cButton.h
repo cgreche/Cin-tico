@@ -14,6 +14,7 @@ namespace cinetico {
 	private:
 		virtual void onMouseEnterEvent(MouseEvent &event);
 		virtual void onMouseLeaveEvent(MouseEvent &event);
+		virtual void onMousePressEvent(MouseEvent &event);
 		virtual void onMouseReleaseEvent(MouseEvent &event);
 
 		std::vector<cButtonActionFunc> m_callbacks;
@@ -23,6 +24,8 @@ namespace cinetico {
 		void addOnAction(cButtonActionFunc callback) {
 			m_callbacks.push_back(callback);
 		}
+
+		virtual Size getAutoSize();
 
 	};
 

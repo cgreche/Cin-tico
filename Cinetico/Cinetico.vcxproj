@@ -32,7 +32,6 @@
     <ClInclude Include="src\core\entity\MovementGesture.h" />
     <ClInclude Include="src\core\entity\SimpleGesture.h" />
     <ClInclude Include="src\core\GestureCommandsManager.h" />
-    <ClInclude Include="src\core\HandHandler.h" />
     <ClInclude Include="src\core\kinectsensor.h" />
     <ClInclude Include="src\core\lib\quaternion.h" />
     <ClInclude Include="src\core\lib\vector3.h" />
@@ -211,7 +210,6 @@
     <ClCompile Include="src\core\entity\MovementGesture.cpp" />
     <ClCompile Include="src\core\entity\SimpleGesture.cpp" />
     <ClCompile Include="src\core\GestureCommandsManager.cpp" />
-    <ClCompile Include="src\core\HandHandler.cpp" />
     <ClCompile Include="src\core\kinectsensor.cpp" />
     <ClCompile Include="src\core\Sensor.cpp" />
     <ClCompile Include="src\database\sqlite\sqlitedatabase.cpp" />

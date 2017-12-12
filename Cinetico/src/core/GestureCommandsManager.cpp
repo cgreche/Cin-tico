@@ -56,9 +56,10 @@ namespace cinetico_core {
 					if (posGesture.size() > 0)
 						posGesture[0]->update(m_trackedBps[i]);
 					else {
+						MovementGestureCommand* transitionGesture = NULL;
 						if (movGesture.size() > 0)
-							movGesture[0]->finish(curTime);
-						m_gestureCommands.push_back(new PositionGestureCommand(m_trackedBps[i]));
+							transitionGesture = (MovementGestureCommand*)movGesture[0];
+						m_gestureCommands.push_back(new PositionGestureCommand(transitionGesture,m_trackedBps[i]));
 					}
 				}
 				else if (gestureState == BodyPointState::MOVING) {

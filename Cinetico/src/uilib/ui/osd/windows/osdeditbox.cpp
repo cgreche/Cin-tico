@@ -368,7 +368,7 @@ namespace uilib {
 			//return 0;
 		}
 
-		if (msg == WM_CTLCOLOREDIT)
+		else if (msg == WM_CTLCOLOREDIT)
 		{
 			Color textColor = ref().textColor();
 
@@ -391,15 +391,19 @@ namespace uilib {
 			return (LRESULT)backBrush;
 		}
 
-		if (msg == WM_CTLCOLORSTATIC) {
+		else if (msg == WM_CTLCOLORSTATIC) {
 			Color textColor = ref().textColor();
 			::SetTextColor((HDC)wParam, RGB(textColor.red(), textColor.green(), textColor.blue()));
 			if (ref().parent()) {
 				return (LRESULT)ref().parent()->osdRef().backgroundBrush();
 			}
+			return 0;
 		}
 
-		if (msg == WM_SETCURSOR) {
+		else if (msg == WM_SETCURSOR) {
+			int a = 1;
+		}
+		else {
 			int a = 1;
 		}
 

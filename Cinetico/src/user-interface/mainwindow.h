@@ -25,7 +25,7 @@ namespace cinetico {
 					HorizontalLayout layoutLoginInfo2;
 						Label labelUsername;
 						TextLink linkUsername;
-						Button buttonLogoff;
+						cButton buttonLogoff;
 
 		Label bgContent;
 		VerticalLayout layoutContent;
@@ -50,7 +50,7 @@ namespace cinetico {
 		Cinetico &m_cinetico;
 
 		friend void linkUserLoginName_onClick(TextLink &link);
-		friend void buttonLogoff_onClick(Button &button);
+		friend void buttonLogoff_onClick(cButton &button);
 		friend void linkPortugues_onClick(TextLink &link);
 		friend void linkEnglish_onClick(TextLink &link);
 		friend void linkEspanol_onClick(TextLink &link);
