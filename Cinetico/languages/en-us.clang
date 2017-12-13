@@ -72,8 +72,8 @@
 	<string id="DefaultActionNo">No</string>
 	<string id="DefaultActionBack">Back</string>
 	<!-- -->
-	<string id="DefaultActionQuestionDelete">Do you want to delete this register?
-	This operation cannot be undone.</string>
+	<string id="DefaultActionQuestionDelete">Are you sure want to delete this register?
+This operation cannot be undone.</string>
 	
 	<!-- -->
 	
@@ -110,6 +110,12 @@
 	<string id="MovementGestureMinSpeed">Minimum execution speed (cm/s²)</string>
 	<string id="MovementGestureMaxSpeed">Maximum execution speed (cm/s²)</string>
 	
+	<!--General Config-->
+	<string id="GeneralConfigCoreDistanceThreshold">Position distance threshold</string>
+	<string id="GeneralConfigAdapter">Device</string>
+	<string id="GeneralConfigResolution">Resolution</string>
+	<string id="GeneralConfigFullscreen">Fullscreen</string>
+	<string id="GeneralConfigAntialiasing">Antialiasing</string>
 	
 	<!-- -->
 	<!--Views-->
@@ -148,12 +154,12 @@
 	<string id="UserProfileViewErrorPasswordWrongCurrentPassword">Incorrect current password.</string>
 	<string id="UserProfileViewErrorPasswordConfirmationNotEqual">Password confirmation is not equal as current password.</string>
 	<string id="UserProfileViewQuestionDeactivateConfirmation">Are you sure you want to disable your User profile?
-	This operation cannot be undone.</string>
+This operation cannot be undone.</string>
 	
 	<!-- -->
 	<!--Exercises-->
 	<string id="ExercisesViewTitle">Exercises</string>
-	<string id="ExercisesViewDesc">Create, edit, record or do an exercício.</string>
+	<string id="ExercisesViewDesc">Create, edit, record or do an Exercise.</string>
 	<string id="ExercisesViewActionCreate">Create Exercise</string>
 	<string id="ExercisesViewActionManageActions">Manage actions</string>
 	<string id="ExercisesViewActionDoExercise">Do selected exercise</string>
@@ -169,7 +175,12 @@
 	<string id="ActionsViewDesc">Add or edit actions for an Exercise.</string>
 	<string id="ActionsViewSectionBasicData">Base action information.</string>
 	<string id="ActionsViewSectionSpecificData">Specific information for the chosen action type.</string>
-	
+	<!-- -->
+	<!--General Config-->
+	<string id="GeneralConfigViewTitle">General settings</string>
+	<string id="GeneralConfigViewDesc">Modify general system settings.</string>
+	<string id="GeneralConfigViewSectionCore">Core Settings</string>
+	<string id="GeneralConfigViewSectionGraphics">Graphics Settings</string>
 </language>
 
 

@@ -35,8 +35,12 @@ namespace cinetico {
 		buttonSave.setText(m_dictionary.getString(Dictionary::DefaultActionSave));
 		buttonBack.setText(m_dictionary.getString(Dictionary::DefaultActionBack));
 
-		tbPosThreshold.setLabel("Position Threshold");
+		//todo: complete dictionary
 
+		sepCore.setText(m_dictionary.getString(Dictionary::GeneralConfigViewSectionCore));
+		tbDistThreshold.setLabel(m_dictionary.getString(Dictionary::GeneralConfigCoreDistanceThreshold));
+
+		sepGraphics.setText(m_dictionary.getString(Dictionary::GeneralConfigViewSectionGraphics));
 		cbAdapter.setLabel(m_dictionary.getString(Dictionary::GeneralConfigAdapter));
 		cbResolution.setLabel(m_dictionary.getString(Dictionary::GeneralConfigResolution));
 		chkFullscreen.setText(m_dictionary.getString(Dictionary::GeneralConfigFullscreen));
@@ -53,7 +57,7 @@ namespace cinetico {
 		layoutActionButtons.append(buttonSave);
 		layoutActionButtons.append(buttonBack);
 
-		layoutSensor.append(tbPosThreshold);
+		layoutCore.append(tbDistThreshold);
 
 		layoutGraphics.append(cbAdapter);
 		layoutGraphics.append(cbResolution);
@@ -62,8 +66,8 @@ namespace cinetico {
 
 		layout.append(title);
 		layout.append(layoutActionButtons);
-		layout.append(sepSensor);
-		layout.append(layoutSensor);
+		layout.append(sepCore);
+		layout.append(layoutCore);
 		layout.append(sepGraphics);
 		layout.append(layoutGraphics);
 		layout.setMargin(10);
@@ -90,6 +94,8 @@ namespace cinetico {
 			resolution += string::fromInteger(displayMode.frequency);
 			cbResolution.appendItem(resolution, (void*)&displayMode);
 		}
+
+		//todo: set default values and selection
 	}
 
 	void GeneralConfigController::onViewQuit() {

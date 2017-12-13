@@ -131,6 +131,7 @@ namespace cinetico {
 			, MovementGestureMaxSpeed
 
 			//General Config
+			, GeneralConfigCoreDistanceThreshold
 			, GeneralConfigAdapter
 			, GeneralConfigResolution
 			, GeneralConfigFullscreen
@@ -195,6 +196,8 @@ namespace cinetico {
 			//General Config
 			, GeneralConfigViewTitle
 			, GeneralConfigViewDesc
+			, GeneralConfigViewSectionCore
+			, GeneralConfigViewSectionGraphics
 
 			//
 			, StringIDCount

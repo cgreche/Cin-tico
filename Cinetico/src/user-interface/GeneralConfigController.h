@@ -22,9 +22,9 @@ namespace cinetico {
 				Button buttonSave;
 				Button buttonBack;
 
-			cSeparator sepSensor;
-			VerticalLayout layoutSensor;
-				cTextBox tbPosThreshold;
+			cSeparator sepCore;
+			VerticalLayout layoutCore;
+				cTextBox tbDistThreshold;
 
 			cSeparator sepGraphics;
 			VerticalLayout layoutGraphics;

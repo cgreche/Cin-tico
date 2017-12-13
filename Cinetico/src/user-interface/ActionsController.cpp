@@ -512,6 +512,7 @@ namespace cinetico {
 		tbValueX.setText("");
 		tbValueY.setText("");
 		tbValueZ.setText("");
+		layoutMovementGestureData.setVisible(false);
 	}
 
 	void ActionsController::onViewTick() {
