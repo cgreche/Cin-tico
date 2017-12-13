@@ -62,6 +62,7 @@ namespace cinetico {
 				Button buttonAdd;
 				Button buttonBack;
 
+			cSeparator sepContent;
 			VerticalLayout layoutContent;
 			//
 				HorizontalLayout layoutContentList;
@@ -89,18 +90,21 @@ namespace cinetico {
 						Button buttonDelGesture;
 					HorizontalLayout layoutGestureItems;
 					std::vector<GestureItem *> gestureItems;
-					HorizontalLayout layoutGesture;
-						cComboBox cbTransitionType;
-						cComboBox cbBodyPoint;
-						cComboBox cbRefPoint;
-						cComboBox cbOperation;
-						cTextBox tbValueX;
-						cTextBox tbValueY;
-						cTextBox tbValueZ;
-					//Movement Gesture fields
-					HorizontalLayout layoutMovementGestureData;
-						cTextBox tbMinSpeed;
-						cTextBox tbMaxSpeed;
+					VerticalLayout layoutGestureData;
+						HorizontalLayout layoutGestureRow1;
+							cComboBox cbTransitionType;
+							cComboBox cbBodyPoint;
+							cComboBox cbRefPoint;
+						HorizontalLayout layoutGestureRow2;
+							cComboBox cbOperation;
+							cTextBox tbValueX;
+							cTextBox tbValueY;
+							cTextBox tbValueZ;
+						//Movement Gesture fields
+						HorizontalLayout layoutMovementGestureData;
+							cComboBox cbMovementType;
+							cTextBox tbMinSpeed;
+							cTextBox tbMaxSpeed;
 					Button buttonSaveGesture;
 
 		Exercise *m_currentExercise;

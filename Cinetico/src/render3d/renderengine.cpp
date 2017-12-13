@@ -8,6 +8,10 @@ namespace render3d {
 		m_currentFont = NULL;
 	}
 
+	RenderEngine::~RenderEngine() {
+
+	}
+
 	int RenderEngine::newResource(unsigned int vertexCount, Vector3 *vertices, unsigned int indexCount, int *indices) {
 		int curId = m_resources.size();
 		ResourceData *resData = new ResourceData(this, curId);

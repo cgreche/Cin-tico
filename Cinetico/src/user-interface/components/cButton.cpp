@@ -36,8 +36,8 @@ namespace cinetico {
 		Color &controlLabelColor = ViewTemplate::ControlsLabelColor;
 
 		setFont(controlsLabelFont);
-		setTextColor(Color(0x21, 0x21, 0x21));
-		setBackgroundColor(ViewTemplate::AppTitleColor);
+		setTextColor(ViewTemplate::AppTitleColor);
+		setBackgroundColor(Color(0x21, 0x21, 0x21));
 		setTransparent(false);
 		setStyle(style() | CS_Border);
 		setAlignment(Label::HCenter | Label::VCenter);

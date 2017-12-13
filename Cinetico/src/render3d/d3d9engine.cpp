@@ -30,9 +30,47 @@ namespace render3d {
 	D3D9Engine::D3D9Engine()
 	{
 		m_hwnd = NULL;
-		m_d3d9 = NULL;
 		m_device = NULL;
 		m_currentFont = NULL;
+
+		LPDIRECT3D9 d3d9 = ::Direct3DCreate9(D3D_SDK_VERSION);
+		if (!d3d9) {
+			int failed = 1;
+		}
+
+		UINT adapterCount = d3d9->GetAdapterCount();
+		for (UINT i = 0; i < adapterCount; ++i) {
+			D3DADAPTER_IDENTIFIER9 identifier;
+			d3d9->GetAdapterIdentifier(i, 0, &identifier);
+			int a = 1;
+
+			D3DDISPLAYMODE displayMode;
+			d3d9->GetAdapterDisplayMode(i, &displayMode);
+
+			Adapter _a;
+			_a.name = identifier.Description;
+			_a.internalData = (void*)i;
+			m_adapterList.push_back(_a);
+
+			UINT adapterModeCount = d3d9->GetAdapterModeCount(i, displayMode.Format);
+			for (UINT j = 0; j < adapterModeCount; ++j) {
+				D3DDISPLAYMODE mode;
+				d3d9->EnumAdapterModes(i, displayMode.Format, j, &mode);
+
+				DisplayMode _dm;
+				_dm.width = mode.Width;
+				_dm.height = mode.Height;
+				_dm.frequency = mode.RefreshRate;
+				m_displayModeList.push_back(_dm);
+			}
+		}
+
+		m_d3d9 = d3d9;
+	}
+
+	D3D9Engine::~D3D9Engine() {
+		if (m_d3d9)
+			m_d3d9->Release();
 	}
 
 	void D3D9Engine::configure(void *options)
@@ -44,41 +82,42 @@ namespace render3d {
 	void D3D9Engine::init()
 	{
 		HRESULT hr;
-		LPDIRECT3D9 d3d9 = ::Direct3DCreate9(D3D_SDK_VERSION);
-		if (!d3d9) {
-			int failed = 1;
-		}
 
 		RECT clientRect;
 		::GetClientRect(m_hwnd, &clientRect);
 
 		D3DPRESENT_PARAMETERS d3dpp = { 0 };
 
-		d3dpp.BackBufferWidth = clientRect.right - clientRect.left;
-		d3dpp.BackBufferHeight = clientRect.bottom - clientRect.top;
+		d3dpp.BackBufferWidth = m_config.displaymode().width;
+		d3dpp.BackBufferHeight = m_config.displaymode().height;
 		d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
 		d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 		d3dpp.BackBufferCount = 2;
 		d3dpp.hDeviceWindow = m_hwnd;
-		d3dpp.Windowed = true;
+		d3dpp.Windowed = !m_config.fullscreen();
 		d3dpp.EnableAutoDepthStencil = TRUE;
 		d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 		d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
+		if (m_config.antialiasing()) {
+			d3dpp.MultiSampleType = D3DMULTISAMPLE_4_SAMPLES;
+			d3dpp.MultiSampleQuality = 0;
+		}
+
 		LPDIRECT3DDEVICE9 device;
-		hr = d3d9->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hwnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &device);
+		int adapter = (int)m_config.adapter().internalData;
+		if (adapter == -1)
+			adapter = D3DADAPTER_DEFAULT;
+		hr = m_d3d9->CreateDevice(adapter, D3DDEVTYPE_HAL, m_hwnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &device);
 		if (FAILED(hr)) {
 			int a = 1;
 		}
 
-		m_d3d9 = d3d9;
 		m_device = device;
 
 
 		D3DXMATRIX projection_matrix;
 		float aspect;
-
 		aspect = ((float)d3dpp.BackBufferWidth / (float)d3dpp.BackBufferHeight);
-
 		D3DXMatrixPerspectiveFovLH(&projection_matrix, //Result Matrix
 			D3DX_PI / 4,          //Field of View, in radians.
 			aspect,             //Aspect ratio
@@ -92,10 +131,23 @@ namespace render3d {
 
 	void D3D9Engine::destroy()
 	{
+		for (ResourceData *resourceData : m_resources)
+			releaseInternalResource(resourceData);
+		for (Camera *camera : m_cameras)
+			releaseInternalCamera(camera);
+		for (Viewport *viewport : m_viewports)
+			releaseInternalViewport(viewport);
+		for (ResourceInstance *resInstance : m_instances)
+			releaseInternalResourceInstance(resInstance);
+		for (FontResource *fontResource : m_fontResources)
+			releaseInternalFontResource(fontResource);
+		for (TextResource *textResource : m_textResources)
+			releaseInternalTextResource(textResource);
+
+		HRESULT hr;
 		if (m_device)
-			m_device->Release();
-		if (m_d3d9)
-			m_d3d9->Release();
+			hr = m_device->Release();
+		int a = S_OK;
 	}
 
 	void D3D9Engine::beginScene()
@@ -174,6 +226,14 @@ namespace render3d {
 		resData->setDirtyFlags(0);
 	}
 
+	void D3D9Engine::releaseInternalResource(ResourceData *resData) {
+		D3D9ResData *internalData = (D3D9ResData*)resData->internalData();
+		internalData->vertexBuffer->Release();
+		internalData->indexBuffer->Release();
+		internalData->vertexDeclaration->Release();
+		delete internalData;
+	}
+
 	void D3D9Engine::updateInternalResourceInstanceData(ResourceInstance *resInstance) {
 		unsigned long dirty = resInstance->dirtyFlags();
 		D3D9ResInstanceData *data = (D3D9ResInstanceData *)resInstance->internalData();
@@ -220,6 +280,11 @@ namespace render3d {
 		resInstance->setDirtyFlags(0);
 	}
 
+	void D3D9Engine::releaseInternalResourceInstance(ResourceInstance *resInstance) {
+		D3D9ResInstanceData *data = (D3D9ResInstanceData*)resInstance->internalData();
+		delete data;
+	}
+
 	const float PI = 3.14159f;
 	void D3D9Engine::updateInternalCamera(Camera *camera) {
 		D3DXMATRIX temp;
@@ -253,12 +318,22 @@ namespace render3d {
 		}
 	}
 
+	void D3D9Engine::releaseInternalCamera(Camera *camera) {
+		D3D9CameraData *data = (D3D9CameraData*)camera->internalData();
+		delete data;
+	}
+
 	void D3D9Engine::updateInternalViewport(Viewport *viewport) {
 		D3DVIEWPORT9 *data = (D3DVIEWPORT9*)viewport->internalData();
 		data->X = viewport->x();
 		data->Y = viewport->y();
 		data->Width = viewport->width();
 		data->Height = viewport->height();
+	}
+
+	void D3D9Engine::releaseInternalViewport(Viewport *viewport) {
+		D3DVIEWPORT9 *data = (D3DVIEWPORT9*)viewport->internalData();
+		delete data;
 	}
 
 	void D3D9Engine::setViewFromCamera(Camera *camera) {
@@ -371,9 +446,19 @@ namespace render3d {
 		}
 		return NULL;
 	}
+	
+	void D3D9Engine::releaseInternalFontResource(FontResource *font) {
+		ID3DXFont *d3dxFont = (ID3DXFont*)font->internalData();
+		HRESULT hr = d3dxFont->Release();
+		int a = 1;
+	}
 
 	void *D3D9Engine::newInternalTextResource(TextResource *text) {
 		return NULL;
+	}
+
+	void D3D9Engine::releaseInternalTextResource(TextResource *text) {
+		return;
 	}
 
 	void D3D9Engine::setCurrentInternalCamera(Camera *camera)

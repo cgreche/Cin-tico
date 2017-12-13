@@ -25,9 +25,19 @@ namespace cinetico {
 
 		PlayMode::PlayModeID playModeId = (PlayMode::PlayModeID)params.get<int>("play_mode");
 
+		//Save screen configuration
+		Size frameSize = m_cineticoUI.mainWindow()->getFrameSize();
+		bool fullscreen = m_cineticoUI.mainWindow()->visibilityMode() == uilib::Fullscreen;
+		m_oldWidth = frameSize.width();
+		m_oldHeight = frameSize.height();
+		m_oldFullscreen = fullscreen;
+
 		m_renderEngine = m_cineticoUI.renderEngine();
 		m_renderEngineHelper = m_cineticoUI.renderEngineHelper();
+		RenderEngine::Config &config = m_renderEngine->config();
+		m_cineticoUI.setViewResolution(config.displaymode().width, config.displaymode().height, config.fullscreen());
 		m_cineticoUI.setHeaderContentFooterVisible(false,false,false);
+		m_renderEngine->init();
 
 		PlayMode *playMode = NULL;
 
@@ -44,15 +54,6 @@ namespace cinetico {
 		m_playingMode = playMode;
 
 		m_cinetico.sensor()->initialize();
-
-		//Save screen configuration
-		Size frameSize = m_cineticoUI.mainWindow()->getFrameSize();
-		bool fullscreen = m_cineticoUI.mainWindow()->visibilityMode() == uilib::Fullscreen;
-		m_oldWidth = frameSize.width();
-		m_oldHeight = frameSize.height();
-		m_oldFullscreen = fullscreen;
-
-		m_cineticoUI.setViewResolution(1280, 768, false);
 	}
 
 	void ExerciseRealizationController::onViewTick() {
@@ -77,8 +78,9 @@ namespace cinetico {
 		m_cineticoUI.setHeaderContentFooterVisible(true,true,true);
 		if (m_playingMode)
 			m_playingMode->cleanUp();
-		m_cineticoUI.setViewResolution(m_oldWidth, m_oldHeight, m_oldFullscreen);
+		m_renderEngine->destroy();
 		m_cinetico.sensor()->finalize();
+		m_cineticoUI.setViewResolution(m_oldWidth, m_oldHeight, m_oldFullscreen);
 	}
 
 	void ExerciseRealizationController::step() {

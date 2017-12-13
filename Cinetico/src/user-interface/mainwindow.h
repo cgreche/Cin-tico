@@ -35,6 +35,7 @@ namespace cinetico {
 			VerticalLayout layoutAuthorInfo;
 				Label labelAuthor;
 			VerticalLayout layoutOptions;
+				Button buttonConfig;
 				Button buttonDebugView;
 				Button buttonDebugMode;
 			VerticalLayout layoutLanguages;
@@ -54,6 +55,7 @@ namespace cinetico {
 		friend void linkPortugues_onClick(TextLink &link);
 		friend void linkEnglish_onClick(TextLink &link);
 		friend void linkEspanol_onClick(TextLink &link);
+		friend void buttonConfig_onClick(Button &button);
 		friend void buttonGoToDebugView_onClick(Button &button);
 		friend void buttonGoToDebugMode_onClick(Button &button);
 		void onClickUserLoginName();

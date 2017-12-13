@@ -11,6 +11,7 @@
 #include "user-interface/ExercisesController.h"
 #include "user-interface/ActionsController.h"
 #include "user-interface/ExerciseRealizationController.h"
+#include "user-interface/GeneralConfigController.h"
 #include "user-interface/DebugController.h"
 
 using namespace cinetico_core;
@@ -34,7 +35,6 @@ namespace cinetico {
 		}
 	};
 
-
 	CineticoUI::CineticoUI(Cinetico &cinetico)
 		: m_cinetico(cinetico) {
 		m_currentView = INVALID;
@@ -53,7 +53,6 @@ namespace cinetico {
 		m_views.push_back({ id,name,controller });
 	}
 
-
 	void CineticoUI::setupWindow() {
 		m_mainWindow = new MainWindow(m_cinetico);
 		m_mainWindow->setFrameSize(Size(winWidth, winHeight));
@@ -63,9 +62,11 @@ namespace cinetico {
 	{
 		m_renderEngine = RenderEngineFactory::getRenderEngine();
 		m_renderEngine->configure(m_mainWindow->osdRef().handle());
-		m_renderEngine->init();
 		m_renderEngineHelper = new RenderEngineHelper(*m_renderEngine);
-		m_viewport = m_renderEngine->newViewport(0,0, winWidth, winHeight);
+		int width = m_renderEngine->config().displaymode().width;
+		int height = m_renderEngine->config().displaymode().height;
+		bool fullscreen = m_renderEngine->config().fullscreen();
+		m_viewport = m_renderEngine->newViewport(0, 0, width, height);
 	}
 
 	void CineticoUI::setup() {
@@ -77,6 +78,7 @@ namespace cinetico {
 		registerView(EXERCISES, dictionary->getString(Dictionary::ExercisesViewTitle).data(), new ExercisesController(*this));
 		registerView(ACTIONS, dictionary->getString(Dictionary::ActionsViewTitle).data(), new ActionsController(*this));
 		registerView(PLAYING, "Exercise Realization", new ExerciseRealizationController(*this));
+		registerView(GENERAL_CONFIG, "Configurações Gerais", new GeneralConfigController(*this));
 		registerView(DEBUG, "Debug mode", new DebugController(*this));
 
 		setupWindow();
@@ -122,8 +124,6 @@ namespace cinetico {
 		//update Window
 		m_mainWindow->setSize(m_mainWindow->size());
 		Size frameSize = m_mainWindow->getFrameSize();
-		Viewport *viewport = m_renderEngine->viewport(m_viewport);
-		viewport->setSize(frameSize.width(), frameSize.height());
 	}
 
 	void CineticoUI::step() {
@@ -139,9 +139,10 @@ namespace cinetico {
 
 	void CineticoUI::setViewResolution(int width, int height, bool fullscreen) {
 		Viewport *viewport = m_renderEngine->viewport(m_viewport);
-		//viewport->setSize(width, height);
-		m_mainWindow->setFrameSize(Size(width, height));
+		viewport->setSize(width, height);
 		m_mainWindow->setVisibilityMode(fullscreen ? uilib::Fullscreen : uilib::ShowNormal);
+		m_mainWindow->setFrameSize(Size(width, height));
+		
 	}
 
 	void CineticoUI::setHeaderContentFooterVisible(bool headerVisible, bool contentVisible, bool footerVisible) {

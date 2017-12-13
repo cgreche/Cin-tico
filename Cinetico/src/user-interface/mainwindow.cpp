@@ -36,6 +36,11 @@ namespace cinetico {
 		mainWindow->m_cinetico.setLanguage(Dictionary::ES_ES);
 	}
 
+	static void buttonConfig_onClick(Button &button) {
+		MainWindow *mainWindow = (MainWindow *)button.param();
+		mainWindow->m_cinetico.cineticoUI()->goTo(CineticoUI::GENERAL_CONFIG);
+	}
+
 	static void buttonGoToDebugView_onClick(Button &button) {
 		MainWindow *mainWindow = (MainWindow *)button.param();
 		Controller::ViewParams params;
@@ -78,8 +83,7 @@ namespace cinetico {
 		layoutAppState.setAlignment(Layout::center_align);
 		layoutAppState.setMargin(10);
 
-		layoutHeader.append(layoutAppState);
-		layoutHeader.setAlignment(Layout::center_align);
+		layoutHeader.append(layoutAppState,MaximumSize);
 
 		bgHeader.setBackgroundColor(ViewTemplate::AppHeaderBgColor);
 		bgHeader.setTransparent(false);
@@ -90,6 +94,11 @@ namespace cinetico {
 		labelAuthor.setFont(ViewTemplate::FooterInfoFont);
 		labelAuthor.setTextColor(ViewTemplate::FooterInfoColor);
 
+		//todo: add to dictionary
+		buttonConfig.setText("General Configuration");
+		buttonConfig.setParam(this);
+		buttonConfig.setOnClick(buttonConfig_onClick);
+
 		buttonDebugView.setText("Go to Debug view");
 		buttonDebugView.setParam(this);
 		buttonDebugView.setOnClick(buttonGoToDebugView_onClick);
@@ -97,6 +106,7 @@ namespace cinetico {
 		buttonDebugMode.setText("Go to debug mode");
 		buttonDebugMode.setParam(this);
 		buttonDebugMode.setOnClick(buttonGoToDebugMode_onClick);
+		layoutOptions.append(buttonConfig);
 		layoutOptions.append(buttonDebugView);
 		layoutOptions.append(buttonDebugMode);
 		layoutOptions.setAlignment(Layout::center_align);

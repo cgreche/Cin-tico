@@ -130,6 +130,12 @@ namespace cinetico {
 			, MovementGestureMinSpeed
 			, MovementGestureMaxSpeed
 
+			//General Config
+			, GeneralConfigAdapter
+			, GeneralConfigResolution
+			, GeneralConfigFullscreen
+			, GeneralConfigAntialiasing
+
 			//Views
 			, ViewDefaultErrorRequiredFields
 
@@ -185,6 +191,10 @@ namespace cinetico {
 			, ActionsViewDesc
 			, ActionsViewSectionBasicData
 			, ActionsViewSectionSpecificData
+
+			//General Config
+			, GeneralConfigViewTitle
+			, GeneralConfigViewDesc
 
 			//
 			, StringIDCount

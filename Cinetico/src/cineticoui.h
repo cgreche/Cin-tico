@@ -35,6 +35,7 @@ namespace cinetico {
 			EXERCISES,
 			ACTIONS,
 			PLAYING,
+			GENERAL_CONFIG,
 			DEBUG
 		};
 

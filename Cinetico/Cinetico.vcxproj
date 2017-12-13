@@ -187,6 +187,7 @@
     <ClInclude Include="src\user-interface\DebugController.h" />
     <ClInclude Include="src\user-interface\ExerciseRealizationController.h" />
     <ClInclude Include="src\user-interface\ExercisesController.h" />
+    <ClInclude Include="src\user-interface\GeneralConfigController.h" />
     <ClInclude Include="src\user-interface\LoginController.h" />
     <ClInclude Include="src\user-interface\mainwindow.h" />
     <ClInclude Include="src\user-interface\playmodes\DebugPlayMode.h" />
@@ -308,6 +309,7 @@
     <ClCompile Include="src\user-interface\DebugController.cpp" />
     <ClCompile Include="src\user-interface\ExerciseRealizationController.cpp" />
     <ClCompile Include="src\user-interface\ExercisesController.cpp" />
+    <ClCompile Include="src\user-interface\GeneralConfigController.cpp" />
     <ClCompile Include="src\user-interface\LoginController.cpp" />
     <ClCompile Include="src\user-interface\mainwindow.cpp" />
     <ClCompile Include="src\user-interface\playmodes\DebugPlayMode.cpp" />

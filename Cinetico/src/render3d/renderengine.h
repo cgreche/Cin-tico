@@ -15,9 +15,48 @@
 #include "textresource.h"
 
 namespace render3d {
+	struct Adapter {
+		std::string name;
+		void *internalData;
+	};
+
+	struct DisplayMode {
+		int width;
+		int height;
+		int frequency;
+	};
 
 	class RenderEngine
 	{
+	public:
+		class Config {
+			Adapter m_adapter;
+			DisplayMode m_displayMode;
+			bool m_fullscreen;
+			bool m_antialiasing;
+
+		public:
+			Config() {
+				m_adapter = { "",(void*)0 };
+				m_displayMode = { 1024,768,60 };
+				m_fullscreen = false;
+				m_antialiasing = false;
+			}
+
+			void setAdapter(const struct Adapter &adapter) { m_adapter = adapter; }
+			void setDisplayMode(const struct DisplayMode &displayMode) { m_displayMode = displayMode; }
+			void setFullscreen(bool fullscreen) { m_fullscreen = fullscreen; }
+			void setAntialiasing(bool antialiasing) { m_antialiasing = antialiasing; }
+
+			const Adapter &adapter() const { return m_adapter; }
+			const DisplayMode &displaymode() const { return m_displayMode; }
+			bool fullscreen() const { return m_fullscreen; }
+			bool antialiasing() const { return m_antialiasing; }
+		};
+
+		Config m_config;
+		Config& config() { return m_config; }
+
 	protected:
 		std::vector<ResourceData*> m_resources;
 		std::vector<Camera *> m_cameras;
@@ -32,12 +71,16 @@ namespace render3d {
 
 	public:
 		RenderEngine();
+		virtual ~RenderEngine();
 
 		virtual void configure(void *) = 0;
 		virtual void init() = 0;
 		virtual void destroy() = 0;
 		virtual void beginScene() = 0;
 		virtual void endScene() = 0;
+
+		virtual std::vector<Adapter> getAdapterList() = 0;
+		virtual std::vector<DisplayMode> getDisplayModeList() = 0;
 
 		//Resource allocation
 		virtual int newResource(unsigned int vertexCount, Vector3 *vertices, unsigned int indexCount = 0, int *indices = NULL);

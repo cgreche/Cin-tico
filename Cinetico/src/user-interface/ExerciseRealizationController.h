@@ -29,6 +29,7 @@ namespace cinetico {
 		int m_oldWidth;
 		int m_oldHeight;
 		bool m_oldFullscreen;
+
 	public:
 		ExerciseRealizationController(CineticoUI &cineticoUI);
 

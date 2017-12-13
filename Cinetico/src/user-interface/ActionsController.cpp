@@ -234,7 +234,7 @@ namespace cinetico {
 		}
 
 		//todo: add to dictionary
-		if (layoutGesture.itemCount() == 0) {
+		if (layoutGestureItems.itemCount() == 0) {
 			uilib::Message::warning(NULL, "Uma ação deve conter pelo menos um gesto.");
 			return false;
 		}
@@ -357,10 +357,10 @@ namespace cinetico {
 		buttonBack.setText(m_dictionary.getString(Dictionary::DefaultActionBack));
 
 		gridActions.setHeaderText(0, m_dictionary.getString(Dictionary::ActionName));
-		gridActions.setHeaderText(2, m_dictionary.getString(Dictionary::ActionMinExecutionTime));
-		gridActions.setHeaderText(3, m_dictionary.getString(Dictionary::ActionMaxExecutionTime));
-		gridActions.setHeaderText(4, m_dictionary.getString(Dictionary::ActionTimeToHold));
-		gridActions.setHeaderText(5, m_dictionary.getString(Dictionary::ActionGestureCount));
+		gridActions.setHeaderText(1, m_dictionary.getString(Dictionary::ActionMinExecutionTime));
+		gridActions.setHeaderText(2, m_dictionary.getString(Dictionary::ActionMaxExecutionTime));
+		gridActions.setHeaderText(3, m_dictionary.getString(Dictionary::ActionTimeToHold));
+		gridActions.setHeaderText(4, m_dictionary.getString(Dictionary::ActionGestureCount));
 
 		buttonEdit.setText(m_dictionary.getString(Dictionary::DefaultActionEdit));
 		buttonDelete.setText(m_dictionary.getString(Dictionary::DefaultActionDelete));
@@ -385,6 +385,10 @@ namespace cinetico {
 		tbValueX.setLabel(m_dictionary.getString(Dictionary::SimpleGestureValueX));
 		tbValueY.setLabel(m_dictionary.getString(Dictionary::SimpleGestureValueY));
 		tbValueZ.setLabel(m_dictionary.getString(Dictionary::SimpleGestureValueZ));
+		//todo: add to dic
+		cbMovementType.setLabel("Movemento typo");
+		tbMinSpeed.setLabel("Min Speedo");
+		tbMaxSpeed.setLabel("Max speedo");
 		buttonSaveGesture.setText(m_dictionary.getString(Dictionary::DefaultActionSave));
 
 		buttonAddGesture.setText(m_dictionary.getString(Dictionary::DefaultActionAdd));
@@ -452,31 +456,38 @@ namespace cinetico {
 		fillBodyPointCombo(cbBodyPoint);
 		fillRefPointCombo(cbRefPoint);
 		fillOperationCombo(cbOperation);
+		fillMovementTypeCombo(cbMovementType);
 		buttonSaveGesture.setOnClick(buttonSaveGesture_onClick);
 		buttonSaveGesture.setParam(this);
 
-		layoutGesture.append(cbTransitionType,Size(SizeTypeMax,SizeTypeAuto));
-		layoutGesture.append(cbBodyPoint, Size(SizeTypeMax, SizeTypeAuto));
-		layoutGesture.append(cbRefPoint, Size(SizeTypeMax, SizeTypeAuto));
-		layoutGesture.append(cbOperation, Size(SizeTypeMax, SizeTypeAuto));
-		layoutGesture.append(tbValueX, Size(SizeTypeMax, SizeTypeAuto));
-		layoutGesture.append(tbValueY, Size(SizeTypeMax, SizeTypeAuto));
-		layoutGesture.append(tbValueZ, Size(SizeTypeMax, SizeTypeAuto));
-		layoutGesture.append(buttonSaveGesture);
+		layoutGestureRow1.append(cbTransitionType, Size(SizeTypeMax, SizeTypeAuto));
+		layoutGestureRow1.append(cbBodyPoint, Size(SizeTypeMax, SizeTypeAuto));
+		layoutGestureRow1.append(cbRefPoint, Size(SizeTypeMax, SizeTypeAuto));
+		layoutGestureRow2.append(cbOperation);
+		layoutGestureRow2.append(tbValueX);
+		layoutGestureRow2.append(tbValueY);
+		layoutGestureRow2.append(tbValueZ);
+		layoutMovementGestureData.append(cbMovementType);
+		layoutMovementGestureData.append(tbMinSpeed);
+		layoutMovementGestureData.append(tbMaxSpeed);
+		layoutGestureData.append(layoutGestureRow1);
+		layoutGestureData.append(layoutGestureRow2);
+		layoutGestureData.append(layoutMovementGestureData);
 
 		layoutActionData.append(layoutActionDataActionButtons);
 		layoutActionData.append(separatorActionBasicData);
 		layoutActionData.append(layoutActionDataRow1);
 		layoutActionData.append(separatorGestureData);
 		layoutActionData.append(layoutActionCommands);
-		layoutActionData.append(layoutGestureItems,Size(SizeTypeMax, MaxGestureItemWidth*3));
-		layoutActionData.append(layoutGesture);
+		layoutActionData.append(layoutGestureItems);
+		layoutActionData.append(layoutGestureData);
 		
 		//
 		layoutContent.append(layoutContentList);
 
 		layout.append(title);
 		layout.append(layoutActionButtons);
+		layout.append(sepContent);
 		layout.append(layoutContent);
 		layout.setMargin(10);
 	}
@@ -525,7 +536,7 @@ namespace cinetico {
 				tbValueY.setText("");
 				tbValueZ.setText("");
 			}
-			layoutGesture.setEnabled(m_selectedGesture >= 0);
+			layoutGestureData.setEnabled(m_selectedGesture >= 0);
 		}
 
 		int transitionTypeIndex = cbTransitionType.selection();
@@ -569,6 +580,7 @@ namespace cinetico {
 		tbValueX.setText("");
 		tbValueY.setText("");
 		tbValueZ.setText("");
+		cbMovementType.setSelection(-1);
 		tbMinSpeed.setText("");
 		tbMaxSpeed.setText("");
 
@@ -585,8 +597,7 @@ namespace cinetico {
 
 		if (gesture->transitionType() == SimpleGesture::FixedMovement) {
 			MovementGesture *movementGesture = reinterpret_cast<MovementGesture*>(gesture);
-			
-			//todo: set movement type
+			cbMovementType.setSelection(movementGesture->movementType());
 			tbMinSpeed.setText(string::fromFloat(movementGesture->minSpeed()));
 			tbMaxSpeed.setText(string::fromFloat(movementGesture->maxSpeed()));
 		}

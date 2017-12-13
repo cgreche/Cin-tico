@@ -23,13 +23,22 @@ namespace render3d {
 
 		void setViewFromCamera(Camera *camera);
 
+		std::vector<Adapter> m_adapterList;
+		std::vector<DisplayMode> m_displayModeList;
+
 	protected:
 		virtual void *newInternalResource(ResourceData *resData);
+		virtual void releaseInternalResource(ResourceData *resData);
 		virtual void *newInternalCamera(Camera *camera);
+		virtual void releaseInternalCamera(Camera *camera);
 		virtual void *newInternalViewport(Viewport *viewport);
+		virtual void releaseInternalViewport(Viewport *camera);
 		virtual void *newInternalResourceInstance(ResourceInstance *instance);
+		virtual void releaseInternalResourceInstance(ResourceInstance *instance);
 		virtual void *newInternalFontResource(FontResource *font);
+		virtual void releaseInternalFontResource(FontResource *font);
 		virtual void *newInternalTextResource(TextResource *text);
+		virtual void releaseInternalTextResource(TextResource *text);
 		virtual void drawInternalResource(ResourceInstance *resData);
 		virtual void drawText(const char *text, int x, int y, const Color &color);
 		virtual void drawResourceDirect(render3d::Vector3 vertices[], int vertexCount, render3d::Color colorList[]); //temp
@@ -40,12 +49,16 @@ namespace render3d {
 
 	public:
 		D3D9Engine();
+		~D3D9Engine();
 		virtual void configure(void *options);
 		virtual void init();
 		virtual void destroy();
 		virtual void beginScene();
 		virtual void endScene();
 		virtual void clear(const Color &clearColor);
+
+		virtual std::vector<Adapter> getAdapterList() { return m_adapterList; }
+		virtual std::vector<DisplayMode> getDisplayModeList() { return m_displayModeList; }
 	};
 
 }

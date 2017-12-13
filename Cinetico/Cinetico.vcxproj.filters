@@ -628,6 +628,9 @@
     <ClInclude Include="src\RelOrientChar.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\user-interface\GeneralConfigController.h">
+      <Filter>src\user-interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -989,6 +992,9 @@
     </ClCompile>
     <ClCompile Include="src\RelOrientChar.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\GeneralConfigController.cpp">
+      <Filter>src\user-interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

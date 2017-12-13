@@ -135,6 +135,11 @@ namespace cinetico {
 			MAP_STR(MovementGestureMinSpeed);
 			MAP_STR(MovementGestureMaxSpeed);
 
+			MAP_STR(GeneralConfigAdapter);
+			MAP_STR(GeneralConfigResolution);
+			MAP_STR(GeneralConfigFullscreen);
+			MAP_STR(GeneralConfigAntialiasing);
+
 			//Views
 			MAP_STR(ViewDefaultErrorRequiredFields);
 
@@ -189,6 +194,9 @@ namespace cinetico {
 			MAP_STR(ActionsViewDesc);
 			MAP_STR(ActionsViewSectionBasicData);
 			MAP_STR(ActionsViewSectionSpecificData);
+
+			MAP_STR(GeneralConfigViewTitle);
+			MAP_STR(GeneralConfigViewDesc);
 
 			g_mapsFilled = true;
 		}
