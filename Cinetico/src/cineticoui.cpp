@@ -122,8 +122,7 @@ namespace cinetico {
 		}
 
 		//update Window
-		m_mainWindow->setSize(m_mainWindow->size());
-		Size frameSize = m_mainWindow->getFrameSize();
+		m_mainWindow->update();
 	}
 
 	void CineticoUI::step() {

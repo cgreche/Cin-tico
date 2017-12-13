@@ -60,13 +60,13 @@ namespace cinetico {
 		labelAppname.setAlignment(Label::VCenter);
 		labelAppname.setFont(ViewTemplate::AppTitleFont);
 
-		labelUsername.setText("Usuário: ");
+		
 		labelUsername.setTextColor(ViewTemplate::AppTitleColor);
 		linkUsername.setTextColor(ViewTemplate::LoggedUserInfoColor);
 		linkUsername.setHoverColor(ViewTemplate::LoggedUserInfoHoverColor);
 		linkUsername.setParam(this);
 		linkUsername.setOnClick(linkUserLoginName_onClick);
-		buttonLogoff.setText("Sair");
+		
 		buttonLogoff.setParam(this);
 		buttonLogoff.addOnAction(buttonLogoff_onClick);
 
@@ -94,8 +94,6 @@ namespace cinetico {
 		labelAuthor.setFont(ViewTemplate::FooterInfoFont);
 		labelAuthor.setTextColor(ViewTemplate::FooterInfoColor);
 
-		//todo: add to dictionary
-		buttonConfig.setText("General Configuration");
 		buttonConfig.setParam(this);
 		buttonConfig.setOnClick(buttonConfig_onClick);
 
@@ -123,11 +121,13 @@ namespace cinetico {
 		linkEnglish.setParam(this);
 		linkEnglish.setOnClick(linkEnglish_onClick);
 
+		/*
 		linkEspanol.setText("Español");
 		linkEspanol.setTextColor(ViewTemplate::TextLinkColor);
 		linkEspanol.setHoverColor(ViewTemplate::TextLinkHoverColor);
 		linkEspanol.setParam(this);
 		linkEspanol.setOnClick(linkEspanol_onClick);
+		*/
 
 		layoutAuthorInfo.append(labelAuthor);
 
@@ -144,6 +144,8 @@ namespace cinetico {
 		bgHeader.setLayout(&layoutHeader);
 		bgContent.setLayout(&layoutContent);
 		bgFooter.setLayout(&layoutFooter);
+
+		updateLabels();
 	}
 
 
@@ -203,9 +205,23 @@ namespace cinetico {
 			layoutContent.remove(*m_currentContentLayout);
 		if (layout) {
 			layoutContent.append(*layout);
-			layout->setVisible(true); //todo: set layout visibility internally
+			layout->setVisible(true); //todo (future): set layout visibility internally
 		}
 		m_currentContentLayout = layout;
+	}
+
+	void MainWindow::updateLabels() {
+		//Header
+		labelUsername.setText("Usuário: ");
+		buttonLogoff.setText(m_cinetico.dictionary()->getString(Dictionary::ActionLogoff));
+
+		//Footer
+		buttonConfig.setText(m_cinetico.dictionary()->getString(Dictionary::EntityGeneralSettings));
+	}
+
+	void MainWindow::update() {
+		updateLabels();
+		setSize(size()); //force resize
 	}
 
 	void MainWindow::step() {

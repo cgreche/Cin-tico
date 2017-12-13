@@ -5,7 +5,7 @@
 #include "GeneralConfigController.h"
 
 namespace cinetico {
-	
+
 	static void GeneralConfigController_buttonSave_onClick(Button &button) {
 		GeneralConfigController *controller = (GeneralConfigController*)button.param();
 		RenderEngine::Config &config = controller->m_cinetico.cineticoUI()->renderEngine()->config();
@@ -15,9 +15,9 @@ namespace cinetico {
 		bool fullscreen = controller->chkFullscreen.checked();
 		bool antialiasing = controller->chkAntialiasing.checked();
 
-		if(adapter)
+		if (adapter)
 			config.setAdapter(*adapter);
-		if(displayMode)
+		if (displayMode)
 			config.setDisplayMode(*displayMode);
 		config.setFullscreen(fullscreen);
 		config.setAntialiasing(antialiasing);

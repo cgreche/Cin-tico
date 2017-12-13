@@ -62,7 +62,7 @@ namespace cinetico {
 
 			//Gesture enums
 			, SimpleGestureTransitionTypeFree
-			, SimpleGestureTransitionTypeDefinedMovement
+			, SimpleGestureTransitionTypeFixedMovement
 
 			, SimpleGestureRefPointAny
 			, SimpleGestureRefPointLastPosition
@@ -101,6 +101,7 @@ namespace cinetico {
 			, EntityUserProfile
 			, EntityExercise
 			, EntityAction
+			, EntityGeneralSettings
 
 			//Entitiy attributes
 			, UserProfileLoginName
@@ -192,6 +193,7 @@ namespace cinetico {
 			, ActionsViewDesc
 			, ActionsViewSectionBasicData
 			, ActionsViewSectionSpecificData
+			, ActionViewErrorNoGestures
 
 			//General Config
 			, GeneralConfigViewTitle

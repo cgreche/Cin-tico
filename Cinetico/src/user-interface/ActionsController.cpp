@@ -133,7 +133,7 @@ namespace cinetico {
 	void ActionsController::fillTransitionTypeCombo(cComboBox &combo) {
 		combo.clear();
 		combo.appendItem(m_dictionary.getString(Dictionary::SimpleGestureTransitionTypeFree),SimpleGesture::Free);
-		combo.appendItem(m_dictionary.getString(Dictionary::SimpleGestureTransitionTypeDefinedMovement),SimpleGesture::FixedMovement);
+		combo.appendItem(m_dictionary.getString(Dictionary::SimpleGestureTransitionTypeFixedMovement),SimpleGesture::FixedMovement);
 	}
 
 	void ActionsController::fillBodyPointCombo(cComboBox &combo) {
@@ -230,7 +230,7 @@ namespace cinetico {
 			Message::warning(NULL, m_dictionary.getString(Dictionary::ViewDefaultErrorRequiredFields));
 		}
 		else if (invalid) {
-			//todo: campos somente numéricos
+			//todo (future versions): campos somente numéricos
 		}
 
 		//todo: add to dictionary

@@ -47,6 +47,7 @@ namespace cinetico {
 
 		void buildHeaderLayout();
 		void buildFooterLayout();
+		void updateLabels();
 
 		Cinetico &m_cinetico;
 
@@ -73,6 +74,7 @@ namespace cinetico {
 		//todo: change to CineticoUI
 		MainWindow(Cinetico &cinetico);
 		void step();
+		void update();
 		void setContentLayout(Layout *layout);
 		void setHeaderVisible(bool visible);
 		void setContentVisible(bool visible);

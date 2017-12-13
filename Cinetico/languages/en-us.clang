@@ -109,7 +109,6 @@ This operation cannot be undone.</string>
 	<string id="MovementGestureMovementType">Movement type</string>
 	<string id="MovementGestureMinSpeed">Minimum execution speed (cm/s²)</string>
 	<string id="MovementGestureMaxSpeed">Maximum execution speed (cm/s²)</string>
-	
 	<!--General Config-->
 	<string id="GeneralConfigCoreDistanceThreshold">Position distance threshold</string>
 	<string id="GeneralConfigAdapter">Device</string>
@@ -154,7 +153,7 @@ This operation cannot be undone.</string>
 	<string id="UserProfileViewErrorPasswordWrongCurrentPassword">Incorrect current password.</string>
 	<string id="UserProfileViewErrorPasswordConfirmationNotEqual">Password confirmation is not equal as current password.</string>
 	<string id="UserProfileViewQuestionDeactivateConfirmation">Are you sure you want to disable your User profile?
-This operation cannot be undone.</string>
+	This operation cannot be undone.</string>
 	
 	<!-- -->
 	<!--Exercises-->

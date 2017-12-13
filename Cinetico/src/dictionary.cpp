@@ -67,7 +67,7 @@ namespace cinetico {
 
 			//Action Enums
 			MAP_STR(SimpleGestureTransitionTypeFree);
-			MAP_STR(SimpleGestureTransitionTypeDefinedMovement);
+			MAP_STR(SimpleGestureTransitionTypeFixedMovement);
 
 			MAP_STR(SimpleGestureRefPointAny);
 			MAP_STR(SimpleGestureRefPointLastPosition);
@@ -106,6 +106,7 @@ namespace cinetico {
 			MAP_STR(EntityUserProfile);
 			MAP_STR(EntityExercise);
 			MAP_STR(EntityAction);
+			MAP_STR(EntityGeneralSettings);
 
 			//Entitiy attributes
 			MAP_STR(UserProfileLoginName);
@@ -195,6 +196,7 @@ namespace cinetico {
 			MAP_STR(ActionsViewDesc);
 			MAP_STR(ActionsViewSectionBasicData);
 			MAP_STR(ActionsViewSectionSpecificData);
+			MAP_STR(ActionViewErrorNoGestures);
 
 			MAP_STR(GeneralConfigViewTitle);
 			MAP_STR(GeneralConfigViewDesc);

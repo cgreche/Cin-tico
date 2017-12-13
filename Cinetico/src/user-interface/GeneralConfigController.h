@@ -17,21 +17,21 @@ namespace cinetico {
 		std::vector<DisplayMode> m_displayModes;
 	public:
 		VerticalLayout layout;
-			cPageTitle title;
-			HorizontalLayout layoutActionButtons;
-				Button buttonSave;
-				Button buttonBack;
+		cPageTitle title;
+		HorizontalLayout layoutActionButtons;
+		Button buttonSave;
+		Button buttonBack;
 
-			cSeparator sepCore;
-			VerticalLayout layoutCore;
-				cTextBox tbDistThreshold;
+		cSeparator sepCore;
+		VerticalLayout layoutCore;
+		cTextBox tbDistThreshold;
 
-			cSeparator sepGraphics;
-			VerticalLayout layoutGraphics;
-				cComboBox cbAdapter;
-				cComboBox cbResolution;
-				CheckBox chkFullscreen;
-				CheckBox chkAntialiasing;
+		cSeparator sepGraphics;
+		VerticalLayout layoutGraphics;
+		cComboBox cbAdapter;
+		cComboBox cbResolution;
+		CheckBox chkFullscreen;
+		CheckBox chkAntialiasing;
 
 		UserProfileDAO *m_userProfileDAO;
 
