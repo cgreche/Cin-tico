@@ -1,0 +1,40 @@
+#ifndef __CINETICO_GENERAL_SETTINGS_H__
+#define __CINETICO_GENERAL_SETTINGS_H__
+
+#include <string>
+
+namespace cinetico {
+
+	class GeneralSettings
+	{
+		float m_posDistThreshold;
+		int m_adapter;
+		int m_resolutionWidth;
+		int m_resolutionHeight;
+		int m_refreshRate;
+		bool m_fullscreen;
+		bool m_antialiasing;
+		
+	public:
+		GeneralSettings();
+		
+		void setPosDistThreshold(float posDistThreshold) { m_posDistThreshold = posDistThreshold; }
+		void setAdapter(int adapter) { m_adapter = adapter; }
+		void setResolutionWidth(float width) { m_resolutionWidth = width; }
+		void setResolutionHeight(float height) { m_resolutionHeight = height; }
+		void setRefreshRate(float refreshRate) { m_refreshRate = refreshRate; }
+		void setFullscreen(bool fullscreen) { m_fullscreen = fullscreen; }
+		void setAntialiasing(bool antialiasing) { m_antialiasing = antialiasing; }
+		
+		float posDistThreshold() const { return m_posDistThreshold; }
+		int adapter() const { return m_adapter; }
+		int resolutionWidth() const { return m_resolutionWidth; }
+		int resolutionHeight() const { return m_resolutionHeight; }
+		int refreshRate() const { return m_refreshRate; }
+		bool fullscreen() const { return m_fullscreen; }
+		bool antialiasing() const { return m_antialiasing; }
+	};
+
+}
+
+#endif
