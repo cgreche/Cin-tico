@@ -32,6 +32,21 @@ namespace cinetico {
 		controller->m_cineticoUI.goTo(controller->m_cineticoUI.lastView());
 	}
 
+	static void GeneralSettingsController_buttonTestSensor_onClick(Button &button) {
+		GeneralSettingsController *controller = (GeneralSettingsController*)button.param();
+		int result = controller->m_cinetico.sensor()->test();
+		if (result == 1) {
+			controller->labelTestSensor.setText(controller->m_dictionary.getString(Dictionary::GeneralSettingsViewTestSensorErrorSuccess));
+			controller->labelTestSensor.setTextColor(uilib::Color(0, 220, 0));
+		}
+		else if (result == 0) {
+			controller->labelTestSensor.setText(controller->m_dictionary.getString(Dictionary::GeneralSettingsViewTestSensorErrorNotDetected));
+			controller->labelTestSensor.setTextColor(uilib::Color(240, 0, 0));
+		}
+		controller->labelTestSensor.setVisible(true);
+		controller->layoutTestSensor.setSize(controller->layoutTestSensor.getAutoSize());
+	}
+
 	void GeneralSettingsController::onViewUpdate() {
 		title.setTitle(m_dictionary.getString(Dictionary::GeneralSettingsViewTitle));
 		title.setDesc(m_dictionary.getString(Dictionary::GeneralSettingsViewDesc));
@@ -42,6 +57,7 @@ namespace cinetico {
 		sepCore.setText(m_dictionary.getString(Dictionary::GeneralSettingsViewSectionCore));
 		tbDistThreshold.setLabel(m_dictionary.getString(Dictionary::GeneralSettingsCorePosDistThreshold));
 		tbMinHoldtime.setLabel(m_dictionary.getString(Dictionary::GeneralSettingsCorePosMinHoldtime));
+		buttonTestSensor.setText(m_dictionary.getString(Dictionary::GeneralSettingsViewTestSensor));
 
 		sepGraphics.setText(m_dictionary.getString(Dictionary::GeneralSettingsViewSectionGraphics));
 		cbAdapter.setLabel(m_dictionary.getString(Dictionary::GeneralSettingsAdapter));
@@ -68,10 +84,18 @@ namespace cinetico {
 		layoutGraphics.append(chkFullscreen);
 		layoutGraphics.append(chkAntialiasing);
 
+		buttonTestSensor.setParam(this);
+		buttonTestSensor.setOnClick(GeneralSettingsController_buttonTestSensor_onClick);
+		layoutTestSensor.append(buttonTestSensor);
+		layoutTestSensor.append(labelTestSensor);
+		layoutTestSensor.setAlignment(Layout::center_align);
+		labelTestSensor.setVisible(false);
+
 		layout.append(title);
 		layout.append(layoutActionButtons);
 		layout.append(sepCore);
 		layout.append(layoutCore);
+		layout.append(layoutTestSensor);
 		layout.append(sepGraphics);
 		layout.append(layoutGraphics);
 		layout.setMargin(10);
@@ -95,6 +119,13 @@ namespace cinetico {
 		cbAdapter.setSelection(settings.adapter());
 
 		for (DisplayMode &displayMode : m_displayModes) {
+
+			if ( (displayMode.width % 16 != 0 || displayMode.height % 9 != 0)
+				&& (displayMode.width % 16 != 0 || displayMode.height % 10 != 0)
+				&& (displayMode.width % 5 != 0 || displayMode.height % 4 != 0)
+				&& (displayMode.width % 4 != 0 || displayMode.height % 3 != 0) )
+				continue;
+
 			string resolution;
 			resolution += string::fromInteger(displayMode.width);
 			resolution += "x";

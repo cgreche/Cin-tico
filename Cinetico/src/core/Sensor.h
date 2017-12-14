@@ -13,6 +13,8 @@ namespace cinetico_core {
 			};
 
 			virtual ~Sensor() { }
+
+			virtual int test() = 0;
 			virtual bool initialize() = 0;
 			virtual void update() = 0;
 			virtual void finalize() = 0;

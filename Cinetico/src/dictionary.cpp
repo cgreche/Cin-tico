@@ -216,6 +216,9 @@ namespace cinetico {
 			MAP_STR(GeneralSettingsViewDesc);
 			MAP_STR(GeneralSettingsViewSectionCore);
 			MAP_STR(GeneralSettingsViewSectionGraphics);
+			MAP_STR(GeneralSettingsViewTestSensor);
+			MAP_STR(GeneralSettingsViewTestSensorErrorSuccess);
+			MAP_STR(GeneralSettingsViewTestSensorErrorNotDetected);
 
 			for (int i = 0; i < Dictionary::StringIDCount; ++i) {
 				Dictionary::StringID id = (Dictionary::StringID)i;

@@ -214,6 +214,9 @@ namespace cinetico {
 			, GeneralSettingsViewDesc
 			, GeneralSettingsViewSectionCore
 			, GeneralSettingsViewSectionGraphics
+			, GeneralSettingsViewTestSensor
+			, GeneralSettingsViewTestSensorErrorSuccess
+			, GeneralSettingsViewTestSensorErrorNotDetected
 
 			//
 			, StringIDCount

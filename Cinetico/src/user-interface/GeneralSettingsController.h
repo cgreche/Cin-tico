@@ -27,6 +27,9 @@ namespace cinetico {
 		VerticalLayout layoutCore;
 		cTextBox tbDistThreshold;
 		cTextBox tbMinHoldtime;
+		HorizontalLayout layoutTestSensor;
+			Button buttonTestSensor;
+			Label labelTestSensor;
 
 		cSeparator sepGraphics;
 		VerticalLayout layoutGraphics;
@@ -35,8 +38,10 @@ namespace cinetico {
 		CheckBox chkFullscreen;
 		CheckBox chkAntialiasing;
 
+
 		friend void GeneralSettingsController_buttonSave_onClick(Button &button);
 		friend void GeneralSettingsController_buttonBack_onClick(Button &button);
+		friend void GeneralSettingsController_buttonTestSensor_onClick(Button &button);
 
 	public:
 		GeneralSettingsController(CineticoUI &cineticoUI);

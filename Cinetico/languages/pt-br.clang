@@ -78,14 +78,14 @@
 	<string id="DefaultActionQuestionDelete">Deseja excluir este registro?
 Esta operação não poderá ser desfeita.</string>
 	
-	
 	<!-- -->
-	
-	
 	<!--Entity-->
 	<string id="EntityUserProfile">Perfil de Usuário</string>
 	<string id="EntityExercise">Exercício</string>
 	<string id="EntityAction">Ação</string>
+	<string id="EntityGesture">Gesto</string>
+	<string id="EntityGeneralSettings">Configurações Gerais</string>
+	
 	<!-- -->
 	<!--Entitiy attributes-->
 	<string id="UserProfileLoginName">Usuário</string>
@@ -115,6 +115,13 @@ Esta operação não poderá ser desfeita.</string>
 	<string id="MovementGestureMinSpeed">Velocidade mínima de execução (cm/s²)</string>
 	<string id="MovementGestureMaxSpeed">Velocidade máxima de execução (cm/s²)</string>
 	
+	<!--General Config-->
+	<string id="GeneralSettingsCorePosDistThreshold">Folga de distância para manter-se em posição (cm³)</string>
+	<string id="GeneralSettingsCorePosMinHoldtime">Tempo mínimo para se detecar uma posição (s)</string>
+	<string id="GeneralSettingsAdapter">Dispositivo</string>
+	<string id="GeneralSettingsResolution">Resolução</string>
+	<string id="GeneralSettingsFullscreen">Tela cheia</string>
+	<string id="GeneralSettingsAntialiasing">Antialiasing</string>
 	
 	<!-- -->
 	<!--Views-->
@@ -174,7 +181,15 @@ Esta operação não poderá ser desfeita.</string>
 	<string id="ActionsViewDesc">Adicione ou altere ações para o exercício.</string>
 	<string id="ActionsViewSectionBasicData">Informação básica da ação.</string>
 	<string id="ActionsViewSectionSpecificData">Informação específica para o tipo de ação.</string>
-	
+	<!-- -->
+	<!--General Config-->
+	<string id="GeneralSettingsViewTitle">Configurações gerais</string>
+	<string id="GeneralSettingsViewDesc">Modifique as configurações gerais do sistema.</string>
+	<string id="GeneralSettingsViewSectionCore">Configurações de sistema</string>
+	<string id="GeneralSettingsViewSectionGraphics">Configurações gráficas</string>
+	<string id="GeneralSettingsViewTestSensor">Teste o Sensor de movimentos</string>
+	<string id="GeneralSettingsViewTestSensorErrorSuccess">O Sensor de movimentos foi detectado e está funcionando corretamente.</string>
+	<string id="GeneralSettingsViewTestSensorErrorNotDetected">O Sensor de movimentos não foi detectado.</string>	
 </language>
 
 

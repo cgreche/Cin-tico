@@ -2,7 +2,7 @@
 #define SAFE_RELEASE(x) if(x) { x->Release(); x = NULL; }
 #pragma comment (lib, "Kinect20.lib")
 
-#include "kinectsensor.h"
+#include "KinectSensor.h"
 
 namespace cinetico_core {
 
@@ -15,6 +15,17 @@ namespace cinetico_core {
 
 	KinectSensor::~KinectSensor() {
 		finalize();
+	}
+
+	int KinectSensor::test() {
+		IKinectSensor *sensor;
+		HRESULT hr = ::GetDefaultKinectSensor(&sensor);
+		if (FAILED(hr))
+			return 0;
+
+		BOOLEAN result;
+		sensor->get_IsAvailable(&result);
+		return result == TRUE ? 1 : 0;
 	}
 
 	bool KinectSensor::initialize() {

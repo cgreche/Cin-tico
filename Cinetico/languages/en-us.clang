@@ -116,11 +116,12 @@ This operation cannot be undone.</string>
 	<string id="MovementGestureMaxSpeed">Maximum execution speed (cm/s²)</string>
 	
 	<!--General Config-->
-	<string id="GeneralConfigCoreDistanceThreshold">Position distance threshold</string>
-	<string id="GeneralConfigAdapter">Device</string>
-	<string id="GeneralConfigResolution">Resolution</string>
-	<string id="GeneralConfigFullscreen">Fullscreen</string>
-	<string id="GeneralConfigAntialiasing">Antialiasing</string>
+	<string id="GeneralSettingsCorePosDistThreshold">Position distance threshold</string>
+	<string id="GeneralSettingsCorePosMinHoldtime">Minimum position hold time (s)</string>
+	<string id="GeneralSettingsAdapter">Device</string>
+	<string id="GeneralSettingsResolution">Resolution</string>
+	<string id="GeneralSettingsFullscreen">Fullscreen</string>
+	<string id="GeneralSettingsAntialiasing">Antialiasing</string>
 	
 	<!-- -->
 	<!--Views-->
@@ -128,7 +129,7 @@ This operation cannot be undone.</string>
 	<!-- -->
 	<!--Login-->
 	<string id="LoginViewTitle">Welcome!</string>
-	<string id="LoginViewDesc">To start, enter or create your User profile</string>
+	<string id="LoginViewDesc">To start, enter or create your User profile.</string>
 	<string id="LoginViewSectionLogin">Enter with your User profile</string>
 	<string id="LoginViewSectionCreateUserProfile">Create an User profile</string>
 	<string id="LoginViewUsername">Username</string>
@@ -185,10 +186,13 @@ This operation cannot be undone.</string>
 	<string id="ActionsViewErrorInvalidGestures">There are invalid Gestures</string>
 	<!-- -->
 	<!--General Config-->
-	<string id="GeneralConfigViewTitle">General settings</string>
-	<string id="GeneralConfigViewDesc">Modify general system settings.</string>
-	<string id="GeneralConfigViewSectionCore">Core Settings</string>
-	<string id="GeneralConfigViewSectionGraphics">Graphics Settings</string>
+	<string id="GeneralSettingsViewTitle">General settings</string>
+	<string id="GeneralSettingsViewDesc">Modify general system settings.</string>
+	<string id="GeneralSettingsViewSectionCore">Core Settings</string>
+	<string id="GeneralSettingsViewSectionGraphics">Graphics Settings</string>
+	<string id="GeneralSettingsViewTestSensor">Test the Sensor device</string>
+	<string id="GeneralSettingsViewTestSensorErrorSuccess">The Sensor device was detected and is working.</string>
+	<string id="GeneralSettingsViewTestSensorErrorNotDetected">The Sensor device was not detected.</string>
 </language>
 
 

@@ -28,6 +28,7 @@ namespace cinetico_core {
 		KinectSensor();
 		~KinectSensor();
 
+		int test();
 		bool initialize();
 		void update();
 		void finalize();
