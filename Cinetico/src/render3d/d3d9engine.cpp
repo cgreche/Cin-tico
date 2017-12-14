@@ -104,7 +104,7 @@ namespace render3d {
 		}
 
 		LPDIRECT3DDEVICE9 device;
-		int adapter = (int)m_config.adapter().internalData;
+		int adapter = m_config.adapter();
 		if (adapter == -1)
 			adapter = D3DADAPTER_DEFAULT;
 		hr = m_d3d9->CreateDevice(adapter, D3DDEVTYPE_HAL, m_hwnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &device);

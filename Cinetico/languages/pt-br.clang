@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <language id="pt_br">
+	<string id="AppTitle">Cinético</string>
+	
 	<!-- General data -->
 	<string id="X">X</string>
 	<string id="Y">Y</string>
@@ -7,6 +9,7 @@
 
 	<!-- Body Points -->
 	<string id="BodyPointHead">Cabeça</string>
+	<string id="BodyPointHead">Pescoço</string>
 	<string id="BodyPointCervical">Cervical</string>
 	<string id="BodyPointSpine">Espinha</string>
 	<string id="BodyPointSpineBase">Base da espinha</string>

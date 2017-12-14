@@ -37,8 +37,9 @@ namespace cinetico {
 		m_dictionary = new Dictionary(*this);
 		m_cineticoDB = new CineticoDB(*this);
 		m_cineticoUI = new CineticoUI(*this);
-		
-		m_cineticoUI->goTo(CineticoUI::LOGIN);
+
+		m_generalSettings = new GeneralSettings();
+		m_cineticoDB->generalSettingsDAO()->get(*m_generalSettings);
 	}
 
 
@@ -106,6 +107,7 @@ namespace cinetico {
 	int Cinetico::run() {
 		setup();
 
+		m_cineticoUI->goTo(CineticoUI::LOGIN);
 		while (UI::UIProcess()) {
 			step();
 		}

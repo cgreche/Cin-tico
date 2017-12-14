@@ -44,6 +44,10 @@ int SQLiteStatement::close() {
 
 int SQLiteStatement::execute() {
 	int rc = sqlite3_step(m_internalStmt);
+	if (rc != SQLITE_DONE) {
+		const char *errmsg = sqlite3_errmsg(((SQLiteDatabase&)m_db).internalDB());
+		int a = 1;
+	}
 	sqlite3_reset(m_internalStmt);
 	return rc == SQLITE_DONE;
 }

@@ -47,7 +47,9 @@
     <ClInclude Include="src\dummycharacter.h" />
     <ClInclude Include="src\entity\dao\ActionDAO.h" />
     <ClInclude Include="src\entity\dao\ExerciseDAO.h" />
+    <ClInclude Include="src\entity\dao\GeneralSettingsDAO.h" />
     <ClInclude Include="src\entity\dao\UserProfileDAO.h" />
+    <ClInclude Include="src\entity\GeneralSettings.h" />
     <ClInclude Include="src\entity\UserProfile.h" />
     <ClInclude Include="src\humancharacter.h" />
     <ClInclude Include="src\input.h" />
@@ -187,7 +189,7 @@
     <ClInclude Include="src\user-interface\DebugController.h" />
     <ClInclude Include="src\user-interface\PlayModeController.h" />
     <ClInclude Include="src\user-interface\ExercisesController.h" />
-    <ClInclude Include="src\user-interface\GeneralConfigController.h" />
+    <ClInclude Include="src\user-interface\GeneralSettingsController.h" />
     <ClInclude Include="src\user-interface\LoginController.h" />
     <ClInclude Include="src\user-interface\mainwindow.h" />
     <ClInclude Include="src\user-interface\playmodes\DebugPlayMode.h" />
@@ -221,7 +223,9 @@
     <ClCompile Include="src\dummycharacter.cpp" />
     <ClCompile Include="src\entity\dao\ActionDAO.cpp" />
     <ClCompile Include="src\entity\dao\ExerciseDAO.cpp" />
+    <ClCompile Include="src\entity\dao\GeneralSettingsDAO.cpp" />
     <ClCompile Include="src\entity\dao\UserProfileDAO.cpp" />
+    <ClCompile Include="src\entity\GeneralSettings.cpp" />
     <ClCompile Include="src\entity\UserProfile.cpp" />
     <ClCompile Include="src\humancharacter.cpp" />
     <ClCompile Include="src\input.cpp" />
@@ -309,7 +313,7 @@
     <ClCompile Include="src\user-interface\DebugController.cpp" />
     <ClCompile Include="src\user-interface\PlayModeController.cpp" />
     <ClCompile Include="src\user-interface\ExercisesController.cpp" />
-    <ClCompile Include="src\user-interface\GeneralConfigController.cpp" />
+    <ClCompile Include="src\user-interface\GeneralSettingsController.cpp" />
     <ClCompile Include="src\user-interface\LoginController.cpp" />
     <ClCompile Include="src\user-interface\mainwindow.cpp" />
     <ClCompile Include="src\user-interface\playmodes\DebugPlayMode.cpp" />

@@ -1,6 +1,6 @@
 
-#ifndef __CINETICO_GENERAL_CONFIG_CONTROLLER_H__
-#define __CINETICO_GENERAL_CONFIG_CONTROLLER_H__
+#ifndef __CINETICO_GENERAL_SETTINGS_CONTROLLER_H__
+#define __CINETICO_GENERAL_SETTINGS_CONTROLLER_H__
 
 #include "Controller.h"
 #include "components/cPageTitle.h"
@@ -11,10 +11,11 @@
 namespace cinetico {
 	using namespace uilib;
 
-	class GeneralConfigController : public Controller
+	class GeneralSettingsController : public Controller
 	{
 		std::vector<Adapter> m_adapters;
 		std::vector<DisplayMode> m_displayModes;
+
 	public:
 		VerticalLayout layout;
 		cPageTitle title;
@@ -25,6 +26,7 @@ namespace cinetico {
 		cSeparator sepCore;
 		VerticalLayout layoutCore;
 		cTextBox tbDistThreshold;
+		cTextBox tbMinHoldtime;
 
 		cSeparator sepGraphics;
 		VerticalLayout layoutGraphics;
@@ -33,13 +35,11 @@ namespace cinetico {
 		CheckBox chkFullscreen;
 		CheckBox chkAntialiasing;
 
-		UserProfileDAO *m_userProfileDAO;
-
-		friend void GeneralConfigController_buttonSave_onClick(Button &button);
-		friend void GeneralConfigController_buttonBack_onClick(Button &button);
+		friend void GeneralSettingsController_buttonSave_onClick(Button &button);
+		friend void GeneralSettingsController_buttonBack_onClick(Button &button);
 
 	public:
-		GeneralConfigController(CineticoUI &cineticoUI);
+		GeneralSettingsController(CineticoUI &cineticoUI);
 
 		Layout *viewDefinition();
 		void onViewEnter(ViewParams params);

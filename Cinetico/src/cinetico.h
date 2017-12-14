@@ -17,6 +17,7 @@ namespace cinetico {
 	class CineticoDB;
 	class CineticoUI;
 	class UserProfile;
+	class GeneralSettings;
 
 	class Cinetico {
 
@@ -39,6 +40,7 @@ namespace cinetico {
 
 		//
 		Dictionary *m_dictionary;
+		GeneralSettings *m_generalSettings;
 
 		void setup();
 		void step();
@@ -64,6 +66,7 @@ namespace cinetico {
 		CineticoDB *cineticoDB() const { return m_cineticoDB; }
 		CineticoUI *cineticoUI() const { return m_cineticoUI; }
 		Dictionary *dictionary() const { return m_dictionary; }
+		GeneralSettings *generalSettings() const { return m_generalSettings; }
 
 		UserProfile *currentUser() const { return m_currentUser; }
 
@@ -77,6 +80,7 @@ namespace cinetico {
 			bodyPointNames[BodyPoint::Cervical] = m_dictionary->getString(Dictionary::BodyPointCervical);
 			bodyPointNames[BodyPoint::Spine] = m_dictionary->getString(Dictionary::BodyPointSpine);
 			bodyPointNames[BodyPoint::Pelvis] = m_dictionary->getString(Dictionary::BodyPointSpineBase);
+
 			bodyPointNames[BodyPoint::LeftShoulder] = m_dictionary->getString(Dictionary::BodyPointLeftShoulder);
 			bodyPointNames[BodyPoint::LeftElbow] = m_dictionary->getString(Dictionary::BodyPointLeftElbow);
 			bodyPointNames[BodyPoint::LeftWrist] = m_dictionary->getString(Dictionary::BodyPointLeftWrist);

@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <language id="en_us">
+	<string id="AppTitle">Cinético</string>
+	
 	<!-- General data -->
 	<string id="X">X</string>
 	<string id="Y">Y</string>

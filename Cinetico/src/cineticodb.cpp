@@ -3,6 +3,7 @@
 #include "entity/UserProfile.h"
 #include "utils/crypter.h"
 #include "database/sqlite/sqlitedatabase.h"
+#include <cassert>
 
 namespace cinetico {
 
@@ -12,6 +13,7 @@ const char *Table_Action = "CREATE TABLE ACTION(id INTEGER PRIMARY KEY, exercise
 const char *Table_SimpleGesture = "CREATE TABLE SIMPLE_GESTURE(id INTEGER PRIMARY KEY, action_id REFERENCES ACTION(id), transition_type INTEGER NOT NULL, body_point INTEGER NOT NULL, ref_point INTEGER NOT NULL, operation INTEGER NOT NULL, value_x REAL, value_y REAL, value_z REAL);";
 const char *Table_MovementGesture = "CREATE TABLE MOVEMENT_GESTURE(simple_gesture_id PRIMARY KEY REFERENCES SIMPLE_GESTURE(id), min_speed REAL, max_speed REAL);";
 const char *Table_MovementGesture_ExtraPoints = "CREATE TABLE MOVEMENT_GESTURE_EXTRA_POINTS(simple_gesture_id PRIMARY KEY REFERENCES SIMPLE_GESTURE(id), min_speed REAL, max_speed REAL);";
+const char *Table_GeneralSettings = "CREATE TABLE GENERAL_SETTINGS(pos_dist_threshold REAL, pos_min_holdtime REAL, adapter INTEGER, resolution_width INTEGER, resolution_height INTEGER, refresh_rate INTEGER, fullscreen INTEGER, antialiasing INTEGER);";
 
 	class CinetiCoDefs {
 	public:
@@ -53,35 +55,30 @@ const char *Table_MovementGesture_ExtraPoints = "CREATE TABLE MOVEMENT_GESTURE_E
 		db.open();
 		if (db.isOpen()) {
 			SQLStatement *stmt = db.prepare(Table_UserProfile);
-			if(!stmt->execute())
-				int a = 1;
+			stmt->execute();
 			stmt = db.prepare(Table_Exercise);
-			if(!stmt->execute())
-				int a = 1;
+			stmt->execute();
 			stmt = db.prepare(Table_Action);
-			if(!stmt->execute())
-				int a = 1;
+			stmt->execute();
 			stmt = db.prepare(Table_SimpleGesture);
-			if(!stmt->execute())
-				int a = 1;
+			stmt->execute();
 			stmt = db.prepare(Table_MovementGesture);
-			if (!stmt->execute())
-				int a = 1;
+			stmt->execute();
 			stmt = db.prepare(Table_MovementGesture_ExtraPoints);
-			if (!stmt->execute())
-				int a = 1;
+			stmt->execute();
+			stmt = db.prepare(Table_GeneralSettings);
+			stmt->execute();
 
 			m_userProfileDAO = new UserProfileDAO(db);
 			m_exerciseDAO = new ExerciseDAO(db);
 			m_actionDAO = new ActionDAO(db);
+			m_generalSettingsDAO = new GeneralSettingsDAO(db);
 
 			//criando default login
 			UserProfile *adminProfile = m_userProfileDAO->getByLoginName("admin");
 			if (!adminProfile) {
 				adminProfile = new UserProfile("admin", Crypter::SimpleHash("admin"),"");
 				m_userProfileDAO->create(*adminProfile);
-				UserProfile *test = m_userProfileDAO->getByLoginName("admin");
-				int a = 1;
 			}
 
 			delete adminProfile;

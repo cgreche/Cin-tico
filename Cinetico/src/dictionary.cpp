@@ -22,11 +22,13 @@ namespace cinetico {
 
 	void Dictionary::__fillMaps() {
 		if (!g_mapsFilled) {
+			//Language mapping
 			MAP_LANG(PT_BR);
 			MAP_LANG(EN_US);
 
-
 			//String mapping
+			MAP_STR(AppTitle);
+
 			//General Data
 			MAP_STR(X);
 			MAP_STR(Y);
@@ -137,14 +139,18 @@ namespace cinetico {
 			MAP_STR(MovementGestureMinSpeed);
 			MAP_STR(MovementGestureMaxSpeed);
 
-			MAP_STR(GeneralConfigCoreDistanceThreshold);
-			MAP_STR(GeneralConfigAdapter);
-			MAP_STR(GeneralConfigResolution);
-			MAP_STR(GeneralConfigFullscreen);
-			MAP_STR(GeneralConfigAntialiasing);
+			MAP_STR(GeneralSettingsCorePosDistThreshold);
+			MAP_STR(GeneralSettingsCorePosMinHoldtime);
+			MAP_STR(GeneralSettingsAdapter);
+			MAP_STR(GeneralSettingsResolution);
+			MAP_STR(GeneralSettingsFullscreen);
+			MAP_STR(GeneralSettingsAntialiasing);
 
 			//Views
 			MAP_STR(ViewDefaultErrorRequiredFields);
+
+			//MainWindow
+			MAP_STR(MainWindowUsername);
 
 			//Login
 			MAP_STR(LoginViewTitle);
@@ -206,10 +212,10 @@ namespace cinetico {
 			MAP_STR(PlayModeExerciseRealizationSelectedExercise);
 
 			//General Settings
-			MAP_STR(GeneralConfigViewTitle);
-			MAP_STR(GeneralConfigViewDesc);
-			MAP_STR(GeneralConfigViewSectionCore);
-			MAP_STR(GeneralConfigViewSectionGraphics);
+			MAP_STR(GeneralSettingsViewTitle);
+			MAP_STR(GeneralSettingsViewDesc);
+			MAP_STR(GeneralSettingsViewSectionCore);
+			MAP_STR(GeneralSettingsViewSectionGraphics);
 
 			for (int i = 0; i < Dictionary::StringIDCount; ++i) {
 				Dictionary::StringID id = (Dictionary::StringID)i;

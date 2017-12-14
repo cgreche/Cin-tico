@@ -24,8 +24,10 @@ namespace cinetico {
 		enum StringID {
 			__StringIDStart = -1,
 
+			AppTitle
+
 			//General Data
-			  X
+			, X
 			, Y
 			, Z
 
@@ -135,14 +137,18 @@ namespace cinetico {
 			, MovementGestureMaxSpeed
 
 			//General Config
-			, GeneralConfigCoreDistanceThreshold
-			, GeneralConfigAdapter
-			, GeneralConfigResolution
-			, GeneralConfigFullscreen
-			, GeneralConfigAntialiasing
+			, GeneralSettingsCorePosDistThreshold
+			, GeneralSettingsCorePosMinHoldtime
+			, GeneralSettingsAdapter
+			, GeneralSettingsResolution
+			, GeneralSettingsFullscreen
+			, GeneralSettingsAntialiasing
 
 			//Views
 			, ViewDefaultErrorRequiredFields
+
+			//MainWindow
+			, MainWindowUsername
 
 			//Login
 			, LoginViewTitle
@@ -203,11 +209,11 @@ namespace cinetico {
 			, PlayModeViewTitle
 			, PlayModeExerciseRealizationSelectedExercise
 
-			//General Config
-			, GeneralConfigViewTitle
-			, GeneralConfigViewDesc
-			, GeneralConfigViewSectionCore
-			, GeneralConfigViewSectionGraphics
+			//General Settings
+			, GeneralSettingsViewTitle
+			, GeneralSettingsViewDesc
+			, GeneralSettingsViewSectionCore
+			, GeneralSettingsViewSectionGraphics
 
 			//
 			, StringIDCount

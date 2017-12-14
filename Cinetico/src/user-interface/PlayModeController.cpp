@@ -10,6 +10,8 @@
 #include "playmodes/FreePlayMode.h"
 #include "playmodes/DebugPlayMode.h"
 
+#include "entity/GeneralSettings.h"
+
 namespace cinetico {
 
 	PlayModeController::PlayModeController(CineticoUI &cineticoUI)
@@ -35,8 +37,13 @@ namespace cinetico {
 		m_renderEngine = m_cineticoUI.renderEngine();
 		m_renderEngineHelper = m_cineticoUI.renderEngineHelper();
 		RenderEngine::Config &config = m_renderEngine->config();
-		m_cineticoUI.setViewResolution(config.displaymode().width, config.displaymode().height, config.fullscreen());
-		m_cineticoUI.setHeaderContentFooterVisible(false,false,false);
+		GeneralSettings &settings = *m_cinetico.generalSettings();
+		config.setAdapter(settings.adapter());
+		config.setDisplayMode({ settings.resolutionWidth(), settings.resolutionHeight(), settings.refreshRate() });
+		config.setFullscreen(settings.fullscreen());
+		config.setAntialiasing(settings.antialiasing());
+		m_cineticoUI.setHeaderContentFooterVisible(false, false, false);
+		m_cineticoUI.setViewResolution(settings.resolutionWidth(), settings.resolutionHeight(), settings.fullscreen());
 		m_renderEngine->init();
 
 		PlayMode *playMode = NULL;

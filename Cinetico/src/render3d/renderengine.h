@@ -30,25 +30,25 @@ namespace render3d {
 	{
 	public:
 		class Config {
-			Adapter m_adapter;
+			int m_adapter;
 			DisplayMode m_displayMode;
 			bool m_fullscreen;
 			bool m_antialiasing;
 
 		public:
 			Config() {
-				m_adapter = { "",(void*)0 };
+				m_adapter = 0;
 				m_displayMode = { 1024,768,60 };
 				m_fullscreen = false;
 				m_antialiasing = false;
 			}
 
-			void setAdapter(const struct Adapter &adapter) { m_adapter = adapter; }
+			void setAdapter(int adapter) { m_adapter = adapter; }
 			void setDisplayMode(const struct DisplayMode &displayMode) { m_displayMode = displayMode; }
 			void setFullscreen(bool fullscreen) { m_fullscreen = fullscreen; }
 			void setAntialiasing(bool antialiasing) { m_antialiasing = antialiasing; }
 
-			const Adapter &adapter() const { return m_adapter; }
+			int adapter() const { return m_adapter; }
 			const DisplayMode &displaymode() const { return m_displayMode; }
 			bool fullscreen() const { return m_fullscreen; }
 			bool antialiasing() const { return m_antialiasing; }

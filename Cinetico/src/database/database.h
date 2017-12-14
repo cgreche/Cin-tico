@@ -5,8 +5,6 @@
 
 #include <string>
 
-#include <sqlite3.h>
-
 #include "sqlstatement.h"
 #include "resultset.h"
 

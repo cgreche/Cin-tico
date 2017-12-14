@@ -625,10 +625,16 @@
     <ClInclude Include="src\RelOrientChar.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\user-interface\GeneralConfigController.h">
+    <ClInclude Include="src\user-interface\PlayModeController.h">
       <Filter>src\user-interface</Filter>
     </ClInclude>
-    <ClInclude Include="src\user-interface\PlayModeController.h">
+    <ClInclude Include="src\entity\GeneralSettings.h">
+      <Filter>src\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\dao\GeneralSettingsDAO.h">
+      <Filter>src\entity\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user-interface\GeneralSettingsController.h">
       <Filter>src\user-interface</Filter>
     </ClInclude>
   </ItemGroup>
@@ -990,10 +996,16 @@
     <ClCompile Include="src\RelOrientChar.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\user-interface\GeneralConfigController.cpp">
+    <ClCompile Include="src\user-interface\PlayModeController.cpp">
       <Filter>src\user-interface</Filter>
     </ClCompile>
-    <ClCompile Include="src\user-interface\PlayModeController.cpp">
+    <ClCompile Include="src\entity\GeneralSettings.cpp">
+      <Filter>src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\dao\GeneralSettingsDAO.cpp">
+      <Filter>src\entity\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\GeneralSettingsController.cpp">
       <Filter>src\user-interface</Filter>
     </ClCompile>
   </ItemGroup>

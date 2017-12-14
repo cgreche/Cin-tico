@@ -38,7 +38,7 @@ namespace cinetico {
 
 	static void buttonConfig_onClick(Button &button) {
 		MainWindow *mainWindow = (MainWindow *)button.param();
-		mainWindow->m_cinetico.cineticoUI()->goTo(CineticoUI::GENERAL_CONFIG);
+		mainWindow->m_cinetico.cineticoUI()->goTo(CineticoUI::GENERAL_SETTINGS);
 	}
 
 	static void buttonGoToDebugView_onClick(Button &button) {
@@ -55,11 +55,9 @@ namespace cinetico {
 	}
 
 	void MainWindow::buildHeaderLayout() {
-		labelAppname.setText("Cinético");
 		labelAppname.setTextColor(ViewTemplate::AppTitleColor);
 		labelAppname.setAlignment(Label::VCenter);
 		labelAppname.setFont(ViewTemplate::AppTitleFont);
-
 		
 		labelUsername.setTextColor(ViewTemplate::AppTitleColor);
 		linkUsername.setTextColor(ViewTemplate::LoggedUserInfoColor);
@@ -186,7 +184,6 @@ namespace cinetico {
 		: m_cinetico(cinetico) {
 		m_currentContentLayout = NULL;
 
-		setTitle("Cinético");
 		setStyle(CS_Window | CS_Resizable | CS_Caption | CS_SysMenu | CS_MinimizeButton | CS_MaximizeButton);
 		buildHeaderLayout();
 		buildFooterLayout();
@@ -211,8 +208,11 @@ namespace cinetico {
 	}
 
 	void MainWindow::updateLabels() {
+		setTitle(m_cinetico.dictionary()->getString(Dictionary::AppTitle));
+		labelAppname.setText(m_cinetico.dictionary()->getString(Dictionary::AppTitle));
+
 		//Header
-		labelUsername.setText("Usuário: ");
+		labelUsername.setText(m_cinetico.dictionary()->getString(Dictionary::MainWindowUsername));
 		buttonLogoff.setText(m_cinetico.dictionary()->getString(Dictionary::ActionLogoff));
 
 		//Footer

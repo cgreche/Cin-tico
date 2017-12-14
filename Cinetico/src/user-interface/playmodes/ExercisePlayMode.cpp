@@ -260,8 +260,6 @@ namespace cinetico {
 			m_renderEngine->drawText(strQ.data(), 200, drawIndexY, drawColor);
 		}
 
-		
-
 		//m_renderEngine->setCurrentCamera(m_cam2);
 		//m_renderEngine->setCurrentViewport(m_viewportActionPreview);
 		//m_renderEngine->clear(render3d::Color(0, 40, 100));

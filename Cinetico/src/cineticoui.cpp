@@ -11,7 +11,7 @@
 #include "user-interface/ExercisesController.h"
 #include "user-interface/ActionsController.h"
 #include "user-interface/PlayModeController.h"
-#include "user-interface/GeneralConfigController.h"
+#include "user-interface/GeneralSettingsController.h"
 #include "user-interface/DebugController.h"
 
 using namespace cinetico_core;
@@ -78,7 +78,7 @@ namespace cinetico {
 		registerView(EXERCISES, dictionary->getString(Dictionary::ExercisesViewTitle).data(), new ExercisesController(*this));
 		registerView(ACTIONS, dictionary->getString(Dictionary::ActionsViewTitle).data(), new ActionsController(*this));
 		registerView(PLAY_MODE, dictionary->getString(Dictionary::PlayModeViewTitle).data(), new PlayModeController(*this));
-		registerView(GENERAL_CONFIG, "Configurações Gerais", new GeneralConfigController(*this));
+		registerView(GENERAL_SETTINGS, dictionary->getString(Dictionary::GeneralSettingsViewTitle).data(), new GeneralSettingsController(*this));
 		registerView(DEBUG, "Debug mode", new DebugController(*this));
 
 		setupWindow();
