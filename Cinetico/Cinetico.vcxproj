@@ -24,6 +24,7 @@
     <ClInclude Include="src\cineticoui.h" />
     <ClInclude Include="src\cineticodb.h" />
     <ClInclude Include="src\colladaparser.h" />
+    <ClInclude Include="src\core\BodyPointState.h" />
     <ClInclude Include="src\core\BodyTracker.h" />
     <ClInclude Include="src\core\entity\Action.h" />
     <ClInclude Include="src\core\entity\Body.h" />
@@ -31,6 +32,7 @@
     <ClInclude Include="src\core\entity\Exercise.h" />
     <ClInclude Include="src\core\entity\MovementGesture.h" />
     <ClInclude Include="src\core\entity\SimpleGesture.h" />
+    <ClInclude Include="src\core\GestureCommand.h" />
     <ClInclude Include="src\core\GestureCommandsManager.h" />
     <ClInclude Include="src\core\kinectsensor.h" />
     <ClInclude Include="src\core\lib\quaternion.h" />
@@ -205,6 +207,7 @@
     <ClCompile Include="src\character.cpp" />
     <ClCompile Include="src\cineticodb.cpp" />
     <ClCompile Include="src\colladaparser.cpp" />
+    <ClCompile Include="src\core\BodyPointState.cpp" />
     <ClCompile Include="src\core\BodyTracker.cpp" />
     <ClCompile Include="src\core\entity\Action.cpp" />
     <ClCompile Include="src\core\entity\Body.cpp" />
@@ -212,6 +215,7 @@
     <ClCompile Include="src\core\entity\Exercise.cpp" />
     <ClCompile Include="src\core\entity\MovementGesture.cpp" />
     <ClCompile Include="src\core\entity\SimpleGesture.cpp" />
+    <ClCompile Include="src\core\GestureCommand.cpp" />
     <ClCompile Include="src\core\GestureCommandsManager.cpp" />
     <ClCompile Include="src\core\kinectsensor.cpp" />
     <ClCompile Include="src\core\Sensor.cpp" />

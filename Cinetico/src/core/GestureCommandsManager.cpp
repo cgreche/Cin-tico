@@ -1,6 +1,7 @@
 
 #include "GestureCommandsManager.h"
 #include "entity/Body.h"
+#include "entity/Action.h"
 #include "entity/SimpleGesture.h"
 
 namespace cinetico_core {
@@ -45,6 +46,9 @@ namespace cinetico_core {
 		for (unsigned int i = 0; i < BodyPoint::BodyPartCount; ++i) {
 			if (i == BodyPoint::RightPalm)
 				int a = 1;
+			else {
+				continue;
+			}
 
 			BodyPointState::GestureState gestureState = m_trackedBps[i].update(curTime);
 			std::vector<GestureCommand*> gestureCommands;
@@ -63,12 +67,15 @@ namespace cinetico_core {
 					}
 				}
 				else if (gestureState == BodyPointState::MOVING) {
-					if (movGesture.size() > 0)
+					if (posGesture.size() == 0 && movGesture.size() > 0)
 						movGesture[0]->update(m_trackedBps[i]);
 					else {
-						if (posGesture.size() > 0)
+						PositionGestureCommand* transitionGesture = NULL;
+						if (posGesture.size() > 0) {
+							transitionGesture = (PositionGestureCommand*)posGesture[0];
 							posGesture[0]->finish(curTime);
-						m_gestureCommands.push_back(new MovementGestureCommand(m_trackedBps[i]));
+						}
+						m_gestureCommands.push_back(new MovementGestureCommand(transitionGesture,m_trackedBps[i]));
 					}
 				}
 			}
@@ -97,10 +104,7 @@ namespace cinetico_core {
 
 		Vector3 actionPoint;
 		if (command->movementGestureCommand())
-			actionPoint = command->movementGestureCommand()->currentPosition();
-		else
-			actionPoint = command->initPosition();
-		Vector3 targetPoint;
+			return false; //we are going to check only positionGestures (movementgesture can be "parent")
 
 		BodyPoint *ref = m_body->bodyPoint((BodyPoint::BodyPart)gesture->refPoint());
 		Vector3 refPos = ref->position();
@@ -113,6 +117,33 @@ namespace cinetico_core {
 		Vector3 rightPos = crossProduct(frontPos, Vector3(0, 1, 0));
 		Vector3 upPos = crossProduct(rightPos, frontPos);
 
+		Vector3 targetPoint;
+
+		//Check for movement constraint
+		if (gesture->transitionType() == SimpleGesture::FixedMovement) {
+			MovementGesture *movGesture = (MovementGesture*)gesture;
+			PositionGestureCommand *posCommand = (PositionGestureCommand*)command;
+			MovementGestureCommand *movCommand = (MovementGestureCommand*)posCommand->transitionGestureCommand();
+			if (movCommand == NULL)
+				return false;
+			if (movGesture->movementType() == MovementGesture::Linear) {
+				if (movCommand->pointCount() > 2)
+					return false;
+				//passed movement constraint
+			}
+			else {
+				//todo: check for smooth movement
+			}
+
+			actionPoint = movCommand->endPosition();
+
+		}
+		else {
+			actionPoint = command->initPosition();
+		}
+
+
+		//Check for positioning constraint
 		unsigned long operation = gesture->operation();
 		int op = operation & 255;
 		int posFlags = (operation >> 8) & 7;
@@ -183,21 +214,20 @@ namespace cinetico_core {
 		for (int i = 0; i < gestureCount; ++i) {
 			SimpleGesture *gesture = action.gesture(i);
 			BodyPoint::BodyPart bp = gesture->bodyPoint();
-			if (gesture->transitionType() == SimpleGesture::Free) {
-				std::vector<GestureCommand*> actions = filterCommands(BodyPointState::STEADY, bp);
-				if (!actions.empty()) {
-					int gestureResult = meetConditions(gesture, actions[0], distThreshold) ? 1 : 0;
-					action.setGestureResult(i, gestureResult);
-				}
-			}
-			else if (gesture->transitionType() == SimpleGesture::FixedMovement) {
-				BodyPoint::BodyPart bp = gesture->bodyPoint();
-				std::vector<GestureCommand*> actions = filterCommands(BodyPointState::MOVING, bp);
-				if (!actions.empty()) {
-					int gestureResult = meetConditions(gesture, actions[0], distThreshold) ? 1 : 2;
-					if(gestureResult==1 || actions[0]->finished())
-						action.setGestureResult(i, gestureResult);
-				}
+			std::vector<GestureCommand*> actions = filterCommands(BodyPointState::STEADY, bp);
+			if (!actions.empty()) {
+				if(!actions[0]->active())
+					continue;
+				int gestureResult = meetConditions(gesture, actions[0], distThreshold) ? 1 : 0;
+				//if condition wasn't met and it is Free transition, ignore;
+				//otherwise, set result
+				if (gestureResult == 0 && gesture->transitionType() == SimpleGesture::FixedMovement)
+					gestureResult = 2;
+
+				action.setGestureResult(i, gestureResult);
+				if (gestureResult != 0)
+					actions[0]->setActive(false);
+
 			}
 		}
 	}

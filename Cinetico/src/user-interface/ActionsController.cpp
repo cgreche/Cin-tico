@@ -326,6 +326,7 @@ namespace cinetico {
 		float valueZ = tbValueZ.text().toFloat();
 
 		if (type == SimpleGesture::FixedMovement) {
+			//todo: movement type is required
 			MovementGesture::MovementType movementType = (MovementGesture::MovementType)(int)cbMovementType.selectedItem()->data();
 			float minSpeed = tbMinSpeed.text().toFloat();
 			float maxSpeed = tbMaxSpeed.text().toFloat();

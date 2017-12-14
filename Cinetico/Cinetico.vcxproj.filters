@@ -637,6 +637,12 @@
     <ClInclude Include="src\user-interface\GeneralSettingsController.h">
       <Filter>src\user-interface</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\GestureCommand.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\BodyPointState.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -1007,6 +1013,12 @@
     </ClCompile>
     <ClCompile Include="src\user-interface\GeneralSettingsController.cpp">
       <Filter>src\user-interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\GestureCommand.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\BodyPointState.cpp">
+      <Filter>src\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
