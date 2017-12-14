@@ -179,7 +179,7 @@ namespace cinetico {
 			controller->gestureItems[selectedGesture]->setSelected(true);
 		}
 		else {
-			selectedGesture = -1;
+			controller->m_selectedGesture = -1;
 		}
 
 		controller->layoutGestureItems.update();	
@@ -302,7 +302,14 @@ namespace cinetico {
 			|| cbBodyPoint.selectedItem() == NULL
 			|| cbRefPoint.selectedItem() == NULL
 			|| cbOperation.selectedItem() == NULL) {
+			Message::warning(NULL, m_dictionary.getString(Dictionary::ViewDefaultErrorRequiredFields));
 			return false;
+		}
+		if (cbTransitionType.selection() >= 0 && (SimpleGesture::TransitionType)(int)cbTransitionType.selectedItem() == SimpleGesture::FixedMovement) {
+			if (cbMovementType.selection() == -1) {
+				Message::warning(NULL, m_dictionary.getString(Dictionary::ViewDefaultErrorRequiredFields));
+				return false;
+			}
 		}
 		return true;
 	}
@@ -386,7 +393,7 @@ namespace cinetico {
 		tbValueY.setLabel(m_dictionary.getString(Dictionary::SimpleGestureValueY));
 		tbValueZ.setLabel(m_dictionary.getString(Dictionary::SimpleGestureValueZ));
 		
-		cbMovementType.setLabel(m_dictionary.getString(Dictionary::MovementGestureMovementType));
+		cbMovementType.setLabel(m_dictionary.getString(Dictionary::MovementGestureMovementType) + '*');
 		tbMinSpeed.setLabel(m_dictionary.getString(Dictionary::MovementGestureMinSpeed));
 		tbMaxSpeed.setLabel(m_dictionary.getString(Dictionary::MovementGestureMaxSpeed));
 		buttonSaveGesture.setText(m_dictionary.getString(Dictionary::DefaultActionSave));
@@ -509,6 +516,8 @@ namespace cinetico {
 		tbValueY.setText("");
 		tbValueZ.setText("");
 		layoutMovementGestureData.setVisible(false);
+		buttonSaveGesture.setEnabled(false);
+		buttonDelGesture.setEnabled(false);
 	}
 
 	void ActionsController::onViewTick() {
@@ -534,6 +543,8 @@ namespace cinetico {
 				tbValueZ.setText("");
 			}
 			layoutGestureData.setEnabled(m_selectedGesture >= 0);
+			buttonSaveGesture.setEnabled(m_selectedGesture >= 0);
+			buttonDelGesture.setEnabled(m_selectedGesture >= 0);
 		}
 
 		int transitionTypeIndex = cbTransitionType.selection();

@@ -22,12 +22,12 @@ namespace cinetico {
 		title.setTitle(m_dictionary.getString(Dictionary::LoginViewTitle));
 		title.setDesc(m_dictionary.getString(Dictionary::LoginViewDesc));
 		separatorLogin.setText(m_dictionary.getString(Dictionary::LoginViewSectionLogin));
-		tbLoginUsername.setLabel(m_dictionary.getString(Dictionary::LoginViewUsername));
+		tbLoginUsername.setLabel(m_dictionary.getString(Dictionary::LoginViewUsername) + '*');
 		tbLoginPassword.setLabel(m_dictionary.getString(Dictionary::LoginViewPassword));
 		
 		buttonLogin.setText(m_dictionary.getString(Dictionary::LoginViewActionLogin));
 		separatorCreateAccount.setText(m_dictionary.getString(Dictionary::LoginViewSectionCreateUserProfile));
-		tbCreateAccountUsername.setLabel(m_dictionary.getString(Dictionary::LoginViewUsername));
+		tbCreateAccountUsername.setLabel(m_dictionary.getString(Dictionary::LoginViewUsername) + '*');
 		tbCreateAccountPassword.setLabel(m_dictionary.getString(Dictionary::LoginViewPassword));
 
 		buttonCreateAccount.setText(m_dictionary.getString(Dictionary::LoginViewActionCreateUserProfile));

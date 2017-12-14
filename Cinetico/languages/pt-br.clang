@@ -9,7 +9,7 @@
 
 	<!-- Body Points -->
 	<string id="BodyPointHead">Cabeça</string>
-	<string id="BodyPointHead">Pescoço</string>
+	<string id="BodyPointNeck">Pescoço</string>
 	<string id="BodyPointCervical">Cervical</string>
 	<string id="BodyPointSpine">Espinha</string>
 	<string id="BodyPointSpineBase">Base da espinha</string>
@@ -76,7 +76,7 @@
 	<string id="DefaultActionBack">Voltar</string>
 	<!-- -->
 	<string id="DefaultActionQuestionDelete">Deseja excluir este registro?
-	Esta operação não poderá ser desfeita.</string>
+Esta operação não poderá ser desfeita.</string>
 	
 	
 	<!-- -->
@@ -125,9 +125,9 @@
 	<string id="LoginViewDesc">Para começar, selecione ou crie um Perfil de usuário</string>
 	<string id="LoginViewSectionLogin">Entrar com Perfil de usuário</string>
 	<string id="LoginViewSectionCreateUserProfile">Criar Perfil de usuário</string>
-	<string id="LoginViewUsername">Nome do usuário *</string>
-	<string id="LoginViewPassword">Senha *</string>
-	<string id="LoginViewConfirmPassword">Confirmar Senha *</string>
+	<string id="LoginViewUsername">Nome do usuário</string>
+	<string id="LoginViewPassword">Senha</string>
+	<string id="LoginViewConfirmPassword">Confirmar Senha</string>
 	<string id="LoginViewActionLogin">Entrar</string>
 	<string id="LoginViewActionCreateUserProfile">Criar perfil</string>
 	<!-- -->
@@ -152,7 +152,8 @@
 	<string id="UserProfileViewErrorPasswordChangedSucessfully">Senha alterada com sucesso.</string>
 	<string id="UserProfileViewErrorPasswordWrongCurrentPassword">Senha atual incorreta.</string>
 	<string id="UserProfileViewErrorPasswordConfirmationNotEqual">Confirmação de nova senha não confere.</string>
-	<string id="UserProfileViewQuestionDeactivateConfirmation">Você tem certeza que deseja desativar seu perfil de usuário?\nEsta operação não poderá ser desfeita.</string>
+	<string id="UserProfileViewQuestionDeactivateConfirmation">Você tem certeza que deseja desativar seu perfil de usuário?
+Esta operação não poderá ser desfeita.</string>
 	
 	<!-- -->
 	<!--Exercises-->

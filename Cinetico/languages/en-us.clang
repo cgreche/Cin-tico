@@ -131,9 +131,9 @@ This operation cannot be undone.</string>
 	<string id="LoginViewDesc">To start, enter or create your User profile</string>
 	<string id="LoginViewSectionLogin">Enter with your User profile</string>
 	<string id="LoginViewSectionCreateUserProfile">Create an User profile</string>
-	<string id="LoginViewUsername">Username *</string>
-	<string id="LoginViewPassword">Password *</string>
-	<string id="LoginViewConfirmPassword">Password confirmation *</string>
+	<string id="LoginViewUsername">Username</string>
+	<string id="LoginViewPassword">Password</string>
+	<string id="LoginViewConfirmPassword">Password confirmation</string>
 	<string id="LoginViewActionLogin">Login</string>
 	<string id="LoginViewActionCreateUserProfile">Create profile</string>
 	<!-- -->
