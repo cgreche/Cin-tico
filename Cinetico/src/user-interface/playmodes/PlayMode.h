@@ -9,6 +9,7 @@ namespace render3d {
 
 namespace cinetico {
 	class Cinetico;
+	class Dictionary;
 
 	class PlayMode {
 	public:
@@ -22,6 +23,8 @@ namespace cinetico {
 
 	protected:
 		Cinetico &m_cinetico;
+		Dictionary &m_dictionary;
+
 		PlayModeID m_playingMode;
 		render3d::RenderEngine *m_renderEngine;
 		render3d::RenderEngineHelper *m_renderEngineHelper;

@@ -51,7 +51,7 @@ namespace cinetico {
 		MainWindow *mainWindow = (MainWindow *)button.param();
 		Controller::ViewParams params;
 		params.set<int>("play_mode", PlayMode::DEBUG_MODE);
-		mainWindow->m_cinetico.cineticoUI()->goTo(CineticoUI::PLAYING,params);
+		mainWindow->m_cinetico.cineticoUI()->goTo(CineticoUI::PLAY_MODE,params);
 	}
 
 	void MainWindow::buildHeaderLayout() {

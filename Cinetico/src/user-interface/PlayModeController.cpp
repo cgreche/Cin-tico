@@ -2,7 +2,7 @@
 #include "cinetico.h"
 #include "cineticoui.h"
 #include "input.h"
-#include "ExerciseRealizationController.h"
+#include "PlayModeController.h"
 #include "dummycharacter.h"
 #include "humancharacter.h"
 
@@ -12,16 +12,16 @@
 
 namespace cinetico {
 
-	ExerciseRealizationController::ExerciseRealizationController(CineticoUI &cineticoUI)
+	PlayModeController::PlayModeController(CineticoUI &cineticoUI)
 		: Controller(cineticoUI) {
 		m_playingMode = NULL;
 	}
 
-	Layout *ExerciseRealizationController::viewDefinition() {
+	Layout *PlayModeController::viewDefinition() {
 		return &layout;
 	}
 
-	void ExerciseRealizationController::onViewEnter(ViewParams params) {
+	void PlayModeController::onViewEnter(ViewParams params) {
 
 		PlayMode::PlayModeID playModeId = (PlayMode::PlayModeID)params.get<int>("play_mode");
 
@@ -56,7 +56,7 @@ namespace cinetico {
 		m_cinetico.sensor()->initialize();
 	}
 
-	void ExerciseRealizationController::onViewTick() {
+	void PlayModeController::onViewTick() {
 		step();
 		render();
 
@@ -74,7 +74,7 @@ namespace cinetico {
 		}
 	}
 
-	void ExerciseRealizationController::onViewQuit() {
+	void PlayModeController::onViewQuit() {
 		m_cineticoUI.setHeaderContentFooterVisible(true,true,true);
 		if (m_playingMode)
 			m_playingMode->cleanUp();
@@ -83,12 +83,12 @@ namespace cinetico {
 		m_cineticoUI.setViewResolution(m_oldWidth, m_oldHeight, m_oldFullscreen);
 	}
 
-	void ExerciseRealizationController::step() {
+	void PlayModeController::step() {
 		if (m_playingMode)
 			m_playingMode->step();
 	}
 
-	void ExerciseRealizationController::render() {
+	void PlayModeController::render() {
 		if (m_playingMode) {
 			m_renderEngine->beginScene();
 			m_playingMode->render();

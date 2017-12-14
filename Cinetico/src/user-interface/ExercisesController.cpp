@@ -358,7 +358,7 @@ namespace cinetico {
 			ViewParams params;
 			params.set<Exercise*>("exercise",m_currentExercise);
 			params.set<int>("play_mode", PlayMode::EXERCISE_MODE);
-			m_cineticoUI.goTo(CineticoUI::PLAYING,params);
+			m_cineticoUI.goTo(CineticoUI::PLAY_MODE,params);
 		}
 	}
 

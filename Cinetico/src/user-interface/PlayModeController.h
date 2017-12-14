@@ -1,6 +1,5 @@
-
-#ifndef __CINETICO_EXERCISE_REALIZATION_CONTROLLER_H__
-#define __CINETICO_EXERCISE_REALIZATION_CONTROLLER_H__
+#ifndef __CINETICO_PLAY_MODE_CONTROLLER_H__
+#define __CINETICO_PLAY_MODE_CONTROLLER_H__
 
 #include "Controller.h"
 #include "uilib/ui/uibase.h"
@@ -10,7 +9,7 @@ namespace cinetico {
 
 	class PlayMode;
 
-	class ExerciseRealizationController : public Controller
+	class PlayModeController : public Controller
 	{
 	public:
 		VerticalLayout layout;
@@ -31,7 +30,7 @@ namespace cinetico {
 		bool m_oldFullscreen;
 
 	public:
-		ExerciseRealizationController(CineticoUI &cineticoUI);
+		PlayModeController(CineticoUI &cineticoUI);
 
 		Layout *viewDefinition();
 		void onViewEnter(ViewParams params);

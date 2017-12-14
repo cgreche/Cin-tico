@@ -13,7 +13,7 @@ namespace cinetico {
 	FontDesc ViewTemplate::LoggedUserInfoFont = FontDesc("Arial", 10, 0);
 	Color ViewTemplate::LoggedUserInfoColor = Color(0x9E, 0x9E, 0x9E);
 	Color ViewTemplate::LoggedUserInfoHoverColor = Color(0xBD, 0xBD, 0xBD);
-	FontDesc ViewTemplate::TitleFont = FontDesc("Arial", 36, FONT_BOLD);
+	FontDesc ViewTemplate::TitleFont = FontDesc("Arial", 32, FONT_BOLD);
 	Color ViewTemplate::TitleColor = Color(0,0,0);
 	FontDesc ViewTemplate::DescFont = FontDesc("Arial", 10, FONT_BOLD);
 	Color ViewTemplate::DescColor = Color(0,0,0);

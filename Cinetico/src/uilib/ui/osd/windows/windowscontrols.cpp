@@ -1,7 +1,7 @@
 
 //WindowsControls
 // File: windowscontrols.cpp
-// Last edit: 20/10/2017 06:56 (UTC-3)
+// Last edit: 13/12/2017 23:12 (UTC-3)
 // Author: CGR
 
 #include "..\\..\\uibase.h"
@@ -174,11 +174,10 @@ namespace uilib {
 		case WM_LBUTTONDOWN: //0x201
 		case WM_RBUTTONDOWN: //0x204
 		case WM_MBUTTONDOWN: //0x207
-			//todo: Mouse enter event
 			if (msg == WM_LBUTTONDOWN) button = 1;
 			else if (msg == WM_RBUTTONDOWN) button = 2;
 			else button = 4;
-			buttons = wParam; //todo: change
+			buttons = wParam; //todo: change: analyse data to set proper buttons
 			event = new MouseEvent(Point((int)LOWORD(lParam), (int)HIWORD(lParam)), button, buttons);
 			control->onMousePressEvent((MouseEvent&)*event);
 			break;

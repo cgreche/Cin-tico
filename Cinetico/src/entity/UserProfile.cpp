@@ -1,5 +1,6 @@
 
 #include "UserProfile.h"
+#include <time.h>
 
 namespace cinetico {
 
@@ -12,7 +13,7 @@ namespace cinetico {
 		m_loginName = loginName;
 		m_password = password;
 		m_name = name;
-		m_creationDate = time_t(NULL);
+		m_creationDate = (unsigned int)::time(NULL);
 		m_loggedIn = false;
 	}
 

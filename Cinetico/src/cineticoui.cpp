@@ -10,7 +10,7 @@
 #include "user-interface/UserProfileController.h"
 #include "user-interface/ExercisesController.h"
 #include "user-interface/ActionsController.h"
-#include "user-interface/ExerciseRealizationController.h"
+#include "user-interface/PlayModeController.h"
 #include "user-interface/GeneralConfigController.h"
 #include "user-interface/DebugController.h"
 
@@ -77,7 +77,7 @@ namespace cinetico {
 		registerView(USER_PROFILE, dictionary->getString(Dictionary::UserProfileViewTitle).data(), new UserProfileController(*this));
 		registerView(EXERCISES, dictionary->getString(Dictionary::ExercisesViewTitle).data(), new ExercisesController(*this));
 		registerView(ACTIONS, dictionary->getString(Dictionary::ActionsViewTitle).data(), new ActionsController(*this));
-		registerView(PLAYING, "Exercise Realization", new ExerciseRealizationController(*this));
+		registerView(PLAY_MODE, dictionary->getString(Dictionary::PlayModeViewTitle).data(), new PlayModeController(*this));
 		registerView(GENERAL_CONFIG, "Configurações Gerais", new GeneralConfigController(*this));
 		registerView(DEBUG, "Debug mode", new DebugController(*this));
 

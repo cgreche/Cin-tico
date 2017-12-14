@@ -21,7 +21,7 @@ namespace cinetico {
 		stmt->bind(4, (int)user.creationDate());
 		int rc = stmt->execute();
 		if (rc != 0) {
-			//todo
+			//todo (future): retrieve proper error
 		}
 		stmt->close();
 	}
@@ -36,7 +36,7 @@ namespace cinetico {
 		stmt->bind(3, user.name());
 		int rc = stmt->execute();
 		if (rc != 0) {
-			//todo
+			//todo (future): retrieve proper error
 		}
 		stmt->close();
 	}
@@ -79,7 +79,7 @@ namespace cinetico {
 		stmt->bind(1, user.loginName());
 		int rc = stmt->execute();
 		if (rc != 0) {
-			//todo
+			//todo (future): retrieve proper error
 		}
 		stmt->close();
 	}
@@ -91,7 +91,7 @@ namespace cinetico {
 		stmt->bind(1, loginName);
 		int rc = stmt->execute();
 		if (rc != 0) {
-			//todo
+			//todo (future): retrieve proper error
 		}
 		stmt->close();
 	}

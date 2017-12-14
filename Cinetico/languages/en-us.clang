@@ -7,6 +7,7 @@
 
 	<!-- Body Points -->
 	<string id="BodyPointHead">Head</string>
+	<string id="BodyPointNeck">Neck</string>
 	<string id="BodyPointCervical">Cervical</string>
 	<string id="BodyPointSpine">Spine</string>
 	<string id="BodyPointSpineBase">Spine base</string>
@@ -76,11 +77,13 @@
 This operation cannot be undone.</string>
 	
 	<!-- -->
-	
 	<!--Entity-->
 	<string id="EntityUserProfile">User Profile</string>
 	<string id="EntityExercise">Exercise</string>
 	<string id="EntityAction">Action</string>
+	<string id="EntityGesture">Gesture</string>
+	<string id="EntityGeneralSettings">General settings</string>
+	
 	<!-- -->
 	<!--Entitiy attributes-->
 	<string id="UserProfileLoginName">User</string>
@@ -109,6 +112,7 @@ This operation cannot be undone.</string>
 	<string id="MovementGestureMovementType">Movement type</string>
 	<string id="MovementGestureMinSpeed">Minimum execution speed (cm/s²)</string>
 	<string id="MovementGestureMaxSpeed">Maximum execution speed (cm/s²)</string>
+	
 	<!--General Config-->
 	<string id="GeneralConfigCoreDistanceThreshold">Position distance threshold</string>
 	<string id="GeneralConfigAdapter">Device</string>
@@ -153,7 +157,7 @@ This operation cannot be undone.</string>
 	<string id="UserProfileViewErrorPasswordWrongCurrentPassword">Incorrect current password.</string>
 	<string id="UserProfileViewErrorPasswordConfirmationNotEqual">Password confirmation is not equal as current password.</string>
 	<string id="UserProfileViewQuestionDeactivateConfirmation">Are you sure you want to disable your User profile?
-	This operation cannot be undone.</string>
+This operation cannot be undone.</string>
 	
 	<!-- -->
 	<!--Exercises-->
@@ -174,6 +178,9 @@ This operation cannot be undone.</string>
 	<string id="ActionsViewDesc">Add or edit actions for an Exercise.</string>
 	<string id="ActionsViewSectionBasicData">Base action information.</string>
 	<string id="ActionsViewSectionSpecificData">Specific information for the chosen action type.</string>
+	<string id="ActionsViewSectionGestures">Gestures</string>
+	<string id="ActionsViewErrorNoGestures">One action must have at least one Gesture</string>
+	<string id="ActionsViewErrorInvalidGestures">There are invalid Gestures</string>
 	<!-- -->
 	<!--General Config-->
 	<string id="GeneralConfigViewTitle">General settings</string>

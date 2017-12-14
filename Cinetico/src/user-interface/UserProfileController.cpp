@@ -113,8 +113,8 @@ namespace cinetico {
 		m_currentUser = params.get<UserProfile*>("user");
 
 		char datetime[256];
-		time_t now = ::time(0);
-		tm *ltm = ::localtime(&now);		
+		time_t creationDate = m_currentUser->creationDate();
+		tm *ltm = ::localtime(&creationDate);
 
 		sprintf(datetime,"%02d/%02d/%02d %02d:%02d:%02d",ltm->tm_mday,ltm->tm_mon+1,ltm->tm_year+1900,ltm->tm_hour,ltm->tm_min,ltm->tm_sec);
 		labelCreationDate.setText(datetime);

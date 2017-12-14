@@ -38,7 +38,7 @@ namespace cinetico {
 		stmt->bind(5, (int)exercise.id());
 		int rc = stmt->execute();
 		if (rc != 0) {
-			//todo
+			//todo (future): retrieve proper error
 		}
 		stmt->close();
 	}

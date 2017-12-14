@@ -32,7 +32,6 @@ namespace uilib {
 
 	Size Separator::getAutoSize()
 	{
-		//todo
 		Size textSize;
 		if (m_text == "") {
 			textSize = UITools::getTextSize(" ", m_font.desc());

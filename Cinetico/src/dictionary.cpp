@@ -4,7 +4,7 @@
 #include <libxml/tree.h>
 #include "uilib/lib/string.h"
 
-#include <windows.h> //for utf-8 to ansi conversion (temporary) todo: remove when it is not needed anymore
+#include <windows.h> //for utf-8 to ansi conversion (temporary) todo (future): remove when it is not needed anymore
 
 #define XMLCHAR(x) ((const xmlChar*)x)
 #define XMLCHAR2CHAR(x) ((const char*)x)
@@ -106,6 +106,7 @@ namespace cinetico {
 			MAP_STR(EntityUserProfile);
 			MAP_STR(EntityExercise);
 			MAP_STR(EntityAction);
+			MAP_STR(EntityGesture);
 			MAP_STR(EntityGeneralSettings);
 
 			//Entitiy attributes
@@ -196,12 +197,26 @@ namespace cinetico {
 			MAP_STR(ActionsViewDesc);
 			MAP_STR(ActionsViewSectionBasicData);
 			MAP_STR(ActionsViewSectionSpecificData);
-			MAP_STR(ActionViewErrorNoGestures);
+			MAP_STR(ActionsViewSectionGestures);
+			MAP_STR(ActionsViewErrorNoGestures);
+			MAP_STR(ActionsViewErrorInvalidGestures);
 
+			//PlayMode
+			MAP_STR(PlayModeViewTitle);
+			MAP_STR(PlayModeExerciseRealizationSelectedExercise);
+
+			//General Settings
 			MAP_STR(GeneralConfigViewTitle);
 			MAP_STR(GeneralConfigViewDesc);
 			MAP_STR(GeneralConfigViewSectionCore);
 			MAP_STR(GeneralConfigViewSectionGraphics);
+
+			for (int i = 0; i < Dictionary::StringIDCount; ++i) {
+				Dictionary::StringID id = (Dictionary::StringID)i;
+				if (!g_stringIdStr[id]) {
+					int a = 1;
+				}
+			}
 
 			g_mapsFilled = true;
 		}

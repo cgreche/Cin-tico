@@ -48,11 +48,10 @@ namespace cinetico {
 					Button buttonCancel;
 
 
-		//todo: set private
+	private:
 		int m_editMode;
 		int m_currentSelection;
 
-	private:
 		Exercise *m_currentExercise;
 
 	public:

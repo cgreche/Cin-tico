@@ -233,9 +233,8 @@ namespace cinetico {
 			//todo (future versions): campos somente numéricos
 		}
 
-		//todo: add to dictionary
 		if (layoutGestureItems.itemCount() == 0) {
-			uilib::Message::warning(NULL, "Uma ação deve conter pelo menos um gesto.");
+			uilib::Message::warning(NULL, m_dictionary.getString(Dictionary::ActionsViewErrorNoGestures));
 			return false;
 		}
 
@@ -248,14 +247,16 @@ namespace cinetico {
 		}
 
 		if (invalidGestures.size() > 0) {
-			string str = "A(s) Ação(ões) ";
+			string str = m_dictionary.getString(Dictionary::ActionsViewErrorInvalidGestures);
 			size_t i;
+
+			str += '(';
 			for (i = 0; i < invalidGestures.size() - 1; ++i) {
 				str += string::fromInteger(invalidGestures[i]);
 				str += ", ";
 			}
 			str += string::fromInteger(invalidGestures[i]);
-			str += " estão inválidas";
+			str += ')';
 			Message::warning(NULL,str);
 			return false;
 		}
@@ -325,10 +326,9 @@ namespace cinetico {
 		float valueZ = tbValueZ.text().toFloat();
 
 		if (type == SimpleGesture::FixedMovement) {
-			//todo: get movementType, minSpeed, maxSpeed from fields
-			MovementGesture::MovementType movementType = MovementGesture::Linear;
-			float minSpeed = 0.f;
-			float maxSpeed = 0.f;
+			MovementGesture::MovementType movementType = (MovementGesture::MovementType)(int)cbMovementType.selectedItem()->data();
+			float minSpeed = tbMinSpeed.text().toFloat();
+			float maxSpeed = tbMaxSpeed.text().toFloat();
 			MovementGesture *movementGesture = new MovementGesture(bp, movementType);
 			movementGesture->setMinSpeed(minSpeed);
 			movementGesture->setMaxSpeed(maxSpeed);
@@ -375,8 +375,7 @@ namespace cinetico {
 		tbMaxTime.setLabel(m_dictionary.getString(Dictionary::ActionMaxExecutionTime));
 		tbTimeToHold.setLabel(m_dictionary.getString(Dictionary::ActionTimeToHold));
 
-		//todo: add to dictionary
-		separatorGestureData.setText("Gestos");
+		separatorGestureData.setText(m_dictionary.getString(Dictionary::ActionsViewSectionGestures));
 
 		cbTransitionType.setLabel(m_dictionary.getString(Dictionary::SimpleGestureTransitionType) + '*');
 		cbBodyPoint.setLabel(m_dictionary.getString(Dictionary::SimpleGestureBodyPoint) + '*');
@@ -385,13 +384,14 @@ namespace cinetico {
 		tbValueX.setLabel(m_dictionary.getString(Dictionary::SimpleGestureValueX));
 		tbValueY.setLabel(m_dictionary.getString(Dictionary::SimpleGestureValueY));
 		tbValueZ.setLabel(m_dictionary.getString(Dictionary::SimpleGestureValueZ));
-		//todo: add to dic
-		cbMovementType.setLabel("Movemento typo");
-		tbMinSpeed.setLabel("Min Speedo");
-		tbMaxSpeed.setLabel("Max speedo");
+		
+		cbMovementType.setLabel(m_dictionary.getString(Dictionary::MovementGestureMovementType));
+		tbMinSpeed.setLabel(m_dictionary.getString(Dictionary::MovementGestureMinSpeed));
+		tbMaxSpeed.setLabel(m_dictionary.getString(Dictionary::MovementGestureMaxSpeed));
 		buttonSaveGesture.setText(m_dictionary.getString(Dictionary::DefaultActionSave));
 
 		buttonAddGesture.setText(m_dictionary.getString(Dictionary::DefaultActionAdd));
+		buttonSaveGesture.setText(m_dictionary.getString(Dictionary::DefaultActionSave));
 		buttonDelGesture.setText(m_dictionary.getString(Dictionary::DefaultActionDelete));
 	}
 
@@ -440,6 +440,8 @@ namespace cinetico {
 
 		buttonAddGesture.setParam(this);
 		buttonAddGesture.setOnClick(buttonAddGesture_onClick);
+		buttonSaveGesture.setOnClick(buttonSaveGesture_onClick);
+		buttonSaveGesture.setParam(this);
 		buttonDelGesture.setParam(this);
 		buttonDelGesture.setOnClick(buttonDelGesture_onClick);
 
@@ -449,17 +451,10 @@ namespace cinetico {
 		layoutActionDataRow1.append(tbMaxTime);
 		layoutActionDataRow1.append(tbTimeToHold);
 		layoutActionCommands.append(buttonAddGesture);
+		layoutActionCommands.append(buttonSaveGesture);
 		layoutActionCommands.append(buttonDelGesture);
 
 		//Gestures
-		fillTransitionTypeCombo(cbTransitionType);
-		fillBodyPointCombo(cbBodyPoint);
-		fillRefPointCombo(cbRefPoint);
-		fillOperationCombo(cbOperation);
-		fillMovementTypeCombo(cbMovementType);
-		buttonSaveGesture.setOnClick(buttonSaveGesture_onClick);
-		buttonSaveGesture.setParam(this);
-
 		layoutGestureRow1.append(cbTransitionType, Size(SizeTypeMax, SizeTypeAuto));
 		layoutGestureRow1.append(cbBodyPoint, Size(SizeTypeMax, SizeTypeAuto));
 		layoutGestureRow1.append(cbRefPoint, Size(SizeTypeMax, SizeTypeAuto));
@@ -638,11 +633,20 @@ namespace cinetico {
 
 		if (mode == 0) {
 			layoutContent.append(layoutContentList);
+			layoutContentList.setVisible(true);
 			updateActionList();
 		}
 		else if (mode == 1 || mode == 2) {
-			
+			//better to set here to load translation
+			fillTransitionTypeCombo(cbTransitionType);
+			fillBodyPointCombo(cbBodyPoint);
+			fillRefPointCombo(cbRefPoint);
+			fillOperationCombo(cbOperation);
+			fillMovementTypeCombo(cbMovementType);
+
+			//
 			layoutContent.append(layoutActionData);
+			layoutActionData.setVisible(true);
 			
 			// Clear gestures from last edit operation
 			if (!gestureItems.empty()) {
@@ -698,11 +702,11 @@ namespace cinetico {
 				cbOperation.setSelection(-1);
 			}
 
+			layoutMovementGestureData.setVisible(false);
 		}
 
 		m_editMode = mode;
 		layout.setSize(layout.size());
-		layout.setVisible(true);
 	}
 
 	void ActionsController::updateActionList() {

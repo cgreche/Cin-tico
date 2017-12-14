@@ -26,6 +26,7 @@ namespace cinetico {
 	}
 
 	void ExercisePlayMode::setup() {
+
 		m_humanChar = new HumanCharacter(*m_cinetico.cineticoUI());
 		m_dummyChar = new DummyCharacter(*m_cinetico.cineticoUI());
 		m_roChar = new RelOrientChar(*m_cinetico.cineticoUI());
@@ -130,8 +131,8 @@ namespace cinetico {
 		m_renderEngine->drawResource(m_instanceTerrain);
 
 		m_renderEngine->setCurrentFont(m_resFontArial);
-		//todo: add to dictionary
-		uilib::string str = "Exercício selecionado: ";
+		
+		uilib::string str = m_dictionary.getString(Dictionary::PlayModeExerciseRealizationSelectedExercise);
 		str += m_exercise.name().c_str();
 		m_renderEngine->drawText(str.data(), 500, 10, render3d::Color(255, 255, 255, 100));
 
@@ -188,7 +189,8 @@ namespace cinetico {
 
 		int drawIndexX = 36;
 		int drawIndexY = 220;
-
+		
+		//todo: add to dictionary
 		string exerciseInfo = "Estado do exercício: ";
 		if (m_exercise.state() == Exercise::Finished) {
 			exerciseInfo += "Concluído (";

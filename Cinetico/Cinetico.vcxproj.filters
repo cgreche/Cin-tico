@@ -301,9 +301,6 @@
     <ClInclude Include="src\user-interface\Controller.h">
       <Filter>src\user-interface</Filter>
     </ClInclude>
-    <ClInclude Include="src\user-interface\ExerciseRealizationController.h">
-      <Filter>src\user-interface</Filter>
-    </ClInclude>
     <ClInclude Include="src\user-interface\ExercisesController.h">
       <Filter>src\user-interface</Filter>
     </ClInclude>
@@ -631,6 +628,9 @@
     <ClInclude Include="src\user-interface\GeneralConfigController.h">
       <Filter>src\user-interface</Filter>
     </ClInclude>
+    <ClInclude Include="src\user-interface\PlayModeController.h">
+      <Filter>src\user-interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">
@@ -849,9 +849,6 @@
     <ClCompile Include="src\render3d\textresource.cpp">
       <Filter>src\render3d</Filter>
     </ClCompile>
-    <ClCompile Include="src\user-interface\ExerciseRealizationController.cpp">
-      <Filter>src\user-interface</Filter>
-    </ClCompile>
     <ClCompile Include="src\user-interface\ExercisesController.cpp">
       <Filter>src\user-interface</Filter>
     </ClCompile>
@@ -994,6 +991,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\user-interface\GeneralConfigController.cpp">
+      <Filter>src\user-interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user-interface\PlayModeController.cpp">
       <Filter>src\user-interface</Filter>
     </ClCompile>
   </ItemGroup>

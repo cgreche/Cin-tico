@@ -22,6 +22,8 @@ namespace cinetico {
 		};
 
 		enum StringID {
+			__StringIDStart = -1,
+
 			//General Data
 			  X
 			, Y
@@ -101,6 +103,7 @@ namespace cinetico {
 			, EntityUserProfile
 			, EntityExercise
 			, EntityAction
+			, EntityGesture
 			, EntityGeneralSettings
 
 			//Entitiy attributes
@@ -174,7 +177,6 @@ namespace cinetico {
 			, UserProfileViewErrorPasswordConfirmationNotEqual
 			, UserProfileViewQuestionDeactivateConfirmation
 
-
 			//Exercises
 			, ExercisesViewTitle
 			, ExercisesViewDesc
@@ -193,7 +195,13 @@ namespace cinetico {
 			, ActionsViewDesc
 			, ActionsViewSectionBasicData
 			, ActionsViewSectionSpecificData
-			, ActionViewErrorNoGestures
+			, ActionsViewSectionGestures
+			, ActionsViewErrorNoGestures
+			, ActionsViewErrorInvalidGestures
+
+			//PlayMode
+			, PlayModeViewTitle
+			, PlayModeExerciseRealizationSelectedExercise
 
 			//General Config
 			, GeneralConfigViewTitle

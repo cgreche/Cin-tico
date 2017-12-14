@@ -201,7 +201,6 @@ namespace render3d {
 				memcpy(pData, &vertices[i], sizeof(Vector3));
 				pData += sizeof(Vector3);
 
-				//*(D3DVECTOR*)pData = D3DVECTOR({ 0.f, -1.f, 0.f }); //todo: use this method to set normal data
 				memcpy(pData, &normals[i], sizeof(Vector3));
 				pData += sizeof(Vector3);
 

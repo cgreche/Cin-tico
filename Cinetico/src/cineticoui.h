@@ -34,7 +34,7 @@ namespace cinetico {
 			USER_PROFILE,
 			EXERCISES,
 			ACTIONS,
-			PLAYING,
+			PLAY_MODE,
 			GENERAL_CONFIG,
 			DEBUG
 		};

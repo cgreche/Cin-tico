@@ -6,7 +6,8 @@
 namespace cinetico {
 
 	PlayMode::PlayMode(Cinetico &cinetico, PlayModeID playMode)
-		: m_cinetico(cinetico) {
+		: m_cinetico(cinetico)
+		, m_dictionary(*m_cinetico.dictionary()) {
 		m_playingMode = playMode;
 		m_renderEngine = cinetico.cineticoUI()->renderEngine();
 		m_renderEngineHelper = cinetico.cineticoUI()->renderEngineHelper();

@@ -87,6 +87,7 @@ namespace cinetico {
 					cSeparator separatorGestureData;
 					HorizontalLayout layoutActionCommands;
 						Button buttonAddGesture;
+						Button buttonSaveGesture;
 						Button buttonDelGesture;
 					HorizontalLayout layoutGestureItems;
 					std::vector<GestureItem *> gestureItems;
@@ -105,7 +106,6 @@ namespace cinetico {
 							cComboBox cbMovementType;
 							cTextBox tbMinSpeed;
 							cTextBox tbMaxSpeed;
-					Button buttonSaveGesture;
 
 		Exercise *m_currentExercise;
 		int m_editMode;
