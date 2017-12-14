@@ -18,7 +18,7 @@ namespace uilib {
 	protected:
 		friend class OSDScrollView;
 		OSDScrollView &osdRef() const { return reinterpret_cast<OSDScrollView&>(Control::osdRef()); }
-
+	public:
 		VerticalLayout viewLayout;
 			HorizontalLayout hLayout;
 				Layout *contentLayout;

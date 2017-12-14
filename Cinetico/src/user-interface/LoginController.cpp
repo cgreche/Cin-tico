@@ -64,7 +64,7 @@ namespace cinetico {
 		
 		testView.setBackgroundColor(uilib::Color(200, 200, 200));
 		testButton.setText("TESTTTTT");
-		testLayout.append(testButton);
+		testLayout.append(testButton,Size(SizeTypeMax,SizeTypeAuto));
 		testLayout.append(testButton2);
 		testLayout.append(testButton3);
 		testLayout.append(testButton4);

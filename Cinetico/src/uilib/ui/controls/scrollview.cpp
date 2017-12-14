@@ -22,6 +22,11 @@ namespace uilib {
 		::GetWindowRect(scrollBar.osdRef().handle(), &rc2);
 		::UpdateWindow(scrollBar.parent()->osdRef().handle());
 
+		ScrollView *scroll = (ScrollView*)scrollBar.param();
+		Layout *layout = scroll->contentLayout;
+		if(layout)
+			layout->setPosition(Point(layout->position().x(), layout->position().y()-1));
+
 	}
 
 	ScrollView::ScrollView()
@@ -29,6 +34,7 @@ namespace uilib {
 		contentLayout = &dummyLayout;
 
 		verticalScrollBar.setOnScroll(onScroll_);
+		verticalScrollBar.setParam(this);
 
 		hLayout.append(*contentLayout,MaximumSize);
 		hLayout.append(verticalScrollBar,Size(20,SizeTypeMax));
