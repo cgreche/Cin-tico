@@ -182,6 +182,11 @@ Esta operação não poderá ser desfeita.</string>
 	<string id="ActionsViewSectionBasicData">Informação básica da ação.</string>
 	<string id="ActionsViewSectionSpecificData">Informação específica para o tipo de ação.</string>
 	<!-- -->
+	<!--PlayMode-->
+	<string id="PlayModeViewTitle">Modo de execução:</string>
+	<string id="PlayModeExerciseRealizationSelectedExercise">Estado do Exercício:</string>
+	<string id="PlayModeExerciseState">Estado do Exercício:</string>
+	<!-- -->
 	<!--General Config-->
 	<string id="GeneralSettingsViewTitle">Configurações gerais</string>
 	<string id="GeneralSettingsViewDesc">Modifique as configurações gerais do sistema.</string>

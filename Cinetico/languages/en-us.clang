@@ -170,7 +170,7 @@ This operation cannot be undone.</string>
 	<string id="ExercisesViewActionManageActions">Manage actions</string>
 	<string id="ExercisesViewActionDoExercise">Do selected exercise</string>
 	<string id="ExercisesViewGridColumnActionCount">Action count</string>
-	<string id="ExercisesViewExerciseName">Exerxcise name</string>
+	<string id="ExercisesViewExerciseName">Exercise name</string>
 	<string id="ExercisesViewSectionBodyPoints">Useable body points</string>
 	<!-- -->
 	<string id="ExercisesViewErrorExerciseAlreadyExists">There is an exercise with this name already created. Please, choose another name.</string>
@@ -184,6 +184,11 @@ This operation cannot be undone.</string>
 	<string id="ActionsViewSectionGestures">Gestures</string>
 	<string id="ActionsViewErrorNoGestures">One action must have at least one Gesture</string>
 	<string id="ActionsViewErrorInvalidGestures">There are invalid Gestures</string>
+	<!-- -->
+	<!--PlayMode-->
+	<string id="PlayModeViewTitle">Play Mode:</string>
+	<string id="PlayModeExerciseRealizationSelectedExercise">Selected Exercise:</string>
+	<string id="PlayModeExerciseState">Exercise state:</string>
 	<!-- -->
 	<!--General Config-->
 	<string id="GeneralSettingsViewTitle">General settings</string>

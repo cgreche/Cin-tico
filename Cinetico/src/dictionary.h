@@ -64,6 +64,11 @@ namespace cinetico {
 			, BodyPointRightAnkle
 			, BodyPointRightFoot
 
+			//Exercise enums
+			, ExerciseStateIdle
+			, ExerciseStateRunning
+			, ExerciseStateFinished
+
 			//Gesture enums
 			, SimpleGestureTransitionTypeFree
 			, SimpleGestureTransitionTypeFixedMovement
@@ -208,6 +213,7 @@ namespace cinetico {
 			//PlayMode
 			, PlayModeViewTitle
 			, PlayModeExerciseRealizationSelectedExercise
+			, PlayModeExerciseState
 
 			//General Settings
 			, GeneralSettingsViewTitle

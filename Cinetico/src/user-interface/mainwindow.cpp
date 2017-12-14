@@ -180,8 +180,9 @@ namespace cinetico {
 			m_cinetico.input()->mouse.m_buttons[2] = false;
 	}
 
-	MainWindow::MainWindow(Cinetico &cinetico)
-		: m_cinetico(cinetico) {
+	MainWindow::MainWindow(CineticoUI &cineticoUI)
+		: m_cineticoUI(cineticoUI)
+		, m_cinetico(cineticoUI.cinetico()) {
 		m_currentContentLayout = NULL;
 
 		setStyle(CS_Window | CS_Resizable | CS_Caption | CS_SysMenu | CS_MinimizeButton | CS_MaximizeButton);

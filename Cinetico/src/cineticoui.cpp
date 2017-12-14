@@ -54,7 +54,7 @@ namespace cinetico {
 	}
 
 	void CineticoUI::setupWindow() {
-		m_mainWindow = new MainWindow(m_cinetico);
+		m_mainWindow = new MainWindow(*this);
 		m_mainWindow->setFrameSize(Size(winWidth, winHeight));
 	}
 

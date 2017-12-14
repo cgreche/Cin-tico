@@ -110,6 +110,16 @@ namespace cinetico {
 		str += "]\n";
 	}
 
+	inline void printVector3(string &str, const render3d::Vector3 &v) {
+		str += "V: [";
+		str += string::fromFloat(v.x());
+		str += ", ";
+		str += string::fromFloat(v.y());
+		str += ", ";
+		str += string::fromFloat(v.z());
+		str += "]\n";
+	}
+
 	unsigned long frameCount = 0;
 	int print = 0;
 	void ExercisePlayMode::render() {
@@ -191,19 +201,21 @@ namespace cinetico {
 		int drawIndexY = 220;
 		
 		//todo: add to dictionary
-		string exerciseInfo = "Estado do exercício: ";
+		string exerciseInfo = m_dictionary.getString(Dictionary::PlayModeExerciseState);
 		if (m_exercise.state() == Exercise::Finished) {
-			exerciseInfo += "Concluído (";
+			exerciseInfo += m_dictionary.getString(Dictionary::ExerciseStateFinished);
+			exerciseInfo += "(";
 			exerciseInfo += string::fromFloat(m_exercise.accuracy(),2) + '%';
 			exerciseInfo += ")";
 		}
 		else if(m_exercise.state() == Exercise::Idle) {
-			exerciseInfo += "Parado";
+			exerciseInfo += m_dictionary.getString(Dictionary::ExerciseStateIdle);
 		}
 		else {
-			exerciseInfo += "Executando";
+			exerciseInfo += m_dictionary.getString(Dictionary::ExerciseStateRunning);
 		}
 
+		//todo: add to dictionary
 		m_renderEngine->drawText(exerciseInfo.data(), 20, drawIndexY, drawColor);
 		drawIndexY += 25;
 		m_renderEngine->drawText("Lista de ações:", 20, drawIndexY, drawColor);
@@ -228,14 +240,13 @@ namespace cinetico {
 			drawIndexY += 30;
 		}
 
-
+		uilib::string strQ;
 		Body *body = m_humanChar->body();
 		if (body) {
 			BodyPoint *bpTest = body->bodyPoint(BodyPoint::Head);
 			Quaternion q = bpTest->orientation();
 			cinetico_core::Vector3 e = q.toEuler();
-
-			uilib::string strQ;
+			
 			strQ += "Q: [";
 			strQ += string::fromFloat(q.w());
 			strQ += ", ";
@@ -256,9 +267,13 @@ namespace cinetico {
 			printVector3(strQ, body->bodyPoint(BodyPoint::Spine)->position());
 			strQ += string::fromInteger(m_cinetico.currentTime());
 			if (m_humanChar->body()->bodyPoint(BodyPoint::RightPalm)->position().y() > m_humanChar->body()->bodyPoint(BodyPoint::Head)->position().y())
-				strQ = "Fuck";
-			m_renderEngine->drawText(strQ.data(), 200, drawIndexY, drawColor);
+				strQ = "Fuck";			
 		}
+
+		Camera *camera = m_renderEngine->camera(m_currentCameraId);
+		printVector3(strQ, camera->pos());
+		printVector3(strQ, camera->rot());
+		m_renderEngine->drawText(strQ.data(), 200, drawIndexY, drawColor);
 
 		//m_renderEngine->setCurrentCamera(m_cam2);
 		//m_renderEngine->setCurrentViewport(m_viewportActionPreview);

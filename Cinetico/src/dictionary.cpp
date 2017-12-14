@@ -67,6 +67,11 @@ namespace cinetico {
 			MAP_STR(BodyPointRightAnkle);
 			MAP_STR(BodyPointRightFoot);
 
+			//Exercise enums
+			MAP_STR(ExerciseStateIdle);
+			MAP_STR(ExerciseStateRunning);
+			MAP_STR(ExerciseStateFinished);
+
 			//Action Enums
 			MAP_STR(SimpleGestureTransitionTypeFree);
 			MAP_STR(SimpleGestureTransitionTypeFixedMovement);
@@ -210,6 +215,7 @@ namespace cinetico {
 			//PlayMode
 			MAP_STR(PlayModeViewTitle);
 			MAP_STR(PlayModeExerciseRealizationSelectedExercise);
+			MAP_STR(PlayModeExerciseState);
 
 			//General Settings
 			MAP_STR(GeneralSettingsViewTitle);

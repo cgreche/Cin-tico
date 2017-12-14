@@ -11,6 +11,7 @@ namespace cinetico {
 
 	using namespace uilib;
 	class Cinetico;
+	class CineticoUI;
 
 	class MainWindow : public Window
 	{
@@ -49,6 +50,7 @@ namespace cinetico {
 		void buildFooterLayout();
 		void updateLabels();
 
+		CineticoUI &m_cineticoUI;
 		Cinetico &m_cinetico;
 
 		friend void linkUserLoginName_onClick(TextLink &link);
@@ -71,8 +73,7 @@ namespace cinetico {
 		virtual void onMouseReleaseEvent(MouseEvent &event);
 
 	public:
-		//todo: change to CineticoUI
-		MainWindow(Cinetico &cinetico);
+		MainWindow(CineticoUI &cineticoUI);
 		void step();
 		void update();
 		void setContentLayout(Layout *layout);
