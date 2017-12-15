@@ -389,6 +389,7 @@ namespace cinetico {
 					fmtStr.replace(index, 2, "%");
 				}
 				else {
+					++c;
 					continue;
 				}
 				c += 2;

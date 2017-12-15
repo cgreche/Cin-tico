@@ -200,8 +200,8 @@ Esta operação não poderá ser desfeita.</string>
 	<!-- -->
 	<!--PlayMode-->
 	<string id="PlayModeViewTitle">Modo de execução</string>
-	<string id="PlayModeExerciseRealizationSelectedExercise">Exercício selecionado: (%s)</string>
-	<string id="PlayModeExerciseState">Estado do Exercício (%s)</string>
+	<string id="PlayModeExerciseRealizationSelectedExercise">Exercício selecionado: %s</string>
+	<string id="PlayModeExerciseState">Estado do Exercício: %s</string>
 	<string id="PlayModeActionList">Lista de ações</string>
 	<!-- -->
 	<!--General Config-->

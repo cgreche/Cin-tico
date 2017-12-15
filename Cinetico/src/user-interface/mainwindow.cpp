@@ -194,7 +194,7 @@ namespace cinetico {
 		layout.append(bgFooter, Size(SizeTypeMax, MakePercentType(10)));
 
 		setLayout(&layout);
-		setFrameSize(Size(1024, 768));
+		setSize(Size(800, 600));
 		setVisible(true);
 	}
 

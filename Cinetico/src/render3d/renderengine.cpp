@@ -12,6 +12,50 @@ namespace render3d {
 
 	}
 
+	void RenderEngine::destroy() {
+		for (ResourceData *resourceData : m_resources) {
+			releaseInternalResource(resourceData);
+			delete resourceData;
+		}
+		for (Camera *camera : m_cameras) {
+			releaseInternalCamera(camera);
+			delete camera;
+		}
+		for (Viewport *viewport : m_viewports) {
+			releaseInternalViewport(viewport);
+			delete viewport;
+		}
+		for (ResourceInstance *resInstance : m_instances) {
+			releaseInternalResourceInstance(resInstance);
+			delete resInstance;
+		}
+		for (FontResource *fontResource : m_fontResources) {
+			releaseInternalFontResource(fontResource);
+			delete fontResource;
+		}
+		for (TextResource *textResource : m_textResources) {
+			releaseInternalTextResource(textResource);
+			delete textResource;
+		}
+
+		//temp
+		if (!m_resources.empty())
+			m_resources.clear();
+		if (!m_materials.empty())
+			m_materials.clear();
+		m_cameras.clear();
+		if (!m_viewports.empty())
+			m_viewports.clear();
+		if (!m_instances.empty())
+			m_instances.clear();
+		if (!m_fontResources.empty())
+			m_fontResources.clear();
+		if (!m_textResources.empty())
+			m_textResources.clear();
+
+		m_currentCamera = NULL;
+	}
+
 	int RenderEngine::newResource(unsigned int vertexCount, Vector3 *vertices, unsigned int indexCount, int *indices) {
 		int curId = m_resources.size();
 		ResourceData *resData = new ResourceData(this, curId);

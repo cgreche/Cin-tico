@@ -102,7 +102,7 @@ namespace render3d {
 
 		virtual void configure(void *) = 0;
 		virtual void init() = 0;
-		virtual void destroy() = 0;
+		virtual void destroy();
 		virtual void beginScene() = 0;
 		virtual void endScene() = 0;
 
@@ -136,12 +136,19 @@ namespace render3d {
 
 	protected:
 		virtual void *newInternalResource(ResourceData *resData) { return NULL; }
+		virtual void releaseInternalResource(ResourceData *resData) { }
 		virtual void *newInternalMaterial(Material *material) { return NULL; }
+		virtual void releaseInternalMaterial(Material *material) { }
 		virtual void *newInternalCamera(Camera *camera) { return NULL; }
+		virtual void releaseInternalCamera(Camera *camera) { }
 		virtual void *newInternalViewport(Viewport *viewport) { return NULL; }
+		virtual void releaseInternalViewport(Viewport *viewport) { }
 		virtual void *newInternalResourceInstance(ResourceInstance *instance) { return NULL; }
+		virtual void releaseInternalResourceInstance(ResourceInstance *instance) { }
 		virtual void *newInternalFontResource(FontResource *font) { return NULL; }
+		virtual void releaseInternalFontResource(FontResource *font) { }
 		virtual void *newInternalTextResource(TextResource *text) { return NULL; }
+		virtual void releaseInternalTextResource(TextResource *text) { }
 		virtual void drawInternalResource(ResourceInstance *instance) = 0;
 		virtual void setCurrentInternalCamera(Camera *camera) { }
 		virtual void setCurrentInternalViewport(Viewport *viewport) { }
