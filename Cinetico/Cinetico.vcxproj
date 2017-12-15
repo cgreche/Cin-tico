@@ -53,6 +53,8 @@
     <ClInclude Include="src\entity\dao\UserProfileDAO.h" />
     <ClInclude Include="src\entity\GeneralSettings.h" />
     <ClInclude Include="src\entity\UserProfile.h" />
+    <ClInclude Include="src\hadouken.h" />
+    <ClInclude Include="src\HadoukenController.h" />
     <ClInclude Include="src\humancharacter.h" />
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\lib\d3dx9.h" />
@@ -231,6 +233,8 @@
     <ClCompile Include="src\entity\dao\UserProfileDAO.cpp" />
     <ClCompile Include="src\entity\GeneralSettings.cpp" />
     <ClCompile Include="src\entity\UserProfile.cpp" />
+    <ClCompile Include="src\hadouken.cpp" />
+    <ClCompile Include="src\HadoukenController.cpp" />
     <ClCompile Include="src\humancharacter.cpp" />
     <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\lib\sqlite-amalgamation-3200100\shell.c" />

@@ -42,6 +42,7 @@ namespace cinetico_core {
 	}
 	
 	void MovementGestureCommand::update(const BodyPointState &bodyPointState) {
+		/*
 		GestureCommand::update(bodyPointState);
 		Vector3 oldDirection = m_currentDirection;
 		Vector3 newDirection = bodyPointState.lastPosition() - m_currentPosition;
@@ -51,6 +52,7 @@ namespace cinetico_core {
 		//if (dot < 0)
 			addPoint(m_currentPosition);
 		//m_currentDirection = newDirection;
+		*/
 	}
 
 	void MovementGestureCommand::addPoint(Vector3 point) {

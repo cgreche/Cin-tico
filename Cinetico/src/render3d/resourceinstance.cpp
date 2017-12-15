@@ -8,6 +8,7 @@ namespace render3d {
 		, m_scale(1.f, 1.f, 1.f) {
 		m_resDataId = resDataId;
 		m_drawFlags = BACKFACE_CULL;
+		m_materialId = -1;
 	}
 
 	void ResourceInstance::setPos(const Vector3 &pos) {
@@ -33,6 +34,11 @@ namespace render3d {
 	void ResourceInstance::setDrawFlags(unsigned long flags) {
 		m_drawFlags = flags;
 		m_dirtyFlags |= DRAW_FLAGS_DIRTY;
+	}
+
+	void ResourceInstance::setMaterial(int id) {
+		m_materialId = id;
+		m_dirtyFlags |= MATERIAL_DIRTY;
 	}
 
 }

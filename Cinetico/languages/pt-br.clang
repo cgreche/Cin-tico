@@ -39,13 +39,23 @@
 	<string id="BodyPointRightKnee">Joelho direito</string>
 	<string id="BodyPointRightAnkle">Tornozelo direito</string>
 	<string id="BodyPointRightFoot">Pé direito</string>
+	<!-- -->
+	<!--Exercise states-->
+	<string id="ExerciseStateIdle">Parado</string>
+	<string id="ExerciseStateRunning">Executando</string>
+	<string id="ExerciseStateFinished">Terminado</string>
+
+	<string id="ActionResultMissed">Insatisfatório</string>
+	<string id="ActionResultBad">Ruim</string>
+	<string id="ActionResultGood">Bom</string>
+	<string id="ActionResultExcellent">Excelente</string>
 	
 	<!-- Gesture Enums -->
 	<string id="SimpleGestureTransitionTypeFree">Livre</string>
-	<string id="SimpleGestureTransitionTypeDefinedMovement">Movimento definido</string>
+	<string id="SimpleGestureTransitionTypeFixedMovement">Movimento definido</string>
 
 	<string id="SimpleGestureRefPointAny">Sensor</string>
-	<string id="SimpleGestureRefPointLastPosition">Última posição</string>
+	<string id="SimpleGestureRefPointLastPosition">Nenhum</string>
 
 	<string id="SimpleGestureOperationFixedPosition">Posição fixa</string>
 	<string id="SimpleGestureOperationInFront">À frente</string>
@@ -116,8 +126,8 @@ Esta operação não poderá ser desfeita.</string>
 	<string id="MovementGestureMaxSpeed">Velocidade máxima de execução (cm/s²)</string>
 	
 	<!--General Config-->
-	<string id="GeneralSettingsCorePosDistThreshold">Folga de distância para manter-se em posição (cm³)</string>
-	<string id="GeneralSettingsCorePosMinHoldtime">Tempo mínimo para se detecar uma posição (s)</string>
+	<string id="GeneralSettingsCorePosDistThreshold">Folga de distância para manter-se em posição (cm)</string>
+	<string id="GeneralSettingsCorePosMinHoldtime">Tempo mínimo para se detectar uma posição (s)</string>
 	<string id="GeneralSettingsAdapter">Dispositivo</string>
 	<string id="GeneralSettingsResolution">Resolução</string>
 	<string id="GeneralSettingsFullscreen">Tela cheia</string>
@@ -127,6 +137,9 @@ Esta operação não poderá ser desfeita.</string>
 	<!--Views-->
 	<string id="ViewDefaultErrorRequiredFields">Os campos com '*' devem ser preenchidos obrigatoriamente.</string>
 	<!-- -->
+	
+	<string id="MainWindowUsername">Usuário</string>
+	
 	<!--Login-->
 	<string id="LoginViewTitle">Bem-vindo!</string>
 	<string id="LoginViewDesc">Para começar, selecione ou crie um Perfil de usuário</string>
@@ -181,11 +194,15 @@ Esta operação não poderá ser desfeita.</string>
 	<string id="ActionsViewDesc">Adicione ou altere ações para o exercício.</string>
 	<string id="ActionsViewSectionBasicData">Informação básica da ação.</string>
 	<string id="ActionsViewSectionSpecificData">Informação específica para o tipo de ação.</string>
+	<string id="ActionsViewSectionGestures">Gestos</string>
+	<string id="ActionsViewErrorNoGestures">Para criar uma Ação, deve-se definir pelo menos 1 Gesto.</string>
+	<string id="ActionsViewErrorNoGestures">Há gestos inválidos para esta ação.</string>
 	<!-- -->
 	<!--PlayMode-->
-	<string id="PlayModeViewTitle">Modo de execução:</string>
-	<string id="PlayModeExerciseRealizationSelectedExercise">Estado do Exercício:</string>
-	<string id="PlayModeExerciseState">Estado do Exercício:</string>
+	<string id="PlayModeViewTitle">Modo de execução</string>
+	<string id="PlayModeExerciseRealizationSelectedExercise">Exercício selecionado: (%s)</string>
+	<string id="PlayModeExerciseState">Estado do Exercício (%s)</string>
+	<string id="PlayModeActionList">Lista de ações</string>
 	<!-- -->
 	<!--General Config-->
 	<string id="GeneralSettingsViewTitle">Configurações gerais</string>

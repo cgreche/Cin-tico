@@ -6,7 +6,9 @@
 
 namespace cinetico_core {
 
-	GestureCommandsManager::GestureCommandsManager() {
+	GestureCommandsManager::GestureCommandsManager(float distThreshold, float minHoldtime) {
+		m_distThreshold = distThreshold;
+		m_minHoldtime = minHoldtime;
 	}
 
 	GestureCommandsManager::~GestureCommandsManager() {
@@ -26,7 +28,7 @@ namespace cinetico_core {
 		//m_trackedBps.push_back(BodyPointState(*body->bodyPoint((BodyPoint::BodyPart)BodyPoint::RightPalm), 0));
 		
 		for (unsigned int i = 0; i < BodyPoint::BodyPartCount; ++i) {
-			m_trackedBps.push_back(BodyPointState(*body->bodyPoint((BodyPoint::BodyPart)i), 0));
+			m_trackedBps.push_back(BodyPointState(*body->bodyPoint((BodyPoint::BodyPart)i), 0, m_distThreshold, m_minHoldtime));
 		}
 		
 	}
@@ -99,12 +101,12 @@ namespace cinetico_core {
 		return ret;
 	}
 
-	bool GestureCommandsManager::meetConditions(SimpleGesture *gesture, GestureCommand *command, float distThreshold) {
-		//todo: handle refPoint Any or LastPosition
+	bool GestureCommandsManager::meetConditions(SimpleGesture *gesture, GestureCommand *command) {
+		float distThreshold = m_distThreshold;
 
 		Vector3 actionPoint;
 		Vector3 actionOrientation;
-		if (command->movementGestureCommand())
+		if (command->movementGestureCommand() && gesture->transitionType()==SimpleGesture::FixedMovement)
 			return false; //we are going to check only positionGestures (movementgesture can be "parent")
 
 		Vector3 targetPoint;
@@ -224,7 +226,7 @@ namespace cinetico_core {
 		return false;
 	}
 
-	void GestureCommandsManager::checkConditions(uilib::u64 curTime, Action &action, float distThreshold) {
+	void GestureCommandsManager::checkConditions(Action &action) {
 		int gestureCount = action.gestureCount();
 
 		for (int i = 0; i < gestureCount; ++i) {
@@ -232,9 +234,9 @@ namespace cinetico_core {
 			BodyPoint::BodyPart bp = gesture->bodyPoint();
 			std::vector<GestureCommand*> actions = filterCommands(BodyPointState::STEADY, bp);
 			if (!actions.empty()) {
-				if (gesture->transitionType() == SimpleGesture::FixedMovement && actions[0]->endTime() != curTime)
+				if (!actions[0]->active())
 					continue;
-				int gestureResult = meetConditions(gesture, actions[0], distThreshold) ? 1 : 0;
+				int gestureResult = meetConditions(gesture, actions[0]) ? 1 : 0;
 				//if condition wasn't met and it is Free transition, ignore;
 				//otherwise, set result
 				if (gestureResult == 0 && gesture->transitionType() == SimpleGesture::FixedMovement)

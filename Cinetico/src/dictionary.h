@@ -69,6 +69,12 @@ namespace cinetico {
 			, ExerciseStateRunning
 			, ExerciseStateFinished
 
+			//Action results
+			, ActionResultMissed
+			, ActionResultBad
+			, ActionResultGood
+			, ActionResultExcellent
+
 			//Gesture enums
 			, SimpleGestureTransitionTypeFree
 			, SimpleGestureTransitionTypeFixedMovement
@@ -214,6 +220,7 @@ namespace cinetico {
 			, PlayModeViewTitle
 			, PlayModeExerciseRealizationSelectedExercise
 			, PlayModeExerciseState
+			, PlayModeActionList
 
 			//General Settings
 			, GeneralSettingsViewTitle

@@ -14,15 +14,17 @@ namespace cinetico {
 	class HumanCharacter;
 	class DummyCharacter;
 	class RelOrientChar;
+	class HadoukenController;
 
 	class ExercisePlayMode : public PlayMode {
 
 		cinetico_core::Exercise &m_exercise;
 
 		HumanCharacter *m_humanChar;
-		DummyCharacter *m_dummyChar;
-		RelOrientChar *m_roChar;
+		//DummyCharacter *m_dummyChar;
+		//RelOrientChar *m_roChar;
 		GestureCommandsManager *m_commandsManager;
+		HadoukenController *m_hadoukenController;
 
 		int m_resTerrain;
 		int m_instanceTerrain;

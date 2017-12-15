@@ -131,26 +131,45 @@ namespace render3d {
 
 	void D3D9Engine::destroy()
 	{
-		for (ResourceData *resourceData : m_resources)
+		for (ResourceData *resourceData : m_resources) {
 			releaseInternalResource(resourceData);
-		for (Camera *camera : m_cameras)
+			delete resourceData;
+		}
+		for (Camera *camera : m_cameras) {
 			releaseInternalCamera(camera);
-		for (Viewport *viewport : m_viewports)
+			delete camera;
+		}
+		for (Viewport *viewport : m_viewports) {
 			releaseInternalViewport(viewport);
-		for (ResourceInstance *resInstance : m_instances)
+			delete viewport;
+		}
+		for (ResourceInstance *resInstance : m_instances) {
 			releaseInternalResourceInstance(resInstance);
-		for (FontResource *fontResource : m_fontResources)
+			delete resInstance;
+		}
+		for (FontResource *fontResource : m_fontResources) {
 			releaseInternalFontResource(fontResource);
-		for (TextResource *textResource : m_textResources)
+			delete fontResource;
+		}
+		for (TextResource *textResource : m_textResources) {
 			releaseInternalTextResource(textResource);
+			delete textResource;
+		}
 
 		//temp
-		m_resources.clear();
+		if (!m_resources.empty())
+			m_resources.clear();
+		if (!m_materials.empty())
+			m_materials.clear();
 		m_cameras.clear();
-		m_viewports.clear();
-		m_instances.clear();
-		m_fontResources.clear();
-		m_textResources.clear();
+		if (!m_viewports.empty())
+			m_viewports.clear();
+		if (!m_instances.empty())
+			m_instances.clear();
+		if (!m_fontResources.empty())
+			m_fontResources.clear();
+		if (!m_textResources.empty())
+			m_textResources.clear();
 
 		HRESULT hr;
 		if (m_device)
@@ -390,6 +409,7 @@ namespace render3d {
 		  { 0, 24, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR,    0 },
 		  D3DDECL_END()
 		};
+
 		static LPDIRECT3DVERTEXDECLARATION9 vertexDeclaration = NULL;
 		hr = m_device->CreateVertexDeclaration(custom_vertex, &vertexDeclaration);
 		D3D9ResData *internalData = new D3D9ResData;
@@ -398,6 +418,21 @@ namespace render3d {
 		internalData->vertexDeclaration = vertexDeclaration;
 		internalData->stride = stride;
 		return internalData;
+	}
+
+	void *D3D9Engine::newInternalMaterial(Material *material) {
+		D3DMATERIAL9 *internalData = new D3DMATERIAL9;
+		::ZeroMemory(internalData, sizeof(D3DMATERIAL9));
+		Color diffuse = material->diffuse();
+		internalData->Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		internalData->Ambient = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		//internalData->Ambient = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		//internalData->Diffuse = D3DXCOLOR(diffuse.r() / 255.f, diffuse.g() / 255.f, diffuse.b() / 255.f,1.f);
+		return internalData;
+	}
+
+	void D3D9Engine::releaseInternalMaterial(Material *material) {
+		delete material->internalData();
 	}
 
 	void *D3D9Engine::newInternalCamera(Camera *camera) {
@@ -605,8 +640,8 @@ namespace render3d {
 			light.Ambient.b = 0.2f;
 
 			material.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-			//material.Ambient = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-			m_device->SetMaterial(&material);
+			material.Ambient = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			//m_device->SetMaterial(&material);
 
 			m_device->SetLight(0, &light);
 			
@@ -629,7 +664,16 @@ namespace render3d {
 
 		m_device->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
 		m_device->SetRenderState(D3DRS_ZWRITEENABLE, D3DZB_TRUE);
-		m_device->SetRenderState(D3DRS_LIGHTING, FALSE);
+
+		if (instance->material() != -1) {
+			Material *material = m_materials[instance->material()];
+			D3DMATERIAL9 *internalMaterial = (D3DMATERIAL9*)material->internalData();
+			m_device->SetMaterial(internalMaterial);
+			m_device->SetRenderState(D3DRS_LIGHTING, TRUE);
+		}
+		else {
+			m_device->SetRenderState(D3DRS_LIGHTING, FALSE);
+		}
 		m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 		m_device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 		m_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);

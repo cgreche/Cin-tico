@@ -29,6 +29,8 @@ namespace render3d {
 	protected:
 		virtual void *newInternalResource(ResourceData *resData);
 		virtual void releaseInternalResource(ResourceData *resData);
+		virtual void *newInternalMaterial(Material *material);
+		virtual void releaseInternalMaterial(Material *material);
 		virtual void *newInternalCamera(Camera *camera);
 		virtual void releaseInternalCamera(Camera *camera);
 		virtual void *newInternalViewport(Viewport *viewport);

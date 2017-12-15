@@ -39,10 +39,20 @@
 	<string id="BodyPointRightKnee">Right Knee</string>
 	<string id="BodyPointRightAnkle">Right Ankle</string>
 	<string id="BodyPointRightFoot">Right Foot</string>
+	<!-- -->
+	<!--Exercise states-->
+	<string id="ExerciseStateIdle">Idle</string>
+	<string id="ExerciseStateRunning">Running</string>
+	<string id="ExerciseStateFinished">Finished</string>
+	
+	<string id="ActionResultMissed">Missed</string>
+	<string id="ActionResultBad">Bad</string>
+	<string id="ActionResultGood">Good</string>
+	<string id="ActionResultExcellent">Excellent</string>
 	
 	<!-- Gesture Enums -->
 	<string id="SimpleGestureTransitionTypeFree">Free</string>
-	<string id="SimpleGestureTransitionTypeDefinedMovement">Defined movement</string>
+	<string id="SimpleGestureTransitionTypeFixedMovement">Defined movement</string>
 
 	<string id="SimpleGestureRefPointAny">Don't care</string>
 	<string id="SimpleGestureRefPointLastPosition">Last position</string>
@@ -127,6 +137,9 @@ This operation cannot be undone.</string>
 	<!--Views-->
 	<string id="ViewDefaultErrorRequiredFields">The fields with '*' must be filled.</string>
 	<!-- -->
+	
+	<string id="MainWindowUsername">User</string>
+	
 	<!--Login-->
 	<string id="LoginViewTitle">Welcome!</string>
 	<string id="LoginViewDesc">To start, enter or create your User profile.</string>
@@ -186,9 +199,10 @@ This operation cannot be undone.</string>
 	<string id="ActionsViewErrorInvalidGestures">There are invalid Gestures</string>
 	<!-- -->
 	<!--PlayMode-->
-	<string id="PlayModeViewTitle">Play Mode:</string>
-	<string id="PlayModeExerciseRealizationSelectedExercise">Selected Exercise:</string>
-	<string id="PlayModeExerciseState">Exercise state:</string>
+	<string id="PlayModeViewTitle">Play Mode</string>
+	<string id="PlayModeExerciseRealizationSelectedExercise">Selected Exercise: %s</string>
+	<string id="PlayModeExerciseState">Exercise state: %s</string>
+	<string id="PlayModeActionList">Action List</string>
 	<!-- -->
 	<!--General Config-->
 	<string id="GeneralSettingsViewTitle">General settings</string>

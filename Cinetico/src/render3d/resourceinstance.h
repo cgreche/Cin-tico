@@ -20,7 +20,8 @@ namespace render3d {
 			POS_DIRTY = 0x01,
 			ROT_DIRTY = 0x02,
 			SCALE_DIRTY = 0x04,
-			DRAW_FLAGS_DIRTY = 0x08
+			DRAW_FLAGS_DIRTY = 0x08,
+			MATERIAL_DIRTY = 0x10
 		};
 
 		enum DrawFlags {
@@ -34,6 +35,7 @@ namespace render3d {
 		Vector3 m_scale;
 		cinetico_core::Quaternion m_rot;
 		unsigned long m_drawFlags;
+		int m_materialId;
 
 		ResourceInstance(RenderEngine *engine, int resId, int resDataId);
 
@@ -44,12 +46,14 @@ namespace render3d {
 		void setScale(const Vector3 &scale);
 		void setRotation(const cinetico_core::Quaternion &rot);
 		void setDrawFlags(unsigned long flags);
+		void setMaterial(int id);
 
 		int resDataId() const { return m_resDataId; }
 		Vector3 pos() const { return m_pos; }
 		Vector3 scale() const { return m_scale; }
 		cinetico_core::Quaternion rot() const { return m_rot; }
 		unsigned long drawFlags() const { return m_drawFlags; }
+		int material() const { return m_materialId; }
 	};
 
 }

@@ -26,6 +26,32 @@ namespace render3d {
 		int frequency;
 	};
 
+	class Material : public RenderObject {
+
+	public:
+		enum DirtyFlags {
+			DIFFUSE_DIRTY = 0x01,
+		};
+
+	private:
+		Material(RenderEngine *engine, int resId)
+			: RenderObject(engine, resId) {
+
+		}
+
+		Color m_diffuse;
+	public:
+		friend class RenderEngine;
+		~Material();
+
+		void setDiffuse(Color color) {
+			m_diffuse = color;
+			m_dirtyFlags |= DIFFUSE_DIRTY;
+		}
+
+		const Color &diffuse() const { return m_diffuse; }
+	};
+
 	class RenderEngine
 	{
 	public:
@@ -64,6 +90,7 @@ namespace render3d {
 		std::vector<ResourceInstance*> m_instances;
 		std::vector<FontResource*> m_fontResources;
 		std::vector<TextResource*> m_textResources;
+		std::vector<Material*> m_materials;
 
 		Camera *m_currentCamera;
 		Viewport *m_currentViewport;
@@ -84,6 +111,7 @@ namespace render3d {
 
 		//Resource allocation
 		virtual int newResource(unsigned int vertexCount, Vector3 *vertices, unsigned int indexCount = 0, int *indices = NULL);
+		virtual int newMaterial(Color diffuse);
 		virtual int newCamera(const Vector3 &pos, const Vector3 &rot, float zoom = 1.f);
 		virtual int newViewport(int x, int y, int width, int height);
 		virtual int newLight(const Vector3 &position, const Vector3 &direction, const Color &color) { return 1; }
@@ -108,6 +136,7 @@ namespace render3d {
 
 	protected:
 		virtual void *newInternalResource(ResourceData *resData) { return NULL; }
+		virtual void *newInternalMaterial(Material *material) { return NULL; }
 		virtual void *newInternalCamera(Camera *camera) { return NULL; }
 		virtual void *newInternalViewport(Viewport *viewport) { return NULL; }
 		virtual void *newInternalResourceInstance(ResourceInstance *instance) { return NULL; }

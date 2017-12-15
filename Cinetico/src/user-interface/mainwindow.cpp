@@ -103,8 +103,8 @@ namespace cinetico {
 		buttonDebugMode.setParam(this);
 		buttonDebugMode.setOnClick(buttonGoToDebugMode_onClick);
 		layoutOptions.append(buttonConfig);
-		layoutOptions.append(buttonDebugView);
-		layoutOptions.append(buttonDebugMode);
+		//layoutOptions.append(buttonDebugView);
+		//layoutOptions.append(buttonDebugMode);
 		layoutOptions.setAlignment(Layout::center_align);
 		
 		linkPortugues.setText("Português");
@@ -213,7 +213,7 @@ namespace cinetico {
 		labelAppname.setText(m_cinetico.dictionary()->getString(Dictionary::AppTitle));
 
 		//Header
-		labelUsername.setText(m_cinetico.dictionary()->getString(Dictionary::MainWindowUsername));
+		labelUsername.setText(m_cinetico.dictionary()->getString(Dictionary::MainWindowUsername)+":");
 		buttonLogoff.setText(m_cinetico.dictionary()->getString(Dictionary::ActionLogoff));
 
 		//Footer

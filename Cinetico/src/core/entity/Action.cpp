@@ -57,7 +57,7 @@ namespace cinetico_core {
 		if (result) {
 			if (accuracy < 0.5f)
 				m_result = Missed;
-			else if (accuracy < 0.8f)
+			else if (accuracy < 0.75f)
 				m_result = Bad;
 			else if (accuracy < 0.95f)
 				m_result = Good;

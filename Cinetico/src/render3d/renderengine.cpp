@@ -23,6 +23,16 @@ namespace render3d {
 		return curId;
 	}
 
+	int RenderEngine::newMaterial(Color diffuse) {
+		int curId = m_materials.size();
+		Material *material = new Material(this, curId);
+		material->setDiffuse(diffuse);
+		void *internalData = newInternalMaterial(material);
+		material->m_internalData = internalData;
+		m_materials.push_back(material);
+		return curId;
+	}
+
 	int RenderEngine::newCamera(const Vector3 &pos, const Vector3 &rot, float zoom) {
 		int curId = m_cameras.size();
 

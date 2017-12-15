@@ -19,12 +19,14 @@ namespace cinetico_core {
 		Body *m_body;
 		std::vector<GestureCommand*> m_gestureCommands;
 		std::vector<BodyPointState> m_trackedBps;
+		float m_distThreshold;
+		float m_minHoldtime;
 
 		uilib::u64 m_curTime;
 
-		bool meetConditions(SimpleGesture *gesture, GestureCommand *command, float distThreshold);
+		bool meetConditions(SimpleGesture *gesture, GestureCommand *command);
 	public:
-		GestureCommandsManager();
+		GestureCommandsManager(float distThreshold, float minHoldtime);
 		~GestureCommandsManager();
 
 		void reset();
@@ -36,7 +38,7 @@ namespace cinetico_core {
 
 		std::vector<GestureCommand *> filterCommands(int transitionType, BodyPoint::BodyPart bp);
 
-		void checkConditions(uilib::u64 curTime, Action &action, float distThreshold);
+		void checkConditions(Action &action);
 	};
 
 }

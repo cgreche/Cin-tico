@@ -8,10 +8,13 @@
 #include "core/GestureCommandsManager.h"
 #include "humancharacter.h"
 #include "dummycharacter.h"
+#include "HadoukenController.h"
 #include "RelOrientChar.h"
 #include "render3d/renderengine.h"
 #include "render3d/renderenginehelper.h"
 #include <uilib/lib/time.h>
+
+//#define DEBUGGING
 
 namespace cinetico {
 
@@ -29,9 +32,11 @@ namespace cinetico {
 	void ExercisePlayMode::setup() {
 
 		m_humanChar = new HumanCharacter(*m_cinetico.cineticoUI());
-		m_dummyChar = new DummyCharacter(*m_cinetico.cineticoUI());
+		//m_dummyChar = new DummyCharacter(*m_cinetico.cineticoUI());
 		//m_roChar = new RelOrientChar(*m_cinetico.cineticoUI());
-		m_commandsManager = new GestureCommandsManager();
+		m_commandsManager = new GestureCommandsManager(m_cinetico.generalSettings()->posDistThreshold(),m_cinetico.generalSettings()->posMinHoldtime());
+
+		m_hadoukenController = new HadoukenController(*m_cinetico.cineticoUI(),*m_humanChar);
 
 		m_cinetico.bodyTracker()->setTrackableBodyPoints(m_exercise.trackableBodyPoints());
 
@@ -58,7 +63,7 @@ namespace cinetico {
 		Size size = m_cinetico.cineticoUI()->mainWindow()->size();
 		m_viewportActionPreview = m_renderEngine->newViewport(20, 20, (int)(size.width()*percent), (int)(size.height()*percent));
 
-		m_dummyChar->setPosition(cinetico_core::Vector3(0, terrain->pos().y(), 5));
+		//m_dummyChar->setPosition(cinetico_core::Vector3(0, terrain->pos().y(), 5));
 	}
 
 	void ExercisePlayMode::step() {
@@ -86,7 +91,7 @@ namespace cinetico {
 			if(m_exercise.state() == Exercise::Running) {
 				int curAction = m_exercise.currentActionIndex();
 				if (curAction >= 0)
-					m_commandsManager->checkConditions(m_cinetico.currentTime(),*m_exercise.actionList()[curAction], m_cinetico.generalSettings()->posDistThreshold());
+					m_commandsManager->checkConditions(*m_exercise.actionList()[curAction]);
 				m_exercise.step();
 			}
 
@@ -96,10 +101,15 @@ namespace cinetico {
 			}
 		}
 
-		m_dummyChar->update();
+		if (m_cinetico.input()->keyboard.key(VK_F6)) {
+			m_hadoukenController->createHadouken(cinetico_core::Vector3(0, 0, 0), cinetico_core::Vector3(0, 0.2f, 0));
+		}
+
+		m_hadoukenController->step();
 		processCamera();
 	}
 
+#ifdef DEBUGGING
 	inline void printVector3(string &str, const cinetico_core::Vector3 &v) {
 		str += "V: [";
 		str += string::fromFloat(v.x());
@@ -119,10 +129,12 @@ namespace cinetico {
 		str += string::fromFloat(v.z());
 		str += "]\n";
 	}
+#endif
 
 	unsigned long frameCount = 0;
 	int print = 0;
 	void ExercisePlayMode::render() {
+		//todo: draw "Excellent, Good, Bad or Missed on actions and exercise
 		++frameCount;
 		m_renderEngine->setCurrentCamera(m_currentCameraId);
 		m_renderEngine->clear(render3d::Color(30, 30, 30));
@@ -132,17 +144,19 @@ namespace cinetico {
 		if (m_humanChar) {
 			m_humanChar->render();
 		}
-		if (m_roChar) {
-			m_roChar->setPosition(cinetico_core::Vector3(10, 0, 0));
-			m_roChar->render();
-		}
+
+		m_hadoukenController->render();
+		
+		//if (m_roChar) {
+		//	m_roChar->setPosition(cinetico_core::Vector3(10, 0, 0));
+		//	m_roChar->render();
+		//}
 
 		m_renderEngine->drawResource(m_instanceTerrain);
 
 		m_renderEngine->setCurrentFont(m_resFontArial);
 		
-		uilib::string str = m_dictionary.getString(Dictionary::PlayModeExerciseRealizationSelectedExercise);
-		str += m_exercise.name().c_str();
+		uilib::string str = m_dictionary.getString(Dictionary::PlayModeExerciseRealizationSelectedExercise,m_exercise.name().c_str());
 		m_renderEngine->drawText(str.data(), 500, 10, render3d::Color(255, 255, 255, 100));
 
 		int drawX;
@@ -158,6 +172,7 @@ namespace cinetico {
 		}
 		*/
 
+#ifdef DEBUGGING
 		static int fuck = 0;
 		if (debug) {
 			drawX = 1000;
@@ -205,6 +220,7 @@ namespace cinetico {
 				}
 			}
 		}
+#endif
 
 		m_renderEngine->setCurrentFont(m_resFontVerdana);
 		
@@ -219,26 +235,41 @@ namespace cinetico {
 
 		int drawIndexX = 36;
 		int drawIndexY = 220;
+
+		Exercise::ExerciseState exerciseState;
+		Dictionary::StringID exerciseStateId;
+
+		exerciseState = m_exercise.state();
+		if (exerciseState == Exercise::Running)
+			exerciseStateId = Dictionary::ExerciseStateRunning;
+		else if (exerciseState == Exercise::Finished)
+			exerciseStateId = Dictionary::ExerciseStateFinished;
+		else
+			exerciseStateId = Dictionary::ExerciseStateIdle;
 		
-		//todo: add to dictionary
-		string exerciseInfo = m_dictionary.getString(Dictionary::PlayModeExerciseState);
+		string exerciseInfo = m_dictionary.getString(Dictionary::PlayModeExerciseState, m_dictionary.getString(exerciseStateId));
 		if (m_exercise.state() == Exercise::Finished) {
-			exerciseInfo += m_dictionary.getString(Dictionary::ExerciseStateFinished);
-			exerciseInfo += "(";
-			exerciseInfo += string::fromFloat(m_exercise.accuracy(),2) + '%';
-			exerciseInfo += ")";
-		}
-		else if(m_exercise.state() == Exercise::Idle) {
-			exerciseInfo += m_dictionary.getString(Dictionary::ExerciseStateIdle);
-		}
-		else {
-			exerciseInfo += m_dictionary.getString(Dictionary::ExerciseStateRunning);
+			float accuracy = m_exercise.accuracy();
+			exerciseInfo += " (";
+			exerciseInfo += string::fromFloat(accuracy,2) + '%';
+			exerciseInfo += ") - ";
+
+			Dictionary::StringID actionResultId;
+			if (accuracy < 50.0f)
+				actionResultId = Dictionary::ActionResultMissed;
+			else if (accuracy < 75.0f)
+				actionResultId = Dictionary::ActionResultBad;
+			else if (accuracy < 95.0f)
+				actionResultId = Dictionary::ActionResultGood;
+			else
+				actionResultId = Dictionary::ActionResultExcellent;
+			exerciseInfo += m_dictionary.getString(actionResultId);
 		}
 
-		//todo: add to dictionary
 		m_renderEngine->drawText(exerciseInfo.data(), 20, drawIndexY, drawColor);
 		drawIndexY += 25;
-		m_renderEngine->drawText("Lista de ações:", 20, drawIndexY, drawColor);
+		string s = m_dictionary.getString(Dictionary::PlayModeActionList) + ":";
+		m_renderEngine->drawText(s.data(), 20, drawIndexY, drawColor);
 		drawIndexY += 25;
 		
 		for (unsigned int i = 0; i < actionList.size(); ++i) {
@@ -258,8 +289,24 @@ namespace cinetico {
 			curAction += "%)";
 			m_renderEngine->drawText(curAction.data(), drawIndexX, drawIndexY, drawColor);
 			drawIndexY += 30;
-		}
 
+			if (action->state() == Action::Finished) {
+				Dictionary::StringID actionResultId;
+				Action::ActionResult result = action->result();
+				if (result == Action::Missed)
+					actionResultId = Dictionary::ActionResultMissed;
+				else if (result == Action::Bad)
+					actionResultId = Dictionary::ActionResultBad;
+				else if (result == Action::Good)
+					actionResultId = Dictionary::ActionResultGood;
+				else
+					actionResultId = Dictionary::ActionResultExcellent;
+				exerciseInfo += m_dictionary.getString(actionResultId);
+			}
+		}
+		
+
+#ifdef DEBUGGING
 		uilib::string strQ;
 		Body *body = m_humanChar->body();
 		if (body) {
@@ -295,6 +342,8 @@ namespace cinetico {
 		printVector3(strQ, camera->rot());
 		m_renderEngine->drawText(strQ.data(), 200, drawIndexY, drawColor);
 
+#endif
+
 		//m_renderEngine->setCurrentCamera(m_cam2);
 		//m_renderEngine->setCurrentViewport(m_viewportActionPreview);
 		//m_renderEngine->clear(render3d::Color(0, 40, 100));
@@ -303,11 +352,18 @@ namespace cinetico {
 	void ExercisePlayMode::cleanUp() {
 		if (m_humanChar)
 			delete m_humanChar;
+
+#ifdef DEBUGGING
+		/*
 		if(m_dummyChar)
 			delete m_dummyChar;
 		if (m_roChar)
 			delete m_roChar;
-		delete m_commandsManager;
+			*/
+#endif
+
+		if(m_commandsManager)
+			delete m_commandsManager;
 	}
 
 	void ExercisePlayMode::processCamera() {

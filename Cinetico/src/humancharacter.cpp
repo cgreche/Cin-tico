@@ -321,4 +321,5 @@ namespace cinetico {
 		*/
 		renderEngine->drawResource(instHadouken);
 	}
+
 }
