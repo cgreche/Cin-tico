@@ -293,7 +293,6 @@ namespace cinetico {
 
 	void DebugPlayMode::render() {
 		m_renderEngine->setCurrentCamera(currentCameraId);
-		m_renderEngine->setCurrentViewport(m_cinetico.cineticoUI()->viewport());
 		m_renderEngine->clear(render3d::Color(30, 30, 30));
 
 		m_renderEngine->drawResource(instanceTerrain);

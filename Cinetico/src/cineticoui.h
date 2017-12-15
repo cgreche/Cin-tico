@@ -59,8 +59,6 @@ namespace cinetico {
 		ViewID m_currentView;
 		ViewID m_lastView;
 
-		int m_viewport;
-
 	public:
 		CineticoUI(Cinetico &cinetico);
 		~CineticoUI();
@@ -78,7 +76,6 @@ namespace cinetico {
 		MainWindow *mainWindow() const { return m_mainWindow; }
 		RenderEngine *renderEngine() const { return m_renderEngine; }
 		RenderEngineHelper *renderEngineHelper() const { return m_renderEngineHelper; }
-		int viewport() const { return m_viewport; }
 		ViewID currentView() const { return m_currentView; }
 		ViewID lastView() const { return m_lastView; }
 	};

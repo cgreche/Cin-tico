@@ -47,7 +47,7 @@ namespace cinetico_core {
 			if (i == BodyPoint::RightPalm)
 				int a = 1;
 			else {
-				continue;
+			//	continue;
 			}
 
 			BodyPointState::GestureState gestureState = m_trackedBps[i].update(curTime);
@@ -103,21 +103,30 @@ namespace cinetico_core {
 		//todo: handle refPoint Any or LastPosition
 
 		Vector3 actionPoint;
+		Vector3 actionOrientation;
 		if (command->movementGestureCommand())
 			return false; //we are going to check only positionGestures (movementgesture can be "parent")
 
-		BodyPoint *ref = m_body->bodyPoint((BodyPoint::BodyPart)gesture->refPoint());
-		Vector3 refPos = ref->position();
-		Vector3 refOrientation = ref->orientation().toEuler();
-		Vector3 refOrientationVec(0, 0, -1);
-		//refOrientationVec.setX(-std::sin(refOrientation.y())*std::cos(refOrientation.x()));
-		//refOrientationVec.setY(std::sin(refOrientation.x()));
-		//refOrientationVec.setZ(std::cos(refOrientation.y())*std::cos(refOrientation.x()));
-		Vector3 frontPos = refOrientationVec;
-		Vector3 rightPos = crossProduct(frontPos, Vector3(0, 1, 0));
-		Vector3 upPos = crossProduct(rightPos, frontPos);
-
 		Vector3 targetPoint;
+		Vector3 refPos;
+		Vector3 frontDir;
+		Vector3 rightDir;
+		Vector3 upDir;
+
+		int refPoint = gesture->refPoint();
+		if (refPoint == -2) //Sensor
+			targetPoint = Vector3(0, 0, 0);
+		else if (refPoint == -1) //LastPos
+			; //does nothing (todo)
+		else {
+			BodyPoint *ref = m_body->bodyPoint((BodyPoint::BodyPart)gesture->refPoint());
+			refPos = ref->position();
+			Vector3 refOrientation = ref->orientation().rotatedVector(Vector3(0,1,0));
+			frontDir = refOrientation;
+			rightDir = crossProduct(frontDir, Vector3(0, 1, 0));
+			//upDir = crossProduct(rightDir, frontDir);
+			upDir = Vector3(0, 1, 0);
+		}
 
 		//Check for movement constraint
 		if (gesture->transitionType() == SimpleGesture::FixedMovement) {
@@ -153,15 +162,15 @@ namespace cinetico_core {
 
 		targetPoint = refPos;
 		if (posFlags & 1) {
-			targetPoint += rightPos*finalPosition.x();
+			targetPoint += rightDir*finalPosition.x();
 		}
 
 		if (posFlags & 2) {
-			targetPoint += upPos*finalPosition.y();
+			targetPoint += upDir*finalPosition.y();
 		}
 
 		if (posFlags & 4) {
-			targetPoint += frontPos*finalPosition.z();
+			targetPoint += frontDir*finalPosition.z();
 		}
 
 		float accuracy = 0.f;
@@ -200,15 +209,22 @@ namespace cinetico_core {
 		}
 		else if (op == SimpleGesture::FixedOrientation) {
 			//todo
+			Vector3 diff = targetPoint - actionPoint;
+			diff.normalize();
+			return dotProduct(actionOrientation, diff) >= 0.8f;
+
 		}
 		else if (op == SimpleGesture::OrientationLookingTo) {
 			//todo
+			Vector3 diff = targetPoint - actionPoint;
+			diff.normalize();
+			return dotProduct(actionOrientation, diff) >= 0.8f;
 		}
 
 		return false;
 	}
 
-	void GestureCommandsManager::checkConditions(Action &action, float distThreshold) {
+	void GestureCommandsManager::checkConditions(uilib::u64 curTime, Action &action, float distThreshold) {
 		int gestureCount = action.gestureCount();
 
 		for (int i = 0; i < gestureCount; ++i) {
@@ -216,7 +232,7 @@ namespace cinetico_core {
 			BodyPoint::BodyPart bp = gesture->bodyPoint();
 			std::vector<GestureCommand*> actions = filterCommands(BodyPointState::STEADY, bp);
 			if (!actions.empty()) {
-				if(!actions[0]->active())
+				if (gesture->transitionType() == SimpleGesture::FixedMovement && actions[0]->endTime() != curTime)
 					continue;
 				int gestureResult = meetConditions(gesture, actions[0], distThreshold) ? 1 : 0;
 				//if condition wasn't met and it is Free transition, ignore;

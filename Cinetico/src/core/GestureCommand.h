@@ -64,6 +64,7 @@ namespace cinetico_core {
 		const Vector3 &endPosition() const { return m_points[m_points.size() - 1]; }
 
 		int pointCount() const { return m_points.size(); }
+		const Vector3 &point(int index) const { return m_points[index]; }
 	};
 
 	class PositionGestureCommand : public GestureCommand {

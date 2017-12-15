@@ -17,6 +17,9 @@ namespace cinetico {
 #define ELBOW_SIZE HEAD_SIZE/(6.f)
 #define KNEE_SIZE HEAD_SIZE/(6.f)
 
+	int resHadouken;
+	int instHadouken;
+
 #define BONE_COLOR Color(255,255,255)
 
 	render3d::Color boneColors[] = 
@@ -119,44 +122,42 @@ namespace cinetico {
 	HumanCharacter::HumanCharacter(CineticoUI &cineticoUI)
 		: Character(cineticoUI) {
 
-		if (!humanBodyModelLoaded) {
-
-			RenderEngine *renderEngine = m_cineticoUI.renderEngine();
-			RenderEngineHelper *renderEngineHelper = m_cineticoUI.renderEngineHelper();
-
-			BodyResourceIds &resId = g_bodyResourceIds;
-			resId.head = renderEngineHelper->createCube(HEAD_SIZE);
-			renderEngine->resourceData(resId.head)->setColors(bodyColors);
-			resId.spine = renderEngineHelper->createRectangularPrism(HEAD_SIZE / 3.5f, HEAD_SIZE * 1.5, HEAD_SIZE / 3.5f);
-			renderEngine->resourceData(resId.spine)->setColors(bodyColors);
-			resId.elbow = renderEngineHelper->createCube(ELBOW_SIZE);
-			renderEngine->resourceData(resId.elbow)->setColors(bodyColors);
-			resId.hand = renderEngineHelper->createRectangularPrism(HAND_SIZE / 10.f,HAND_SIZE/1.3f,HAND_SIZE);
-			renderEngine->resourceData(resId.hand)->setColors(bodyColors);
-			resId.knee = renderEngineHelper->createCube(KNEE_SIZE);
-			renderEngine->resourceData(resId.knee)->setColors(bodyColors);
-			resId.foot = renderEngineHelper->createRectangularPrism(FOOT_SIZE / 1.3f, FOOT_SIZE / 10.f , FOOT_SIZE);
-			renderEngine->resourceData(resId.foot)->setColors(bodyColors);
-
-			humanBodyModelLoaded = true;
-		}
+		RenderEngine *renderEngine = m_cineticoUI.renderEngine();
+		RenderEngineHelper *renderEngineHelper = m_cineticoUI.renderEngineHelper();
 
 		BodyResourceIds &resId = g_bodyResourceIds;
-		RenderEngine *renderEngine = m_cineticoUI.renderEngine();
+		resId.head = renderEngineHelper->createCube(HEAD_SIZE);
+		renderEngine->resourceData(resId.head)->setColors(bodyColors);
+		resId.spine = renderEngineHelper->createRectangularPrism(HEAD_SIZE / 3.5f, HEAD_SIZE * 1.5, HEAD_SIZE / 3.5f);
+		renderEngine->resourceData(resId.spine)->setColors(bodyColors);
+		resId.elbow = renderEngineHelper->createCube(ELBOW_SIZE);
+		renderEngine->resourceData(resId.elbow)->setColors(bodyColors);
+		resId.hand = renderEngineHelper->createRectangularPrism(HAND_SIZE / 10.f,HAND_SIZE/1.3f,HAND_SIZE);
+		renderEngine->resourceData(resId.hand)->setColors(bodyColors);
+		resId.knee = renderEngineHelper->createCube(KNEE_SIZE);
+		renderEngine->resourceData(resId.knee)->setColors(bodyColors);
+		resId.foot = renderEngineHelper->createRectangularPrism(FOOT_SIZE / 1.3f, FOOT_SIZE / 10.f , FOOT_SIZE);
+		renderEngine->resourceData(resId.foot)->setColors(bodyColors);
+
+		std::vector<int> res = renderEngineHelper->loadModel("resources/ball.dae");
+		resHadouken = res[0];
 
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.head));
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.spine));
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.elbow));
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.elbow));
 		//renderEngine->resourceInstance(m_instanceIds.back())->setScale(render3d::Vector3(-1, -1, -1));
-		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.head));
-		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.head));
+		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.hand));
+		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.hand));
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.knee));
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.knee));
 		//renderEngine->resourceInstance(m_instanceIds.back())->setScale(render3d::Vector3(-1, -1, -1));
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.foot));
 		m_instanceIds.push_back(renderEngine->newResourceInstance(resId.foot));
 		//renderEngine->resourceInstance(m_instanceIds.back())->setScale(render3d::Vector3(-1, -1, -1));
+
+		instHadouken = renderEngine->newResourceInstance(resHadouken);
+		renderEngine->resourceInstance(instHadouken)->setScale(0.25f);
 	}
 
 	void HumanCharacter::mapBodyPointNodeToWorldPoint(int instId, BodyPoint::BodyPart bodyPoint, bool mirrored) {
@@ -229,6 +230,31 @@ namespace cinetico {
 		mapBodyPointNodeToWorldPoint(m_instanceIds[9], BodyPoint::RightFoot);
 	}
 
+
+	static cinetico_core::Vector3 getRot(Body *body, BodyPoint::BodyPart bp) {
+		return body->bodyPoint(bp)->orientation().rotatedVector(cinetico_core::Vector3(0,1,0));
+	}
+
+	static void drawLine(RenderEngine* renderEngine, Body *body, BodyPoint::BodyPart bp) {
+		render3d::Vector3 line[2];
+		cinetico_core::Vector3 pos = body->bodyPoint(bp)->position()*CM2W;
+		cinetico_core::Vector3 dir = getRot(body, bp);
+		//cinetico_core::Vector3 rot = inst->rot().toEuler();
+		line[0].set(pos.x(), pos.y(), pos.z());
+		float lineSize = 1.f;
+		line[1].set(pos.x() + dir.x()*lineSize, pos.y() + dir.y()*lineSize, pos.z() + dir.z()*lineSize);
+		renderEngine->drawResourceDirect(line, 2, boneColors);
+	}
+
+	static void drawLine2(RenderEngine* renderEngine, const cinetico_core::Vector3 &pos, const cinetico_core::Vector3 &dir) {
+		render3d::Vector3 line[2];
+		//cinetico_core::Vector3 rot = inst->rot().toEuler();
+		line[0].set(pos.x(), pos.y(), pos.z());
+		float lineSize = 1.f;
+		line[1].set(pos.x() + dir.x()*lineSize, pos.y() + dir.y()*lineSize, pos.z() + dir.z()*lineSize);
+		renderEngine->drawResourceDirect(line, 2, boneColors);
+	}
+
 	void HumanCharacter::render() {
 		if (!m_body || m_body->identifiedBodyPointCount() == 0) return;
 		RenderEngine *renderEngine = m_cineticoUI.renderEngine();
@@ -237,16 +263,52 @@ namespace cinetico {
 		for (unsigned int i = 0; i < m_instanceIds.size(); ++i) {
 			renderEngine->drawResource(m_instanceIds[i]);
 			
-			render3d::Vector3 line[2];
-			ResourceInstance *inst = renderEngine->resourceInstance(m_instanceIds[i]);
-			cinetico_core::Vector3 rot = inst->rot().toEuler();
-			line[0].set(inst->pos().x(), inst->pos().y(), inst->pos().z());
-			float lineSize = 0.3f;
-			line[1].set(inst->pos().x() + rot.x()*lineSize, inst->pos().y() + rot.y()*lineSize, inst->pos().z() + rot.z()*lineSize);
-			renderEngine->drawResourceDirect(line, 6, boneColors);
-			
 		}
-		
+
+		drawLine(renderEngine, m_body, BodyPoint::LeftElbow);
+		//drawLine(renderEngine, m_body, BodyPoint::RightElbow);
+		//drawLine(renderEngine, m_body, BodyPoint::Pelvis);
+		drawLine2(renderEngine, m_body->bodyPoint(BodyPoint::RightElbow)->position()*CM2W, m_body->bodyPoint(BodyPoint::RightElbow)->orientation().rotatedVector(cinetico_core::Vector3(0, 0, -1)));
+		drawLine2(renderEngine, m_body->bodyPoint(BodyPoint::Pelvis)->position()*CM2W, m_body->bodyPoint(BodyPoint::Pelvis)->orientation().rotatedVector(cinetico_core::Vector3(0, 0, -1)));
+
+		cinetico_core::Vector3 lElbowRot = getRot(m_body, BodyPoint::LeftElbow);
+		cinetico_core::Vector3 rElbowRot = getRot(m_body, BodyPoint::RightElbow);
+		cinetico_core::Vector3 pelvisRot = getRot(m_body, BodyPoint::Pelvis);
+		cinetico_core::Vector3 pelvisBinormal = m_body->bodyPoint(BodyPoint::Pelvis)->orientation().rotatedVector(cinetico_core::Vector3(0, 0, -1));
+		float dot = dotProduct(lElbowRot, rElbowRot);
+		float dot2 = dotProduct(lElbowRot, pelvisBinormal);
+		static int cond = 0;
+		static int cond2 = 0;
+		static render3d::Vector3 hadoPos;
+		static render3d::Vector3 hadoDir;
+		string str = "Dot: ";
+		str += string::fromFloat(dot);
+
+		if (cond == 0 && dot >= -0.3f && dot <= 0.3f && dot2 >= 0.8f)
+			++cond;
+		if (cond == 1 && dot >= 0.9f)
+			++cond;
+		if (dot <= -0.8f) {
+			cond = 0;
+			cond2 = 0;
+		}
+		if (cond == 2) {
+			if (cond2 == 0) {
+				cinetico_core::Vector3 newp = (m_body->bodyPoint(BodyPoint::LeftElbow)->position() + m_body->bodyPoint(BodyPoint::RightElbow)->position()) / 2 * CM2W;
+				cinetico_core::Vector3 newd = (lElbowRot + rElbowRot / 2) * CM2W;
+				hadoPos = render3d::Vector3(newp.x(), newp.y(), newp.z());
+				hadoDir = render3d::Vector3(newd.x(), newd.y(), newd.z());
+				renderEngine->resourceInstance(instHadouken)->setPos(hadoPos);
+				++cond2;
+			}
+			else if (cond2 == 1) {
+				renderEngine->resourceInstance(instHadouken)->setPos(renderEngine->resourceInstance(instHadouken)->pos() + hadoDir*0.03f);
+			}
+			str = "Hadouken";
+		}
+		str += "(" + string::fromInteger(cond) + ")";
+		renderEngine->drawText(str.data(), 10, 0, render3d::Color(255, 255, 255));
+
 		/*
 		ResourceInstance *inst = renderEngine->resourceInstance(g_bodyResourceIds.spine);
 		renderEngine->drawResource(g_bodyResourceIds.spine);
@@ -257,5 +319,6 @@ namespace cinetico {
 		line[1].set(inst->pos().x() + rot.x()*lineSize, inst->pos().y() + rot.y()*lineSize, inst->pos().z() + rot.z()*lineSize);
 		renderEngine->drawResourceDirect(line, 6, boneColors);
 		*/
+		renderEngine->drawResource(instHadouken);
 	}
 }

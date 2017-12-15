@@ -144,6 +144,14 @@ namespace render3d {
 		for (TextResource *textResource : m_textResources)
 			releaseInternalTextResource(textResource);
 
+		//temp
+		m_resources.clear();
+		m_cameras.clear();
+		m_viewports.clear();
+		m_instances.clear();
+		m_fontResources.clear();
+		m_textResources.clear();
+
 		HRESULT hr;
 		if (m_device)
 			hr = m_device->Release();

@@ -103,8 +103,6 @@ namespace cinetico {
 	RelOrientChar::RelOrientChar(CineticoUI &cineticoUI)
 		: Character(cineticoUI) {
 
-		if (!RoBodyModelLoaded) {
-
 			RenderEngine *renderEngine = m_cineticoUI.renderEngine();
 			RenderEngineHelper *renderEngineHelper = m_cineticoUI.renderEngineHelper();
 
@@ -114,8 +112,6 @@ namespace cinetico {
 			for (int i = 0; i < BodyPoint::BodyPartCount; ++i)
 				g_instBoneId[i] = renderEngine->newResourceInstance(g_resBoneId);
 
-			RoBodyModelLoaded = true;
-		}
 	}
 
 	inline void RelOrientChar::mapBodyPointToCharacterBodyPointNode(BodyPoint::BodyPart bodyPoint) {

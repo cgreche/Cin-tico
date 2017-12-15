@@ -35,21 +35,17 @@ namespace cinetico {
 		: Character(cineticoUI) {
 		unsigned int i;
 
-		if (!dummyCharacterLoaded) {
-			CineticoResources::ResIdModelWoman = cineticoUI.renderEngineHelper()->loadModel("MODEL.dae");
-			/*
-			for (unsigned int i = 0; i < CineticoResources::ResIdModelWoman.size(); ++i) {
-				ResourceData *model = cinetico3d.renderEngine()->resourceData(CineticoResources::ResIdModelWoman[i]);
-				Color *modelColors = new Color[model->vertexCount()];
-				for (int i = 0; i < model->vertexCount(); ++i)
-					modelColors[i] = Color(GRAY_COLOR, GRAY_COLOR, GRAY_COLOR);
-				model->setColors(modelColors);
-				delete[] modelColors;
-			}
-			*/
-
-			dummyCharacterLoaded = true;
+		CineticoResources::ResIdModelWoman = cineticoUI.renderEngineHelper()->loadModel("MODEL.dae");
+		/*
+		for (unsigned int i = 0; i < CineticoResources::ResIdModelWoman.size(); ++i) {
+			ResourceData *model = cinetico3d.renderEngine()->resourceData(CineticoResources::ResIdModelWoman[i]);
+			Color *modelColors = new Color[model->vertexCount()];
+			for (int i = 0; i < model->vertexCount(); ++i)
+				modelColors[i] = Color(GRAY_COLOR, GRAY_COLOR, GRAY_COLOR);
+			model->setColors(modelColors);
+			delete[] modelColors;
 		}
+		*/
 
 		for (i = 0; i < CineticoResources::ResIdModelWoman.size(); ++i) {
 			ResourceData *data = cineticoUI.renderEngine()->resourceData(CineticoResources::ResIdModelWoman[i]);

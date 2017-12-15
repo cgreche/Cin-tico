@@ -14,6 +14,7 @@ namespace cinetico_core {
 		static const int BodyPointCount = BodyPoint::BodyPartCount;
 		Sensor &m_sensor;
 		int m_identifiedBodyPointCount;
+		Quaternion m_orientation;
 
 	private:
 		BodyPoint *m_bodyPoint[BodyPointCount];

@@ -36,7 +36,7 @@ namespace cinetico_core {
 
 		std::vector<GestureCommand *> filterCommands(int transitionType, BodyPoint::BodyPart bp);
 
-		void checkConditions(Action &action, float distThreshold);
+		void checkConditions(uilib::u64 curTime, Action &action, float distThreshold);
 	};
 
 }

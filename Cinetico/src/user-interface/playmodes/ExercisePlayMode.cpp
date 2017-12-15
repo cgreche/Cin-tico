@@ -4,6 +4,7 @@
 #include "input.h"
 #include "ExercisePlayMode.h"
 #include "core/entity/Exercise.h"
+#include "entity/GeneralSettings.h"
 #include "core/GestureCommandsManager.h"
 #include "humancharacter.h"
 #include "dummycharacter.h"
@@ -29,7 +30,7 @@ namespace cinetico {
 
 		m_humanChar = new HumanCharacter(*m_cinetico.cineticoUI());
 		m_dummyChar = new DummyCharacter(*m_cinetico.cineticoUI());
-		m_roChar = new RelOrientChar(*m_cinetico.cineticoUI());
+		//m_roChar = new RelOrientChar(*m_cinetico.cineticoUI());
 		m_commandsManager = new GestureCommandsManager();
 
 		m_cinetico.bodyTracker()->setTrackableBodyPoints(m_exercise.trackableBodyPoints());
@@ -81,12 +82,11 @@ namespace cinetico {
 			}
 
 			m_humanChar->update();
-			m_roChar->update();
 
 			if(m_exercise.state() == Exercise::Running) {
 				int curAction = m_exercise.currentActionIndex();
 				if (curAction >= 0)
-					m_commandsManager->checkConditions(*m_exercise.actionList()[curAction], 0.06f);
+					m_commandsManager->checkConditions(m_cinetico.currentTime(),*m_exercise.actionList()[curAction], m_cinetico.generalSettings()->posDistThreshold());
 				m_exercise.step();
 			}
 
@@ -125,7 +125,6 @@ namespace cinetico {
 	void ExercisePlayMode::render() {
 		++frameCount;
 		m_renderEngine->setCurrentCamera(m_currentCameraId);
-		m_renderEngine->setCurrentViewport(m_cinetico.cineticoUI()->viewport());
 		m_renderEngine->clear(render3d::Color(30, 30, 30));
 
 		//if (m_dummyChar)
@@ -176,8 +175,29 @@ namespace cinetico {
 						str += uilib::string::fromInteger(fuck);
 						str += ")";
 					}
-					else
-						str += "Movement action";
+					else {
+						MovementGestureCommand *movCommand = command->movementGestureCommand();
+						str += "Movement action (" + string::fromInteger(((MovementGestureCommand*)command)->pointCount()) + ")";
+						render3d::Color bodyColors[] =
+						{
+							//Front
+							render3d::Color(255,0,0),
+							render3d::Color(255,0,0)
+						};
+						if (movCommand->pointCount() > 1) {
+							for (int j = 0; j < movCommand->pointCount()-1; ++j) {
+								render3d::Vector3 points[2];
+								cinetico_core::Vector3 p = movCommand->point(j);
+								p *= 2;
+
+								cinetico_core::Vector3 p2 = movCommand->point(j+1);
+								p2 *= 2;
+								points[0] = render3d::Vector3(p.x(), p.y(),p.z());
+								points[1] = render3d::Vector3(p2.x(), p2.y(),p2.z());
+								m_renderEngine->drawResourceDirect(points, 2, bodyColors);
+							}
+						}
+					}
 					if (command->positionGestureCommand() && command->finished())
 						++fuck;
 					m_renderEngine->drawText(str.data(), drawX, drawY, render3d::Color(255, 255, 255, 100));
