@@ -49,7 +49,7 @@ namespace cinetico_core {
 			if (i == BodyPoint::RightPalm)
 				int a = 1;
 			else {
-			//	continue;
+				//continue;
 			}
 
 			BodyPointState::GestureState gestureState = m_trackedBps[i].update(curTime);
@@ -106,8 +106,8 @@ namespace cinetico_core {
 
 		Vector3 actionPoint;
 		Vector3 actionOrientation;
-		if (command->movementGestureCommand() && gesture->transitionType()==SimpleGesture::FixedMovement)
-			return false; //we are going to check only positionGestures (movementgesture can be "parent")
+		//if (command->movementGestureCommand() && gesture->transitionType()==SimpleGesture::FixedMovement)
+		//	return false; //we are going to check only positionGestures (movementgesture can be "parent")
 
 		Vector3 targetPoint;
 		Vector3 refPos;
@@ -117,9 +117,9 @@ namespace cinetico_core {
 
 		int refPoint = gesture->refPoint();
 		if (refPoint == -2) //Sensor
-			targetPoint = Vector3(0, 0, 0);
+			refPos = Vector3(0, 0, 0);
 		else if (refPoint == -1) //LastPos
-			; //does nothing (todo)
+			refPos = m_trackedBps[gesture->bodyPoint()].lastSteadyPosition(); //does nothing (todo)
 		else {
 			BodyPoint *ref = m_body->bodyPoint((BodyPoint::BodyPart)gesture->refPoint());
 			refPos = ref->position();
@@ -133,10 +133,16 @@ namespace cinetico_core {
 		//Check for movement constraint
 		if (gesture->transitionType() == SimpleGesture::FixedMovement) {
 			MovementGesture *movGesture = (MovementGesture*)gesture;
-			PositionGestureCommand *posCommand = (PositionGestureCommand*)command;
-			MovementGestureCommand *movCommand = (MovementGestureCommand*)posCommand->transitionGestureCommand();
-			if (movCommand == NULL)
-				return false;
+			PositionGestureCommand *posCommand = command->positionGestureCommand();
+			MovementGestureCommand *movCommand = NULL;
+			if (posCommand) {
+				movCommand = (MovementGestureCommand*)posCommand->transitionGestureCommand();
+				if (movCommand == NULL)
+					return false;
+			}
+			else
+				movCommand = command->movementGestureCommand();
+
 			if (movGesture->movementType() == MovementGesture::Linear) {
 				if (movCommand->pointCount() > 2)
 					return false;
@@ -179,51 +185,73 @@ namespace cinetico_core {
 
 		//further to sensor: +z
 		//closer to sensor: -z
+		bool result;
 		if (op == SimpleGesture::InFront) {
-			return actionPoint.z() < targetPoint.z();
+			result = actionPoint.z() < targetPoint.z();
 		}
 		else if (op == SimpleGesture::Behind) {
-			return actionPoint.z() > targetPoint.z();
+			result = actionPoint.z() > targetPoint.z();
 		}
 		else if (op == SimpleGesture::ToRight) {
-			return actionPoint.x() > targetPoint.x();
+			result = actionPoint.x() > targetPoint.x();
 		}
 		else if (op == SimpleGesture::ToLeft) {
-			return actionPoint.x() > targetPoint.x();
+			result = actionPoint.x() > targetPoint.x();
 		}
 		else if (op == SimpleGesture::Above) {
-			return actionPoint.y() > targetPoint.y();
+			result = actionPoint.y() > targetPoint.y();
 		}
 		else if (op == SimpleGesture::Below) {
-			return actionPoint.y() < targetPoint.y();
+			result = actionPoint.y() < targetPoint.y();
 		}
 		else if (op == SimpleGesture::FixedPosition) {
-			return actionPoint.euclideanDistanceTo(targetPoint) <= distThreshold;
+			result = actionPoint.euclideanDistanceTo(targetPoint) <= distThreshold;
 		}
 		else if (op == SimpleGesture::AtSameBreadth) {
-			return fabsf(actionPoint.x() - targetPoint.x()) <= distThreshold;
+			result = fabsf(actionPoint.x() - targetPoint.x()) <= distThreshold;
 		}
 		else if (op == SimpleGesture::AtSameHeight) {
-			return fabsf(actionPoint.y() - targetPoint.y()) <= distThreshold;
+			result = fabsf(actionPoint.y() - targetPoint.y()) <= distThreshold;
 		}
 		else if (op == SimpleGesture::AtSameDepth) {
-			return fabsf(actionPoint.z() - targetPoint.z()) <= distThreshold;
+			result = fabsf(actionPoint.z() - targetPoint.z()) <= distThreshold;
 		}
 		else if (op == SimpleGesture::FixedOrientation) {
 			//todo
 			Vector3 diff = targetPoint - actionPoint;
 			diff.normalize();
-			return dotProduct(actionOrientation, diff) >= 0.8f;
+			result = dotProduct(actionOrientation, diff) >= 0.8f;
 
 		}
 		else if (op == SimpleGesture::OrientationLookingTo) {
 			//todo
 			Vector3 diff = targetPoint - actionPoint;
 			diff.normalize();
-			return dotProduct(actionOrientation, diff) >= 0.8f;
+			result = dotProduct(actionOrientation, diff) >= 0.8f;
+		}
+		else {
+			result = false;
 		}
 
-		return false;
+		//checar constraint de velocidade
+		if (result && command->positionGestureCommand() && gesture->transitionType() == SimpleGesture::FixedMovement) {
+			MovementGestureCommand *movGesture = command->positionGestureCommand()->transitionGestureCommand();
+			if (movGesture) {
+				uilib::u64 initTime = movGesture->initTime();
+				uilib::u64 lastTime = movGesture->lastUpdateTime();
+				Vector3 initPos = movGesture->initPosition();
+				Vector3 endPos = command->positionGestureCommand()->initPosition();
+				Vector3 diff = (initPos - endPos);
+				float dt = (double)(lastTime - initTime)/uilib::OSTime::ticksPerSecond();
+				float speed = fabsf(diff.length()) / dt;
+
+				float minSpeed = ((MovementGesture*)gesture)->minSpeed();
+				float maxSpeed = ((MovementGesture*)gesture)->maxSpeed();
+				result = speed >= minSpeed && (speed <= maxSpeed || maxSpeed == 0.f);
+			}
+		}
+
+		return result;
 	}
 
 	void GestureCommandsManager::checkConditions(Action &action) {
@@ -232,20 +260,31 @@ namespace cinetico_core {
 		for (int i = 0; i < gestureCount; ++i) {
 			SimpleGesture *gesture = action.gesture(i);
 			BodyPoint::BodyPart bp = gesture->bodyPoint();
-			std::vector<GestureCommand*> actions = filterCommands(BodyPointState::STEADY, bp);
-			if (!actions.empty()) {
-				if (!actions[0]->active())
-					continue;
-				int gestureResult = meetConditions(gesture, actions[0]) ? 1 : 0;
+			std::vector<GestureCommand*> steadyCommands = filterCommands(BodyPointState::STEADY, bp);
+			std::vector<GestureCommand*> movCommands = filterCommands(BodyPointState::MOVING, bp);
+			if (!steadyCommands.empty()) {
+				
+				if (gesture->transitionType() == SimpleGesture::FixedMovement) {
+					if (!steadyCommands[0]->active())
+						continue;
+				}
+				
+				int gestureResult = meetConditions(gesture, steadyCommands[0]) ? 1 : 0;
 				//if condition wasn't met and it is Free transition, ignore;
 				//otherwise, set result
-				if (gestureResult == 0 && gesture->transitionType() == SimpleGesture::FixedMovement)
+				if (gestureResult == 0 && gesture->transitionType() == SimpleGesture::FixedMovement && steadyCommands[0]->active())
 					gestureResult = 2;
 
 				action.setGestureResult(i, gestureResult);
 				if (gestureResult != 0)
-					actions[0]->setActive(false);
+					steadyCommands[0]->setActive(false);
 
+			}
+			else if (!movCommands.empty()) {
+				//int gestureResult = meetConditions(gesture, movCommands[0]) ? 1 : 0;
+				//if condition wasn't met and it is Free transition, ignore;
+				//otherwise, set result
+				//action.setGestureResult(i, gestureResult);
 			}
 		}
 	}

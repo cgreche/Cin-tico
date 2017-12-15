@@ -63,8 +63,10 @@ namespace cinetico_core {
 
 	PositionGestureCommand::PositionGestureCommand(MovementGestureCommand* transitionGesture, const BodyPointState &bodyPointState)
 		: GestureCommand(bodyPointState) {
-		m_transitionGesture = transitionGesture;
-		m_transitionGesture->finish(bodyPointState.lastUpdateTime());
+		if (transitionGesture) {
+			m_transitionGesture = transitionGesture;
+			m_transitionGesture->finish(bodyPointState.lastUpdateTime());
+		}
 		m_holdTime = bodyPointState.holdTime();
 		if (transitionGesture)
 			transitionGesture->addPoint(m_initPosition);

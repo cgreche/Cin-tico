@@ -24,6 +24,7 @@ namespace cinetico_core {
 		uilib::u64 m_holdTime;
 		Vector3 m_initalPosition;
 		Vector3 m_lastPosition;
+		Vector3 m_lastSteadyPos;
 
 		GestureState m_gestureState;
 
@@ -37,6 +38,7 @@ namespace cinetico_core {
 		uilib::u64 holdTime() const { return m_holdTime; }
 		const Vector3 &initialPosition() const { return m_initalPosition; }
 		const Vector3 &lastPosition() const { return m_lastPosition; }
+		const Vector3 &lastSteadyPosition() const { return m_lastSteadyPos; }
 	};
 
 }

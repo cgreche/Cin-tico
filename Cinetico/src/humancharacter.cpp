@@ -217,7 +217,7 @@ namespace cinetico {
 			index = mapBones(index, m_body, m_position, BodyPoint::RightAnkle, BodyPoint::RightFoot);
 			vertexCount = index;
 		}
-		//Character::update();
+		Character::update();
 		mapBodyPointNodeToWorldPoint(m_instanceIds[0], BodyPoint::Head);
 		mapBodyPointNodeToWorldPoint(m_instanceIds[1], BodyPoint::Spine);
 		mapBodyPointNodeToWorldPoint(m_instanceIds[2], BodyPoint::LeftElbow);
@@ -262,8 +262,9 @@ namespace cinetico {
 		
 		for (unsigned int i = 0; i < m_instanceIds.size(); ++i) {
 			renderEngine->drawResource(m_instanceIds[i]);
-			
 		}
+
+#ifdef DEBUGGING
 
 		drawLine(renderEngine, m_body, BodyPoint::LeftElbow);
 		//drawLine(renderEngine, m_body, BodyPoint::RightElbow);
@@ -283,7 +284,6 @@ namespace cinetico {
 		static render3d::Vector3 hadoDir;
 		string str = "Dot: ";
 		str += string::fromFloat(dot);
-
 		if (cond == 0 && dot >= -0.3f && dot <= 0.3f && dot2 >= 0.8f)
 			++cond;
 		if (cond == 1 && dot >= 0.9f)
@@ -319,7 +319,9 @@ namespace cinetico {
 		line[1].set(inst->pos().x() + rot.x()*lineSize, inst->pos().y() + rot.y()*lineSize, inst->pos().z() + rot.z()*lineSize);
 		renderEngine->drawResourceDirect(line, 6, boneColors);
 		*/
-		renderEngine->drawResource(instHadouken);
+		//renderEngine->drawResource(instHadouken);
+
+#endif
 	}
 
 }

@@ -8,6 +8,8 @@
 #include "render3d/renderenginehelper.h"
 #include "cinetico.h"
 
+//#define DEBUGGING
+
 namespace cinetico {
 
 	class DummyCharacter;

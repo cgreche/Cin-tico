@@ -3,6 +3,7 @@
 #include "HadoukenController.h"
 #include "humancharacter.h"
 #include "hadouken.h"
+#include <uilib/lib/time.h>
 
 namespace cinetico {
 
@@ -14,8 +15,8 @@ namespace cinetico {
 		m_cond = 0;
 	}
 
-	void HadoukenController::createHadouken(const cinetico_core::Vector3 &hadouPos, const cinetico_core::Vector3 &hadouVel) {
-		Hadouken *hadouken = new Hadouken(m_cineticoUI, m_hadouResId);
+	void HadoukenController::createHadouken(const cinetico_core::Vector3 &hadouPos, const cinetico_core::Vector3 &hadouVel, float scale) {
+		Hadouken *hadouken = new Hadouken(m_cineticoUI, m_hadouResId,scale);
 		hadouken->setPosition(hadouPos);
 		hadouken->setVelocity(hadouVel);
 		m_hadouList.push_back(hadouken);
@@ -48,28 +49,50 @@ namespace cinetico {
 		cinetico_core::Vector3 pelvisBinormal = getDir(body, BodyPoint::Pelvis, cinetico_core::Vector3(0, 0, -1));
 		float dot = dotProduct(lElbowRot, rElbowRot);
 		float dot2 = dotProduct(lElbowRot, pelvisBinormal);
-		static int cond = 0;
-		static int cond2 = 0;
+
 		static render3d::Vector3 hadoPos;
 		static render3d::Vector3 hadoDir;
 
-		if (m_cond == 0 && dot >= -0.3f && dot <= 0.3f && dot2 >= 0.8f)
-			++m_cond;
-		if (cond == 1 && dot >= 0.9f)
-			++m_cond;
+		uilib::u64 curTime = m_cineticoUI.cinetico().currentTime();
+		uilib::u64 holdTime;
+
+		if (dot >= -0.3f && dot <= 0.3f && dot2 >= 0.8f) {
+			if (m_cond == 0) {
+				++m_cond;
+				m_initTime = m_cineticoUI.cinetico().currentTime();
+				m_holdTime = 0;
+			}
+			else if (m_cond == 1) {
+				m_holdTime = curTime - m_initTime;
+				if (m_holdTime / uilib::OSTime::ticksPerSecond() >= 5)
+					int a = 1;
+			}
+		}
+
+		if (dot >= 0.9f) {
+			if (m_cond == 1) {
+				m_cond = 2;
+				if (m_holdTime / uilib::OSTime::ticksPerSecond() >= 5) {
+					m_cond = 3;
+				}
+			}
+		}
+		else {
+			if (m_cond == 3)
+				m_cond = 0;
+		}
+
 		if (dot <= -0.8f) {
 			m_cond = 0;
 		}
-		if (cond == 2) {
-			if (cond2 == 0) {
-				float hadoSpeed = 0.3f;
-				cinetico_core::Vector3 newp = (body->bodyPoint(BodyPoint::LeftElbow)->position() + body->bodyPoint(BodyPoint::RightElbow)->position()) / 2;
-				cinetico_core::Vector3 newd = (lElbowRot + rElbowRot / 2)*hadoSpeed;
-				createHadouken(newp, newd);
-				++cond2;
-			}
-			else if (cond2 == 1) {
-			}
+
+		if (m_cond == 2 || m_cond == 3) {
+			float hadoSpeed = 0.3f;
+			cinetico_core::Vector3 newp = (body->bodyPoint(BodyPoint::LeftElbow)->position() + body->bodyPoint(BodyPoint::RightElbow)->position()) / 2;
+			cinetico_core::Vector3 newd = (lElbowRot + rElbowRot / 2)*hadoSpeed;
+			createHadouken(newp, newd, m_cond == 2 ? 0.5f : 1.0f);
+			if (m_cond == 2)
+				m_cond = 0;
 		}
 	}
 

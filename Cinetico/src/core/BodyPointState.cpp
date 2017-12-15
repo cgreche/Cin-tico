@@ -32,8 +32,10 @@ namespace cinetico_core {
 			m_holdTime = 0;
 			m_initalPosition = curPos;
 			m_initTime = curTime;
-			if (m_gestureState == STEADY)
+			if (m_gestureState == STEADY) {
 				gestureState = MOVING;
+				m_lastSteadyPos = m_lastPosition;
+			}
 		}
 
 		m_lastPosition = curPos;

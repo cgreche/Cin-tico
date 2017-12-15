@@ -13,7 +13,7 @@ namespace cinetico {
 
 #define CM2W 2
 
-	Hadouken::Hadouken(CineticoUI &cineticoUI, int resId) 
+	Hadouken::Hadouken(CineticoUI &cineticoUI, int resId, float scale) 
 		: m_cineticoUI(cineticoUI) {
 
 		RenderEngine *renderEngine = m_cineticoUI.renderEngine();
@@ -22,6 +22,7 @@ namespace cinetico {
 		m_materialId = renderEngine->newMaterial(Color(0,0,255));
 		m_instId = renderEngine->newResourceInstance(resId);
 		renderEngine->resourceInstance(m_instId)->setMaterial(m_materialId);
+		renderEngine->resourceInstance(m_instId)->setScale(scale);
 
 		m_ttl = 3.0f;
 		m_curTime = m_cineticoUI.cinetico().currentTime();

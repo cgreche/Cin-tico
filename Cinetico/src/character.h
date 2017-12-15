@@ -37,15 +37,18 @@ namespace cinetico {
 		}
 
 		virtual void updateState(Quaternion orientation, const Matrix4x4 &transform) {
-			m_globalOrientation = m_localOrientation*orientation;
-			m_localTransform = m_localOrientation.toRotationMatrix();
-			m_globalTransform = transform*m_localTransform;
+			//m_globalOrientation = m_localOrientation*orientation;
+			//m_localTransform = m_localOrientation.toRotationMatrix();
+			//m_globalTransform = transform*m_localTransform;
 
 			Quaternion qTest = Quaternion::fromRotationMatrix(m_globalTransform);
 
 			if (qTest == m_globalOrientation)
 				int a = 1;
 
+			if (m_globalOrientation == Quaternion(0, 0, 0, 0))
+				if (parent())
+					m_globalOrientation = parent()->globalOrientation();
 			//m_globalOrientation = m_localOrientation;
 			for (BodyPointNode *bpn : m_childList)
 				bpn->updateState(m_globalOrientation,m_globalTransform);

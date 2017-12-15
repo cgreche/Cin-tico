@@ -14,8 +14,6 @@
 #include "render3d/renderenginehelper.h"
 #include <uilib/lib/time.h>
 
-//#define DEBUGGING
-
 namespace cinetico {
 
 	using namespace cinetico_core;
@@ -102,7 +100,7 @@ namespace cinetico {
 		}
 
 		if (m_cinetico.input()->keyboard.key(VK_F6)) {
-			m_hadoukenController->createHadouken(cinetico_core::Vector3(0, 0, 0), cinetico_core::Vector3(0, 0.2f, 0));
+			m_hadoukenController->createHadouken(cinetico_core::Vector3(0, 0, 0), cinetico_core::Vector3(0, 0.2f, 0),0.5f);
 		}
 
 		m_hadoukenController->step();

@@ -23,7 +23,7 @@ namespace cinetico {
 		bool m_alive;
 
 	public:
-		Hadouken(CineticoUI &cineticoUI, int resId);
+		Hadouken(CineticoUI &cineticoUI, int resId, float scale);
 
 		virtual void setPosition(const cinetico_core::Vector3 &position) { m_position = position; }
 		virtual void setVelocity(const cinetico_core::Vector3 &velocity) { m_velocity = velocity; }

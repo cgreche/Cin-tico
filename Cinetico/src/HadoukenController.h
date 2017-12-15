@@ -19,12 +19,14 @@ namespace cinetico {
 		HumanCharacter &m_humanCharacter;
 		std::vector<Hadouken*> m_hadouList;
 		int m_cond;
+		uilib::u64 m_initTime;
+		uilib::u64 m_holdTime;
 
 	public:
 		HadoukenController(CineticoUI &cineticoUI, HumanCharacter &humanCharacter);
 		void step();
 		void render();
-		void createHadouken(const cinetico_core::Vector3 &hadouPos, const cinetico_core::Vector3 &hadouVel);
+		void createHadouken(const cinetico_core::Vector3 &hadouPos, const cinetico_core::Vector3 &hadouVel, float scale);
 	};
 
 }

@@ -13,30 +13,32 @@ namespace render3d {
 	}
 
 	void RenderEngine::destroy() {
+		/*
 		for (ResourceData *resourceData : m_resources) {
 			releaseInternalResource(resourceData);
-			delete resourceData;
+			//delete resourceData;
 		}
 		for (Camera *camera : m_cameras) {
 			releaseInternalCamera(camera);
-			delete camera;
+			//delete camera;
 		}
 		for (Viewport *viewport : m_viewports) {
 			releaseInternalViewport(viewport);
-			delete viewport;
+			//delete viewport;
 		}
 		for (ResourceInstance *resInstance : m_instances) {
 			releaseInternalResourceInstance(resInstance);
-			delete resInstance;
+			//delete resInstance;
 		}
 		for (FontResource *fontResource : m_fontResources) {
 			releaseInternalFontResource(fontResource);
-			delete fontResource;
+			//delete fontResource;
 		}
 		for (TextResource *textResource : m_textResources) {
 			releaseInternalTextResource(textResource);
-			delete textResource;
+			//delete textResource;
 		}
+		*/
 
 		//temp
 		if (!m_resources.empty())
@@ -54,6 +56,8 @@ namespace render3d {
 			m_textResources.clear();
 
 		m_currentCamera = NULL;
+		m_currentViewport = NULL;
+		m_currentFont = NULL;
 	}
 
 	int RenderEngine::newResource(unsigned int vertexCount, Vector3 *vertices, unsigned int indexCount, int *indices) {
