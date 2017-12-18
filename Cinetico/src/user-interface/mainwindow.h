@@ -28,6 +28,7 @@ namespace cinetico {
 						TextLink linkUsername;
 						cButton buttonLogoff;
 
+		ScrollView svContent;
 		Label bgContent;
 		VerticalLayout layoutContent;
 

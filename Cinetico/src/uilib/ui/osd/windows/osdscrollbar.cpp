@@ -81,7 +81,7 @@ namespace uilib {
 			//windows may have clamp'd the position
 			SCROLLINFO si;
 			si.cbSize = sizeof(SCROLLINFO);
-			si.fMask = SIF_POS|SIF_PAGE;
+			si.fMask = SIF_POS|SIF_PAGE| SIF_TRACKPOS;
 			::GetScrollInfo(m_hwnd, SB_CTL, &si);
 			this->ref().m_scrollPos = si.nPos;
 
@@ -104,9 +104,12 @@ namespace uilib {
 			::SetScrollInfo(m_hwnd, SB_CTL, &si, TRUE);
 			::GetScrollInfo(m_hwnd, SB_CTL, &si);
 
-			std::vector<ScrollFunc> &callbackList = this->ref().m_onScrollCallbackList;
-			for(int i = 0; i < callbackList.size(); ++i)
-				(*callbackList[i])(this->ref(),oldPos,si.nPos);
+			if (oldPos != si.nPos) {
+				std::vector<ScrollFunc> &callbackList = this->ref().m_onScrollCallbackList;
+				for (int i = 0; i < callbackList.size(); ++i)
+					(*callbackList[i])(this->ref(), oldPos, si.nPos);
+
+			}
 
 			/*
 			Return value

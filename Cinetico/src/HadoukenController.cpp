@@ -11,6 +11,15 @@ namespace cinetico {
 		: m_cineticoUI(cineticoUI)
 		, m_humanCharacter(humanCharacter) {
 		std::vector<int> resIds = cineticoUI.renderEngineHelper()->loadModel("resources/ball.dae");
+		ResourceData* data = cineticoUI.renderEngine()->resourceData(resIds[0]);
+		int vertexCount = data->vertexCount();
+		
+		//render3d::Color *colors = new render3d::Color[vertexCount];
+		//for (int i = 0; i < vertexCount; ++i)
+		//	colors[i] = render3d::Color(0,0,255);
+		//data->setColors(colors);
+		//delete[] colors;
+		
 		m_hadouResId = resIds[0];
 		m_cond = 0;
 	}

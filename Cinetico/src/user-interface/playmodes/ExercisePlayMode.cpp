@@ -66,11 +66,19 @@ namespace cinetico {
 
 	void ExercisePlayMode::step() {
 
+		static bool f6pressed = false;
+		bool hadouken = false;
 		bool f4Down = m_cinetico.input()->keyboard.key(VK_F4);
+		bool f6Down = m_cinetico.input()->keyboard.key(VK_F6);
 		if (!f4pressed && f4Down) {
 			debug = !debug;
 		}
 		f4pressed = f4Down;
+
+		if (!f6pressed && f6Down) {
+			hadouken = true;
+		}
+		f6pressed = f6Down;
 
 		m_cinetico.bodyTracker()->track();
 		m_commandsManager->step(m_cinetico.currentTime());
@@ -99,7 +107,7 @@ namespace cinetico {
 			}
 		}
 
-		if (m_cinetico.input()->keyboard.key(VK_F6)) {
+		if (hadouken) {
 			m_hadoukenController->createHadouken(cinetico_core::Vector3(0, 0, 0), cinetico_core::Vector3(0, 0.2f, 0),0.5f);
 		}
 

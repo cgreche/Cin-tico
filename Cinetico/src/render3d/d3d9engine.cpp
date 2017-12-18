@@ -385,7 +385,7 @@ namespace render3d {
 		D3DMATERIAL9 *internalData = new D3DMATERIAL9;
 		::ZeroMemory(internalData, sizeof(D3DMATERIAL9));
 		Color diffuse = material->diffuse();
-		internalData->Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		internalData->Diffuse = D3DXCOLOR(0, 0, 1.0f, 1.0f);
 		internalData->Ambient = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		//internalData->Ambient = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		//internalData->Diffuse = D3DXCOLOR(diffuse.r() / 255.f, diffuse.g() / 255.f, diffuse.b() / 255.f,1.f);
@@ -579,7 +579,7 @@ namespace render3d {
 	void D3D9Engine::drawInternalResource(ResourceInstance *instance) {
 		HRESULT hr;
 		static bool first = false;
-		if (!first) {
+		//if (!first) {
 			D3DLIGHT9 light;
 			D3DMATERIAL9 material;
 
@@ -594,20 +594,20 @@ namespace render3d {
 			light.Range = 100.0f;
 			light.Diffuse.r = 1.f;
 			light.Diffuse.g = 1.f;
-			light.Diffuse.b = 1.f;
+			light.Diffuse.b = 0.f;
 
 			light.Ambient.r = 0.2f;
 			light.Ambient.g = 0.2f;
 			light.Ambient.b = 0.2f;
 
-			material.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			material.Diffuse = D3DXCOLOR(0, 0, 1.f , 1.0f);
 			material.Ambient = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 			//m_device->SetMaterial(&material);
 
 			m_device->SetLight(0, &light);
 			
 			first = true;
-		}
+		//}
 		m_device->LightEnable(0, TRUE);
 		ResourceData *resData = this->resourceData(instance->resDataId());
 		if (resData->dirtyFlags() != 0) {
@@ -629,10 +629,12 @@ namespace render3d {
 		if (instance->material() != -1) {
 			Material *material = m_materials[instance->material()];
 			D3DMATERIAL9 *internalMaterial = (D3DMATERIAL9*)material->internalData();
-			m_device->SetMaterial(internalMaterial);
-			m_device->SetRenderState(D3DRS_LIGHTING, TRUE);
+			//m_device->SetMaterial(internalMaterial);
+			m_device->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
+			//m_device->SetRenderState(D3DRS_LIGHTING, TRUE);
 		}
 		else {
+			m_device->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_COLOR1);
 			m_device->SetRenderState(D3DRS_LIGHTING, FALSE);
 		}
 		m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);

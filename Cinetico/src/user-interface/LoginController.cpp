@@ -61,14 +61,16 @@ namespace cinetico {
 		layout.append(layoutLoginArea);
 		layout.setMargin(10);
 
-		testView.setBackgroundColor(uilib::Color(200, 200, 200));
-		testButton.setText("TESTTTTT");
-		testLayout.append(testButton,Size(SizeTypeMax,SizeTypeAuto));
-		testLayout.append(testButton2);
-		testLayout.append(testButton3);
-		testLayout.append(testButton4);
-		testView.setLayout(&testLayout);
-		layout.append(testView,Size(300,100));
+		testScrollView.setBackgroundColor(uilib::Color(200, 200, 200));
+			testButton.setText("TESTTTTT");
+			testLayout.append(testButton,Size(SizeTypeMax,500));
+			testButton.setBackgroundColor(uilib::Color(255, 255, 255));
+			//testLayout.append(testButton2);
+			//testLayout.append(testButton3);
+			//testLayout.append(testButton4,Size(50,500));
+			layout.append(testScrollView,Size(300,100));
+		layout.update();
+		testScrollView.setLayout(&testLayout);
 	}
 
 	Layout *LoginController::viewDefinition() {

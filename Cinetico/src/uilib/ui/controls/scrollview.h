@@ -16,21 +16,26 @@ namespace uilib {
 	{
 		VerticalLayout dummyLayout;
 	protected:
+
+		bool m_showVerticalScrollBar;
+		bool m_showHorizontalScrollBar;
+		Size m_workArea;
+
 		friend class OSDScrollView;
 		OSDScrollView &osdRef() const { return reinterpret_cast<OSDScrollView&>(Control::osdRef()); }
+
 	public:
 		VerticalLayout viewLayout;
 			HorizontalLayout hLayout;
 				Layout *contentLayout;
 				ScrollBar verticalScrollBar;
 			ScrollBar horizontalScrollBar;
-		int m_workArea;
-
 
 	public:
 		ScrollView();
 		~ScrollView();
 		virtual void setLayout(Layout *layout);
+		virtual void setSize(Size size);
 	};
 
 }
