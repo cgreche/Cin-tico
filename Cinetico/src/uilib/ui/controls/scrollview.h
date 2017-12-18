@@ -22,8 +22,8 @@ namespace uilib {
 		VerticalLayout viewLayout;
 			HorizontalLayout hLayout;
 				Layout *contentLayout;
-				VerticalScrollBar verticalScrollBar;
-			HorizontalScrollBar horizontalScrollBar;
+				ScrollBar verticalScrollBar;
+			ScrollBar horizontalScrollBar;
 		int m_workArea;
 
 

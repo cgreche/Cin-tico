@@ -162,6 +162,7 @@
     <ClInclude Include="src\uilib\ui\dialogs\filedialog.h" />
     <ClInclude Include="src\uilib\ui\event.h" />
     <ClInclude Include="src\uilib\ui\font.h" />
+    <ClInclude Include="src\uilib\ui\impl\scrollbarimpl.h" />
     <ClInclude Include="src\uilib\ui\impl\scrollviewimpl.h" />
     <ClInclude Include="src\uilib\ui\layout\horizontallayout.h" />
     <ClInclude Include="src\uilib\ui\layout\layout.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="src\uilib\ui\layout\verticallayout.h" />
     <ClInclude Include="src\uilib\ui\menu.h" />
     <ClInclude Include="src\uilib\ui\osd\windows\osdbase.h" />
+    <ClInclude Include="src\uilib\ui\osd\windows\osdscrollbar.h" />
     <ClInclude Include="src\uilib\ui\osd\windows\osdscrollview.h" />
     <ClInclude Include="src\uilib\ui\osd\windows\windowscontrols.h" />
     <ClInclude Include="src\uilib\ui\painting\bitmap.h" />

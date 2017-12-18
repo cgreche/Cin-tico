@@ -1,80 +1,52 @@
 
 // Scrollbar
 // File: scrollbar.h
-// Last Edit: 01/08/2014 01:39 (UTC-3)
+// Last Edit: 18/12/2017 03:30 (UTC-3)
 // Author: CGR
 
 #ifndef __SCROLLBAR_H__
 #define __SCROLLBAR_H__
 
 namespace uilib {
+	class ScrollBar;
 
-	class VerticalScrollBar;
-	class HorizontalScrollBar;
+	typedef void(*ScrollFunc)(ScrollBar &scrollbar, int oldPos, int newPos);
 
-	typedef void(*VScrollFunc)(VerticalScrollBar &scrollbar);
-	typedef void(*HScrollFunc)(HorizontalScrollBar &scrollbar);
-
-
-
-	class VerticalScrollBar : public Control
+	class ScrollBar : public Control
 	{
-		Size m_workingSize;
-		Size m_contentSize;
-		u32 m_length;
-		u32 m_scrollPos;
-		VScrollFunc m_onScroll;
-
 	public:
-		VerticalScrollBar();
+		enum Orientation {
+			Vertical,
+			Horizontal
+		};
+
+	protected:
+		Orientation m_orientation;
+		int m_length;
+		int m_pageSize;
+		std::vector<ScrollFunc> m_onScrollCallbackList;
+
+		int m_scrollPos;
+	public:
+		ScrollBar(Orientation orientation = Vertical);
 
 		//virtual overrides
 		virtual Size getAutoSize();
 
-		//attributes
-		void setScrollSize(const Size &workingSize, const Size &contentSize);
-		void setScrollPosition(u32 pos);
+		void setScrollLength(int length);
+		void setPageSize(int pageSize);
+		void setScrollPosition(int scrollPos);
 
-		//events
-		void setOnScroll(VScrollFunc onScroll);
+		//actions
+		void addOnScroll(ScrollFunc onScroll);
 
-		//getters
-		u32 scrollPosition() const;
-		u32 length() const;
+		Orientation orientation() const { return m_orientation; }
+		int scrollLength() const { return m_length; }
+		int pageSize() const { return m_pageSize; }
+		int scrollPosition() const { return m_scrollPos; }
 
-		friend class OSDVerticalScrollBar;
-		OSDVerticalScrollBar& osdRef() const { return reinterpret_cast<OSDVerticalScrollBar&>(Control::osdRef()); }
-	};
-
-
-
-	class HorizontalScrollBar : public Control
-	{
-		Size m_workingSize;
-		Size m_contentSize;
-		u32 m_length;
-		u32 m_scrollPos;
-		HScrollFunc m_onScroll;
-
-	public:
-		HorizontalScrollBar();
-
-		//virtual overrides
-		virtual Size getAutoSize();
-
-		//attributes
-		void setScrollSize(const Size &workingSize, const Size &contentSize);
-		void setScrollPosition(u32 pos);
-
-		//events
-		void setOnScroll(HScrollFunc onChange);
-
-		//getters
-		u32 scrollPosition() const;
-		u32 length() const;
-
-		friend class OSDHorizontalScrollBar;
-		OSDHorizontalScrollBar& osdRef() const { return reinterpret_cast<OSDHorizontalScrollBar&>(Control::osdRef()); }
+		friend class OSDScrollBar;
+		OSDScrollBar& osdRef() const { return reinterpret_cast<OSDScrollBar&>(Control::osdRef()); }
 	};
 
 }

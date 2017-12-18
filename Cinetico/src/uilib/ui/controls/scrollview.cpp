@@ -8,36 +8,23 @@
 
 namespace uilib {
 
-	void onScroll_(VerticalScrollBar &scrollBar) {
-		int a = 1;
-		RECT rc;
-		rc.left = 0;
-		rc.top = 0;
-		rc.right = 200;
-		rc.bottom = 200;
-
-		RECT rc2;
-		::GetWindowRect(scrollBar.osdRef().handle(), &rc2);
-		::ScrollWindow(scrollBar.parent()->osdRef().handle(), 0, -1, &rc,NULL);
-		::GetWindowRect(scrollBar.osdRef().handle(), &rc2);
-		::UpdateWindow(scrollBar.parent()->osdRef().handle());
-
+	void onScroll_(ScrollBar &scrollBar, int oldPos, int newPos) {
 		ScrollView *scroll = (ScrollView*)scrollBar.param();
-		Layout *layout = scroll->contentLayout;
-		if(layout)
-			layout->setPosition(Point(layout->position().x(), layout->position().y()-1));
-
+		Layout *contentLayout = scroll->contentLayout;
+		if(contentLayout)
+			contentLayout->setPosition(Point(contentLayout->position().x(), -newPos));
 	}
 
 	ScrollView::ScrollView()
-		: Control(*new OSDScrollView(*this)) {
+		: Control(*new OSDScrollView(*this))
+		, horizontalScrollBar(ScrollBar::Horizontal) {
 		contentLayout = &dummyLayout;
 
-		verticalScrollBar.setOnScroll(onScroll_);
+		verticalScrollBar.addOnScroll(onScroll_);
 		verticalScrollBar.setParam(this);
 
 		hLayout.append(*contentLayout,MaximumSize);
-		hLayout.append(verticalScrollBar,Size(20,SizeTypeMax));
+		hLayout.append(verticalScrollBar);
 		viewLayout.append(hLayout);
 		viewLayout.append(horizontalScrollBar);
 		Control::setLayout(&viewLayout);
@@ -55,8 +42,13 @@ namespace uilib {
 			contentLayout = &dummyLayout;
 		else
 			contentLayout = layout;
-		hLayout.insertBefore(verticalScrollBar,*contentLayout,MaximumSize);
+		hLayout.insertBefore(verticalScrollBar,*contentLayout,Size(SizeTypeAuto,SizeTypeAuto));
 		this->setSize(this->size());
+
+		Size contentSize = contentLayout->size();
+		Size workingSize = getFrameSize();
+		verticalScrollBar.setScrollLength(contentSize.height());
+		verticalScrollBar.setPageSize(workingSize.height());
 	}
 
 }

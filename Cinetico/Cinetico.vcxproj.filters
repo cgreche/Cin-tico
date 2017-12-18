@@ -649,6 +649,12 @@
     <ClInclude Include="src\HadoukenController.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\uilib\ui\impl\scrollbarimpl.h">
+      <Filter>src\uilib\ui\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uilib\ui\osd\windows\osdscrollbar.h">
+      <Filter>src\uilib\ui\osd\windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\crypter.cpp">

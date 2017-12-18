@@ -113,6 +113,7 @@ namespace uilib {
 				MSG_HANDLE(WM_NCPAINT, osdControl, OnNCPaint) //0x0085
 				//case WM_NCPAINT: return FALSE;
 				MSG(WM_NCMOUSEMOVE) //0x00A0
+
 				MSG(BM_SETSTATE) //0x00F3
 
 		case WM_KEYDOWN: //0x0100

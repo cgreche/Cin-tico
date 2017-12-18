@@ -562,51 +562,6 @@ namespace uilib {
 		LRESULT OnEraseBkgnd(WPARAM wParam, LPARAM lParam);
 	};
 
-
-
-	class OSDVerticalScrollBar : public OSDControl
-	{
-		virtual LRESULT HandleParentMessage(UINT msg, WPARAM wParam, LPARAM lParam);
-
-	public:
-		friend class VerticalScrollBar;
-		OSDVerticalScrollBar(VerticalScrollBar &ref) : OSDControl(ref) { }
-		VerticalScrollBar& ref() const { return static_cast<VerticalScrollBar&>(OSDControl::ref()); }
-
-		void setScrollSize(const Size &workingSize, const Size &contentSize);
-		void setScrollPosition(u32 pos);
-
-		//OSDUIObj methods
-		virtual void create();
-		virtual void update();
-
-		//OSDControl methods
-		virtual Size getAutoSize();
-	};
-
-	class OSDHorizontalScrollBar : public OSDControl
-	{
-		virtual LRESULT HandleParentMessage(UINT msg, WPARAM wParam, LPARAM lParam);
-
-	public:
-		friend class HorizontalScrollBar;
-		OSDHorizontalScrollBar(HorizontalScrollBar &ref) : OSDControl(ref) { }
-		HorizontalScrollBar& ref() const { return static_cast<HorizontalScrollBar&>(OSDControl::ref()); }
-
-		void setScrollSize(const Size &workingSize, const Size &contentSize);
-		void setScrollPosition(u32 pos);
-
-		//OSDUIObj methods
-		virtual void create();
-		virtual void update();
-
-		//OSDControl methods
-		virtual Size getAutoSize();
-	};
-
-
-
-
 	class OSDStatusBar : public OSDControl
 	{
 
@@ -844,6 +799,7 @@ namespace uilib {
 
 }
 
+#include "osdscrollbar.h"
 #include "osdscrollview.h"
 
 #endif
