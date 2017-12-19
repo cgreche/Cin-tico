@@ -19,30 +19,34 @@ namespace cinetico {
 		RenderEngine *renderEngine = m_cineticoUI.renderEngine();
 		RenderEngineHelper *renderEngineHelper = m_cineticoUI.renderEngineHelper();
 
-		m_materialId = renderEngine->newMaterial(Color(0,0,255));
+		m_materialId = renderEngine->newMaterial(Color(0,255,255));
 		m_instId = renderEngine->newResourceInstance(resId);
 		renderEngine->resourceInstance(m_instId)->setMaterial(m_materialId);
 		renderEngine->resourceInstance(m_instId)->setScale(scale);
 
 		m_ttl = 3.0f;
-		m_curTime = m_cineticoUI.cinetico().currentTime();
+		m_creationTime = m_curTime = m_cineticoUI.cinetico().currentTime();
 		m_alive = true;
 	}
 
 	void Hadouken::update() {
 
 		uilib::u64 time = m_cineticoUI.cinetico().currentTime();
-		uilib::u64 diff = (time - m_curTime) / uilib::OSTime::ticksPerSecond();
+		uilib::u64 diff = (time - m_creationTime) / uilib::OSTime::ticksPerSecond();
 		if (diff >= 3.0f) {
-			//todo: set alive to false
+			m_alive = false;
 		}
 		else {
 			m_position += m_velocity;
 			m_curTime = time;
 		}
+
+		m_curTime = time;
 	}
 
 	void Hadouken::render() {
+		i(!m_alive)
+			return;
 		ResourceInstance *inst = m_cineticoUI.renderEngine()->resourceInstance(m_instId);
 		render3d::Vector3 rendPos = render3d::Vector3(m_position.x(), m_position.y(), m_position.z());
 		rendPos *= CM2W;

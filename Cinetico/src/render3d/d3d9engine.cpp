@@ -363,13 +363,13 @@ namespace render3d {
 			indexBuffer->Unlock();
 		}
 
-		D3DVERTEXELEMENT9 custom_vertex[] =
-		{
-		  { 0,  0, D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
-		  { 0, 12, D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,   0 },
-		  { 0, 24, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR,    0 },
-		  D3DDECL_END()
-		};
+		D3DVERTEXELEMENT9 custom_vertex[10];
+		int i = 0;
+		custom_vertex[i++] = { 0,  0, D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 };
+		custom_vertex[i++] = { 0, 12, D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,   0 };
+		if (resData->colors())
+			custom_vertex[i++] = { 0, 24, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0 };
+		custom_vertex[i] = D3DDECL_END();
 
 		static LPDIRECT3DVERTEXDECLARATION9 vertexDeclaration = NULL;
 		hr = m_device->CreateVertexDeclaration(custom_vertex, &vertexDeclaration);
@@ -385,7 +385,7 @@ namespace render3d {
 		D3DMATERIAL9 *internalData = new D3DMATERIAL9;
 		::ZeroMemory(internalData, sizeof(D3DMATERIAL9));
 		Color diffuse = material->diffuse();
-		internalData->Diffuse = D3DXCOLOR(0, 0, 1.0f, 1.0f);
+		internalData->Diffuse = D3DXCOLOR(diffuse.r()/255.0f,diffuse.g()/255.0f,diffuse.b()/255.0f,diffuse.a()/255.0f);
 		internalData->Ambient = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		//internalData->Ambient = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		//internalData->Diffuse = D3DXCOLOR(diffuse.r() / 255.f, diffuse.g() / 255.f, diffuse.b() / 255.f,1.f);
@@ -594,7 +594,7 @@ namespace render3d {
 			light.Range = 100.0f;
 			light.Diffuse.r = 1.f;
 			light.Diffuse.g = 1.f;
-			light.Diffuse.b = 0.f;
+			light.Diffuse.b = 1.f;
 
 			light.Ambient.r = 0.2f;
 			light.Ambient.g = 0.2f;
@@ -629,9 +629,9 @@ namespace render3d {
 		if (instance->material() != -1) {
 			Material *material = m_materials[instance->material()];
 			D3DMATERIAL9 *internalMaterial = (D3DMATERIAL9*)material->internalData();
-			//m_device->SetMaterial(internalMaterial);
-			m_device->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
-			//m_device->SetRenderState(D3DRS_LIGHTING, TRUE);
+			m_device->SetMaterial(internalMaterial);
+			m_device->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
+			m_device->SetRenderState(D3DRS_LIGHTING, TRUE);
 		}
 		else {
 			m_device->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_COLOR1);

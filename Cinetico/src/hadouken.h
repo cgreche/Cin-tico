@@ -19,6 +19,7 @@ namespace cinetico {
 		cinetico_core::Vector3 m_velocity;
 
 		float m_ttl;
+		uilib::u64 m_creationTime;
 		uilib::u64 m_curTime;
 		bool m_alive;
 

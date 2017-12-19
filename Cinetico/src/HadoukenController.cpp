@@ -58,6 +58,7 @@ namespace cinetico {
 		cinetico_core::Vector3 pelvisBinormal = getDir(body, BodyPoint::Pelvis, cinetico_core::Vector3(0, 0, -1));
 		float dot = dotProduct(lElbowRot, rElbowRot);
 		float dot2 = dotProduct(lElbowRot, pelvisBinormal);
+		float dot3 = dotProduct(rElbowRot, pelvisBinormal);
 
 		static render3d::Vector3 hadoPos;
 		static render3d::Vector3 hadoDir;
