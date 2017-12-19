@@ -45,7 +45,7 @@ namespace cinetico {
 	}
 
 	void Hadouken::render() {
-		i(!m_alive)
+		if(!m_alive)
 			return;
 		ResourceInstance *inst = m_cineticoUI.renderEngine()->resourceInstance(m_instId);
 		render3d::Vector3 rendPos = render3d::Vector3(m_position.x(), m_position.y(), m_position.z());
