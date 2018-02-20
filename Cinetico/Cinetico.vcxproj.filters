@@ -1057,5 +1057,8 @@
     <None Include="related_non_functional_resources\TCC - Cinético.docx">
       <Filter>related_non_functional_resources</Filter>
     </None>
+    <None Include="related_non_functional_resources\Diagramas_Negócio.asta">
+      <Filter>related_non_functional_resources</Filter>
+    </None>
   </ItemGroup>
 </Project>

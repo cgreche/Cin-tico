@@ -341,6 +341,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="related_non_functional_resources\Diagramas.asta" />
+    <None Include="related_non_functional_resources\Diagramas_Negócio.asta" />
     <None Include="related_non_functional_resources\Product backlog.xlsx" />
     <None Include="related_non_functional_resources\TCC - Cinético.docx" />
     <None Include="src\lib\d3dx9math.inl" />

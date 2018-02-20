@@ -2,6 +2,7 @@
 #define __CINETICO_CORE_BODY_H__
 
 #include "BodyPoint.h"
+#include "uilib/lib/time.h"
 
 namespace cinetico_core {
 
@@ -18,7 +19,7 @@ namespace cinetico_core {
 
 	private:
 		BodyPoint *m_bodyPoint[BodyPointCount];
-//		osticks m_lastUpdateTime;
+		uilib::u64 m_lastUpdateTime;
 
 	public:
 		Body(Sensor &sensor);

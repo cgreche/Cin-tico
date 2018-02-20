@@ -18,6 +18,13 @@ namespace cinetico {
 
 	class ExercisePlayMode : public PlayMode {
 
+		enum PlayModeState {
+			WAITING_FOR_BODY,
+			ON_EXERCISE,
+			EXERCISE_FINISHED
+		};
+
+
 		cinetico_core::Exercise &m_exercise;
 
 		HumanCharacter *m_humanChar;

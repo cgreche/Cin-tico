@@ -100,11 +100,18 @@ namespace cinetico {
 					m_commandsManager->checkConditions(*m_exercise.actionList()[curAction]);
 				m_exercise.step();
 			}
+			else if (m_exercise.state() == Exercise::Finished) {
+
+			}
 
 			if (m_cinetico.input()->keyboard.key(VK_F5)) {
 				m_exercise.reset();
 				m_commandsManager->reset();
 			}
+		}
+		else {
+			//if (m_exercise.state() == Exercise::Running)
+			//	m_exercise.stop();
 		}
 
 		if (hadouken) {
