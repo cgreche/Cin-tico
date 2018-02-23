@@ -216,18 +216,14 @@ namespace cinetico_core {
 		else if (op == SimpleGesture::AtSameDepth) {
 			result = fabsf(actionPoint.z() - targetPoint.z()) <= distThreshold;
 		}
+		else if (op == SimpleGesture::DotProduct) {
+			//todo: needs more parameters from view, like the comparison type (equals, gt and lt) and value
+		}
 		else if (op == SimpleGesture::FixedOrientation) {
 			//todo
-			Vector3 diff = targetPoint - actionPoint;
-			diff.normalize();
-			result = dotProduct(actionOrientation, diff) >= 0.8f;
-
 		}
 		else if (op == SimpleGesture::OrientationLookingTo) {
 			//todo
-			Vector3 diff = targetPoint - actionPoint;
-			diff.normalize();
-			result = dotProduct(actionOrientation, diff) >= 0.8f;
 		}
 		else {
 			result = false;

@@ -107,7 +107,7 @@ namespace cinetico {
 	int Cinetico::run() {
 		setup();
 
-		m_cineticoUI->goTo(CineticoUI::LOGIN);
+		//m_cineticoUI->goTo(CineticoUI::LOGIN);
 		while (UI::UIProcess()) {
 			step();
 		}

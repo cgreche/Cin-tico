@@ -28,7 +28,7 @@ namespace cinetico {
 						TextLink linkUsername;
 						cButton buttonLogoff;
 
-		ScrollView svContent;
+		//ScrollView svContent;
 		Label bgContent;
 		VerticalLayout layoutContent;
 
@@ -38,12 +38,12 @@ namespace cinetico {
 				Label labelAuthor;
 			VerticalLayout layoutOptions;
 				Button buttonConfig;
-				Button buttonDebugView;
-				Button buttonDebugMode;
+				//Button buttonDebugView;
+				//Button buttonDebugMode;
 			VerticalLayout layoutLanguages;
 				cTextLink linkPortugues;
 				cTextLink linkEnglish;
-				cTextLink linkEspanol;
+				//cTextLink linkEspanol;
 
 		Layout *m_currentContentLayout;
 

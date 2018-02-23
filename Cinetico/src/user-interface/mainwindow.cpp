@@ -95,13 +95,14 @@ namespace cinetico {
 		buttonConfig.setParam(this);
 		buttonConfig.setOnClick(buttonConfig_onClick);
 
-		buttonDebugView.setText("Go to Debug view");
-		buttonDebugView.setParam(this);
-		buttonDebugView.setOnClick(buttonGoToDebugView_onClick);
+		//buttonDebugView.setText("Go to Debug view");
+		//buttonDebugView.setParam(this);
+		//buttonDebugView.setOnClick(buttonGoToDebugView_onClick);
 
-		buttonDebugMode.setText("Go to debug mode");
-		buttonDebugMode.setParam(this);
-		buttonDebugMode.setOnClick(buttonGoToDebugMode_onClick);
+		//buttonDebugMode.setText("Go to debug mode");
+		//buttonDebugMode.setParam(this);
+		//buttonDebugMode.setOnClick(buttonGoToDebugMode_onClick);
+		
 		layoutOptions.append(buttonConfig);
 		//layoutOptions.append(buttonDebugView);
 		//layoutOptions.append(buttonDebugMode);
@@ -131,7 +132,7 @@ namespace cinetico {
 
 		layoutLanguages.append(linkPortugues);
 		layoutLanguages.append(linkEnglish);
-		layoutLanguages.append(linkEspanol);
+		//layoutLanguages.append(linkEspanol);
 		layoutLanguages.setAlignment(Layout::right_align);
 
 		layoutFooter.append(layoutAuthorInfo, MaximumSize);

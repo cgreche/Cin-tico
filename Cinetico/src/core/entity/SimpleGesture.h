@@ -23,6 +23,7 @@ namespace cinetico_core {
 			AtSameBreadth,
 			AtSameHeight,
 			AtSameDepth,
+			DotProduct,
 			FixedOrientation,
 			OrientationLookingTo
 		};

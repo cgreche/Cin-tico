@@ -29,12 +29,11 @@ namespace cinetico {
 					cTextBox tbCreateAccountPassword;
 					Button buttonCreateAccount;
 
+					/*
 			ScrollView testScrollView;
 				VerticalLayout testLayout;
 				cButton testButton;
-				Button testButton2;
-				Button testButton3;
-				Button testButton4;
+				*/
 
 		UserProfileDAO *m_userProfileDAO;
 

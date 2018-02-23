@@ -305,7 +305,7 @@ namespace cinetico {
 			Message::warning(NULL, m_dictionary.getString(Dictionary::ViewDefaultErrorRequiredFields));
 			return false;
 		}
-		if (cbTransitionType.selection() >= 0 && (SimpleGesture::TransitionType)(int)cbTransitionType.selectedItem() == SimpleGesture::FixedMovement) {
+		if ((SimpleGesture::TransitionType)cbTransitionType.selection() == SimpleGesture::FixedMovement) {
 			if (cbMovementType.selection() == -1) {
 				Message::warning(NULL, m_dictionary.getString(Dictionary::ViewDefaultErrorRequiredFields));
 				return false;
@@ -333,7 +333,6 @@ namespace cinetico {
 		float valueZ = tbValueZ.text().toFloat();
 
 		if (type == SimpleGesture::FixedMovement) {
-			//todo: movement type is required
 			MovementGesture::MovementType movementType = (MovementGesture::MovementType)(int)cbMovementType.selectedItem()->data();
 			float minSpeed = tbMinSpeed.text().toFloat();
 			float maxSpeed = tbMaxSpeed.text().toFloat();
